@@ -1,13 +1,18 @@
-import FirstSection from "./first-section";
-import TradingSection from "./trading-section";
+import React from "react";
+import FirstSection from "./Top-section";
+import PopularCollection from "./PopularCollection-section";
+import RanksSection from "./Ranks-section";
+import TradingSection from "./Trading-section";
+import UpcomingMints from "./UpcomingMints";
 
 const Home = () => {
   return (
     <>
-      {" "}
-      <div>Home</div>
       <FirstSection />
       <TradingSection />
+      <RanksSection />
+      <PopularCollection />
+      <UpcomingMints />
     </>
   );
 };

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Slider from "react-slick";
-import Slide from "../../components/layout/Slide";
+import Slide from "../../components/Slide";
 
 const settings = {
   slidesToShow: 6,

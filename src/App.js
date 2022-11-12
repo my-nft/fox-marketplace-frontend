@@ -10,12 +10,21 @@ import Header from "./components/layout/Header";
 import React from "react";
 import Footer from "./components/layout/Footer";
 
-
-const router = createBrowserRouter(createRoutesFromElements(
-  <Route path="/" element={<Header />}>
-    <Route path="" element={<><Home /><Footer/></>} />
-  </Route>
-));
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<Header />}>
+      <Route
+        path=""
+        element={
+          <>
+            <Home />
+            <Footer />
+          </>
+        }
+      />
+    </Route>
+  )
+);
 
 function App() {
   return <RouterProvider router={router} />;
