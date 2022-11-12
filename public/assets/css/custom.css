@@ -14,10 +14,8 @@ ul {
   box-sizing: border-box;
 }
 
-
 html {
   scroll-behavior: smooth;
-
 }
 
 a.active {
@@ -42,8 +40,6 @@ a {
   src: url(../fonts/Gotham-Light.otf);
 }
 
-
-
 @font-face {
   font-family: gothamBlack;
   src: url(../fonts/Gotham-Black.otf);
@@ -60,11 +56,8 @@ a {
   src: url(../fonts/GothamBook.ttf);
 }
 
-
 /*TOPSECTION*/
 #topSection {
-
-
   width: 100vw;
   background-size: cover;
   position: relative;
@@ -94,8 +87,6 @@ h3 {
   font-family: gothamBook;
 }
 
-
-
 input.form-control {
   background-color: #130f0a;
   border: none;
@@ -107,15 +98,11 @@ input.form-control:focus {
   background-color: #855b20;
   border: none;
   box-shadow: none;
-
 }
 
 .form-control {
-
   padding: 0.375rem 1.75rem;
-
 }
-
 
 option {
   padding: 10px 0;
@@ -132,8 +119,6 @@ option {
 #filterInput select {
   padding: 20px 15px !important;
   margin-top: 0 !important;
-
-
 }
 
 #filterInput .wrapper {
@@ -159,41 +144,32 @@ option {
   color: #2d2d2d;
 }
 
-
-
-
-
-
 input.form-control::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: white;
   opacity: 0.6;
-
 }
 
 header {
   position: relative;
   z-index: 999;
-
 }
 
 header a:hover {
-  color: #e48223
+  color: #e48223;
 }
 
 header a {
   color: white;
   font-weight: 600;
-
-
 }
 
 .navbar-collapse {
   margin: 20px 0;
 }
 
-#loginButton, #signUpButton {
-
+#loginButton,
+#signUpButton {
   padding: 5px 20px;
   border-radius: 20px;
   margin-right: 25px;
@@ -221,12 +197,10 @@ ul#buttonIcon {
 }
 
 #signUpButton {
-
   background-color: #f58103;
   border: none;
   padding: 5px 20px;
   color: white;
-
 }
 
 #formSearch {
@@ -238,8 +212,22 @@ ul#buttonIcon {
 }
 
 #wrappedBannerHome {
-  -webkit-mask-image: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0) 100%);
-  mask-image: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 25%,
+    rgba(0, 0, 0, 1) 75%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 25%,
+    rgba(0, 0, 0, 1) 75%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 
 #bannerHome {
@@ -280,8 +268,7 @@ ul#buttonIcon {
   z-index: -2;
   position: relative;
   padding: 5px;
-  width: calc(100%/10);
-
+  width: calc(100% / 10);
 }
 
 #wrappedBannerHome {
@@ -292,7 +279,6 @@ ul#buttonIcon {
   align-content: space-around;
 }
 
-
 #layer {
   position: absolute;
   mix-blend-mode: screen;
@@ -300,7 +286,6 @@ ul#buttonIcon {
   height: 80vh;
   top: -15vh;
   left: 0;
-
 }
 
 #overlayTop {
@@ -311,15 +296,12 @@ ul#buttonIcon {
 }
 
 #overlayBottom {
-
-
   position: absolute;
   width: 100vw;
   height: 85px;
   left: 0;
   bottom: 0;
   z-index: 5;
-
 }
 
 #foxLogo {
@@ -330,16 +312,12 @@ ul#buttonIcon {
   bottom: 0;
 }
 
-
 /*Ranks*/
 
 #ranks {
   margin-top: 2vh;
   width: 92vw;
 }
-
-
-
 
 .tbl {
   width: 100%;
@@ -388,8 +366,6 @@ td span {
   padding-left: 15px;
 }
 
-
-
 /*TradinNow*/
 .slide {
   position: relative;
@@ -397,22 +373,17 @@ td span {
   transition: all 0.3s ease-out;
 }
 
-
 /* .slick-list{
   max-height: 500px;
   padding: 40px 0;
 } */
 
-
 .slider {
-
   position: relative;
   z-index: 999;
-
 }
 
 .slick-track {
-
   display: flex;
 }
 
@@ -426,17 +397,13 @@ td span {
 }
 
 #tradingNow .slick-slide {
-
   height: initial;
-  padding: initial
+  padding: initial;
 }
-
 
 #tradingNow .slick-slide:hover {
   scale: initial;
   margin: 0 10px;
-
-
 }
 
 .slick-slide {
@@ -474,8 +441,8 @@ td span {
   background-color: #000;
 }
 
-
-button.slick-next.slick-arrow, button.slick-prev.slick-arrow {
+button.slick-next.slick-arrow,
+button.slick-prev.slick-arrow {
   position: absolute;
   z-index: 999;
   top: 150px;
@@ -489,13 +456,21 @@ button.slick-next.slick-arrow, button.slick-prev.slick-arrow {
   border: none;
   opacity: 0;
   transition: all 1s ease;
+}
 
+button.slick-prev:hover,
+button.slick-next:hover {
+  opacity: 1;
+}
+
+button.slick-prev:not(:hover),
+button.slick-next:not(:hover) {
+  opacity: 0;
 }
 
 button.slick-prev.slick-arrow {
   left: -25px;
   top: calc(50% - 20px);
-
 }
 
 button.slick-next.slick-arrow {
@@ -523,7 +498,8 @@ button.slick-next.slick-arrow {
   color: #adadad;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
   border-bottom: 1px solid white !important;
   background-color: transparent;
 }
@@ -549,10 +525,11 @@ button.slick-next.slick-arrow {
 
 #ranks #liSelect {
   position: absolute;
-  right: 1vw
+  right: 1vw;
 }
 
-#ranks select, #ranks #buttonView {
+#ranks select,
+#ranks #buttonView {
   border: 1px solid #170e01;
   background-color: #000000;
   color: #a4a4a4;
@@ -573,10 +550,10 @@ button.slick-next.slick-arrow {
   border-radius: 30px;
   background-color: transparent;
   margin-right: 5px;
-
 }
 
-#popular, #tradingNow {
+#popular,
+#tradingNow {
   width: 95vw;
 }
 
@@ -590,7 +567,6 @@ h3 {
 }
 
 #popular h3 {
-
   margin-left: -15px;
 }
 
@@ -603,7 +579,7 @@ h3 {
   padding: 20px 20px 20px 0px;
   color: white;
   font-family: gothamLight;
-  width: calc(100%/4);
+  width: calc(100% / 4);
 }
 
 .nameItem {
@@ -632,7 +608,6 @@ h3 {
   padding: 2px 0;
 }
 
-
 #upcomingMints {
   width: 95vw;
   padding: 0;
@@ -648,9 +623,19 @@ h3 {
 }
 
 .maskContainer {
-  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
 
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 
 .itemMints {
@@ -658,7 +643,6 @@ h3 {
   margin: 30px 0px;
   position: relative;
   padding: 0 20px;
-
 }
 
 .itemData {
@@ -666,7 +650,6 @@ h3 {
   top: 0;
   height: 100%;
   width: 100%;
-
 }
 
 .itemMints img {
@@ -685,10 +668,10 @@ h3 {
   border-radius: 25px;
   border: none;
   font-size: 13px;
-
 }
 
-.buttonUP.timer, .buttonUP.live {
+.buttonUP.timer,
+.buttonUP.live {
   background-color: red;
   color: white;
   letter-spacing: 4px;
@@ -705,7 +688,6 @@ h3 {
   position: absolute;
   color: white;
   font-size: 18px;
-
 }
 
 button.subscribe {
@@ -722,17 +704,20 @@ button.subscribe {
 
 .viewMore {
   text-align: center;
-  color: #f0911a
+  color: #f0911a;
 }
-
-
 
 /*Footer*/
 footer {
   padding: 30px;
   background: rgb(0, 0, 0);
-  background: linear-gradient(354deg, rgba(0, 0, 0, 0) 0%, rgba(9, 5, 0, 0.19931722689075626) 0%, rgba(93, 53, 7, 0.20211834733893552) 35%, rgba(25, 14, 0, 0.2049194677871149) 100%);
-
+  background: linear-gradient(
+    354deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(9, 5, 0, 0.19931722689075626) 0%,
+    rgba(93, 53, 7, 0.20211834733893552) 35%,
+    rgba(25, 14, 0, 0.2049194677871149) 100%
+  );
 }
 
 footer span {
@@ -747,7 +732,6 @@ footer li {
 }
 
 footer a {
-
   color: white;
 }
 
@@ -781,8 +765,6 @@ footer a {
   opacity: 1;
 }
 
-
-
 /*MARKETPLACE PAGE */
 #mostPopCollection {
   width: 95vw;
@@ -795,12 +777,11 @@ footer a {
 
 .wrapImg {
   position: relative;
-
 }
 
 .wrapImg .bigImage {
   width: 100%;
-  border-radius: 20px
+  border-radius: 20px;
 }
 
 .slide img.iconLogo {
@@ -890,7 +871,7 @@ footer a {
   background: #fff;
   top: 4px;
   left: 3px;
-  content: '-';
+  content: "-";
   -webkit-transition: all 200ms ease-in-out;
   -moz-transition: all 200ms ease-in-out;
   -o-transition: all 200ms ease-in-out;
@@ -905,7 +886,7 @@ footer a {
   left: 100%;
   margin-left: -29px;
   background: white;
-  content: '-';
+  content: "-";
   color: white;
 }
 
@@ -924,14 +905,11 @@ footer a {
 }
 
 #tabsNft .checkBox {
-
   background-color: transparent;
   padding: 10px 0px;
-
 }
 
 .checkBox span {
-
   padding: 4px;
   color: white;
 }
@@ -957,7 +935,7 @@ footer a {
   word-wrap: break-word;
   background-color: #010306;
   background-clip: border-box;
-  border: 1px solid rgba(0, 0, 0, .125);
+  border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
   margin-bottom: 5px;
 }
@@ -982,8 +960,6 @@ footer a {
   margin-bottom: 10px;
   color: white;
   text-align: left;
-
-
 }
 
 .card-body button.active {
@@ -1001,8 +977,6 @@ footer a {
   justify-content: space-between;
   align-items: baseline;
   flex-wrap: wrap;
-
-
 }
 
 #wrapperNumber span {
@@ -1020,7 +994,9 @@ footer a {
   margin-right: 5px;
 }
 
-#wrapperNumber select, #headerInput select, #filterInput select {
+#wrapperNumber select,
+#headerInput select,
+#filterInput select {
   word-wrap: normal;
   flex-grow: 1;
   padding: 14px;
@@ -1072,7 +1048,6 @@ footer a {
 input[type="radio"] {
   width: 30px;
   accent-color: #ff9758;
-
 }
 
 #dx p {
@@ -1111,10 +1086,7 @@ input[type="radio"] {
   text-align: left;
 }
 
-
-
 .wrapImg .bigImage {
-
   border-radius: 10px 10px 0 0;
 }
 
@@ -1129,13 +1101,11 @@ input[type="radio"] {
 /* .listMostPopular:hover{scale: 1.1; z-index: 999; margin: 20px;} */
 .listMostPopular {
   transition: all 0.2s ease-out;
-
 }
 
 #tabsNft .listMostPopular {
   width: calc(100% / 6);
   min-width: 230px;
-
 }
 
 .listMostPopular {
@@ -1145,11 +1115,9 @@ input[type="radio"] {
   padding: 0 5px;
   transition: all 0.2s ease-out;
   cursor: pointer;
-
 }
 
 .listMostPopular .wrapText {
-
   margin-top: 0;
 }
 
@@ -1157,16 +1125,13 @@ input[type="radio"] {
   background-color: transparent;
   margin-top: 30px;
   display: flex;
-
 }
 
 #tabsNft .wrapperMostPopular {
-
   margin-top: 0;
   justify-content: flex-start;
   padding-top: 0;
 }
-
 
 .wrapContent .wrappedAllText {
   border: 1px solid #2d2d2d;
@@ -1181,34 +1146,38 @@ input[type="radio"] {
 .wrapText label {
   display: block;
   color: #828892;
-  font-family: 'gothamLight';
+  font-family: "gothamLight";
 }
 
 .wrapText span.orange {
   color: orange;
-  font-family: 'gothamMedium';
+  font-family: "gothamMedium";
 }
 
 .wrapText {
   align-items: end;
 }
 
-#createItem, #importItem {
+#createItem,
+#importItem {
   width: 75%;
   margin: auto;
   color: white;
   min-height: 70vh;
 }
 
-#createItem .row, #importItem .row {
+#createItem .row,
+#importItem .row {
   padding-bottom: 30px;
 }
 
-#createItem b, #importItem b {
+#createItem b,
+#importItem b {
   color: #ff9a1b;
 }
 
-#createItem button, #importItem button {
+#createItem button,
+#importItem button {
   padding: 5px 35px;
   border: none;
   color: white;
@@ -1221,7 +1190,8 @@ input[type="radio"] {
   font-family: gothamLight;
 }
 
-.contIcon, .contIcon img {
+.contIcon,
+.contIcon img {
   transition: all 1s ease;
 }
 
@@ -1233,46 +1203,52 @@ input[type="radio"] {
   -webkit-filter: initial;
 }
 
-
 img.withGlow.active {
   -webkit-filter: drop-shadow(0px 4px 12px rgb(27, 255, 27));
   background-color: #2bf62a;
-
 }
 
-#importItem img.withGlow.active, #createItem img.withGlow.active {
+#importItem img.withGlow.active,
+#createItem img.withGlow.active {
   -webkit-filter: drop-shadow(0px 4px 12px rgb(27, 255, 27));
-
-
 }
-#importSubmit.contIcon{ -webkit-filter: none}
-#importSubmit.contIcon.active{  -webkit-filter: drop-shadow(0px 4px 12px rgb(27, 255, 27));   background-color: #2bf62a; color: #000;}
+#importSubmit.contIcon {
+  -webkit-filter: none;
+}
+#importSubmit.contIcon.active {
+  -webkit-filter: drop-shadow(0px 4px 12px rgb(27, 255, 27));
+  background-color: #2bf62a;
+  color: #000;
+}
 
-#transferSubmit.contIcon{ -webkit-filter: none}
-#transferSubmit.contIcon.active{  -webkit-filter: drop-shadow(0px 4px 12px rgb(27, 255, 27));   background-color: #2bf62a; color: #000;}
-
-
-
+#transferSubmit.contIcon {
+  -webkit-filter: none;
+}
+#transferSubmit.contIcon.active {
+  -webkit-filter: drop-shadow(0px 4px 12px rgb(27, 255, 27));
+  background-color: #2bf62a;
+  color: #000;
+}
 
 #iconAction .withGlow.contIcon.active {
   -webkit-filter: drop-shadow(0px 4px 12px rgb(27, 255, 27));
   background-color: #2bf62a;
 }
 
-#createItem img.withGlow, #importItem img.withGlow {
+#createItem img.withGlow,
+#importItem img.withGlow {
   border: 3px solid #ff9a1b;
   border-radius: 25px;
-  background-color: transparent
+  background-color: transparent;
 }
 
-#createItem img.active, #importItem img.active {
+#createItem img.active,
+#importItem img.active {
   border: 3px solid rgb(27, 255, 27);
-
 }
 
 /* 
 #iconAction li.withGlow.active{ background-color: #008000;} */
-
 
 #importItem .form-row {
   display: block;
@@ -1285,8 +1261,7 @@ img.withGlow.active {
   width: 50%;
   border-bottom: 1px solid #8e8e8e;
   margin: auto;
-  font-family: 'gothamLight';
-
+  font-family: "gothamLight";
 }
 
 #upload {
@@ -1307,7 +1282,6 @@ img.withGlow.active {
   width: 120px;
   top: calc(50% - 60px);
   left: calc(50% - 60px);
-
 }
 
 #upload div p {
@@ -1318,7 +1292,9 @@ img.withGlow.active {
   font-size: 12px;
 }
 
-#createCollection input.form-control, #createCollection textarea, #createCollection select {
+#createCollection input.form-control,
+#createCollection textarea,
+#createCollection select {
   background-color: transparent;
   border: none;
   border-bottom: 1px solid white;
@@ -1339,14 +1315,15 @@ img.withGlow.active {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: white;
   opacity: 1;
-
 }
 
 #createCollection label {
   color: #787674;
 }
 
-#createCollection input.form-control:focus, #createCollection textarea:focus, #createCollection select:focus {
+#createCollection input.form-control:focus,
+#createCollection textarea:focus,
+#createCollection select:focus {
   box-shadow: none;
 }
 
@@ -1358,11 +1335,10 @@ img.withGlow.active {
   border-radius: 15px;
 }
 
-
 /*Account*/
 
 #headerAccount {
-  color: white
+  color: white;
 }
 
 #headerAccount p {
@@ -1391,11 +1367,10 @@ img.withGlow.active {
   position: relative;
 }
 
-
-#uploadImage, #uploadBanner {
+#uploadImage,
+#uploadBanner {
   margin-top: 20px;
 }
-
 
 #iconProfile {
   width: 10vw;
@@ -1445,11 +1420,10 @@ img.withGlow.active {
   font-size: 11px;
 }
 
-
 .dropdown-menu li.head {
   font-size: 11px;
   color: #a2a2a2;
-  font-family: 'gothamLight';
+  font-family: "gothamLight";
   font-weight: bold;
   letter-spacing: 1px;
 }
@@ -1457,7 +1431,7 @@ img.withGlow.active {
 #infoHeader .dropdown-menu li svg {
   width: 15px;
   margin-left: 20px;
-  margin-right: 0
+  margin-right: 0;
 }
 
 #filter {
@@ -1473,8 +1447,6 @@ img.withGlow.active {
   padding: 15px;
   border-right: 1px solid #2d2d2d;
   height: 100vw;
-
-
 }
 
 #profile h6 {
@@ -1496,11 +1468,10 @@ img.withGlow.active {
 }
 
 #profile .navigation li {
-  font-family: 'gothamBook';
+  font-family: "gothamBook";
   padding: 10px 20px 10px 10px;
   background-color: #2a2a2a;
   border-radius: 10px;
-
 }
 
 #profile h2 {
@@ -1509,7 +1480,8 @@ img.withGlow.active {
   margin-bottom: 30px;
 }
 
-#profile input.form-control, #profile textarea {
+#profile input.form-control,
+#profile textarea {
   background-color: #202020;
   border: none;
   border-radius: 5px;
@@ -1517,14 +1489,11 @@ img.withGlow.active {
   font-family: gothamLight !important;
   padding: 10px;
   font-size: 14px;
-
-
 }
 
 #profile .form-group {
   margin-bottom: 20px;
 }
-
 
 #socialConnection li {
   display: flex;
@@ -1542,7 +1511,7 @@ img.withGlow.active {
   padding: 10px 15px;
   border-radius: 10px;
   background-color: #fa8708;
-  color: white
+  color: white;
 }
 
 #iconDetails {
@@ -1569,7 +1538,7 @@ img.withGlow.active {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #010306
+  background-color: #010306;
 }
 
 #imgNft .icon img {
@@ -1598,7 +1567,8 @@ img.withGlow.active {
   color: #6f6f6f;
 }
 
-#imgNft .card-body, #cardNft .card-body {
+#imgNft .card-body,
+#cardNft .card-body {
   color: white;
   padding: 10px 30px;
 }
@@ -1613,11 +1583,13 @@ img.withGlow.active {
   color: white;
 }
 
-#imgNft .card-body strong, #owned strong {
-  color: #f58103
+#imgNft .card-body strong,
+#owned strong {
+  color: #f58103;
 }
 
-#imgNft .card-body span, #cardNft .card-body span {
+#imgNft .card-body span,
+#cardNft .card-body span {
   font-family: gothamLight;
   font-size: 14px;
 }
@@ -1632,7 +1604,9 @@ img.withGlow.active {
   font-family: gothamBold;
 }
 
-#cardNft, #fixedPriceDetails, #countDown {
+#cardNft,
+#fixedPriceDetails,
+#countDown {
   border: none;
   border-radius: 10px;
   background-color: transparent;
@@ -1646,7 +1620,10 @@ img.withGlow.active {
   border-radius: 10px 10px 0 0;
 }
 
-#cardNft .card-body, #fixedPriceDetails .card-body, #timedAuctionDetails .card-body, #countDown .card-body {
+#cardNft .card-body,
+#fixedPriceDetails .card-body,
+#timedAuctionDetails .card-body,
+#countDown .card-body {
   background-color: #010306;
   padding: 30px 20px;
   color: white;
@@ -1657,7 +1634,7 @@ img.withGlow.active {
 }
 
 #cardNft h5 {
-  color: #828892
+  color: #828892;
 }
 
 #cardNft #priceDollar {
@@ -1671,7 +1648,7 @@ img.withGlow.active {
   margin: 0;
   text-align: center;
   padding: 15px;
-  font-family: 'gothamMedium';
+  font-family: "gothamMedium";
   border: none;
 }
 
@@ -1690,29 +1667,34 @@ img.withGlow.active {
   margin-top: 5px;
 }
 
-#accordionListing table, #accordionOffers table {
+#accordionListing table,
+#accordionOffers table {
   color: white;
   font-family: gothamLight;
   font-size: 14px;
 }
 
-#accordionListing table th, #accordionOffers table th {
+#accordionListing table th,
+#accordionOffers table th {
   padding: 5px 20px;
   border: none;
   background-color: #ffffff0c;
 }
 
-#accordionListing table button, #accordionOffers table button {
+#accordionListing table button,
+#accordionOffers table button {
   background-color: #f58103;
   padding: 5px 5px 8px;
   text-align: center;
 }
 
-s #accordionListing table tr, #accordionOffers table tr {
+s #accordionListing table tr,
+#accordionOffers table tr {
   padding: 10px;
 }
 
-#accordionListing table td, #accordionOffers table td {
+#accordionListing table td,
+#accordionOffers table td {
   vertical-align: middle;
 }
 
@@ -1747,9 +1729,8 @@ s #accordionListing table tr, #accordionOffers table tr {
   font-size: 11px !important;
 }
 
-
 .grafico.bar-chart {
-  background: #3468AF;
+  background: #3468af;
   padding: 0 1rem 2rem 1rem;
   width: 100%;
   height: 60%;
@@ -1759,9 +1740,12 @@ s #accordionListing table tr, #accordionOffers table tr {
 }
 
 .orangeBg {
-  background-color: #f58103 !important
+  background-color: #f58103 !important;
 }
-.nav-link.orangeBg{border-radius: 10px; text-align: center;} 
+.nav-link.orangeBg {
+  border-radius: 10px;
+  text-align: center;
+}
 .hidden {
   display: none !important;
 }
@@ -1775,15 +1759,13 @@ s #accordionListing table tr, #accordionOffers table tr {
 }
 
 #fixedPrice:before {
-
-  content: url('../images/money-white.png');
+  content: url("../images/money-white.png");
   display: block;
   padding: 5px 10px;
 }
 
 #timedAuction:before {
-
-  content: url('../images/auction-white.png');
+  content: url("../images/auction-white.png");
   display: block;
   padding: 5px 10px;
 }
@@ -1796,7 +1778,8 @@ s #accordionListing table tr, #accordionOffers table tr {
   background-color: gray !important;
 }
 
-#fixedPriceDetails .card-body, #timedAuctionDetails .card-body {
+#fixedPriceDetails .card-body,
+#timedAuctionDetails .card-body {
   border-radius: 0 0 10px 10px;
   border: none;
 }
@@ -1812,12 +1795,14 @@ s #accordionListing table tr, #accordionOffers table tr {
   padding-bottom: 15px;
 }
 
-#setPrice input, #setAuction input {
+#setPrice input,
+#setAuction input {
   border-radius: 10px 0 0 10px;
   width: 100% !important;
 }
 
-#setPrice .input-group, #setAuction .input-group {
+#setPrice .input-group,
+#setAuction .input-group {
   align-items: end;
 }
 
@@ -1830,7 +1815,8 @@ s #accordionListing table tr, #accordionOffers table tr {
   width: 20%;
 }
 
-#setPrice #duration, #setAuction #duration {
+#setPrice #duration,
+#setAuction #duration {
   width: 100%;
   background-color: #130f0a;
   border-radius: 10px;
@@ -1840,7 +1826,7 @@ s #accordionListing table tr, #accordionOffers table tr {
 
 #timedAuctionDetails {
   border: none;
-  background-color: transparent
+  background-color: transparent;
 }
 
 #timedAuctionDetails label {
@@ -1873,7 +1859,9 @@ s #accordionListing table tr, #accordionOffers table tr {
   font-size: 12px;
 }
 
-#makeOfferSubmit, #placeBidSubmit, #placeBid {
+#makeOfferSubmit,
+#placeBidSubmit,
+#placeBid {
   width: 50%;
   margin-top: 25px;
   text-align: center;
@@ -1882,21 +1870,22 @@ s #accordionListing table tr, #accordionOffers table tr {
   color: black;
 }
 
-#makeOfferSubmit .withGlow, #placeBidSubmit.withGlow {
+#makeOfferSubmit .withGlow,
+#placeBidSubmit.withGlow {
   -webkit-filter: none !important;
   border: none !important;
-  ;
 }
 
-#makeOfferSubmit .withGlow.active, #placeBidSubmit.withGlow.active {
+#makeOfferSubmit .withGlow.active,
+#placeBidSubmit.withGlow.active {
   -webkit-filter: drop-shadow(0px 4px 12px rgb(27, 255, 27));
 }
 
-#makeOfferSubmit.btn.contIcon.active, #placeBidSubmit.btn.contIcon.active {
+#makeOfferSubmit.btn.contIcon.active,
+#placeBidSubmit.btn.contIcon.active {
   border: none !important;
   -webkit-filter: drop-shadow(0px 4px 12px rgb(27, 255, 27));
 }
-
 
 #placeBid {
   background-color: #f58103;
@@ -1910,7 +1899,7 @@ s #accordionListing table tr, #accordionOffers table tr {
   text-align: center;
 }
 
-.countdown>div {
+.countdown > div {
   float: left;
   min-width: 120px;
 }
@@ -1942,7 +1931,6 @@ s #accordionListing table tr, #accordionOffers table tr {
 
   padding: 7px 20px;
   border-radius: 10px;
-
 }
 
 #iconAction img {
@@ -1991,8 +1979,6 @@ s #accordionListing table tr, #accordionOffers table tr {
   border: none;
   background-color: #ffffff0c;
   color: white;
-
-
 }
 
 .imgIconItemNft {
@@ -2009,23 +1995,27 @@ s #accordionListing table tr, #accordionOffers table tr {
   color: #989fab;
 }
 
-#totalItemsPrice, #totalItemsInfo {
+#totalItemsPrice,
+#totalItemsInfo {
   display: flex;
   margin-top: 25px;
   flex-wrap: wrap;
 }
 
-#totalItemsPrice li, #totalItemsInfo li {
+#totalItemsPrice li,
+#totalItemsInfo li {
   margin-right: 35px;
   padding-bottom: 15px;
 }
 
-#totalItemsPrice p, #totalItemsInfo p {
+#totalItemsPrice p,
+#totalItemsInfo p {
   font-size: 24px;
   margin: 0;
 }
 
-#totalItemsPrice span, #totalItemsInfo span {
+#totalItemsPrice span,
+#totalItemsInfo span {
   font-size: 14px;
   margin: 0;
   font-family: gothamLight;
@@ -2046,5 +2036,5 @@ s #accordionListing table tr, #accordionOffers table tr {
 }
 
 #chooseLayout svg {
-  cursor: pointer
+  cursor: pointer;
 }
