@@ -74,14 +74,14 @@ const CreateSingleNft = () => {
               <div className="form-row">
                 <div className="form-group col-md-6">
                   <label htmlFor="inputState">Rights Level</label>
-                  <select id="inputState" className="form-control">
-                    <option selected>Level1</option>
+                  <select id="inputState" className="form-control" defaultValue="val">
+                    <option value="val">Level1</option>
                   </select>
                 </div>
                 <div className="form-group col-md-6">
                   <label htmlFor="inputState">Rights Duration</label>
-                  <select id="inputState" className="form-control">
-                    <option selected>10 Years</option>
+                  <select id="inputState" className="form-control" defaultValue="val">
+                    <option value="val">10 Years</option>
                   </select>
                 </div>
               </div>
