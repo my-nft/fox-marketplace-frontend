@@ -9,6 +9,10 @@ import Home from "./pages/Home";
 import Header from "./components/layout/Header";
 import React from "react";
 import Footer from "./components/layout/Footer";
+import Creation from "./pages/Creation";
+import CreateSingleNft from "./pages/Creation/CreateSingleNft";
+import CreateCollection from "./pages/Creation/CreateCollection";
+import ImportCollection from "./pages/Creation/ImportCollection";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,6 +22,42 @@ const router = createBrowserRouter(
         element={
           <>
             <Home />
+            <Footer />
+          </>
+        }
+      />
+      <Route
+        path="creation"
+        element={
+          <>
+            <Creation />
+            <Footer />
+          </>
+        }
+      />
+      <Route
+        path="single-nft"
+        element={
+          <>
+            <CreateSingleNft />
+            <Footer />
+          </>
+        }
+      />
+      <Route
+        path="create-collection"
+        element={
+          <>
+            <CreateCollection />
+            <Footer />
+          </>
+        }
+      />
+      <Route
+        path="import-collection"
+        element={
+          <>
+            <ImportCollection />
             <Footer />
           </>
         }

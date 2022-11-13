@@ -10,7 +10,7 @@ const FirstSection = () => {
   }, []);
 
   return (
-    <section id="topSection" className="mb-5">
+    <section id="topSection" className="mb-5" ref={elements}>
       <img src="/assets/images/Background.jpg" id="layer" alt="" />
 
       <h2 className="text-center mt-5 mb-5">
@@ -23,7 +23,7 @@ const FirstSection = () => {
       <div id="bannerHome" className="mb-5">
         <img src="/assets/images/listElements.png" id="oneElement" alt="" />
 
-        <div id="wrappedBannerHome" ref={elements}>
+        <div id="wrappedBannerHome">
           <img
             src="/assets/images/Element1.png"
             className="listElements"

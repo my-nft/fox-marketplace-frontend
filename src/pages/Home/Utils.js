@@ -33,6 +33,10 @@ export function topAnimation(ref) {
               scrollTrigger: scrollFunctionA,
               scale: 0, rotation: 45, ease: "power4", opacity: 0.8, stagger: 0.05, x: "x-=10"
           });
+
+          gsap.from("#foxLogo", {
+            scale: 0, rotation: 45, ease: "power4", opacity: 0.8, duration: 1
+        })
         
       }, ref);
 }

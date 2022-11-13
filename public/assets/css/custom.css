@@ -387,10 +387,12 @@ td span {
   display: flex;
 }
 
+/*
 .slide:hover {
   scale: 1.2;
   margin: 0 50px;
 }
+*/
 
 .slider .slick-list {
   margin: 0 -10px;
