@@ -32,7 +32,7 @@ const Header = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav">
               <li className="nav-item active">
-                <Link className="nav-link" to="/">
+                <Link className="nav-link" to="/explorer">
                   Explorer <span className="sr-only">(current)</span>
                 </Link>
               </li>
@@ -55,10 +55,14 @@ const Header = () => {
           </div>
           <ul id="buttonIcon">
             <li>
-              <img src="/assets/icon-white-user.png" alt="" />
+              <Link to={"/profile"}>
+                <img src="/assets/icon-white-user.png" alt="" />
+              </Link>
             </li>
             <li>
-              <img src="/assets/icon-white-settings.png" alt="" />
+              <Link to="#">
+                <img src="/assets/icon-white-settings.png" alt="" />
+              </Link>
             </li>
             <li>
               <img src="/assets/icon-white-wallet.png" alt="" />

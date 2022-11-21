@@ -1,7 +1,7 @@
 
 const Slide = (props) => {
   return (
-    <div className="slide" onClick={props.onClick}>
+    <div className="slide">
       <div className="maskContainer">
         <a href="/assets/images/Slide2.jpg">
           <img src="/assets/images/Slide2.jpg" alt="" />

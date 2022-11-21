@@ -13,6 +13,8 @@ import Creation from "./pages/Creation";
 import CreateSingleNft from "./pages/Creation/CreateSingleNft";
 import CreateCollection from "./pages/Creation/CreateCollection";
 import ImportCollection from "./pages/Creation/ImportCollection";
+import Profile from "./pages/Profile";
+import Explorer from "./pages/Explorer";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -58,6 +60,25 @@ const router = createBrowserRouter(
         element={
           <>
             <ImportCollection />
+            <Footer />
+          </>
+        }
+      />
+      <Route
+        path="profile"
+        element={
+          <>
+            <Profile />
+            <Footer />
+          </>
+        }
+      />
+
+       <Route
+        path="explorer"
+        element={
+          <>
+            <Explorer />
             <Footer />
           </>
         }
