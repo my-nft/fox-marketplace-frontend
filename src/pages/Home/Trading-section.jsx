@@ -1,23 +1,11 @@
 import { useEffect } from "react";
 import Slider from "react-slick";
 import Slide from "../../components/Slide";
-import { settings } from "./Utils";
+import { putSliderIcons, settings } from "./Utils";
 
 const TradingSection = () => {
   useEffect(() => {
-
-    const prev = document.getElementsByClassName("slick-prev")[0];
-    const next = document.getElementsByClassName("slick-next")[0];
-
-    if(prev) {
-      prev.innerHTML = "<";
-    }
-
-    if(next) {
-      next.innerHTML = ">";
-    }
-
-    
+    putSliderIcons();
   }, []);
 
   return (
