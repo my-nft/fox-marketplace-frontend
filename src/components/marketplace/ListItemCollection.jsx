@@ -2,8 +2,10 @@ import { useNavigate } from "react-router-dom";
 
 const ListItemCollection = () => {
 
+  const navigate = useNavigate();
+
   return (
-    <div class="listItemCollection" >
+    <div class="listItemCollection" onClick={() => navigate("/nft")}>
       <img src="./assets/images/marketplace/icon1_collection.jpg" alt="" />
       <div class="itemText">
         <p>Moon Apes Pow Club</p>

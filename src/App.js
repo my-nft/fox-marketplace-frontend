@@ -16,6 +16,7 @@ import ImportCollection from "./pages/Creation/ImportCollection";
 import Profile from "./pages/Profile";
 import Explorer from "./pages/Explorer";
 import CollectionDetails from "./pages/CollectionDetails";
+import NftDetails from "./pages/NftDtails";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -90,6 +91,16 @@ const router = createBrowserRouter(
         element={
           <>
             <CollectionDetails />
+            <Footer />
+          </>
+        }
+      />
+
+      <Route
+        path="nft"
+        element={
+          <>
+            <NftDetails />
             <Footer />
           </>
         }

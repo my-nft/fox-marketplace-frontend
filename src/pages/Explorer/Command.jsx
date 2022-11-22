@@ -2,8 +2,6 @@ import { useState } from "react";
 
 const Command = () => {
 
-
-
   const [checked, setChecked] = useState(false);
 
   const handleChange = () => {

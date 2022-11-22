@@ -45,7 +45,7 @@ const MostPopularItem = ({viewType}) => {
   
 
   return (
-    <div className={!viewType ? "listMostPopular col-md-4 col-lg-3" : "listMostPopular"} onClick={() => navigate("/collection")} style={styleList}>
+    <div className={!viewType ? "listMostPopular col-md-4 col-lg-3" : "listMostPopular"} onClick={() => navigate("/nft")} style={styleList}>
       <div className="wrapContent">
         <div className="wrapImg">
           <img
