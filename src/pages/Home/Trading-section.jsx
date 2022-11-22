@@ -12,16 +12,14 @@ const TradingSection = () => {
     <section id="tradingNow" className="container-fluid">
       <h3 className="mb-2">Trading Now</h3>
       <Slider {...settings}>
-        <Slide />
-        <Slide />
-        <Slide />
-        <Slide />
-        <Slide />
-        <Slide />
-        <Slide />
-        <Slide />
-        <Slide />
-        <Slide />
+        <Slide imgSuffix={"1"}/>
+        <Slide imgSuffix={"2"}/>
+        <Slide imgSuffix={"3"}/>
+        <Slide imgSuffix={"4"}/>
+        <Slide imgSuffix={"2"}/>
+        <Slide imgSuffix={"1"}/>
+        <Slide imgSuffix={"3"}/>
+
       </Slider>
     </section>
   );

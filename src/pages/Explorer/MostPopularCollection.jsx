@@ -1,8 +1,13 @@
+import { useEffect } from "react";
 import Slider from "react-slick";
 import ExplorePopularCollectionItem from "../../components/ExplorePopularCollectionItem";
-import { settings } from "../Home/Utils";
+import { putSliderIcons, settings } from "../Home/Utils";
 
 const MostPopularCollection = () => {
+  useEffect(() => {
+    putSliderIcons();
+  }, []);
+
   return (
     <section id="marketPlace" className="container-fluid">
       <img src="./assets/images/Background.jpg" id="layer" />

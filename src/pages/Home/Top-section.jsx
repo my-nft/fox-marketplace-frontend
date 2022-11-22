@@ -14,7 +14,6 @@ const FirstSection = () => {
       <img src="/assets/images/Background.jpg" id="layer" alt="" />
 
       <h2 className="text-center mt-5 mb-5">
-        {" "}
         THE FIRST NFT MARKETPLACE MADE ON FUNCTIONX
       </h2>
       <h3 className="text-center mb-5">

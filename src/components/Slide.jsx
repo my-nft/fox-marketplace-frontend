@@ -1,10 +1,10 @@
 
-const Slide = (props) => {
+const Slide = ({imgSuffix}) => {
   return (
     <div className="slide">
       <div className="maskContainer">
-        <a href="/assets/images/Slide2.jpg">
-          <img src="/assets/images/Slide2.jpg" alt="" />
+        <a href={"/assets/images/Slide"+ imgSuffix + ".jpg"}>
+          <img src={"/assets/images/Slide"+ imgSuffix + ".jpg"} alt="" />
         </a>
       </div>
       <div className="textItems">

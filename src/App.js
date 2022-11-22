@@ -15,6 +15,7 @@ import CreateCollection from "./pages/Creation/CreateCollection";
 import ImportCollection from "./pages/Creation/ImportCollection";
 import Profile from "./pages/Profile";
 import Explorer from "./pages/Explorer";
+import CollectionDetails from "./pages/CollectionDetails";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -79,6 +80,16 @@ const router = createBrowserRouter(
         element={
           <>
             <Explorer />
+            <Footer />
+          </>
+        }
+      />
+
+      <Route
+        path="collection"
+        element={
+          <>
+            <CollectionDetails />
             <Footer />
           </>
         }

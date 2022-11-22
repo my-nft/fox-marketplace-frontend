@@ -5,7 +5,7 @@ const Header = () => {
     <>
       <header className="container-fluid">
         <nav className="navbar navbar-expand-lg">
-          <Link className="navbar-brand" href="#">
+          <Link className="navbar-brand" to="/">
             <img src="/assets/images/Logo_foxchange.png" alt="" />
           </Link>
           <form className="form-inline my-2 my-lg-0 ">
