@@ -367,7 +367,7 @@ td span {
 }
 
 /*TradinNow*/
-.slide {
+.slick-slide {
   position: relative;
 
   transition: all 0.3s ease-out;
@@ -388,8 +388,8 @@ td span {
 }
 
 
-.slide:hover {
-  scale: 1.2;
+.slick-slide:hover {
+  scale: 1.8;
   margin: 0 50px;
 }
 
@@ -413,11 +413,11 @@ td span {
   padding: 5vh 0;
 }
 
-.slide a {
+.slick-slide a {
   display: block;
 }
 
-.slide img {
+.slick-slide img {
   display: block;
   width: 100%;
   height: 100%;
@@ -785,7 +785,7 @@ footer a {
   border-radius: 20px;
 }
 
-.slide img.iconLogo {
+.slick-slide img.iconLogo {
   position: absolute;
   left: 1vw;
   bottom: -3vh;

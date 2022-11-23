@@ -32,14 +32,14 @@ function sliderInit() {
     $(".slick-next").css("opacity", 0);
   });
 
-  var gallery = $(".slide a");
+  var gallery = $(".slick-slide a");
 
-  $(".slide a").on("click", function (e) {
+  $(".slick-slide a").on("click", function (e) {
     setButton();
     e.preventDefault();
 
-    var totalSlides = +$(this).parents(".slider").slick("getSlick").slideCount,
-      dataIndex = +$(this).parents(".slide").data("slick-index"),
+    var totalSlides = +$(this).parents(".slick-slide").slick("getSlick").slideCount,
+      dataIndex = +$(this).parents(".slick-slide").data("slick-index"),
       trueIndex;
     switch (true) {
       case dataIndex < 0:

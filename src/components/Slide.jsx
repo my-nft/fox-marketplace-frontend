@@ -1,7 +1,7 @@
 
 const Slide = ({imgSuffix}) => {
   return (
-    <div className="slide">
+    <>
       <div className="maskContainer">
         <a href={"/assets/images/Slide"+ imgSuffix + ".jpg"}>
           <img src={"/assets/images/Slide"+ imgSuffix + ".jpg"} alt="" />
@@ -20,7 +20,7 @@ const Slide = ({imgSuffix}) => {
           </p>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
