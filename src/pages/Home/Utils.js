@@ -108,10 +108,6 @@ export const putSliderIcons = () => {
   
   const prev = document.getElementsByClassName("slick-prev")[0];
   const next = document.getElementsByClassName("slick-next")[0];
-
-  console.log(prev);
-  console.log(next);
-
   if(prev) {
     prev.innerHTML = "<";
   }

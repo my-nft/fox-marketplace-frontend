@@ -63,6 +63,7 @@ const InfoNftDetails = () => {
           </button>
         </CardBody>
       </CardNftWrapper>
+      
     </div>
   );
 };

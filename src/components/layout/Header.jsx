@@ -1,6 +1,40 @@
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, Outlet } from "react-router-dom";
+import {
+  connectWallet,
+  getCurrentWalletConnected,
+} from "../../interactors/blockchainInteractor";
+import { setCurrentWallet } from "../../redux/userReducer";
+import { LOAD_USER } from "../../saga/actions";
+import { optimizeWalletAddress } from "../../utils/walletUtils";
 
 const Header = () => {
+  const dispatch = useDispatch();
+
+  const [connectedWallet, setConnectedWallet] = useState(undefined);
+
+  const handleSignIn = () => {
+    connectWallet();
+    const connectedWallet = getCurrentWalletConnected();
+    setConnectedWallet(connectedWallet);
+    dispatch(setCurrentWallet(connectedWallet));
+    dispatch({ type: LOAD_USER });
+  };
+
+  const addWalletListener = () => {
+    window.ethereum.on("accountsChanged", async (accounts) => {
+      dispatch({ type: "DESTROY_SESSION" });
+      setConnectedWallet(undefined);
+      handleSignIn();
+    });
+  };
+
+  useEffect(() => {
+    addWalletListener();
+    handleSignIn();
+  }, []);
+
   return (
     <>
       <header className="container-fluid">
@@ -53,12 +87,15 @@ const Header = () => {
               </li>
             </ul>
           </div>
+
           <ul id="buttonIcon">
-            <li>
-              <Link to={"/profile"}>
-                <img src="/assets/icon-white-user.png" alt="" />
-              </Link>
-            </li>
+            {connectedWallet ? (
+              <li>
+                <Link to={"/profile"}>
+                  <img src="/assets/icon-white-user.png" alt="" />
+                </Link>
+              </li>
+            ) : null}
             <li>
               <Link to="#">
                 <img src="/assets/icon-white-settings.png" alt="" />
@@ -68,7 +105,11 @@ const Header = () => {
               <img src="/assets/icon-white-wallet.png" alt="" />
             </li>
           </ul>
-          <button id="signUpButton">Connect Wallect</button>
+          <button id="signUpButton" onClick={handleSignIn}>
+            {connectedWallet
+              ? optimizeWalletAddress(connectedWallet)
+              : "Connect Wallect"}{" "}
+          </button>
         </nav>
       </header>
 

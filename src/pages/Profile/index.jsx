@@ -1,4 +1,9 @@
-const Profile = () => {
+import { useSelector } from "react-redux";
+import { selectConnectedUser } from "../../redux/userReducer";
+
+const Profile = ({ values }) => {
+  console.log(values);
+
   return (
     <div className="container-fluid" id="profile">
       <div className="row">
@@ -33,6 +38,7 @@ const Profile = () => {
                       className="form-control"
                       id="inputUserName"
                       placeholder="Enter user name"
+                      value={values.username}
                     />
                   </div>
                   <div className="form-group col-md-12">
@@ -43,6 +49,7 @@ const Profile = () => {
                       id="bio"
                       name="bio"
                       className="form-control"
+                      value={values.bio}
                     ></textarea>
                   </div>
                   <div className="form-group col-md-12">
@@ -52,6 +59,7 @@ const Profile = () => {
                       className="form-control"
                       id="inputEmail"
                       placeholder="Enter email"
+                      value={values.email}
                     />
                   </div>
                   <div className="form-group col-md-12">
@@ -121,6 +129,7 @@ const Profile = () => {
                       id="inputSiteweb"
                       placeholder="yoursite.io"
                       readOnly
+                      value={values.walletAddress}
                     />
                   </div>
                   <button>Save</button>

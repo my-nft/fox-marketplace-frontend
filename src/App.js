@@ -5,6 +5,8 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+import { Provider } from "react-redux";
+
 import Home from "./pages/Home";
 import Header from "./components/layout/Header";
 import React from "react";
@@ -17,6 +19,9 @@ import Profile from "./pages/Profile";
 import Explorer from "./pages/Explorer";
 import CollectionDetails from "./pages/CollectionDetails";
 import NftDetails from "./pages/NftDtails";
+import { store } from "./redux/store";
+import AuthWrapper from "./components/authWrapper";
+import ProfileWrapper from "./pages/Profile/ProfileWrapper";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -69,14 +74,14 @@ const router = createBrowserRouter(
       <Route
         path="profile"
         element={
-          <>
-            <Profile />
+          <AuthWrapper>
+            <ProfileWrapper />
             <Footer />
-          </>
+          </AuthWrapper>
         }
       />
 
-       <Route
+      <Route
         path="explorer"
         element={
           <>
@@ -110,7 +115,11 @@ const router = createBrowserRouter(
 );
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <Provider store={store}>
+      <RouterProvider router={router}></RouterProvider>
+    </Provider>
+  );
 }
 
 export default App;
