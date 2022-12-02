@@ -17,7 +17,6 @@ const CollectionDetails = () => {
   
       imageBanner: "",
       //totalSupply : '' => from smart contract finally
-      totalVolume: "",
       creationDate: "",
       owner: "",
       totalVolume: "",

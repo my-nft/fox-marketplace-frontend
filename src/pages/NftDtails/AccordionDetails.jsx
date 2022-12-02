@@ -1,4 +1,7 @@
-const AccordionDetails = () => {
+const AccordionDetails = ({collectionData}) => {
+
+  console.log(collectionData)
+
   return (
     <div id="accordionDetails">
       <div class="card">
@@ -51,27 +54,27 @@ const AccordionDetails = () => {
             <ul>
               <li>
                 <span class="label">Contract Address</span>
-                <span class="value">0xfdc3...3fb9</span>
+                <span class="value">{collectionData.contractAddress}</span>
               </li>
               <li>
                 <span class="label">Token ID</span>
-                <span class="value">16912</span>
+                <span class="value">{collectionData.tokenId}</span>
               </li>
               <li>
                 <span class="label">Token Standard</span>
-                <span class="value">ERC-721</span>
+                <span class="value">{collectionData.tokenStandard}</span>
               </li>
               <li>
                 <span class="label">Chain</span>
-                <span class="value">ETWH</span>
+                <span class="value">{collectionData.chain}</span>
               </li>
               <li>
                 <span class="label">Last Updated</span>
-                <span class="value">11/03/2022</span>
+                <span class="value">{collectionData.lastUpdate}</span>
               </li>
               <li>
                 <span class="label">Creator Earnings</span>
-                <span class="value">2.5%</span>
+                <span class="value">{collectionData.creatorEarning}%</span>
               </li>
             </ul>
           </div>

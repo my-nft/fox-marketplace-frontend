@@ -1,4 +1,7 @@
-const AccordionDescription = () => {
+const AccordionDescription = ({itemData}) => {
+
+  console.log(itemData)
+
   return (
     <div id="accordionDescription">
       <div class="card">
@@ -49,12 +52,10 @@ const AccordionDescription = () => {
         >
           <div class="card-body">
             <p>
-              By <strong>Username</strong>
+              By <strong>{itemData.creator.username}</strong>
             </p>
             <span>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut,
-              reiciendis perspiciatis aliquid sunt facilis corrupti commodi quos
-              magnam.
+              {itemData.description}
             </span>
           </div>
         </div>
