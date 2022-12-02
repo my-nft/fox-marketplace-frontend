@@ -7,7 +7,107 @@ export const getCollections = (filter, type, pagination) => {
                 // NEW COLLECTIONS => (created in X days before -> today)
             )
         */
-  };
+    if (type === "MOST_POPULAR"){
+      return [
+        {
+          id: "",
+          name: "Placeholder",
+          image: "/assets/images/Popluar_1.png",
+          lowestAsk: 0,
+          likes: 0,
+          tokens: 0
+        },
+        {
+          id: "",
+          name: "Placeholder",
+          image: "/assets/images/Popluar_1.png",
+          lowestAsk: 0,
+          likes: 0,
+          tokens: 0
+        },
+        {
+          id: "",
+          name: "Placeholder",
+          image: "/assets/images/Popluar_1.png",
+          lowestAsk: 0,
+          likes: 0,
+          tokens: 0
+        },
+        {
+          id: "",
+          name: "Placeholder",
+          image: "/assets/images/Popluar_1.png",
+          lowestAsk: 0,
+          likes: 0,
+          tokens: 0
+        },
+      ]
+    }
+    if(type === 'TRENDING'){
+      return [
+        {
+          id: "",
+          image: "/assets/images/Element2.png",
+          name: "Template",
+          floorPrice: 0,
+          volume: 0
+        },
+        {
+          id: "",
+          image: "/assets/images/Element2.png",
+          name: "Template",
+          floorPrice: 0,
+          volume: 0
+        },
+        {
+          id: "",
+          image: "/assets/images/Element2.png",
+          name: "Template",
+          floorPrice: 0,
+          volume: 0
+        },
+        {
+          id: "",
+          image: "/assets/images/Element2.png",
+          name: "Template",
+          floorPrice: 0,
+          volume: 0
+        },
+      ]
+    }
+    if(type === 'TOP'){
+      return [
+        {
+          id: "",
+          image: "/assets/images/Element3.png",
+          name: "Template",
+          floorPrice: 0,
+          volume: 0
+        },
+        {
+          id: "",
+          image: "/assets/images/Element3.png",
+          name: "Template",
+          floorPrice: 0,
+          volume: 0
+        },
+        {
+          id: "",
+          image: "/assets/images/Element3.png",
+          name: "Template",
+          floorPrice: 0,
+          volume: 0
+        },
+        {
+          id: "",
+          image: "/assets/images/Element3.png",
+          name: "Template",
+          floorPrice: 0,
+          volume: 0
+        },
+      ]
+    }
+};
   
   // To show collections on left part of the page
 // on explorer filters
@@ -72,7 +172,7 @@ export const getCollectionNfts = (page, numberPerPage, sort) => {
           owner: "",
           image: "",
           createDate: "",
-          soldDate: "",
+          soldDate: "12/15/2022",
           attributes: [
             {
               propertyName: "",

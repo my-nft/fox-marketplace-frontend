@@ -1,11 +1,14 @@
 const PopularCollectionItem = (props) => {
+
+    const { itemData } = props;
+
     return (
         <div className="popularItems col-sm-6 col-md-3">
-          <img src="/assets/images/Popluar_1.png" alt=""/>
+          <img src={itemData.image} alt=""/>
           <div className="nameItem">
-            <span className="name">FACES</span>
+            <span className="name">{itemData.name}</span>
             <span>
-              193{" "}
+              {itemData.likes}{" "}
               <img
                 src="/assets/images/Iconmonstr-favorite-2-16.png"
                 style={{"width": "16px"}}
@@ -13,8 +16,8 @@ const PopularCollectionItem = (props) => {
               />
             </span>
           </div>
-          <p>$118 Lowest ask</p>
-          <p>3LAU</p>
+          <p>${itemData.lowestAsk} Lowest ask</p>
+          <p>{itemData.tokens}LAU</p>
         </div>
     );
 };
