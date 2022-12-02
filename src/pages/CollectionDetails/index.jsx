@@ -2,7 +2,7 @@ import FilterInput from "./FilterInput";
 import HeaderAccount from "./HeaderAccount";
 import ListNfts from "./ListNfts";
 import { useEffect, useState } from "react";
-import { getCollectionDetails } from './../../api/collectionApi';
+import { getCollectionDetails, getCollectionNfts } from './../../api/collectionApi';
 
 const CollectionDetails = () => {
 
@@ -27,6 +27,11 @@ const CollectionDetails = () => {
       owners: "",
       uniqueOwner: "",
   })
+  const [nfts, setNfts] = useState({
+    page: "",
+    totalElements: "",
+    nfts: []
+  });
 
   const [collectionOwner, setCollectionOwner] = useState(false)
 
@@ -37,17 +42,18 @@ const CollectionDetails = () => {
 
   useEffect(() => {
       let collectionRetrieveData = getCollectionDetails();
+      let collectionNFTs = getCollectionNfts();
       if(collectionRetrieveData){
         setCollectionData(collectionRetrieveData);
-
+        setNfts(collectionNFTs);
       }
-  })
+  }, [])
 
   return (
     <>
       <HeaderAccount collectionData={collectionData}  />
       <FilterInput onOpenClose={() => setVisible(!visible)} onChangeSelectedView={changeSelectedView}/>
-      <ListNfts isVisible={visible} viewType={viewType}/>
+      <ListNfts collectionNFTs={nfts.nfts} isVisible={visible} viewType={viewType}/>
     </>
   );
 };

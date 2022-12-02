@@ -7,8 +7,8 @@ import ListActivities from "./ListActivities";
 import { useEffect } from "react";
 import { createPath } from "react-router-dom";
 
-const ListNfts = ({ isVisible , viewType}) => {
-
+const ListNfts = ({ collectionNFTs, isVisible , viewType}) => {
+  console.log(collectionNFTs)
   useEffect(() => {
     console.log("ListNfts", viewType);
   },[])
@@ -40,13 +40,13 @@ const ListNfts = ({ isVisible , viewType}) => {
               aria-labelledby="pills-Items"
             >
               <div className="wrapperMostPopular row">
-                <MostPopularItem viewType={viewType}/>
-                <MostPopularItem viewType={viewType}/>
-                <MostPopularItem viewType={viewType}/>
-                <MostPopularItem viewType={viewType}/>
-                <MostPopularItem viewType={viewType}/>
-                <MostPopularItem viewType={viewType}/>
-                <MostPopularItem viewType={viewType}/>
+                {
+                
+                  collectionNFTs.map((item, index) => {
+                    return <MostPopularItem key={index} item={item} viewType={viewType} />
+                  })
+                
+                }
               </div>
             </div>
             <ListActivities />
