@@ -2,7 +2,7 @@ import FilterInput from "./FilterInput";
 import HeaderAccount from "./HeaderAccount";
 import ListNfts from "./ListNfts";
 import { useEffect, useState } from "react";
-import { getCollectionDetails, getCollectionNfts } from './../../api/collectionApi';
+import { getCollectionById, getCollectionDetails, getCollectionNfts } from './../../api/collectionApi';
 
 const CollectionDetails = () => {
 
@@ -40,7 +40,7 @@ const CollectionDetails = () => {
   }
 
   useEffect(() => {
-      let collectionRetrieveData = getCollectionDetails();
+      let collectionRetrieveData = getCollectionById();
       let collectionNFTs = getCollectionNfts();
       if(collectionRetrieveData){
         setCollectionData(collectionRetrieveData);

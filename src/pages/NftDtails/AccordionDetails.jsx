@@ -54,7 +54,7 @@ const AccordionDetails = ({collectionData}) => {
             <ul>
               <li>
                 <span class="label">Contract Address</span>
-                <span class="value">{collectionData.contractAddress}</span>
+                <span class="value">{collectionData.address}</span>
               </li>
               <li>
                 <span class="label">Token ID</span>
@@ -74,7 +74,7 @@ const AccordionDetails = ({collectionData}) => {
               </li>
               <li>
                 <span class="label">Creator Earnings</span>
-                <span class="value">{collectionData.creatorEarning}%</span>
+                <span class="value">{collectionData.creatorEarnings}%</span>
               </li>
             </ul>
           </div>

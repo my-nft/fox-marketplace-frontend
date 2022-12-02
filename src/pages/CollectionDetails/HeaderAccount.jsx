@@ -9,12 +9,22 @@ const HeaderAccount = ({collectionData}) => {
           id="iconProfile"
           alt=""
         />
+        <img
+          src={collectionData.imageBanner}
+          id="bannerProfile"
+          alt=""
+        />
       </div>
       <div className="row p-4 mt-5" id="infoHeader">
         <div id="accountName">
           <p>{collectionData.name}</p>
           <span id="accountWallet">Wallet Address </span> -{collectionData.address}
-          <span className="dataLastVisit">Joined June 2022</span>
+          <span className="dataLastVisit">Joined {
+            new Date(collectionData.creationDate).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+            })
+          }</span>
           <p className="description">
             {
               collectionData.description
@@ -23,7 +33,7 @@ const HeaderAccount = ({collectionData}) => {
           <ul id="totalItemsInfo">
             <li>
               <span>Items</span>
-              <p>777</p>
+              <p>{collectionData.items}</p>
             </li>
             <li>
               <span>Created</span>
@@ -34,24 +44,24 @@ const HeaderAccount = ({collectionData}) => {
             </li>
             <li>
               <span>Creator fee</span>
-              <p>7.5%</p>
+              <p>{collectionData.creatorEarnings}%</p>
             </li>
             <li>
               <span>Chain</span>
-              <p>ETHW</p>
+              <p>{collectionData.chain}</p>
             </li>
           </ul>
           <ul id="totalItemsPrice">
             <li>
-              <p>{collectionData.totalVolume} ETHW</p>
+              <p>{collectionData.totalVolume} {collectionData.chain}</p>
               <span>total Volume</span>
             </li>
             <li>
-              <p>{collectionData.floorPrice} ETHW</p>
+              <p>{collectionData.floorPrice} {collectionData.chain}</p>
               <span>floor price</span>
             </li>
             <li>
-              <p>{collectionData.bestOffer} ETHW</p>
+              <p>{collectionData.bestOffer} {collectionData.chain}</p>
               <span>best offer</span>
             </li>
             <li>

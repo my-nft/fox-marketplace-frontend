@@ -1,4 +1,5 @@
 import { getUserByAddress } from "./userApi";
+import { getCollectionById } from './collectionApi';
 
 /*
 Sorting = {
@@ -39,15 +40,7 @@ export const getNFTById = (id) => {
     name: "-",
     description: "-",
     creator: getUserByAddress(""),
-    collection: {
-      id: "",
-      contractAddress: "-",
-      tokenId: "16912",
-      tokenStandard: "ERC-721",
-      chain: "ETWH",
-      lastUpdate: "03/11/2022",
-      creatorEarning : 2.6,
-    },
+    collection: getCollectionById(""),
     image: "",
     createDate: "",
     soldDate: "",

@@ -115,7 +115,32 @@ export const getTrendingCollection = () => {
     // with type TRENDING
 };
 
-  
+
+export const getCollectionById = (id) => {
+  return {
+      id: "",
+      address: "-",
+      image: "",
+      name : "",
+      description: "",
+      imageBanner: "",
+      //totalSupply : '' => from smart contract finally
+      creationDate: "01/01/1972",
+      lastUpdate: "03/11/2022",
+      tokenStandard: "ERC721",
+      tokenId: "16912",
+      chain: "ETHW",
+      creatorEarnings: 2.6,
+      owner: "",
+      totalVolume: 0,
+      floorPrice: 0,
+      bestOffer: 0,
+      listed: 0,
+      owners: 0,
+      uniqueOwner: 0,
+      items: 0,
+  }
+}
 
 //---------------------Collection page
 // For a collection having address
@@ -136,7 +161,7 @@ export const getCollectionDetails = (
   ) => {
     return {
       id: "",
-      address: "",
+      address: "-",
       image: "",
       name : "",
       description: "",
@@ -144,6 +169,11 @@ export const getCollectionDetails = (
       imageBanner: "",
       //totalSupply : '' => from smart contract finally
       creationDate: "01/01/1972",
+      lastUpdate: "03/11/2022",
+      tokenStandard: "ERC721",
+      tokenId: "16912",
+      chain: "ETHW",
+      creatorEarnings: 2.6,
       owner: "",
       totalVolume: 0,
       floorPrice: 0,
