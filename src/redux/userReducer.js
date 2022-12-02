@@ -3,6 +3,7 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 const INITIAL_STATE = {
   currentWallet: undefined,
   currentUser: undefined,
+  token: undefined,
   loading: false,
 };
 
@@ -19,6 +20,9 @@ const UserReducer = createSlice({
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
+    setToken : (state, action) => {
+      state.token = action.payload;
+    }
   },
 });
 
@@ -41,6 +45,6 @@ export const selectIsLoading = createSelector(
   (user) => user.loading
 );
 
-export const { setCurrentWallet, setCurrentUser, setLoading } = UserReducer.actions;
+export const { setCurrentWallet, setCurrentUser, setLoading, setToken } = UserReducer.actions;
 
 export default UserReducer;

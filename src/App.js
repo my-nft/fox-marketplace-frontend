@@ -15,7 +15,6 @@ import Creation from "./pages/Creation";
 import CreateSingleNft from "./pages/Creation/CreateSingleNft";
 import CreateCollection from "./pages/Creation/CreateCollection";
 import ImportCollection from "./pages/Creation/ImportCollection";
-import Profile from "./pages/Profile";
 import Explorer from "./pages/Explorer";
 import CollectionDetails from "./pages/CollectionDetails";
 import NftDetails from "./pages/NftDtails";

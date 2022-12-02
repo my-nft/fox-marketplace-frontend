@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet } from "react-router-dom";
 import {
   connectWallet,
   getCurrentWalletConnected,
 } from "../../interactors/blockchainInteractor";
-import { setCurrentWallet } from "../../redux/userReducer";
+import { selectConnectedUser, setCurrentWallet } from "../../redux/userReducer";
 import { LOAD_USER } from "../../saga/actions";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 
@@ -13,13 +13,14 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const [connectedWallet, setConnectedWallet] = useState(undefined);
+  const connectedUser = useSelector(selectConnectedUser);
 
   const handleSignIn = () => {
     connectWallet();
     const connectedWallet = getCurrentWalletConnected();
     setConnectedWallet(connectedWallet);
     dispatch(setCurrentWallet(connectedWallet));
-    dispatch({ type: LOAD_USER });
+    dispatch({ type: LOAD_USER, payload :  connectedWallet});
   };
 
   const addWalletListener = () => {
@@ -34,6 +35,12 @@ const Header = () => {
     addWalletListener();
     handleSignIn();
   }, []);
+
+
+  useEffect(() => {
+    console.log("USER SETTED", selectConnectedUser)
+  }, [connectedUser])
+
 
   return (
     <>

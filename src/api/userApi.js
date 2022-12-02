@@ -1,3 +1,15 @@
+import apiUrl from "../config/api";
+import methods from '../config/axiosConfig';
+
+const userEndpoint = apiUrl + "user/";
+
+export function getUserByAddress(address) {
+    return methods.get(userEndpoint + address);
+}
+
+
+
+/*
 export const getUserByAddress = (walletAddress) => {
   return {
     id: "1",
@@ -10,6 +22,9 @@ export const getUserByAddress = (walletAddress) => {
     profileImageBanner: "http://my-profileImage-banner.com",
   };
 };
+*/
+
+
 
 export const createUserByAddress = (walletAddress) => {
   return {
