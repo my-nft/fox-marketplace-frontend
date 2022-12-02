@@ -1,4 +1,6 @@
-const HeaderAccount = () => {
+const HeaderAccount = ({collectionData}) => {
+
+
   return (
     <section id="headerAccount" class="container-fluid">
       <div class="row p-4" id="infoProfile">
@@ -10,12 +12,13 @@ const HeaderAccount = () => {
       </div>
       <div class="row p-4 mt-5" id="infoHeader">
         <div id="accountName">
-          <p>NAME</p>
-          <span id="accountWallet">Wallet Address </span> -{" "}
+          <p>{collectionData.name}</p>
+          <span id="accountWallet">Wallet Address </span> -{collectionData.address}
           <span class="dataLastVisit">Joined June 2022</span>
           <p class="description">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum
-            asperiores dolore ex harum placeat quae,{" "}
+            {
+              collectionData.description
+            }
           </p>
           <ul id="totalItemsInfo">
             <li>
@@ -24,7 +27,10 @@ const HeaderAccount = () => {
             </li>
             <li>
               <span>Created</span>
-              <p>Nov 2022</p>
+              <p>{new Date(collectionData.creationDate).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+              })}</p>
             </li>
             <li>
               <span>Creator fee</span>
@@ -37,27 +43,27 @@ const HeaderAccount = () => {
           </ul>
           <ul id="totalItemsPrice">
             <li>
-              <p>10 ETHW</p>
+              <p>{collectionData.totalVolume} ETHW</p>
               <span>total Volume</span>
             </li>
             <li>
-              <p>0.022 ETHW</p>
+              <p>{collectionData.floorPrice} ETHW</p>
               <span>floor price</span>
             </li>
             <li>
-              <p>0.008 ETHW</p>
+              <p>{collectionData.bestOffer} ETHW</p>
               <span>best offer</span>
             </li>
             <li>
-              <p>20%</p>
+              <p>{collectionData.listed}</p>
               <span>Listed</span>
             </li>
             <li>
-              <p>411</p>
+              <p>{collectionData.owners}</p>
               <span>owners</span>
             </li>
             <li>
-              <p>53%</p>
+              <p>{collectionData.uniqueOwner}</p>
               <span>unique owners</span>
             </li>
           </ul>
