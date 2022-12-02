@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const ExplorePopularCollectionItem = () => {
+const ExplorePopularCollectionItem = ({itemData}) => {
   const navigate = useNavigate();
   return (
     <div className="listMostPopular" onClick={() => navigate("/collection")}>
@@ -19,13 +19,13 @@ const ExplorePopularCollectionItem = () => {
         </div>
         <div className="wrapText">
           <p>
-            <label>Riffer</label>
-            <span>7777</span>
+            <label>{itemData.name}</label>
+            <span>{itemData.items}</span>
           </p>
           <p className="text-right">
             <label>Total Volume</label>
             <span>
-              <b>f(x)</b>42.68K
+              <b>f(x)</b> {itemData.totalVolume}
             </span>
           </p>
         </div>

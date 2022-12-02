@@ -15,7 +15,9 @@ export const getCollections = (filter, type, pagination) => {
           image: "/assets/images/Popluar_1.png",
           lowestAsk: 0,
           likes: 0,
-          tokens: 0
+          tokens: 0,
+          totalVolume: 0,
+          items: 0,
         },
         {
           id: "",
@@ -23,7 +25,9 @@ export const getCollections = (filter, type, pagination) => {
           image: "/assets/images/Popluar_1.png",
           lowestAsk: 0,
           likes: 0,
-          tokens: 0
+          tokens: 0,
+          totalVolume: 0,
+          items: 0,
         },
         {
           id: "",
@@ -31,7 +35,9 @@ export const getCollections = (filter, type, pagination) => {
           image: "/assets/images/Popluar_1.png",
           lowestAsk: 0,
           likes: 0,
-          tokens: 0
+          tokens: 0,
+          totalVolume: 0,
+          items: 0,
         },
         {
           id: "",
@@ -39,7 +45,9 @@ export const getCollections = (filter, type, pagination) => {
           image: "/assets/images/Popluar_1.png",
           lowestAsk: 0,
           likes: 0,
-          tokens: 0
+          tokens: 0,
+          totalVolume: 0,
+          items: 0,
         },
       ]
     }
