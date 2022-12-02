@@ -43,15 +43,14 @@ export const getCollectionDetails = (
   
       imageBanner: "",
       //totalSupply : '' => from smart contract finally
-      totalVolume: "",
-      creationDate: "",
+      creationDate: "01/01/1972",
       owner: "",
-      totalVolume: "",
-      floorPrice: "",
-      bestOffer: "",
-      listed: "",
-      owners: "",
-      uniqueOwner: "",
+      totalVolume: 0,
+      floorPrice: 0,
+      bestOffer: 0,
+      listed: 0,
+      owners: 0,
+      uniqueOwner: 0,
     };
   };
   
