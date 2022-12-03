@@ -12,7 +12,7 @@ function* getConnectedUser(action) {
 
     const response = yield call(api.getUserByAddress, address);
 
-    yield put(setCurrentUser(response.response.data));
+    yield put(setCurrentUser(response.data));
   } catch (error) {
     console.log("error ", error.response.status);
     // userNotFound => Nothing to do here
