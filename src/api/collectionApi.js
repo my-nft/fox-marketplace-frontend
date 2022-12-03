@@ -60,28 +60,28 @@ export const getCollections = (filter, type, pagination) => {
       return [
         {
           id: "",
-          image: "/assets/images/Element2.png",
+          image: "/assets/images/Icon2.png",
           name: "Template",
           floorPrice: 0,
           volume: 0
         },
         {
           id: "",
-          image: "/assets/images/Element2.png",
+          image: "/assets/images/Icon2.png",
           name: "Template",
           floorPrice: 0,
           volume: 0
         },
         {
           id: "",
-          image: "/assets/images/Element2.png",
+          image: "/assets/images/Icon2.png",
           name: "Template",
           floorPrice: 0,
           volume: 0
         },
         {
           id: "",
-          image: "/assets/images/Element2.png",
+          image: "/assets/images/Icon2.png",
           name: "Template",
           floorPrice: 0,
           volume: 0
@@ -92,28 +92,28 @@ export const getCollections = (filter, type, pagination) => {
       return [
         {
           id: "",
-          image: "/assets/images/Element3.png",
+          image: "/assets/images/Icon2.png",
           name: "Template",
           floorPrice: 0,
           volume: 0
         },
         {
           id: "",
-          image: "/assets/images/Element3.png",
+          image: "/assets/images/Icon2.png",
           name: "Template",
           floorPrice: 0,
           volume: 0
         },
         {
           id: "",
-          image: "/assets/images/Element3.png",
+          image: "/assets/images/Icon2.png",
           name: "Template",
           floorPrice: 0,
           volume: 0
         },
         {
           id: "",
-          image: "/assets/images/Element3.png",
+          image: "/assets/images/Icon2.png",
           name: "Template",
           floorPrice: 0,
           volume: 0

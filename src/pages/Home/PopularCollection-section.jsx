@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { getCollections } from "../../api/collectionApi";
 import PopularCollectionItem from "../../components/PopularCollectionItem";
+import Spinner from "../../components/Spinner";
 import { popularAnimation } from "./Utils";
 
 const PopularCollection = () => {
@@ -21,7 +22,7 @@ const PopularCollection = () => {
     if(items.length !== 0) {
       setPopularCollections(items);
     }
-    setLoading(false)
+    
   }, [])
 
   return (
@@ -33,7 +34,7 @@ const PopularCollection = () => {
       <div id="wrapperPopularItems" className="row" ref={popularElements}>
         {
           loading && popularCollections.length === 0
-          ? <p>Loading...</p>
+          ? <Spinner />
           : popularCollections.map((item, index) => {
             return <PopularCollectionItem key={index} itemData={item} />
           })

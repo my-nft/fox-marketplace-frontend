@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { getNFTById } from "../../api/nftApi";
+import Spinner from "../../components/Spinner";
 import InfoNftDetails from "./InfoNftDetails";
 import NftImageDetails from "./NftImageDetails";
 
@@ -16,7 +17,7 @@ const NftDetails = () => {
     console.log("details", details);
     if(details) {
       setItemDetails(details);
-      setLoading(false);
+      
     }
     
   }, [])
@@ -25,7 +26,7 @@ const NftDetails = () => {
     <div class="container my-5" id="nftPage">
       {
         itemDetails === false
-        ? <p>Loading...</p>
+        ? <Spinner />
         : 
 
         <>
