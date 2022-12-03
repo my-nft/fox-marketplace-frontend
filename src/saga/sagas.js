@@ -1,14 +1,18 @@
-import { all } from 'redux-saga/effects';
-import { loadCollectionSaga } from './collectionSaga';
-import { loadUser } from './userSaga';
+import { all } from "redux-saga/effects";
+import {
+  loadCollectionNfts,
+  loadPopularCollectionSaga,
+  loadSearcheableCollectionSaga,
+} from "./collectionSaga";
+import { loadUser } from "./userSaga";
 
+function* watchAll() {
+  yield all([
+    loadUser(),
+    loadPopularCollectionSaga(),
+    loadSearcheableCollectionSaga(),
+    loadCollectionNfts(),
+  ]);
+}
 
-
-function *watchAll() {
-    yield all([
-      loadUser(),
-      loadCollectionSaga()
-    ]);
-  }
-
-  export default watchAll;
+export default watchAll;

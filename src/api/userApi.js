@@ -1,13 +1,17 @@
 import apiUrl from "../config/api";
-import methods from '../config/axiosConfig';
+import methods from "../config/axiosConfig";
 
 const userEndpoint = apiUrl + "user/";
 
 export function getUserByAddress(address) {
-    return methods.get(userEndpoint + address);
+  return methods.get(userEndpoint + address);
 }
 
-
+export function createUser(address) {
+  return methods.post(userEndpoint, {
+    address,
+  });
+}
 
 /*
 export const getUserByAddress = (walletAddress) => {
@@ -23,8 +27,6 @@ export const getUserByAddress = (walletAddress) => {
   };
 };
 */
-
-
 
 export const createUserByAddress = (walletAddress) => {
   return {

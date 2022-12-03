@@ -7,6 +7,9 @@ export function getCollectionsCall(body) {
   return methods.get(collectionEndpoint, { params: body } );
 }
 
+export function getNftCollections(collectionAddress, body) {
+  return methods.get(collectionEndpoint + collectionAddress + `/nfts`, { params: body } );
+}
 
 
 
