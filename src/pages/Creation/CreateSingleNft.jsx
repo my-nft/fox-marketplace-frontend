@@ -2,11 +2,16 @@ import { useState } from "react";
 import { toast} from "react-toastify";
 import Spinner from "../../components/Spinner";
 import { createNewNFT } from "../../services/createNFT";
+import { useSelector } from 'react-redux';
+import { selectConnectedWallet, selectToken } from "../../redux/userReducer";
 
 const CreateSingleNft = () => {
 
   const [imageUpload, setImageUpload] = useState(null);
+  const [imageData, setImageData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const walletAddress = useSelector(selectConnectedWallet);
+  const token = useSelector(selectToken)
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -14,6 +19,8 @@ const CreateSingleNft = () => {
     // convert form inputs to data
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
+    data["walletAddress"] = walletAddress;
+    data["upload"] = imageData;
 
     
     if(data){
@@ -25,11 +32,9 @@ const CreateSingleNft = () => {
       })
       if(dataValid){
         // create new NFT
-        const createNFTResponse = await createNewNFT(data);
+        const createNFTResponse = await createNewNFT(data, token, "MARKET_PLACE_DEFAULT_VALUE");
       }
     }
-
-    
   }
 
   const handleImageUpload = (e) => {
@@ -37,7 +42,13 @@ const CreateSingleNft = () => {
 
     if (file) {
       const url = URL.createObjectURL(file);
-      setImageUpload(url);
+      let reader = new FileReader();
+      reader.onloadend = () => {
+        setImageUpload(url);
+        setImageData(reader.result);
+      }
+      reader.readAsDataURL(file);
+      
     }
    
 

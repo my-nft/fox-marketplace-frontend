@@ -1,24 +1,29 @@
 import { useRef, useState } from "react";
 import { createNewCollection } from './../../services/createCollection';
 import Spinner from './../../components/Spinner';
+import { v4 } from 'uuid';
+import { useSelector } from "react-redux";
+import { selectConnectedWallet } from "../../redux/userReducer";
 
 const CreateCollection = () => {
-  const inputFile = useRef(null);
 
   const [imageUpload, setImageUpload] = useState(null);
+  const [imageData, setImageData] = useState(null);
   const [loading, setLoading] = useState(false);
-
-
-  const loadCollectionImage = () => {
-    inputFile.current.click();
-  };
+  const walletAddress = useSelector(selectConnectedWallet);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
 
       if (file) {
         const url = URL.createObjectURL(file);
-        setImageUpload(url);
+        let reader = new FileReader();
+        reader.onloadend = () => {
+            setImageData(reader.result);
+            setImageUpload(url);
+        }
+        reader.readAsDataURL(file);
+       
       }
   }
 
@@ -28,6 +33,8 @@ const CreateCollection = () => {
     // convert form inputs to data
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
+    data["upload"] = imageData;
+    data["walletAddress"] = walletAddress;
     
     if(data){
       let dataValid = true;
@@ -37,6 +44,7 @@ const CreateCollection = () => {
         }
       })
       if(dataValid){
+        data["collectionAddress"] = v4().replace("-", "");
         // create new collection
         let createCollectionResponse = await createNewCollection(data);
         

@@ -2,10 +2,13 @@ import CreationIcon from "../../components/CreationIcon";
 import { importCollectionFromAddress } from './../../services/importCollection';
 import { useState } from 'react';
 import Spinner from './../../components/Spinner';
+import { useSelector } from "react-redux";
+import { selectConnectedWallet } from "../../redux/userReducer";
 
 const ImportCollection = () => {
 
   const [loading, setLoading] = useState(false);
+  const ownerAddress = useSelector(selectConnectedWallet);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +25,7 @@ const ImportCollection = () => {
       })
       if(dataValid){
         // import collection
-        const importCollectionResponse = await importCollectionFromAddress(data.address)
+        const importCollectionResponse = await importCollectionFromAddress(data.address, ownerAddress,"COLLECTION_NAME","COLLECTION_IMAGE");
 
       }
     }
