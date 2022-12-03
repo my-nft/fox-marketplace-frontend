@@ -77,7 +77,8 @@ const Profile = ({ values }) => {
                       Help collectors verify your account by connecting social
                       accounts
                     </h6>
-                    <ul>
+                    <p>*** Coming Soon ***</p>
+                    {/* <ul>
                       <li>
                         <span>
                           <svg
@@ -110,7 +111,7 @@ const Profile = ({ values }) => {
                         </span>
                         <button>Connect</button>
                       </li>
-                    </ul>
+                    </ul> */}
                   </div>
                   <div className="form-group col-md-12">
                     <label htmlFor="inputArtName">Links</label>

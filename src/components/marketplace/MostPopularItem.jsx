@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const MostPopularItem = ({viewType}) => {
+const MostPopularItem = ({viewType,item}) => {
 
   const navigate = useNavigate();
 
@@ -42,6 +42,43 @@ const MostPopularItem = ({viewType}) => {
     console.log(styleWrappedText);
     console.log(styleList);
 
+
+  const calculateTimeLeftBeforeExpiration = (expirationDate) => {
+
+    const difference = new Date(expirationDate) - new Date();
+    let timeLeft = {};
+
+    if (difference > 0) {
+      timeLeft = {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+      };
+    }
+
+    let output = "";
+    if (timeLeft.days > 0) {
+      output += timeLeft.days + " days";
+    }
+    else if(timeLeft.hours > 0) {
+      output += timeLeft.hours + " hours";
+    }
+    else if(timeLeft.minutes > 0) {
+      output += timeLeft.minutes + " minutes";
+    }
+    else if(timeLeft.seconds > 0) {
+      output += timeLeft.seconds + " seconds";
+    }
+    else {
+      output = "Expired";
+    }
+
+    return output;
+
+  }
+  
+  console.log("Time left: ",calculateTimeLeftBeforeExpiration(item.soldDate));
   
 
   return (
@@ -49,7 +86,7 @@ const MostPopularItem = ({viewType}) => {
       <div className="wrapContent">
         <div className="wrapImg">
           <img
-            src="./assets/images/marketplace/item1.jpg"
+            src={item.image}
             className="bigImage"
             alt=""
           />
@@ -57,7 +94,7 @@ const MostPopularItem = ({viewType}) => {
         <div className="wrappedAllText" style={styleWrappedText}>
           <div className="wrapText bg">
             <div className="nameItem">
-              <span className="name">BoredApeKennelClub</span>
+              <span className="name">{item.name}</span>
               <span>
                 193{" "}
                 <img
@@ -68,7 +105,7 @@ const MostPopularItem = ({viewType}) => {
               </span>
             </div>
           </div>
-          <p className="nItem">#66585</p>
+          <p className="nItem">#{item.id}</p>
           <div className="wrapText">
             <p>
               <label>Price</label>
@@ -77,7 +114,10 @@ const MostPopularItem = ({viewType}) => {
               </span>
             </p>
             <p>
-              <span>Ends in 29 days</span>
+              <span>
+                Ends in {calculateTimeLeftBeforeExpiration(item.soldDate)}
+                
+              </span>
             </p>
           </div>
         </div>

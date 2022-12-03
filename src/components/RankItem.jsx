@@ -1,13 +1,13 @@
-const RankItem = ({elm = ""}) => {
+const RankItem = ({elm = "", itemData, position}) => {
   return (
     <tr>
-      <th scope="row">1</th>
+      <th scope="row">{position}</th>
       <td>
-        <img src="/assets/images/Icon2.png" alt="" />
-        <span>{"Monthz(When lamp)" + elm }</span>
+        <img src={itemData.image} alt="" />
+        <span>{itemData.name + elm }</span>
       </td>
-      <td>0.008 ETH</td>
-      <td>339 ETH</td>
+      <td>{ itemData.floorPrice } ETH</td>
+      <td>{ itemData.volume } ETH</td>
     </tr>
   );
 };

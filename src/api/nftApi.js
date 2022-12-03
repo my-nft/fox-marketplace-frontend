@@ -1,3 +1,6 @@
+import { getUserByAddress } from "./userApi";
+import { getCollectionById } from './collectionApi';
+
 /*
 Sorting = {
     sortedBy : "RECENTLY_LISTED"  (OR PRICE_ASC OR PRICE_DESC)
@@ -31,4 +34,30 @@ export const getNfts = (filter, Sorting) => {
   ];
 };
 
+export const getNFTById = (id) => {
+  return {
+    id: "",
+    name: "-",
+    description: "-",
+    creator: getUserByAddress(""),
+    collection: getCollectionById(""),
+    image: "",
+    createDate: "",
+    soldDate: "",
+    views: 0,
+    favorites: 0,
+    likes: 0,
+    sale: {
+      price: 0,
+      isListed: true,
+      saleEndDate: "12/15/2022",
 
+    },
+    auction: {
+      minimumBid: 0,
+      bestOffer: 0,
+      isListed: true,
+      auctionEndDate: "12/17/2022",
+    }
+  };
+}
