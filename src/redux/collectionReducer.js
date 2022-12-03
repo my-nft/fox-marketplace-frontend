@@ -2,6 +2,8 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 
 const INITIAL_STATE = {
   mostPopularCollections: [],
+  searcheableCollections: [],
+  isLoadingSearcheable: false,
   isLoadingMspl: false,
 };
 
@@ -14,6 +16,12 @@ const CollectionReducer = createSlice({
     },
     setIsLoadingMspl: (state, action) => {
       state.isLoadingMspl = action.payload;
+    },
+    setIsLoadingSearcheableCollection: (state, action) => {
+      state.isLoadingSearcheable = action.payload;
+    },
+    setSearcheableCollections: (state, action) => {
+      state.searcheableCollections = action.payload;
     },
   },
 });
@@ -32,7 +40,22 @@ export const selectIsLoadingMspl = createSelector(
   (collection) => collection.loading
 );
 
-export const { setMostPopularCollections, setIsLoadingMspl } =
-  CollectionReducer.actions;
+export const selectSearcheableCollection = createSelector(
+  [selectSelf],
+  (collection) => collection.searcheableCollections
+);
+
+export const selectIsLoadingSearcheable = createSelector(
+  [selectSelf],
+  (collection) => collection.isLoadingSearcheable
+);
+
+export const {
+  setMostPopularCollections,
+  setIsLoadingMspl,
+  setSearcheableCollections,
+  setIsLoadingSearcheableCollection,
+  
+} = CollectionReducer.actions;
 
 export default CollectionReducer;

@@ -1,6 +1,6 @@
-import ListItemCollection from "../../components/marketplace/ListItemCollection";
+import SearchItemCollection from "../../components/marketplace/ListItemCollection";
 
-const AccordingCollection = () => {
+const AccordingCollection = ({ listSearcheableCollections = [] }) => {
   return (
     <div id="accordionCollection">
       <div class="card">
@@ -35,11 +35,10 @@ const AccordingCollection = () => {
           data-parent="#accordionCollection"
         >
           <div class="card-body">
-            <ListItemCollection />
-            <ListItemCollection />
-            <ListItemCollection />
-            <ListItemCollection />
-            <ListItemCollection />
+            {listSearcheableCollections &&
+              listSearcheableCollections.map((collection) => (
+                <SearchItemCollection collection={collection} />
+              ))}
           </div>
         </div>
       </div>

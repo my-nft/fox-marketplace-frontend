@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import HeaderInput from "../../components/marketplace/HeaderInput";
 import {
   selectIsLoadingMspl,
+  selectIsLoadingSearcheable,
   selectMostPopularCollections,
+  selectSearcheableCollection,
 } from "../../redux/collectionReducer";
-import { LOAD_COLLECTION } from "../../saga/actions";
+import { LOAD_MOST_POPULAR_COLLECTION, LOAD_SEARCHABLE_COLLECTION } from "../../saga/actions";
 import AccordingCollection from "./AccordingCollection";
 import AccordingStatus from "./AccordingStatus";
 import AccordionPrice from "./AccordionPrice";
@@ -17,13 +19,13 @@ const Explorer = () => {
   const dispatch = useDispatch();
 
   const mostPopularCollections = useSelector(selectMostPopularCollections);
-  const isLoading = useSelector(selectIsLoadingMspl);
+  const searcheableCollections = useSelector(selectSearcheableCollection);
+  const isLoadingMostPopular = useSelector(selectIsLoadingMspl);
+  const isLoadingSearcheable = useSelector(selectIsLoadingSearcheable);
 
-
-
-  useEffect(() => {
+  const loadMostPopularCollection = () => {
     dispatch({
-      type: LOAD_COLLECTION,
+      type: LOAD_MOST_POPULAR_COLLECTION,
       payload: {
         numberElements: 20,
         page: 1,
@@ -32,11 +34,30 @@ const Explorer = () => {
         },
       },
     });
+  }
+
+  const loadSearcheableCollections = () => {
+    dispatch({
+      type: LOAD_SEARCHABLE_COLLECTION,
+      payload: {
+        numberElements: 10,
+        page: 1,
+        filter: {
+          tag: "MOST_POPULAR",
+        },
+      },
+    });
+  }
+
+
+  useEffect(() => {
+    loadMostPopularCollection();
+    loadSearcheableCollections();
   }, []);
 
   return (
     <>
-      {isLoading ? (
+      {isLoadingMostPopular ? (
         ""
       ) : (
         <MostPopularCollection collections={mostPopularCollections} />
@@ -47,7 +68,7 @@ const Explorer = () => {
             <Command />
             <AccordingStatus />
             <AccordionPrice />
-            <AccordingCollection />
+            {isLoadingSearcheable ? "loading..." : <AccordingCollection listSearcheableCollections={searcheableCollections}/> }
           </div>
           <div id="dx" class="col-md-9">
             <HeaderInput />
