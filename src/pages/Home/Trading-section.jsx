@@ -10,7 +10,7 @@ const TradingSection = () => {
 
   return (
     <section id="tradingNow" className="container-fluid">
-      <h3 className="mb-2">Trading Now</h3>
+      <h3 className="mb-2">Trending Now</h3>
       <Slider {...settings}>
         <Slide imgSuffix={"1"}/>
         <Slide imgSuffix={"2"}/>

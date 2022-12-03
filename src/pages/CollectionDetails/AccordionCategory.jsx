@@ -64,7 +64,7 @@ const AccordionCategory = () => {
               </label>
             </div>
             <div className="checkBox">
-              <span>Trading Cards</span>
+              <span>Trending Cards</span>
               <label className="onoffbtn">
                 <input type="checkbox" name="tradingcards" />
               </label>

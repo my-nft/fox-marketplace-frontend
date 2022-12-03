@@ -1,12 +1,17 @@
+import apiUrl from "../config/api";
+import methods from "../config/axiosConfig";
+
+const collectionEndpoint = apiUrl + "collections/";
+
+export function getCollectionsCall(body) {
+  return methods.get(collectionEndpoint, { params: body } );
+}
+
+
+
+
 export const getCollections = (filter, type, pagination) => {
-    /*
-            type in (
-                // MOST_POPULAR
-                // HIGHT_VOLUME (TOP)
-                // TRENDING
-                // NEW COLLECTIONS => (created in X days before -> today)
-            )
-        */
+
     if (type === "MOST_POPULAR"){
       return [
         {
@@ -116,6 +121,7 @@ export const getCollections = (filter, type, pagination) => {
       ]
     }
 };
+
   
   // To show collections on left part of the page
 // on explorer filters

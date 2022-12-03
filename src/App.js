@@ -21,6 +21,7 @@ import NftDetails from "./pages/NftDtails";
 import { store } from "./redux/store";
 import AuthWrapper from "./components/authWrapper";
 import ProfileWrapper from "./pages/Profile/ProfileWrapper";
+import { ToastContainer } from "react-toastify";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -116,6 +117,12 @@ const router = createBrowserRouter(
 function App() {
   return (
     <Provider store={store}>
+      <ToastContainer
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick={true}
+      />
+
       <RouterProvider router={router}></RouterProvider>
     </Provider>
   );

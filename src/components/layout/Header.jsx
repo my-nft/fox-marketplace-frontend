@@ -16,11 +16,15 @@ const Header = () => {
   const connectedUser = useSelector(selectConnectedUser);
 
   const handleSignIn = () => {
+    console.log("HETRE")
     connectWallet();
     const connectedWallet = getCurrentWalletConnected();
-    setConnectedWallet(connectedWallet);
-    dispatch(setCurrentWallet(connectedWallet));
-    dispatch({ type: LOAD_USER, payload :  connectedWallet});
+    if (connectWallet) {
+      setConnectedWallet(connectedWallet);
+      dispatch(setCurrentWallet(connectedWallet));
+
+      dispatch({ type: LOAD_USER, payload: connectedWallet });
+    }
   };
 
   const addWalletListener = () => {
@@ -36,11 +40,9 @@ const Header = () => {
     handleSignIn();
   }, []);
 
-
   useEffect(() => {
-    console.log("USER SETTED", selectConnectedUser)
-  }, [connectedUser])
-
+    console.log("USER SETTED", connectedUser);
+  }, [connectedUser]);
 
   return (
     <>

@@ -20,7 +20,7 @@ const ExplorePopularCollectionItem = ({itemData}) => {
         <div className="wrapText">
           <p>
             <label>{itemData.name}</label>
-            <span>{itemData.items}</span>
+            <span>{itemData.tags}</span>
           </p>
           <p className="text-right">
             <label>Total Volume</label>
