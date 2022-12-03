@@ -45,6 +45,11 @@ export const selectIsLoading = createSelector(
   (user) => user.loading
 );
 
+export const selectToken = createSelector(
+  [selectSelf],
+  (user) => user.token
+)
+
 export const { setCurrentWallet, setCurrentUser, setLoading, setToken } = UserReducer.actions;
 
 export default UserReducer;
