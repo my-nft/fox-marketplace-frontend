@@ -2,9 +2,13 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 
 const INITIAL_STATE = {
   mostPopularCollections: [],
+  isLoadingMspl: false,
+
   searcheableCollections: [],
   isLoadingSearcheable: false,
-  isLoadingMspl: false,
+
+  marketPlaceNfts: [],
+  isLoadingMarketPlaceNfts: false,
 };
 
 const CollectionReducer = createSlice({
@@ -23,6 +27,12 @@ const CollectionReducer = createSlice({
     setSearcheableCollections: (state, action) => {
       state.searcheableCollections = action.payload;
     },
+    setMarketPlaceNfts: (state, action) => {
+      state.marketPlaceNfts = action.payload;
+    },
+    setIsLoadingMarketPlaceNfts : (state, action) => {
+      state.isLoadingMarketPlaceNfts = action.payload;
+    }
   },
 });
 
@@ -50,12 +60,23 @@ export const selectIsLoadingSearcheable = createSelector(
   (collection) => collection.isLoadingSearcheable
 );
 
+export const selectMarketPlaceNfts = createSelector(
+  [selectSelf],
+  (collection) => collection.marketPlaceNfts
+);
+
+export const selectIsLoadingMarketPlaceNfts = createSelector(
+  [selectSelf],
+  (collection) => collection.isLoadingMarketPlaceNfts
+);
+
 export const {
   setMostPopularCollections,
   setIsLoadingMspl,
   setSearcheableCollections,
   setIsLoadingSearcheableCollection,
-  
+  setMarketPlaceNfts,
+  setIsLoadingMarketPlaceNfts
 } = CollectionReducer.actions;
 
 export default CollectionReducer;

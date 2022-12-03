@@ -1,50 +1,44 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const MostPopularItem = ({viewType,item}) => {
-
+const MostPopularItem = ({ viewType, item }) => {
   const navigate = useNavigate();
 
-    let styleList = {};
-    let styleWrappedText = {};
+  let styleList = {};
+  let styleWrappedText = {};
 
-    if(viewType === "CHANGE_FOR_MIN") {
-      console.log("CHANGE_FOR_MIN");
-      styleList ={
-        width : "calc(100% / 6)",
-        minWidth : "230px"
-      }
-      styleWrappedText = {
-        display : "block"
-      }
-    } else if(viewType === "CHANGE_FOR_MAX") {
-      console.log("CHANGE_FOR_MAX");
-      styleList  ={
-        width : "calc(100% / 8)",
-        minWidth : "170px"
-      }
-      styleWrappedText = {
-        display : "block"
-      }
-    } else if(viewType === "CHANGE_FOR_IMAGE") {
-      console.log("CHANGE_FOR_IMAGE");
-      styleList = {
-        width : "calc(100% / 4)"
-      }
+  if (viewType === "CHANGE_FOR_MIN") {
+    console.log("CHANGE_FOR_MIN");
+    styleList = {
+      width: "calc(100% / 6)",
+      minWidth: "230px",
+    };
+    styleWrappedText = {
+      display: "block",
+    };
+  } else if (viewType === "CHANGE_FOR_MAX") {
+    console.log("CHANGE_FOR_MAX");
+    styleList = {
+      width: "calc(100% / 8)",
+      minWidth: "170px",
+    };
+    styleWrappedText = {
+      display: "block",
+    };
+  } else if (viewType === "CHANGE_FOR_IMAGE") {
+    console.log("CHANGE_FOR_IMAGE");
+    styleList = {
+      width: "calc(100% / 4)",
+    };
 
-      styleWrappedText = {
-        display : "none"
-      }
-    }
+    styleWrappedText = {
+      display: "none",
+    };
+  }
 
-    
-
-    console.log(styleWrappedText);
-    console.log(styleList);
-
+  console.log(styleWrappedText);
+  console.log(styleList);
 
   const calculateTimeLeftBeforeExpiration = (expirationDate) => {
-
     const difference = new Date(expirationDate) - new Date();
     let timeLeft = {};
 
@@ -60,36 +54,32 @@ const MostPopularItem = ({viewType,item}) => {
     let output = "";
     if (timeLeft.days > 0) {
       output += timeLeft.days + " days";
-    }
-    else if(timeLeft.hours > 0) {
+    } else if (timeLeft.hours > 0) {
       output += timeLeft.hours + " hours";
-    }
-    else if(timeLeft.minutes > 0) {
+    } else if (timeLeft.minutes > 0) {
       output += timeLeft.minutes + " minutes";
-    }
-    else if(timeLeft.seconds > 0) {
+    } else if (timeLeft.seconds > 0) {
       output += timeLeft.seconds + " seconds";
-    }
-    else {
+    } else {
       output = "Expired";
     }
 
     return output;
+  };
 
-  }
-  
-  console.log("Time left: ",calculateTimeLeftBeforeExpiration(item.soldDate));
-  
+  console.log("Time left: ", calculateTimeLeftBeforeExpiration(item.soldDate));
 
   return (
-    <div className={!viewType ? "listMostPopular col-md-4 col-lg-3" : "listMostPopular"} onClick={() => navigate("/nft")} style={styleList}>
+    <div
+      className={
+        !viewType ? "listMostPopular col-md-4 col-lg-3" : "listMostPopular"
+      }
+      onClick={() => navigate("/nft")}
+      style={styleList}
+    >
       <div className="wrapContent">
         <div className="wrapImg">
-          <img
-            src={item.image}
-            className="bigImage"
-            alt=""
-          />
+          <img src={item.image} className="bigImage" alt="" />
         </div>
         <div className="wrappedAllText" style={styleWrappedText}>
           <div className="wrapText bg">
@@ -99,7 +89,7 @@ const MostPopularItem = ({viewType,item}) => {
                 193{" "}
                 <img
                   src="./assets/images/marketplace/Iconmonstr-favorite-2-16_orange.jpg"
-                  style={{width: '14px'}}
+                  style={{ width: "14px" }}
                   alt=""
                 />
               </span>
@@ -115,8 +105,7 @@ const MostPopularItem = ({viewType,item}) => {
             </p>
             <p>
               <span>
-                Ends in {calculateTimeLeftBeforeExpiration(item.soldDate)}
-                
+                {/*Ends in {calculateTimeLeftBeforeExpiration(new Date())}*/}
               </span>
             </p>
           </div>

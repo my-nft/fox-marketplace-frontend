@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import HeaderInput from "../../components/marketplace/HeaderInput";
+import { MARKET_PLACE_DEFAULT_ADDRESS } from "../../config/blockChainConfig";
 import {
+  selectIsLoadingMarketPlaceNfts,
   selectIsLoadingMspl,
   selectIsLoadingSearcheable,
+  selectMarketPlaceNfts,
   selectMostPopularCollections,
   selectSearcheableCollection,
 } from "../../redux/collectionReducer";
-import { LOAD_MOST_POPULAR_COLLECTION, LOAD_SEARCHABLE_COLLECTION } from "../../saga/actions";
+import {
+  LOAD_MARKETPLACE_NFT,
+  LOAD_MOST_POPULAR_COLLECTION,
+  LOAD_SEARCHABLE_COLLECTION,
+} from "../../saga/actions";
 import AccordingCollection from "./AccordingCollection";
 import AccordingStatus from "./AccordingStatus";
 import AccordionPrice from "./AccordionPrice";
@@ -20,8 +27,10 @@ const Explorer = () => {
 
   const mostPopularCollections = useSelector(selectMostPopularCollections);
   const searcheableCollections = useSelector(selectSearcheableCollection);
+  const marketPlaceNfts = useSelector(selectMarketPlaceNfts);
   const isLoadingMostPopular = useSelector(selectIsLoadingMspl);
   const isLoadingSearcheable = useSelector(selectIsLoadingSearcheable);
+  const isLoadingMarketPlaceNfts = useSelector(selectIsLoadingMarketPlaceNfts);
 
   const loadMostPopularCollection = () => {
     dispatch({
@@ -34,7 +43,7 @@ const Explorer = () => {
         },
       },
     });
-  }
+  };
 
   const loadSearcheableCollections = () => {
     dispatch({
@@ -47,12 +56,26 @@ const Explorer = () => {
         },
       },
     });
-  }
+  };
 
+  const loadMarketPlaceNfts = () => {
+    dispatch({
+      type: LOAD_MARKETPLACE_NFT,
+      payload: {
+        numberElements: 10,
+        page: 1,
+        collectionAddress: MARKET_PLACE_DEFAULT_ADDRESS,
+        filter: {
+          tag: "MOST_POPULAR",
+        },
+      },
+    });
+  };
 
   useEffect(() => {
     loadMostPopularCollection();
     loadSearcheableCollections();
+    loadMarketPlaceNfts();
   }, []);
 
   return (
@@ -68,11 +91,21 @@ const Explorer = () => {
             <Command />
             <AccordingStatus />
             <AccordionPrice />
-            {isLoadingSearcheable ? "loading..." : <AccordingCollection listSearcheableCollections={searcheableCollections}/> }
+            {isLoadingSearcheable ? (
+              "loading..."
+            ) : (
+              <AccordingCollection
+                listSearcheableCollections={searcheableCollections}
+              />
+            )}
           </div>
           <div id="dx" class="col-md-9">
             <HeaderInput />
-            <MostPopular />
+            {isLoadingMarketPlaceNfts ? (
+              "loading"
+            ) : (
+              <MostPopular nfts={marketPlaceNfts} />
+            )}
           </div>
         </div>
       </section>
