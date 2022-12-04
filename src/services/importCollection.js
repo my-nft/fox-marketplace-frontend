@@ -1,5 +1,6 @@
 import apiUrl from "../config/api";
 import methods from "../config/axiosConfig";
+import { loadCollectionContract } from "../utils/blockchainInteractor";
 
 export const importCollectionFromAddress = async (address, ownerAddress, image) => {
 
@@ -23,9 +24,10 @@ export const importCollectionFromAddress = async (address, ownerAddress, image) 
     .finally(() => {
         return null;
     })
+}
 
-    
-    
-    
 
+export const importCollection = (collectionAddress) => {
+    const collectionContract = loadCollectionContract(collectionAddress);
+    collectionContract.methods.totalSupply();
 }

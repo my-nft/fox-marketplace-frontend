@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast} from "react-toastify";
 import Spinner from "../../components/Spinner";
-import { createNewNFT } from "../../services/createNFT";
+import { createNftDB } from "../../services/createNFT";
 import { useSelector } from 'react-redux';
 import { selectConnectedWallet, selectToken } from "../../redux/userReducer";
 
@@ -16,6 +16,14 @@ const CreateSingleNft = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
+
+
+
+
+    setLoading(false);
+
+    /*
     // convert form inputs to data
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
@@ -35,6 +43,7 @@ const CreateSingleNft = () => {
         const createNFTResponse = await createNewNFT(data, token, "MARKET_PLACE_DEFAULT_VALUE");
       }
     }
+    */
   }
 
   const handleImageUpload = (e) => {
