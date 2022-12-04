@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { createPath } from "react-router-dom";
 
 const ListNfts = ({ collectionNFTs, isVisible , viewType}) => {
-  console.log(collectionNFTs)
+  console.log("#####################",collectionNFTs)
   useEffect(() => {
     console.log("ListNfts", viewType);
   },[])

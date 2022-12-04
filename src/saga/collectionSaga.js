@@ -48,7 +48,7 @@ function* loadMarketPlaceNfts(action) {
 
     const { collectionAddress ,...rest} = action.payload;
 
-    const response = yield call(api.getNftCollections, collectionAddress, rest);
+    const response = yield call(api.getCollectionNftsCall, collectionAddress, rest);
 
     yield put(setMarketPlaceNfts(response.data));
   } catch (error) {

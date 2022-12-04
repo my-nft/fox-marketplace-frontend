@@ -9,6 +9,10 @@ const INITIAL_STATE = {
 
   marketPlaceNfts: [],
   isLoadingMarketPlaceNfts: false,
+
+
+  // general loading
+  isLoading: false
 };
 
 const CollectionReducer = createSlice({
@@ -32,6 +36,9 @@ const CollectionReducer = createSlice({
     },
     setIsLoadingMarketPlaceNfts : (state, action) => {
       state.isLoadingMarketPlaceNfts = action.payload;
+    },
+    setIsLoading : (state, action) => {
+      state.isLoading = action.payload;
     }
   },
 });

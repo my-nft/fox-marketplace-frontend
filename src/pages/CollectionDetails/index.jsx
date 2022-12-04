@@ -2,57 +2,63 @@ import FilterInput from "./FilterInput";
 import HeaderAccount from "./HeaderAccount";
 import ListNfts from "./ListNfts";
 import { useEffect, useState } from "react";
-import { getCollectionById, getCollectionDetails, getCollectionNfts } from './../../api/collectionApi';
+import {
+  getCollectionByAddress,
+  getCollectionById,
+  getCollectionDetails,
+  getCollectionNftsCall,
+} from "./../../api/collectionApi";
+import { useSelector } from "react-redux";
+import Spinner from "../../components/Spinner";
+
+
+const collectionAddress_tochange = '0xAFac09848E595061B22415159608bfD7bD8A83A7';
 
 const CollectionDetails = () => {
-
-  const [visible, setVisible] = useState(false);
-  const [viewType, setViewType] = useState("CHANGE_FOR_MIN")
-  const [collectionData, setCollectionData] = useState({
-      id: "",
-      address: "",
-      image: "",
-      name : "",
-      description: "",
-  
-      imageBanner: "",
-      //totalSupply : '' => from smart contract finally
-      creationDate: "",
-      owner: "",
-      totalVolume: "",
-      floorPrice: "",
-      bestOffer: "",
-      listed: "",
-      owners: "",
-      uniqueOwner: "",
-  })
-  const [nfts, setNfts] = useState({
-    page: "",
-    totalElements: "",
-    nfts: []
+  const [isLoading, setIsLoading] = useState(true);
+  const [detailCollection, setDetailCollection] = useState();
+  const [nfts, setNfts] = useState([]);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    numberElements: 20,
   });
 
-  const [collectionOwner, setCollectionOwner] = useState(false)
+  useEffect(() => {
+
+  }, []);
+
+  const [visible, setVisible] = useState(false);
+  const [viewType, setViewType] = useState("CHANGE_FOR_MIN");
+
 
   const changeSelectedView = (selection) => {
     console.log(selection);
     setViewType(selection);
+  };
+
+  const init = async () => {
+    let collectionData = await getCollectionByAddress(collectionAddress_tochange);
+    let collectionNFTs = await getCollectionNftsCall(collectionAddress_tochange, pagination);
+
+    setDetailCollection(collectionData.data);
+    setNfts(collectionNFTs.data);
+    setIsLoading(false);
   }
 
   useEffect(() => {
-      let collectionRetrieveData = getCollectionById();
-      let collectionNFTs = getCollectionNfts();
-      if(collectionRetrieveData){
-        setCollectionData(collectionRetrieveData);
-        setNfts(collectionNFTs);
-      }
-  }, [])
+    init();
+  }, []);
 
-  return (
+  return isLoading ? (
+    <Spinner />
+  ) : (
     <>
-      <HeaderAccount collectionData={collectionData}  />
-      <FilterInput onOpenClose={() => setVisible(!visible)} onChangeSelectedView={changeSelectedView}/>
-      <ListNfts collectionNFTs={nfts.nfts} isVisible={visible} viewType={viewType}/>
+      <HeaderAccount collectionData={detailCollection} />
+      <FilterInput
+        onOpenClose={() => setVisible(!visible)}
+        onChangeSelectedView={changeSelectedView}
+      />
+      <ListNfts collectionNFTs={nfts} isVisible={visible} viewType={viewType} />
     </>
   );
 };

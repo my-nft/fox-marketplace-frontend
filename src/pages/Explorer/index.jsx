@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import HeaderInput from "../../components/marketplace/HeaderInput";
 import { MARKET_PLACE_DEFAULT_ADDRESS } from "../../config/blockChainConfig";
+import Spinner from "../../components/Spinner";
 import {
   selectIsLoadingMarketPlaceNfts,
   selectIsLoadingMspl,
@@ -31,6 +32,8 @@ const Explorer = () => {
   const isLoadingMostPopular = useSelector(selectIsLoadingMspl);
   const isLoadingSearcheable = useSelector(selectIsLoadingSearcheable);
   const isLoadingMarketPlaceNfts = useSelector(selectIsLoadingMarketPlaceNfts);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const loadMostPopularCollection = () => {
     dispatch({
@@ -78,34 +81,32 @@ const Explorer = () => {
     loadMarketPlaceNfts();
   }, []);
 
-  return (
+  useEffect(() => {
+    setIsLoading(
+      isLoadingMostPopular && isLoadingMarketPlaceNfts && isLoadingSearcheable
+    );
+  }, [isLoadingMostPopular, isLoadingMarketPlaceNfts, isLoadingSearcheable]);
+
+  return isLoading ? (
+    <Spinner />
+  ) : (
     <>
-      {isLoadingMostPopular ? (
-        ""
-      ) : (
-        <MostPopularCollection collections={mostPopularCollections} />
-      )}
+      <MostPopularCollection collections={mostPopularCollections} />
       <section id="marketplace" class="container-fluid mb-5">
         <div class="row">
           <div id="sx" class="col-md-3">
             <Command />
             <AccordingStatus />
             <AccordionPrice />
-            {isLoadingSearcheable ? (
-              "loading..."
-            ) : (
-              <AccordingCollection
-                listSearcheableCollections={searcheableCollections}
-              />
-            )}
+
+            <AccordingCollection
+              listSearcheableCollections={searcheableCollections}
+            />
           </div>
           <div id="dx" class="col-md-9">
             <HeaderInput />
-            {isLoadingMarketPlaceNfts ? (
-              "loading"
-            ) : (
-              <MostPopular nfts={marketPlaceNfts} />
-            )}
+
+            <MostPopular nfts={marketPlaceNfts} />
           </div>
         </div>
       </section>
