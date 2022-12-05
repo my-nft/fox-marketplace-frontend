@@ -1,45 +1,45 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   connectWallet,
   getCurrentWalletConnected,
 } from "../../interactors/blockchainInteractor";
-import { selectConnectedUser, setCurrentWallet } from "../../redux/userReducer";
+import {
+  selectConnectedUser,
+  selectConnectedWallet,
+  setCurrentWallet,
+} from "../../redux/userReducer";
 import { LOAD_USER } from "../../saga/actions";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 
 const Header = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const [connectedWallet, setConnectedWallet] = useState(undefined);
   const connectedUser = useSelector(selectConnectedUser);
+  const connectedWallet = useSelector(selectConnectedWallet);
 
   const handleSignIn = () => {
-    console.log("HETRE");
     connectWallet();
     const connectedWallet = getCurrentWalletConnected();
-    if (connectWallet) {
-      setConnectedWallet(connectedWallet);
-      dispatch(setCurrentWallet(connectedWallet));
-
-      dispatch({ type: LOAD_USER, payload: connectedWallet });
-    }
+    dispatch(setCurrentWallet(connectedWallet));
+    dispatch({ type: LOAD_USER, payload: connectedWallet });
   };
 
   const addWalletListener = () => {
     window.ethereum.on("accountsChanged", async (accounts) => {
       dispatch({ type: "DESTROY_SESSION" });
-      setConnectedWallet(undefined);
+
+      navigate("/");
       handleSignIn();
     });
   };
 
   useEffect(() => {
     addWalletListener();
-    handleSignIn();
   }, []);
 
   useEffect(() => {

@@ -85,7 +85,7 @@ const Explorer = () => {
 
   useEffect(() => {
     setIsLoading(
-      isLoadingMostPopular && isLoadingMarketPlaceNfts && isLoadingSearcheable
+      isLoadingMostPopular || isLoadingMarketPlaceNfts || isLoadingSearcheable
     );
   }, [isLoadingMostPopular, isLoadingMarketPlaceNfts, isLoadingSearcheable]);
 

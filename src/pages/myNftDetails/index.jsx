@@ -30,12 +30,10 @@ const MyNftDetails = () => {
     setIsLoadingPage(isLoading);
   }, [isLoading]);
 
+  // see my own NFTs
   useEffect(() => {
-    console.log("############HRE############")
     nftLoader(nftDetails.collectionAddress);
-  }, [])
-
-  console.log(nftDetails, isLoadingPage);
+  }, []);
 
   const handleAuction = async (evt) => {
     evt.preventDefault();
@@ -45,10 +43,12 @@ const MyNftDetails = () => {
     console.log(auctionPrice, endAuction);
     const trx = await createAuction(
       nftDetails.collectionAddress,
-      91,
+      72,
       auctionPrice,
-      endAuction
+      endAuction,
+      AUCTION
     );
+    console.log("Auction transaction", trx);
     setIsLoadingPage(false);
   };
 
@@ -57,7 +57,7 @@ const MyNftDetails = () => {
   };
 
   return isLoadingPage ? (
-    <Spinner/>
+    <Spinner />
   ) : (
     <div className="container my-5" id="nftPage">
       <img src="./assets/images/Background.jpg" id="layer" />

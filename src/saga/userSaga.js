@@ -7,6 +7,9 @@ import { signUp } from "../interactors/authInteractor";
 function* getConnectedUser(action) {
   const address = action.payload;
 
+
+  console.log("====>", action.payload);
+
   try {
     yield put(setLoading(true));
 
