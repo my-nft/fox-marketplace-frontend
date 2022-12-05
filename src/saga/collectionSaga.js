@@ -1,6 +1,8 @@
 import { toast } from "react-toastify";
 import { call, put, takeLatest } from "redux-saga/effects";
 import * as api from "../api/collectionApi";
+import * as tokenApi from "../api/nftApi";
+
 import {
   setMostPopularCollections,
   setIsLoadingMspl,
@@ -9,7 +11,13 @@ import {
   setIsLoadingMarketPlaceNfts,
   setMarketPlaceNfts,
 } from "../redux/collectionReducer";
-import { LOAD_MARKETPLACE_NFT, LOAD_MOST_POPULAR_COLLECTION, LOAD_SEARCHABLE_COLLECTION } from "./actions";
+import { setIsLoading, setNftDetails } from "../redux/nftReducer";
+import {
+  LOAD_MARKETPLACE_NFT,
+  LOAD_MOST_POPULAR_COLLECTION,
+  LOAD_NFT_DETAIL,
+  LOAD_SEARCHABLE_COLLECTION,
+} from "./actions";
 
 function* loadPopularCollection(action) {
   try {
@@ -43,19 +51,37 @@ function* loadSearcheableCollection(action) {
 
 function* loadMarketPlaceNfts(action) {
   try {
-    
     yield put(setIsLoadingMarketPlaceNfts(true));
-
-    const { collectionAddress ,...rest} = action.payload;
-
-    const response = yield call(api.getCollectionNftsCall, collectionAddress, rest);
-
+    const { collectionAddress, ...rest } = action.payload;
+    const response = yield call(
+      api.getCollectionNftsCall,
+      collectionAddress,
+      rest
+    );
     yield put(setMarketPlaceNfts(response.data));
   } catch (error) {
     console.log("error ", error.response.status);
     toast.error("An unexpected error occurred.");
   } finally {
     yield put(setIsLoadingMarketPlaceNfts(false));
+  }
+}
+
+function* loadNftDetails(action) {
+  try {
+    yield put(setIsLoading(true));
+    const { collectionAddress, tokenID } = action.payload;
+    const response = yield call(
+      tokenApi.getNftCall,
+      collectionAddress,
+      tokenID
+    );
+    yield put(setNftDetails(response.data));
+  } catch (error) {
+    console.log("error ", error.response.status);
+    toast.error("An unexpected error occurred.");
+  } finally {
+    yield put(setIsLoading(false));
   }
 }
 
@@ -73,5 +99,13 @@ function* loadCollectionNfts() {
   yield takeLatest(LOAD_MARKETPLACE_NFT, loadMarketPlaceNfts);
 }
 
+function* showNftDetails() {
+  yield takeLatest(LOAD_NFT_DETAIL, loadNftDetails);
+}
 
-export { loadPopularCollectionSaga, loadSearcheableCollectionSaga, loadCollectionNfts };
+export {
+  loadPopularCollectionSaga,
+  loadSearcheableCollectionSaga,
+  loadCollectionNfts,
+  showNftDetails,
+};

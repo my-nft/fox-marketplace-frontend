@@ -3,6 +3,7 @@ import {
   loadCollectionNfts,
   loadPopularCollectionSaga,
   loadSearcheableCollectionSaga,
+  showNftDetails,
 } from "./collectionSaga";
 import { loadUser } from "./userSaga";
 
@@ -12,6 +13,7 @@ function* watchAll() {
     loadPopularCollectionSaga(),
     loadSearcheableCollectionSaga(),
     loadCollectionNfts(),
+    showNftDetails(),
   ]);
 }
 

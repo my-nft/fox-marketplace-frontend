@@ -4,15 +4,15 @@ import ListNfts from "./ListNfts";
 import { useEffect, useState } from "react";
 import {
   getCollectionByAddress,
-  getCollectionById,
-  getCollectionDetails,
   getCollectionNftsCall,
 } from "./../../api/collectionApi";
-import { useSelector } from "react-redux";
 import Spinner from "../../components/Spinner";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { LOAD_NFT_DETAIL } from "../../saga/actions";
 
 
-const collectionAddress_tochange = '0xAFac09848E595061B22415159608bfD7bD8A83A7';
+export const collectionAddress_tochange = '0xAFac09848E595061B22415159608bfD7bD8A83A7';
 
 const CollectionDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -22,10 +22,8 @@ const CollectionDetails = () => {
     page: 1,
     numberElements: 20,
   });
-
-  useEffect(() => {
-
-  }, []);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [visible, setVisible] = useState(false);
   const [viewType, setViewType] = useState("CHANGE_FOR_MIN");
@@ -49,6 +47,17 @@ const CollectionDetails = () => {
     init();
   }, []);
 
+  const handleSelectNfts = (tokenID) => {
+    dispatch({
+      type : LOAD_NFT_DETAIL,
+      payload : {
+        collectionAddress : collectionAddress_tochange,
+        tokenID : 104
+      }
+    });
+    navigate('/my-nft')
+  }
+
   return isLoading ? (
     <Spinner />
   ) : (
@@ -58,7 +67,7 @@ const CollectionDetails = () => {
         onOpenClose={() => setVisible(!visible)}
         onChangeSelectedView={changeSelectedView}
       />
-      <ListNfts collectionNFTs={nfts} isVisible={visible} viewType={viewType} />
+      <ListNfts collectionNFTs={nfts} isVisible={visible} viewType={viewType} handleSelectNfts={handleSelectNfts} />
     </>
   );
 };

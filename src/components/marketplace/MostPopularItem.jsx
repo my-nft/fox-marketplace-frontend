@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const MostPopularItem = ({ viewType, item }) => {
+const MostPopularItem = ({ viewType, item, onSelectNfts = () => {} }) => {
   const navigate = useNavigate();
 
   let styleList = {};
@@ -74,7 +74,7 @@ const MostPopularItem = ({ viewType, item }) => {
       className={
         !viewType ? "listMostPopular col-md-4 col-lg-3" : "listMostPopular"
       }
-      onClick={() => navigate("/nft")}
+      onClick={() => onSelectNfts(item.tokenID)}
       style={styleList}
     >
       <div className="wrapContent">

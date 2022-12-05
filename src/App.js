@@ -22,6 +22,7 @@ import { store } from "./redux/store";
 import AuthWrapper from "./components/authWrapper";
 import ProfileWrapper from "./pages/Profile/ProfileWrapper";
 import { ToastContainer } from "react-toastify";
+import MyNftDetails from "./pages/myNftDetails";
 import AccountPage from "./pages/Account/Account";
 
 const router = createBrowserRouter(
@@ -110,12 +111,23 @@ const router = createBrowserRouter(
           </>
         }
       />
-
+      {/*  NOT my NFT  */}
       <Route
         path="nft"
         element={
           <>
             <NftDetails />
+            <Footer />
+          </>
+        }
+      />
+
+      {/*  NOT my NFT  */}
+      <Route
+        path="my-nft"
+        element={
+          <>
+            <MyNftDetails />
             <Footer />
           </>
         }
