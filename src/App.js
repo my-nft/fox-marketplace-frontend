@@ -22,6 +22,7 @@ import { store } from "./redux/store";
 import AuthWrapper from "./components/authWrapper";
 import ProfileWrapper from "./pages/Profile/ProfileWrapper";
 import { ToastContainer } from "react-toastify";
+import AccountPage from "./pages/Account/Account";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -42,6 +43,15 @@ const router = createBrowserRouter(
             <Creation />
             <Footer />
           </>
+        }
+      />
+      <Route
+        path="/account"
+        element={
+            <>
+              <AccountPage />
+              <Footer />
+            </>
         }
       />
       <Route
