@@ -2,6 +2,8 @@ import { toast } from "react-toastify";
 import { call, put, takeLatest } from "redux-saga/effects";
 import * as api from "../api/collectionApi";
 import * as tokenApi from "../api/nftApi";
+import * as userApi from "../api/userApi";
+import { setAccountCollections, setAccountNfts, setAccountOwner, setIsLoadingAccount } from "../redux/accountReducer";
 
 import {
   setMostPopularCollections,
@@ -13,6 +15,7 @@ import {
 } from "../redux/collectionReducer";
 import { setIsLoading, setNftDetails } from "../redux/nftReducer";
 import {
+  LOAD_ACCOUNT_DATA,
   LOAD_MARKETPLACE_NFT,
   LOAD_MOST_POPULAR_COLLECTION,
   LOAD_NFT_DETAIL,
@@ -85,6 +88,29 @@ function* loadNftDetails(action) {
   }
 }
 
+function* loadAccountDataFromAPI(action){
+  try{
+    yield put(setIsLoadingAccount(true))
+
+    const { collectionAddress, page, numberElements, filter} = action.payload;
+    const collectionsResponse = yield call(api.getAccountCollections, collectionAddress, page, numberElements, filter)
+    yield put(setAccountCollections(collectionsResponse.data))
+    
+    const userResponse = yield call(userApi.getUserByAddress, collectionAddress )
+    yield put(setAccountOwner(userResponse.data))
+    
+
+    yield put(setIsLoadingAccount(false))
+
+
+
+  }
+  catch(error){
+    console.log("error ", error.response.status);
+    toast.error("An unexpected error occurred.");
+  }
+}
+
 // Starts fetchUser on each dispatched USER_FETCH_REQUESTED action
 // Allows concurrent fetches of user
 function* loadPopularCollectionSaga() {
@@ -103,9 +129,14 @@ function* showNftDetails() {
   yield takeLatest(LOAD_NFT_DETAIL, loadNftDetails);
 }
 
+function* loadAccountData(){
+  yield takeLatest(LOAD_ACCOUNT_DATA, loadAccountDataFromAPI)
+}
+
 export {
   loadPopularCollectionSaga,
   loadSearcheableCollectionSaga,
   loadCollectionNfts,
   showNftDetails,
+  loadAccountData
 };
