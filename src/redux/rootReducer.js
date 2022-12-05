@@ -1,10 +1,12 @@
 import { combineReducers } from "redux";
 import CollectionReducer from "./collectionReducer";
+import NftReducer from "./nftReducer";
 import UserReducer from "./userReducer";
 
 const reducers = combineReducers({
   user: UserReducer.reducer,
   collection: CollectionReducer.reducer,
+  nft: NftReducer.reducer
 });
 
 const rootReducer = (state, action) => {

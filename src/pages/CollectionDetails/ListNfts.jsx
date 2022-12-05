@@ -5,16 +5,9 @@ import AccordionCategory from "./AccordionCategory";
 import MostPopularItem from "../../components/marketplace/MostPopularItem";
 import ListActivities from "./ListActivities";
 import { useEffect } from "react";
-import { createPath } from "react-router-dom";
 
-const ListNfts = ({ collectionNFTs, isVisible , viewType}) => {
-  console.log("#####################",collectionNFTs)
-  useEffect(() => {
-    console.log("ListNfts", viewType);
-  },[])
-
-  console.log("tabsNft", viewType)
-
+const ListNfts = ({ collectionNFTs, isVisible , viewType, handleSelectNfts}) => {
+  
   return (
     <section id="tabsNft" className="container-fluid accountListed">
       <div className="row" style={{ display: "flex" }}>
@@ -43,7 +36,7 @@ const ListNfts = ({ collectionNFTs, isVisible , viewType}) => {
                 {
                 
                   collectionNFTs.map((item, index) => {
-                    return <MostPopularItem key={index} item={item} viewType={viewType} />
+                    return <MostPopularItem key={index} item={item} viewType={viewType} onSelectNfts={handleSelectNfts}/>
                   })
                 
                 }

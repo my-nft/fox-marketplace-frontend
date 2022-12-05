@@ -12,6 +12,7 @@ const INITIAL_STATE = {
 
 
   // general loading
+  nftDetails: undefined,
   isLoading: false
 };
 
@@ -77,13 +78,19 @@ export const selectIsLoadingMarketPlaceNfts = createSelector(
   (collection) => collection.isLoadingMarketPlaceNfts
 );
 
+export const selectIsLoading = createSelector(
+  [selectSelf],
+  (collection) => collection.isLoading
+);
+
+
 export const {
   setMostPopularCollections,
   setIsLoadingMspl,
   setSearcheableCollections,
   setIsLoadingSearcheableCollection,
   setMarketPlaceNfts,
-  setIsLoadingMarketPlaceNfts
+  setIsLoadingMarketPlaceNfts,
 } = CollectionReducer.actions;
 
 export default CollectionReducer;

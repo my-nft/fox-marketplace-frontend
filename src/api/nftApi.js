@@ -1,18 +1,15 @@
 import { getUserByAddress } from "./userApi";
 import { getCollectionById } from './collectionApi';
+import apiUrl from "../config/api";
+import methods from "../config/axiosConfig";
 
-/*
-Sorting = {
-    sortedBy : "RECENTLY_LISTED"  (OR PRICE_ASC OR PRICE_DESC)
-}
+const collectionEndpoint = apiUrl + "collections/";
 
-filter = {
-    tage : "",
-    userAddress : "",
-    collectionAddress : "",
-    isListed : true/false
-}
-*/
+export const getNftCall = (collectionAddress, tokenID) => {
+  return methods.get(`${collectionEndpoint}/${collectionAddress}/nfts/${tokenID}`);
+
+} 
+
 export const getNfts = (filter, Sorting) => {
   return [
     {
