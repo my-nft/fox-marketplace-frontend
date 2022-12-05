@@ -12,12 +12,12 @@ export const getNftCall = (collectionAddress, tokenID) => {
   );
 };
 
-export const setNftToListed = (collectionAddress, tokenID, listingType) => {
+export const setNftToListed = (body) => {
+  const { collectionAddress, tokenID, ...rest } = body;
+
   return methods.put(
     `${collectionEndpoint}${collectionAddress}/nfts/${tokenID}/set-listed`,
-    {
-      listingType,
-    }
+    rest
   );
 };
 

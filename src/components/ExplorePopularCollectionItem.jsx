@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
 const ExplorePopularCollectionItem = ({itemData}) => {
-  console.log(itemData)
   const navigate = useNavigate();
   return (
     <div className="listMostPopular" onClick={() => navigate("/collection")}>

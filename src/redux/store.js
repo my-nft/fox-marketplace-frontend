@@ -20,7 +20,7 @@ const makeStore = () => {
 
   const store = configureStore({
     reducer: persistedReducer,
-    middleware: [sagaMiddleware, logger],
+    middleware: [sagaMiddleware],
   });
 
   store.__persistor = persistStore(store);

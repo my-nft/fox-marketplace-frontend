@@ -20,7 +20,7 @@ const CollectionDetails = () => {
   const [nfts, setNfts] = useState([]);
   const [pagination, setPagination] = useState({
     page: 1,
-    numberElements: 20,
+    numberElements: 100,
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();

@@ -1,6 +1,5 @@
 const AccordionDescription = ({itemData}) => {
 
-  console.log(itemData)
 
   return (
     <div id="accordionDescription">

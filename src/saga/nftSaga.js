@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 function* loadListedNftsCall(action){
     try{
       yield put(setIsLoading(true))
-  
       const { page, numberElements} = action.payload;
       const response = yield call(nftApi.getListedNfts, page, numberElements)
       yield put(setListedNfts(response.data))  

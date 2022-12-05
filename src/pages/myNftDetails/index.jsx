@@ -4,56 +4,40 @@ import { useSelector } from "react-redux";
 import Spinner from "../../components/Spinner";
 import { selectNftDetails, selectIsLoading } from "../../redux/nftReducer";
 import { createAuction, nftLoader } from "../../services/listingNft";
-
-const FIXED_PRICE = "FIXED_PRICE";
-const AUCTION = "AUCTION";
+import { AUCTION } from "../../utils/foxConstantes";
+import ListedNft from "./listedNft";
+import NonListedNft from "./nonListedNft";
 
 const MyNftDetails = () => {
-  const [isLoadingPage, setIsLoadingPage] = useState(true);
   const nftDetails = useSelector(selectNftDetails);
-  //const collectionDetails = useSelector(select)
+  const [isLoadingPage, setIsLoadingPage] = useState(true);
   const isLoading = useSelector(selectIsLoading);
+
   // can take FIXED_PRICE or AUCTION
-  const [type, setType] = useState(FIXED_PRICE);
-  // values
-  const [values, setValues] = useState({
-    fixedPrice: 0,
-    auctionPrice: 0,
-    time: 0,
-  });
-
-  const handleChange = (evt) => {
-    setValues({ ...values, [evt.target.name]: evt.target.value });
-  };
-
   useEffect(() => {
     setIsLoadingPage(isLoading);
   }, [isLoading]);
 
   // see my own NFTs
   useEffect(() => {
-    nftLoader(nftDetails.collectionAddress);
-  }, []);
+    if (nftDetails) {
+      nftLoader(nftDetails.collectionAddress);
+    }
+  }, [nftDetails]);
 
-  const handleAuction = async (evt) => {
-    evt.preventDefault();
+  const handleAuction = async (values) => {
     setIsLoadingPage(true);
     const auctionPrice = Number(values.auctionPrice);
     const endAuction = Number(values.time);
-    console.log(auctionPrice, endAuction);
     const trx = await createAuction(
       nftDetails.collectionAddress,
-      72,
+      76,
       auctionPrice,
       endAuction,
       AUCTION
     );
     console.log("Auction transaction", trx);
     setIsLoadingPage(false);
-  };
-
-  const handleFixedPrice = (evt) => {
-    evt.preventDefault();
   };
 
   return isLoadingPage ? (
@@ -74,121 +58,15 @@ const MyNftDetails = () => {
             <h2>RoboPunks number8 #1691</h2>
           </header>
 
-          <div className="card" id="cardNft">
-            <div className="card-body">
-              <div className="card-text">
-                <button
-                  id="fixedPrice"
-                  className={
-                    type === FIXED_PRICE
-                      ? "btn orangeBg active"
-                      : "btn orangeBg deactive"
-                  }
-                  onClick={() => setType(FIXED_PRICE)}
-                >
-                  Fixed price
-                </button>
-                <button
-                  id="timedAuction"
-                  className={
-                    type === AUCTION
-                      ? "btn orangeBg active"
-                      : "btn orangeBg deactive"
-                  }
-                  onClick={() => setType(AUCTION)}
-                >
-                  Timed auction
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {type === FIXED_PRICE ? (
-            <div className="card mt-2" id="fixedPriceDetails">
-              <div className="card-body">
-                <form id="setPrice">
-                  <div className="input-group">
-                    <div
-                      style={{
-                        width: "80%",
-                      }}
-                    >
-                      <label htmlFor="inputAmount">Price</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        aria-label="Text input with dropdown button"
-                        placeholder="Amount"
-                        id="fixedPrice"
-                        name="fixedPrice"
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <select id="nameofCoin">
-                      <option>FXG</option>
-                    </select>
-                  </div>
-                  <button
-                    id="makeOfferSubmit"
-                    className="btn contIcon"
-                    onClick={handleFixedPrice}
-                  >
-                    Make offer
-                  </button>
-                </form>
-              </div>
-            </div>
+          {!nftDetails.isListed ? (
+            <NonListedNft
+              nftDetails={nftDetails}
+              handleAuction={handleAuction}
+            />
           ) : null}
 
-          {type === AUCTION ? (
-            <div className="card mt-2" id="timedAuctionDetails">
-              <div className="card-body">
-                <div className="card-text">
-                  <form id="setAuction">
-                    <div className="input-group">
-                      <div
-                        style={{
-                          width: "80%",
-                        }}
-                      >
-                        <label htmlFor="inputAmount">Starting Price</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          aria-label="Text input with dropdown button"
-                          placeholder="Amount"
-                          id="auctionPrice"
-                          name="auctionPrice"
-                          onChange={handleChange}
-                        />
-                      </div>
-                      <select id="nameofCoin">
-                        <option>FXG</option>
-                      </select>
-                    </div>
-                    <div className="input-group mt-3">
-                      <label htmlFor="inputAmount">Duration</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        aria-label="Text input with dropdown button"
-                        placeholder="Duration"
-                        id="time"
-                        name="time"
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <button
-                      id="placeBidSubmit"
-                      className="btn contIcon"
-                      onClick={handleAuction}
-                    >
-                      Create auction
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
+          {nftDetails.isListed && nftDetails.listingType === AUCTION ? (
+            <ListedNft nftDetails={nftDetails} />
           ) : null}
 
           <div className="card" id="fees">

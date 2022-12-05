@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { cps } from "redux-saga/effects";
+import { getAuctionInfos } from "../../services/listingNft";
 
 const MostPopularItem = ({ viewType, item, onSelectNfts = () => {} }) => {
-
   let styleList = {};
   let styleWrappedText = {};
 
@@ -31,28 +33,68 @@ const MostPopularItem = ({ viewType, item, onSelectNfts = () => {} }) => {
     };
   }
 
-  const calculateTimeLeftBeforeExpiration = (expirationDate) => {
-    const difference = new Date(expirationDate) - new Date();
+  const [itemInfos, setItemInfos] = useState({});
+  const [dateTime, setDateTime] = useState(new Date());
+
+  const init = async () => {
+    const infos = await getAuctionInfos(item.auctionId - 1);
+    setItemInfos(infos);
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+
+
+  // create time initilizer
+  useEffect(() => {
+    const id = setInterval(() => setDateTime(new Date()), 1000);
+    return () => {
+        clearInterval(id);
+    }
+}, []);
+
+
+  const calculateTimeLeftBeforeExpiration = (expirationDate, dateNow) => {
+
+    const futurDate = new Date(0);
+    futurDate.setUTCSeconds(expirationDate);
+    const difference =  futurDate - dateNow;
     let timeLeft = {};
+    let output = "";
 
     if (difference > 0) {
-      timeLeft = {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
-      };
-    }
+      var seconds = Math.floor(difference / 1000);
+      var minutes = Math.floor(seconds / 60);
+      var hours = Math.floor(minutes / 60);
+      var days = Math.floor(hours / 24);
 
-    let output = "";
-    if (timeLeft.days > 0) {
-      output += timeLeft.days + " days";
-    } else if (timeLeft.hours > 0) {
-      output += timeLeft.hours + " hours";
-    } else if (timeLeft.minutes > 0) {
-      output += timeLeft.minutes + " minutes";
-    } else if (timeLeft.seconds > 0) {
-      output += timeLeft.seconds + " seconds";
+      hours = hours - days * 24;
+      minutes = minutes - days * 24 * 60 - hours * 60;
+      seconds = seconds - days * 24 * 60 * 60 - hours * 60 * 60 - minutes * 60;
+
+      timeLeft = {
+        days,
+        hours,
+        minutes,
+        seconds,
+      };
+
+      if (timeLeft.days > 0) {
+        output += timeLeft.days + "d";
+      }
+
+      if (timeLeft.hours > 0) {
+        output += timeLeft.hours + "h";
+      }
+
+      if (timeLeft.minutes > 0) {
+        output += timeLeft.minutes + "m";
+      }
+
+      if (timeLeft.seconds > 0) {
+        output += timeLeft.seconds + "s";
+      }
     } else {
       output = "Expired";
     }
@@ -77,12 +119,7 @@ const MostPopularItem = ({ viewType, item, onSelectNfts = () => {} }) => {
             <div className="nameItem">
               <span className="name">{item.name}</span>
               <span>
-                193{" "}
-                <img
-                  src={item.image}
-                  style={{ width: "14px" }}
-                  alt=""
-                />
+                193 <img src={item.image} style={{ width: "14px" }} />
               </span>
             </div>
           </div>
@@ -91,12 +128,13 @@ const MostPopularItem = ({ viewType, item, onSelectNfts = () => {} }) => {
             <p>
               <label>Price</label>
               <span className="orange">
-                <b>f(x)</b> 42.68K
+                <b>f(x)</b> {itemInfos?.currentBidPrice ? itemInfos.currentBidPrice / 10**18 : null}
               </span>
             </p>
             <p>
               <span>
-                {/*Ends in {calculateTimeLeftBeforeExpiration(new Date())}*/}
+                Ends in{" "}
+                {calculateTimeLeftBeforeExpiration(itemInfos?.endAuction, dateTime)}
               </span>
             </p>
           </div>
