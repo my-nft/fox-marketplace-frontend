@@ -52,7 +52,7 @@ const CollectionDetails = () => {
       type : LOAD_NFT_DETAIL,
       payload : {
         collectionAddress : collectionAddress_tochange,
-        tokenID : 104
+        tokenID : tokenID
       }
     });
     navigate('/my-nft')

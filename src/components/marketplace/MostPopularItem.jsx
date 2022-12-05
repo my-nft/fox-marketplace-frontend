@@ -7,7 +7,6 @@ const MostPopularItem = ({ viewType, item, onSelectNfts = () => {} }) => {
   let styleWrappedText = {};
 
   if (viewType === "CHANGE_FOR_MIN") {
-    console.log("CHANGE_FOR_MIN");
     styleList = {
       width: "calc(100% / 6)",
       minWidth: "230px",
@@ -16,7 +15,6 @@ const MostPopularItem = ({ viewType, item, onSelectNfts = () => {} }) => {
       display: "block",
     };
   } else if (viewType === "CHANGE_FOR_MAX") {
-    console.log("CHANGE_FOR_MAX");
     styleList = {
       width: "calc(100% / 8)",
       minWidth: "170px",
@@ -25,7 +23,6 @@ const MostPopularItem = ({ viewType, item, onSelectNfts = () => {} }) => {
       display: "block",
     };
   } else if (viewType === "CHANGE_FOR_IMAGE") {
-    console.log("CHANGE_FOR_IMAGE");
     styleList = {
       width: "calc(100% / 4)",
     };
@@ -34,9 +31,6 @@ const MostPopularItem = ({ viewType, item, onSelectNfts = () => {} }) => {
       display: "none",
     };
   }
-
-  console.log(styleWrappedText);
-  console.log(styleList);
 
   const calculateTimeLeftBeforeExpiration = (expirationDate) => {
     const difference = new Date(expirationDate) - new Date();
@@ -66,8 +60,6 @@ const MostPopularItem = ({ viewType, item, onSelectNfts = () => {} }) => {
 
     return output;
   };
-
-  console.log("Time left: ", calculateTimeLeftBeforeExpiration(item.soldDate));
 
   return (
     <div

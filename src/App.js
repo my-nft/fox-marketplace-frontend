@@ -139,12 +139,6 @@ const router = createBrowserRouter(
 function App() {
   return (
     <Provider store={store}>
-      <ToastContainer
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick={true}
-      />
-
       <RouterProvider router={router}></RouterProvider>
     </Provider>
   );
