@@ -3,7 +3,8 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 const INITIAL_STATE = {
   // general loading
   nftDetails: undefined,
-  isLoading: false
+  listedNfts : [],
+  isLoading: false,
 };
 
 const NftReducer = createSlice({
@@ -16,6 +17,9 @@ const NftReducer = createSlice({
     setNftDetails: (state, action) => {
       state.nftDetails = action.payload;
     },
+    setListedNfts: (state, action) => {
+      state.listedNfts = action.payload;
+    }
   },
 });
 
@@ -34,10 +38,16 @@ export const selectNftDetails = createSelector(
   (nft) => nft.nftDetails
 );
 
+export const selectListedNfts = createSelector(
+  [selectSelf],
+  (nft) => nft.listedNfts
+);
+
 
 export const {
   setIsLoading,
-  setNftDetails
+  setNftDetails,
+  setListedNfts
 } = NftReducer.actions;
 
 export default NftReducer;

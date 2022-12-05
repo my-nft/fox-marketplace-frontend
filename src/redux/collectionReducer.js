@@ -7,9 +7,6 @@ const INITIAL_STATE = {
   searcheableCollections: [],
   isLoadingSearcheable: false,
 
-  marketPlaceNfts: [],
-  isLoadingMarketPlaceNfts: false,
-
 
   // general loading
   nftDetails: undefined,
@@ -31,12 +28,6 @@ const CollectionReducer = createSlice({
     },
     setSearcheableCollections: (state, action) => {
       state.searcheableCollections = action.payload;
-    },
-    setMarketPlaceNfts: (state, action) => {
-      state.marketPlaceNfts = action.payload;
-    },
-    setIsLoadingMarketPlaceNfts : (state, action) => {
-      state.isLoadingMarketPlaceNfts = action.payload;
     },
     setIsLoading : (state, action) => {
       state.isLoading = action.payload;
@@ -68,16 +59,6 @@ export const selectIsLoadingSearcheable = createSelector(
   (collection) => collection.isLoadingSearcheable
 );
 
-export const selectMarketPlaceNfts = createSelector(
-  [selectSelf],
-  (collection) => collection.marketPlaceNfts
-);
-
-export const selectIsLoadingMarketPlaceNfts = createSelector(
-  [selectSelf],
-  (collection) => collection.isLoadingMarketPlaceNfts
-);
-
 export const selectIsLoading = createSelector(
   [selectSelf],
   (collection) => collection.isLoading
@@ -89,8 +70,6 @@ export const {
   setIsLoadingMspl,
   setSearcheableCollections,
   setIsLoadingSearcheableCollection,
-  setMarketPlaceNfts,
-  setIsLoadingMarketPlaceNfts,
 } = CollectionReducer.actions;
 
 export default CollectionReducer;

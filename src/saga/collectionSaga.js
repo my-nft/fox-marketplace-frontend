@@ -10,7 +10,6 @@ import {
   setIsLoadingMspl,
   setSearcheableCollections,
   setIsLoadingSearcheableCollection,
-  setIsLoadingMarketPlaceNfts,
   setMarketPlaceNfts,
 } from "../redux/collectionReducer";
 import { setIsLoading, setNftDetails } from "../redux/nftReducer";
@@ -49,24 +48,6 @@ function* loadSearcheableCollection(action) {
     toast.error("An unexpected error occurred.");
   } finally {
     yield put(setIsLoadingSearcheableCollection(false));
-  }
-}
-
-function* loadMarketPlaceNfts(action) {
-  try {
-    yield put(setIsLoadingMarketPlaceNfts(true));
-    const { collectionAddress, ...rest } = action.payload;
-    const response = yield call(
-      api.getCollectionNftsCall,
-      collectionAddress,
-      rest
-    );
-    yield put(setMarketPlaceNfts(response.data));
-  } catch (error) {
-    console.log("error ", error.response.status);
-    toast.error("An unexpected error occurred.");
-  } finally {
-    yield put(setIsLoadingMarketPlaceNfts(false));
   }
 }
 
@@ -121,10 +102,6 @@ function* loadSearcheableCollectionSaga() {
   yield takeLatest(LOAD_SEARCHABLE_COLLECTION, loadSearcheableCollection);
 }
 
-function* loadCollectionNfts() {
-  yield takeLatest(LOAD_MARKETPLACE_NFT, loadMarketPlaceNfts);
-}
-
 function* showNftDetails() {
   yield takeLatest(LOAD_NFT_DETAIL, loadNftDetails);
 }
@@ -136,7 +113,6 @@ function* loadAccountData(){
 export {
   loadPopularCollectionSaga,
   loadSearcheableCollectionSaga,
-  loadCollectionNfts,
   showNftDetails,
   loadAccountData
 };

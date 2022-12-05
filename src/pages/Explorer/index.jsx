@@ -11,7 +11,11 @@ import {
   selectMostPopularCollections,
   selectSearcheableCollection,
 } from "../../redux/collectionReducer";
+
+import {selectIsLoading, selectListedNfts} from '../../redux/nftReducer';
+
 import {
+  LOAD_LISTED_NFTS,
   LOAD_MARKETPLACE_NFT,
   LOAD_MOST_POPULAR_COLLECTION,
   LOAD_SEARCHABLE_COLLECTION,
@@ -28,10 +32,12 @@ const Explorer = () => {
 
   const mostPopularCollections = useSelector(selectMostPopularCollections);
   const searcheableCollections = useSelector(selectSearcheableCollection);
-  const marketPlaceNfts = useSelector(selectMarketPlaceNfts);
+  const marketPlaceNfts = useSelector(selectListedNfts);
+  
+  
   const isLoadingMostPopular = useSelector(selectIsLoadingMspl);
   const isLoadingSearcheable = useSelector(selectIsLoadingSearcheable);
-  const isLoadingMarketPlaceNfts = useSelector(selectIsLoadingMarketPlaceNfts);
+  const isLoadingListedNfts = useSelector(selectIsLoading);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -63,6 +69,7 @@ const Explorer = () => {
     });
   };
 
+  /*
   const loadMarketPlaceNfts = () => {
     dispatch({
       type: LOAD_MARKETPLACE_NFT,
@@ -76,18 +83,29 @@ const Explorer = () => {
       },
     });
   };
+  */
+
+  const loadListedNfts = () => {
+    dispatch({
+      type: LOAD_LISTED_NFTS,
+      payload: {
+        numberElements: 10,
+        page: 1,
+      },
+    });
+  }
 
   useEffect(() => {
     loadMostPopularCollection();
     loadSearcheableCollections();
-    loadMarketPlaceNfts();
+    loadListedNfts();
   }, []);
 
   useEffect(() => {
     setIsLoading(
-      isLoadingMostPopular || isLoadingMarketPlaceNfts || isLoadingSearcheable
+      isLoadingMostPopular  || isLoadingSearcheable || isLoadingListedNfts
     );
-  }, [isLoadingMostPopular, isLoadingMarketPlaceNfts, isLoadingSearcheable]);
+  }, [isLoadingMostPopular, isLoadingSearcheable, isLoadingListedNfts]);
 
   return isLoading ? (
     <Spinner />

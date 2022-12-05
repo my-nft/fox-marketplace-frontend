@@ -1,11 +1,11 @@
 import { all } from "redux-saga/effects";
 import {
   loadAccountData,
-  loadCollectionNfts,
   loadPopularCollectionSaga,
   loadSearcheableCollectionSaga,
   showNftDetails,
 } from "./collectionSaga";
+import { loadListedNfts } from "./nftSaga";
 import { loadUser } from "./userSaga";
 
 function* watchAll() {
@@ -13,9 +13,9 @@ function* watchAll() {
     loadUser(),
     loadPopularCollectionSaga(),
     loadSearcheableCollectionSaga(),
-    loadCollectionNfts(),
     showNftDetails(),
-    loadAccountData()
+    loadAccountData(),
+    loadListedNfts()
   ]);
 }
 

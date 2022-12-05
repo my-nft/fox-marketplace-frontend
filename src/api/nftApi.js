@@ -4,6 +4,7 @@ import apiUrl from "../config/api";
 import methods from "../config/axiosConfig";
 
 const collectionEndpoint = apiUrl + "collections/";
+const nftEndpoint = apiUrl + "tokens/";
 
 export const getNftCall = (collectionAddress, tokenID) => {
   return methods.get(
@@ -18,6 +19,15 @@ export const setNftToListed = (collectionAddress, tokenID, listingType) => {
       listingType,
     }
   );
+};
+
+export const getListedNfts = (page, numberElements) => {
+  return methods.get(nftEndpoint + "listed", {
+    params: {
+      page,
+      numberElements,
+    },
+  });
 };
 
 export const getNfts = (filter, Sorting) => {

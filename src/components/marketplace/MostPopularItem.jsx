@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
 const MostPopularItem = ({ viewType, item, onSelectNfts = () => {} }) => {
-  const navigate = useNavigate();
 
   let styleList = {};
   let styleWrappedText = {};
@@ -80,7 +79,7 @@ const MostPopularItem = ({ viewType, item, onSelectNfts = () => {} }) => {
               <span>
                 193{" "}
                 <img
-                  src="./assets/images/marketplace/Iconmonstr-favorite-2-16_orange.jpg"
+                  src={item.image}
                   style={{ width: "14px" }}
                   alt=""
                 />
