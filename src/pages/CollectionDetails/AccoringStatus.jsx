@@ -1,3 +1,5 @@
+import SliderToggle from "../Account/SliderToggle";
+
 const AccordingStatus = () => {
   return (
     <div id="accordionStatus">
@@ -33,36 +35,12 @@ const AccordingStatus = () => {
           data-parent="#accordionStatus"
         >
           <div className="card-body">
-            <div className="checkBox">
-              <span>Buy Now</span>
-              <label className="onoffbtn">
-                <input type="checkbox" name="buynow" />
-              </label>
-            </div>
-            <div className="checkBox">
-              <span>On Action</span>
-              <label className="onoffbtn">
-                <input type="checkbox" name="onaction" />
-              </label>
-            </div>
-            <div className="checkBox">
-              <span>New</span>
-              <label className="onoffbtn">
-                <input type="checkbox" name="new" />
-              </label>
-            </div>
-            <div className="checkBox">
-              <span>Has Offers</span>
-              <label className="onoffbtn">
-                <input type="checkbox" name="hasoffer" />
-              </label>
-            </div>
-            <div className="checkBox">
-              <span>Buy with Card</span>
-              <label className="onoffbtn">
-                <input type="checkbox" name="buywithcard" />
-              </label>
-            </div>
+            <SliderToggle title={"Buy Now"}/>
+            <SliderToggle title={"On Action"}/>
+            <SliderToggle title={"New"}/>
+            <SliderToggle title={"Has Offers"}/>
+            <SliderToggle title={"Buy with Card"}/>
+         
           </div>
         </div>
       </div>

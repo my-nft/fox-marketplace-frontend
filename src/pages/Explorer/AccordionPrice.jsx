@@ -34,9 +34,9 @@ const AccordionPrice = () => {
         >
           <div className="card-body">
             <div id="wrapperNumber">
-              <input type="number" placeholder="Min" />
+              <input type="number" placeholder="Min" min="0" max="15000"  />
               <span>to</span>
-              <input type="number" placeholder="Max" />
+              <input type="number" placeholder="Max" min="0" max="15000" />
               <select>
                 <option>ETH</option>
               </select>

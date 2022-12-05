@@ -1,3 +1,5 @@
+import SliderToggle from "../Account/SliderToggle";
+
 const AccordionCategory = () => {
   return (
     <div id="accordionCategory">
@@ -33,54 +35,15 @@ const AccordionCategory = () => {
           data-parent="#accordionCategory"
         >
           <div className="card-body">
-            <div className="checkBox">
-              <span>Art</span>
-              <label className="onoffbtn">
-                <input type="checkbox" name="art" />
-              </label>
-            </div>
-            <div className="checkBox">
-              <span>Collectible</span>
-              <label className="onoffbtn">
-                <input type="checkbox" name="Collectibles" />
-              </label>
-            </div>
-            <div className="checkBox">
-              <span>Domain Names</span>
-              <label className="onoffbtn">
-                <input type="checkbox" name="domainnames" />
-              </label>
-            </div>
-            <div className="checkBox">
-              <span>Music</span>
-              <label className="onoffbtn">
-                <input type="checkbox" name="music" />
-              </label>
-            </div>
-            <div className="checkBox">
-              <span>Photography</span>
-              <label className="onoffbtn">
-                <input type="checkbox" name="photography" />
-              </label>
-            </div>
-            <div className="checkBox">
-              <span>Trending Cards</span>
-              <label className="onoffbtn">
-                <input type="checkbox" name="tradingcards" />
-              </label>
-            </div>
-            <div className="checkBox">
-              <span>Utility</span>
-              <label className="onoffbtn">
-                <input type="checkbox" name="utility" />
-              </label>
-            </div>
-            <div className="checkBox">
-              <span>Virtual Worlds</span>
-              <label className="onoffbtn">
-                <input type="checkbox" name="virtualwords" />
-              </label>
-            </div>
+            <SliderToggle title='Art' />
+            <SliderToggle title='Collectible' />
+            <SliderToggle title='Domain Names' />
+            <SliderToggle title='Music' />
+            <SliderToggle title='Photography' />
+            <SliderToggle title='Trending Cards' />
+            <SliderToggle title='Utility' />
+            <SliderToggle title='Virtual Worlds' />
+
           </div>
         </div>
       </div>

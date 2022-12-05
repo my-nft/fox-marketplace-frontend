@@ -202,6 +202,20 @@ export const getCollectionDetails = (
   };
 };
 
+export const getAccountCollections = (collectionAddress, page, numberElements, filter) => {
+    return methods.get(
+      `${apiUrl}collections`,
+      {
+        params: {
+          collectionAddress: collectionAddress,
+          page: page,
+          numberElements: numberElements,
+          filter: filter,
+        }
+      }
+    )
+}
+
 export const getCollectionNfts = (page, numberPerPage, sort) => {
   /**
    * sort => recently listed, price desc, price asc, recently created, recently sold
