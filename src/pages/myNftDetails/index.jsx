@@ -3,8 +3,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import Spinner from "../../components/Spinner";
 import { selectNftDetails, selectIsLoading } from "../../redux/nftReducer";
-import { createAuction } from "../../services/listingNft";
-import { collectionAddress_tochange } from "../CollectionDetails";
+import { createAuction, nftLoader } from "../../services/listingNft";
 
 const FIXED_PRICE = "FIXED_PRICE";
 const AUCTION = "AUCTION";
@@ -12,6 +11,7 @@ const AUCTION = "AUCTION";
 const MyNftDetails = () => {
   const [isLoadingPage, setIsLoadingPage] = useState(true);
   const nftDetails = useSelector(selectNftDetails);
+  //const collectionDetails = useSelector(select)
   const isLoading = useSelector(selectIsLoading);
   // can take FIXED_PRICE or AUCTION
   const [type, setType] = useState(FIXED_PRICE);
@@ -30,19 +30,26 @@ const MyNftDetails = () => {
     setIsLoadingPage(isLoading);
   }, [isLoading]);
 
+  useEffect(() => {
+    console.log("############HRE############")
+    nftLoader(nftDetails.collectionAddress);
+  }, [])
+
   console.log(nftDetails, isLoadingPage);
 
   const handleAuction = async (evt) => {
     evt.preventDefault();
-
+    setIsLoadingPage(true);
     const auctionPrice = Number(values.auctionPrice);
     const endAuction = Number(values.time);
+    console.log(auctionPrice, endAuction);
     const trx = await createAuction(
-      collectionAddress_tochange,
-      104,
-      values.auctionPrice,
-      values.time
+      nftDetails.collectionAddress,
+      91,
+      auctionPrice,
+      endAuction
     );
+    setIsLoadingPage(false);
   };
 
   const handleFixedPrice = (evt) => {
@@ -50,7 +57,7 @@ const MyNftDetails = () => {
   };
 
   return isLoadingPage ? (
-    <Spinner />
+    <Spinner/>
   ) : (
     <div className="container my-5" id="nftPage">
       <img src="./assets/images/Background.jpg" id="layer" />

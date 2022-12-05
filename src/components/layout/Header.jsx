@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   connectWallet,
   getCurrentWalletConnected,
@@ -16,7 +18,7 @@ const Header = () => {
   const connectedUser = useSelector(selectConnectedUser);
 
   const handleSignIn = () => {
-    console.log("HETRE")
+    console.log("HETRE");
     connectWallet();
     const connectedWallet = getCurrentWalletConnected();
     if (connectWallet) {
@@ -121,6 +123,7 @@ const Header = () => {
           </button>
         </nav>
       </header>
+      <ToastContainer />
 
       <Outlet />
     </>

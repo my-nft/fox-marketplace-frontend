@@ -4,10 +4,22 @@ import {
   getCurrentWalletConnected,
   loadAuctionContract,
   loadERC721Contract,
+  loaderContract,
   web3,
 } from "../utils/blockchainInteractor";
 
+import {setNftToListed} from '../api/nftApi';
+
 const auctionContract = loadAuctionContract();
+
+export const nftLoader = async (collectionAddress) => {
+  const contract = loaderContract();
+  const connectWallet = getCurrentWalletConnected();
+
+  const tx = await contract.methods.getTokens(connectWallet, 1, 100, collectionAddress).call();
+
+  console.log("MYNFTS", tx)
+} 
 
 export const createAuction = async (
   collectionAddress,
@@ -15,54 +27,59 @@ export const createAuction = async (
   initialPrice,
   endAuction
 ) => {
-  console.table({
-    collectionAddress,
-    tokenID,
-    initialPrice,
-    endAuction,
-  });
-  const connectWallet = getCurrentWalletConnected();
-  const price = web3.utils.toHex(initialPrice * 10 ** 18);
-
-  const erc721Contract = loadERC721Contract(collectionAddress);
-
-  const gasLimitApprouve = await erc721Contract.methods
-    .approve(AUTIONContractAddress, tokenID)
-    .estimateGas({
+  try {
+    const connectWallet = getCurrentWalletConnected();
+    const price = web3.utils.toHex(initialPrice * 10 ** 18);
+    const erc721Contract = loadERC721Contract(collectionAddress);
+  
+    console.log("TOKENID : ", tokenID)
+    console.log("PRICE : ", collectionAddress)
+    console.log("WALLET : ", connectWallet)
+  
+    const gasLimitApprouve = await erc721Contract.methods
+      .approve(AUTIONContractAddress, tokenID)
+      .estimateGas({
+        from: connectWallet,
+        to: collectionAddress,
+      });
+  
+    await erc721Contract.methods.approve(AUTIONContractAddress, tokenID).send({
       from: connectWallet,
       to: collectionAddress,
+      gasLimit: gasLimitApprouve,
     });
+  
+    const gasLimit = await auctionContract.methods
+      .createAuction(
+        collectionAddress,
+        ERC20ContractAddress,
+        tokenID,
+        price,
+        endAuction
+      )
+      .estimateGas({
+        from: connectWallet,
+        to: AUTIONContractAddress,
+      });
+  
+    auctionContract.methods
+      .createAuction(
+        collectionAddress,
+        ERC20ContractAddress,
+        tokenID,
+        price,
+        endAuction
+      )
+      .send({
+        from: connectWallet,
+        to: AUTIONContractAddress,
+        gasLimit,
+      });
 
-  await erc721Contract.methods.approve(AUTIONContractAddress, tokenID).send({
-    from: connectWallet,
-    to: collectionAddress,
-    gasLimit: gasLimitApprouve,
-  });
-
-  const gasLimit = await auctionContract.methods
-    .createAuction(
-      collectionAddress,
-      ERC20ContractAddress,
-      tokenID,
-      price,
-      endAuction
-    )
-    .estimateGas({
-      from: connectWallet,
-      to: AUTIONContractAddress,
-    });
-
-  auctionContract.methods
-    .createAuction(
-      collectionAddress,
-      ERC20ContractAddress,
-      tokenID,
-      price,
-      endAuction
-    )
-    .send({
-      from: connectWallet,
-      to: AUTIONContractAddress,
-      gasLimit,
-    });
+      // Mark the NFT as Listed in DB
+      await setNftToListed(collectionAddress, tokenID);
+  } catch(error) {
+    console.error(error);
+  }
+  
 };

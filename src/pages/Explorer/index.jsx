@@ -41,9 +41,11 @@ const Explorer = () => {
       payload: {
         numberElements: 20,
         page: 1,
+        /*
         filter: {
           tag: "MOST_POPULAR",
         },
+        */
       },
     });
   };
