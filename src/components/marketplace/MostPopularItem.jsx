@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { cps } from "redux-saga/effects";
+import { LOAD_NFT_DETAIL } from "../../saga/actions";
 import { getAuctionInfos } from "../../services/listingNft";
 
-const MostPopularItem = ({ viewType, item, onSelectNfts = () => {} }) => {
+const MostPopularItem = ({ viewType, item }) => {
   let styleList = {};
   let styleWrappedText = {};
 
@@ -35,6 +37,8 @@ const MostPopularItem = ({ viewType, item, onSelectNfts = () => {} }) => {
 
   const [itemInfos, setItemInfos] = useState({});
   const [dateTime, setDateTime] = useState(new Date());
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const init = async () => {
     const infos = await getAuctionInfos(item.auctionId - 1);
@@ -45,21 +49,29 @@ const MostPopularItem = ({ viewType, item, onSelectNfts = () => {} }) => {
     init();
   }, []);
 
-
   // create time initilizer
   useEffect(() => {
     const id = setInterval(() => setDateTime(new Date()), 1000);
     return () => {
-        clearInterval(id);
-    }
-}, []);
+      clearInterval(id);
+    };
+  }, []);
 
+  const onSelectNfts = () => {
+    dispatch({
+      type : LOAD_NFT_DETAIL,
+      payload : {
+        collectionAddress : item.collectionAddress,
+        tokenID : item.tokenID
+      }
+    });
+    navigate('/my-nft')
+  }
 
   const calculateTimeLeftBeforeExpiration = (expirationDate, dateNow) => {
-
     const futurDate = new Date(0);
     futurDate.setUTCSeconds(expirationDate);
-    const difference =  futurDate - dateNow;
+    const difference = futurDate - dateNow;
     let timeLeft = {};
     let output = "";
 
@@ -128,13 +140,19 @@ const MostPopularItem = ({ viewType, item, onSelectNfts = () => {} }) => {
             <p>
               <label>Price</label>
               <span className="orange">
-                <b>f(x)</b> {itemInfos?.currentBidPrice ? itemInfos.currentBidPrice / 10**18 : null}
+                <b>f(x)</b>{" "}
+                {itemInfos?.currentBidPrice
+                  ? itemInfos.currentBidPrice / 10 ** 18
+                  : null}
               </span>
             </p>
             <p>
               <span>
                 Ends in{" "}
-                {calculateTimeLeftBeforeExpiration(itemInfos?.endAuction, dateTime)}
+                {calculateTimeLeftBeforeExpiration(
+                  itemInfos?.endAuction,
+                  dateTime
+                )}
               </span>
             </p>
           </div>

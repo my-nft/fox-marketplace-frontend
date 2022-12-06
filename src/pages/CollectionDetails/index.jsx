@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import {
   getCollectionByAddress,
   getCollectionNftsCall,
-} from "./../../api/collectionApi";
+} from "../../api/collectionApi";
 import Spinner from "../../components/Spinner";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";

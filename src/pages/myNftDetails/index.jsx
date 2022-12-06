@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../../components/Spinner";
 import { selectNftDetails, selectIsLoading } from "../../redux/nftReducer";
+import { LOAD_NFT_DETAIL } from "../../saga/actions";
 import { createAuction, nftLoader } from "../../services/listingNft";
 import { AUCTION } from "../../utils/foxConstantes";
 import ListedNft from "./listedNft";
@@ -12,7 +13,7 @@ const MyNftDetails = () => {
   const nftDetails = useSelector(selectNftDetails);
   const [isLoadingPage, setIsLoadingPage] = useState(true);
   const isLoading = useSelector(selectIsLoading);
-
+  const dispatch = useDispatch();
   // can take FIXED_PRICE or AUCTION
   useEffect(() => {
     setIsLoadingPage(isLoading);
@@ -31,14 +32,27 @@ const MyNftDetails = () => {
     const endAuction = Number(values.time);
     const trx = await createAuction(
       nftDetails.collectionAddress,
-      76,
+      nftDetails.tokenID,
       auctionPrice,
       endAuction,
       AUCTION
     );
     console.log("Auction transaction", trx);
+
+    reloadNft();
+
     setIsLoadingPage(false);
   };
+
+  const reloadNft = () => {
+    dispatch({
+      type : LOAD_NFT_DETAIL,
+      payload : {
+        collectionAddress : nftDetails.collectionAddress,
+        tokenID : nftDetails.tokenID
+      }
+    });
+  }
 
   return isLoadingPage ? (
     <Spinner />
@@ -66,7 +80,7 @@ const MyNftDetails = () => {
           ) : null}
 
           {nftDetails.isListed && nftDetails.listingType === AUCTION ? (
-            <ListedNft nftDetails={nftDetails} />
+            <ListedNft itemDetails={nftDetails} />
           ) : null}
 
           <div className="card" id="fees">

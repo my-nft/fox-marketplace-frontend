@@ -2,20 +2,12 @@ import AccordionPrice from "../Explorer/AccordionPrice";
 
 
 import MostPopularItem from "../../components/marketplace/MostPopularItem";
-import { useEffect } from "react";
-import { createPath } from "react-router-dom";
 import AccordingStatus from './../CollectionDetails/AccoringStatus';
 import AccordionCategory from './../CollectionDetails/AccordionCategory';
 import ListActivities from './../CollectionDetails/ListActivities';
 import AccordingCollection from './../Explorer/AccordingCollection';
 
 const ListNfts = ({ collectionNFTs, isVisible , viewType, activeSection}) => {
-  console.log("#####################",collectionNFTs)
-  useEffect(() => {
-    console.log("ListNfts", viewType);
-  },[])
-
-  console.log("tabsNft", viewType)
 
   return (
     <section id="tabsNft" className="container-fluid accountListed">

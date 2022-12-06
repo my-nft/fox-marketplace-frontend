@@ -10,19 +10,4 @@ const MostPopular = ({nfts}) => {
   );
 };
 
-{
-    /*
-<>
-          <MostPopularItem />
-          <MostPopularItem />
-          <MostPopularItem />
-          <MostPopularItem />
-          <MostPopularItem />
-          <MostPopularItem />
-          <MostPopularItem />
-        </>
-
-    */
-}
-
 export default MostPopular;
