@@ -1,0 +1,132 @@
+
+@media (max-width: 1199px) {
+    
+    #checkBox {
+      
+        min-width: initial;
+      
+    }   
+    #iconProfile {
+        width: 15vw;
+        
+      }
+      .listMostPopular {
+           
+        width: calc(100% / 4);
+    }
+}
+
+@media (max-width: 991px) {
+
+    #chooseLayout{display: none;}
+
+    .popularItems {
+      
+        width: calc( 100%/2);
+      }
+      .listMostPopular {
+           
+        width: calc(100% / 3);
+    }
+     
+
+}
+
+@media (max-width: 768px) {
+
+    .hiddenOnMobile{display: none;}
+    #filter {
+        display: none;
+        max-width: 100%;
+    }
+  
+    #formSearch {
+        margin-left: 0;
+    }
+    #topSection h2 {
+        width: initial;
+        margin: 20px!important;
+        
+    }
+    #infoNFT h2 {
+        font-size: 30px;
+    }
+    h2 {
+        font-size: 35px;
+        color: white;
+        font-family: GothamBlack;
+    }
+    #topSection h3 {
+        width:initial;
+        
+        font-size: 17px;
+        
+    }
+    .listElements {
+        z-index: -2;
+        position: relative;
+        padding: 5px;
+        max-width: calc(100vw/5);
+    }
+    #ranks {
+        margin-top: 2vh;
+        width: 100vw;
+    }
+    td img{max-width: 55px;}
+    td, td span {
+        padding-left: 5px;
+        font-size: 13px;
+    }
+    #ranks .nav-pills li {
+        padding: 20px 0;
+        margin-right: 20px;
+    }
+    #wrapperPopularItems{display: block;}
+    .popularItems {
+       padding: 20px 0;
+       width: initial;
+  
+    }
+    input.form-control {
+        
+        width: 65vw !important;
+    }
+
+    #iconProfile {
+        width: 20vw;
+        
+      }
+      .listMostPopular {
+           
+        width: calc(100% / 2);
+    }
+
+}
+
+@media (max-width: 575px) {
+    #accountButton{margin-top: 15px;}
+
+    #profile .navigation {
+        padding: 15px;
+        border-right: 1px solid #2d2d2d;
+        height: 100vw;
+    }
+
+
+      #iconProfile {
+        width: 25vw;
+        
+      }
+      #infoHeader svg{color: #ff7000;
+        width: 25px;
+         margin-left: 20px;
+        margin-right: 0;}
+        .listMostPopular {
+           
+            width: 100%!important;
+        }
+        #profile .navigation{display: none;}
+
+        #profileImg{margin-top: 50px; padding: 0;  max-width: initial;}
+  
+}
