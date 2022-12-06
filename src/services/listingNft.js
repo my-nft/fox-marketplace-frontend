@@ -3,6 +3,7 @@ import {
   ERC20ContractAddress,
   getCurrentWalletConnected,
   loadAuctionContract,
+  loadERC20Contract,
   loadERC721Contract,
   loaderContract,
   web3,
@@ -10,9 +11,9 @@ import {
 
 import { setNftToListed } from "../api/nftApi";
 import { toast } from "react-toastify";
-import { cps } from "redux-saga/effects";
 
 const auctionContract = loadAuctionContract();
+const erc20Contract = loadERC20Contract();
 
 export const nftLoader = async (collectionAddress) => {
   const contract = loaderContract();
@@ -112,5 +113,42 @@ export const getAuctionInfos = async (auctionId) => {
     }
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const placeBid = async (auctionId, bidValue) => {
+
+  const connectWallet = getCurrentWalletConnected();
+  const bidValueTrans = web3.utils.toHex(bidValue*10**18);
+
+  try {
+    const gasLimitApprouve = await erc20Contract.methods
+      .approve(AUTIONContractAddress, bidValueTrans)
+      .estimateGas({
+        from: connectWallet,
+        to: ERC20ContractAddress,
+      });
+
+    await erc20Contract.methods.approve(AUTIONContractAddress, bidValueTrans).send({
+      from: connectWallet,
+      to: ERC20ContractAddress,
+      gasLimit: gasLimitApprouve,
+    });
+
+    const gasLimitPlaceBid = await auctionContract.methods
+      .bid(auctionId, bidValueTrans)
+      .estimateGas({
+        from: connectWallet,
+        to: AUTIONContractAddress,
+      });
+
+    await auctionContract.methods.bid(auctionId, bidValueTrans).send({
+      from: connectWallet,
+      to: AUTIONContractAddress,
+      gasLimit: gasLimitPlaceBid,
+    });
+  } catch (error) {
+    console.log(error);
+    toast.error(error.message)
   }
 };

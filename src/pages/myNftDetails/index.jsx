@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../../components/Spinner";
 import { selectNftDetails, selectIsLoading } from "../../redux/nftReducer";
 import { LOAD_NFT_DETAIL } from "../../saga/actions";
-import { createAuction, nftLoader } from "../../services/listingNft";
+import { createAuction, nftLoader, placeBid } from "../../services/listingNft";
 import { AUCTION } from "../../utils/foxConstantes";
-import ListedNft from "./listedNft";
+import ListedAuctionNft from "./listedAuctionNft";
 import NonListedNft from "./nonListedNft";
 
 const MyNftDetails = () => {
@@ -38,9 +38,7 @@ const MyNftDetails = () => {
       AUCTION
     );
     console.log("Auction transaction", trx);
-
     reloadNft();
-
     setIsLoadingPage(false);
   };
 
@@ -53,6 +51,13 @@ const MyNftDetails = () => {
       }
     });
   }
+
+  const onPlaceBid = async (price) => {
+    console.log("####onPlaceBid###")
+    setIsLoadingPage(true);
+    await placeBid(nftDetails.auctionId - 1, price);
+    setIsLoadingPage(false);
+  };
 
   return isLoadingPage ? (
     <Spinner />
@@ -80,7 +85,7 @@ const MyNftDetails = () => {
           ) : null}
 
           {nftDetails.isListed && nftDetails.listingType === AUCTION ? (
-            <ListedNft itemDetails={nftDetails} />
+            <ListedAuctionNft itemDetails={nftDetails} onPlaceBid={onPlaceBid}/>
           ) : null}
 
           <div className="card" id="fees">

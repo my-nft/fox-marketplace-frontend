@@ -2,21 +2,16 @@ import { useEffect, useState } from "react";
 
 const getDate = (auctionEnd) => {
   const d = new Date(0);
-  d.setUTCSeconds(auctionEnd)
+  d.setUTCSeconds(auctionEnd);
   return d;
-}
+};
 
 const CardHeader = ({ endDate }) => {
-
-  console.log(endDate);
-
-
   const [saleEndDate, _] = useState(getDate(endDate));
   const [daysLeft, setDaysLeft] = useState(0);
   const [hoursLeft, setHoursLeft] = useState(0);
   const [minutesLeft, setMinutesLeft] = useState(0);
   const [secondsLeft, setSecondsLeft] = useState(0);
-
 
   const computeTimeLeft = () => {
     let timeLeft = {};
@@ -39,8 +34,6 @@ const CardHeader = ({ endDate }) => {
           minutes,
           seconds,
         };
-
-        console.log(timeLeft);
       }
     }
     return timeLeft;
@@ -76,9 +69,6 @@ const CardHeader = ({ endDate }) => {
     };
   }, [endDate]);
 
-
-  console.log("---------------***",saleEndDate);
-
   return (
     <div class="card-header">
       <p class="text-center pb-3">
@@ -93,7 +83,7 @@ const CardHeader = ({ endDate }) => {
       <div class="countdown">
         <div class="countdown__days">
           <div class="number">
-            {daysLeft.toLocaleString("en-US", {
+            {daysLeft?.toLocaleString("en-US", {
               minimumIntegerDigits: 2,
             })}
           </div>
@@ -102,7 +92,7 @@ const CardHeader = ({ endDate }) => {
 
         <div class="countdown__hours">
           <div class="number">
-            {hoursLeft.toLocaleString("en-US", {
+            {hoursLeft?.toLocaleString("en-US", {
               minimumIntegerDigits: 2,
             })}
           </div>
@@ -111,7 +101,7 @@ const CardHeader = ({ endDate }) => {
 
         <div class="countdown__minutes">
           <div class="number">
-            {minutesLeft.toLocaleString("en-US", {
+            {minutesLeft?.toLocaleString("en-US", {
               minimumIntegerDigits: 2,
             })}
           </div>
@@ -120,7 +110,7 @@ const CardHeader = ({ endDate }) => {
 
         <div class="countdown__seconds">
           <div class="number">
-            {secondsLeft.toLocaleString("en-US", {
+            {secondsLeft?.toLocaleString("en-US", {
               minimumIntegerDigits: 2,
             })}
           </div>
