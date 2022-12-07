@@ -21,6 +21,14 @@ export const setNftToListed = (body) => {
   );
 };
 
+export const setNftToUnlisted = (body) => {
+  const { collectionAddress, tokenID } = body;
+
+  return methods.put(
+    `${collectionEndpoint}${collectionAddress}/nfts/${tokenID}/remove-listed`
+  );
+};
+
 export const getListedNfts = (page, numberElements) => {
   return methods.get(nftEndpoint + "listed", {
     params: {

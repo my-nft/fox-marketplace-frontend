@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../../components/Spinner";
 import { selectNftDetails, selectIsLoading } from "../../redux/nftReducer";
 import { LOAD_NFT_DETAIL } from "../../saga/actions";
-import { createAuction, nftLoader, placeBid } from "../../services/listingNft";
+import { createAuction, nftLoader, placeBid, createListing } from "../../services/listingNft";
 import { AUCTION } from "../../utils/foxConstantes";
 import ListedAuctionNft from "./listedAuctionNft";
 import NonListedNft from "./nonListedNft";
@@ -14,7 +14,6 @@ const MyNftDetails = () => {
   const [isLoadingPage, setIsLoadingPage] = useState(true);
   const isLoading = useSelector(selectIsLoading);
   const dispatch = useDispatch();
-  // can take FIXED_PRICE or AUCTION
   useEffect(() => {
     setIsLoadingPage(isLoading);
   }, [isLoading]);
@@ -42,6 +41,17 @@ const MyNftDetails = () => {
     setIsLoadingPage(false);
   };
 
+
+  const handleFixedPrice = async (values) => {
+    console.log("Fixed value", values)
+    setIsLoadingPage(true);
+    const fixedPrice = Number(values.fixedPrice);
+    await createListing(nftDetails.collectionAddress,
+      nftDetails.tokenID, fixedPrice);
+    reloadNft();
+    setIsLoadingPage(false);
+  }
+
   const reloadNft = () => {
     dispatch({
       type : LOAD_NFT_DETAIL,
@@ -59,7 +69,7 @@ const MyNftDetails = () => {
     setIsLoadingPage(false);
   };
 
-  return isLoadingPage ? (
+  return isLoadingPage  ? (
     <Spinner />
   ) : (
     <div className="container my-5" id="nftPage">
@@ -68,23 +78,24 @@ const MyNftDetails = () => {
       <div className="row">
         <div className="col-md-12  col-lg-5 order-2 order-lg-1 ">
           <div id="imgNft" className="imgForSale">
-            <img src={nftDetails.image} id="NFT" className="imgForSale" />
+            <img src={nftDetails?.image} id="NFT" className="imgForSale" />
           </div>
         </div>
         <div className="col-md-12  col-lg-7 order-1 order-lg-2 ">
           <header id="infoNFT" className="mb-3">
-            <h4>{nftDetails.name}</h4>
+            <h4>{nftDetails?.name}</h4>
             <h2>RoboPunks number8 #1691</h2>
           </header>
 
-          {!nftDetails.isListed ? (
+          {!nftDetails?.isListed ? (
             <NonListedNft
               nftDetails={nftDetails}
               handleAuction={handleAuction}
+              handleFixedPrice={handleFixedPrice}
             />
           ) : null}
 
-          {nftDetails.isListed && nftDetails.listingType === AUCTION ? (
+          {nftDetails?.isListed && nftDetails.listingType === AUCTION ? (
             <ListedAuctionNft itemDetails={nftDetails} onPlaceBid={onPlaceBid}/>
           ) : null}
 

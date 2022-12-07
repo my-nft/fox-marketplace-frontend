@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FIXED_PRICE, AUCTION } from "../../utils/foxConstantes";
 
 
-const NonListedNft = ({ handleAuction }) => {
+const NonListedNft = ({ handleAuction, handleFixedPrice }) => {
   const [type, setType] = useState(FIXED_PRICE);
   // values
   const [values, setValues] = useState({
@@ -15,14 +15,15 @@ const NonListedNft = ({ handleAuction }) => {
     setValues({ ...values, [evt.target.name]: evt.target.value });
   };
 
-  const handleFixedPrice = (evt) => {
-    evt.preventDefault();
-  };
-
 
     const onSubmitForm = async (evt) => {
     evt.preventDefault();
-    handleAuction(values);
+    console.log("HERE")
+    if(type === AUCTION) {
+      handleAuction(values);
+    } else if(type === FIXED_PRICE) {
+      handleFixedPrice(values)
+    }
   };
 
 
@@ -85,9 +86,9 @@ const NonListedNft = ({ handleAuction }) => {
               <button
                 id="makeOfferSubmit"
                 className="btn contIcon"
-                onClick={handleFixedPrice}
+                onClick={onSubmitForm}
               >
-                Make offer
+                Item for sale
               </button>
             </form>
           </div>

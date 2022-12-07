@@ -70,8 +70,8 @@ const CardHeader = ({ endDate }) => {
   }, [endDate]);
 
   return (
-    <div class="card-header">
-      <p class="text-center pb-3">
+    <div className="card-header">
+      <p className="text-center pb-3">
         Sale ends{" "}
         {saleEndDate.toLocaleDateString("en-US", {
           year: "numeric",
@@ -80,9 +80,9 @@ const CardHeader = ({ endDate }) => {
         })}{" "}
         at 23:59pm GMT+1
       </p>
-      <div class="countdown">
-        <div class="countdown__days">
-          <div class="number">
+      <div className="countdown">
+        <div className="countdown__days">
+          <div className="number">
             {daysLeft?.toLocaleString("en-US", {
               minimumIntegerDigits: 2,
             })}
@@ -90,8 +90,8 @@ const CardHeader = ({ endDate }) => {
           <span class>Days</span>
         </div>
 
-        <div class="countdown__hours">
-          <div class="number">
+        <div className="countdown__hours">
+          <div className="number">
             {hoursLeft?.toLocaleString("en-US", {
               minimumIntegerDigits: 2,
             })}
@@ -99,8 +99,8 @@ const CardHeader = ({ endDate }) => {
           <span class>Hours</span>
         </div>
 
-        <div class="countdown__minutes">
-          <div class="number">
+        <div className="countdown__minutes">
+          <div className="number">
             {minutesLeft?.toLocaleString("en-US", {
               minimumIntegerDigits: 2,
             })}
@@ -108,8 +108,8 @@ const CardHeader = ({ endDate }) => {
           <span class>Minutes</span>
         </div>
 
-        <div class="countdown__seconds">
-          <div class="number">
+        <div className="countdown__seconds">
+          <div className="number">
             {secondsLeft?.toLocaleString("en-US", {
               minimumIntegerDigits: 2,
             })}

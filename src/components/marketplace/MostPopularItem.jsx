@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { cps } from "redux-saga/effects";
 import { LOAD_NFT_DETAIL } from "../../saga/actions";
 import { getAuctionInfos } from "../../services/listingNft";
+import { AUCTION } from "../../utils/foxConstantes";
 
 const MostPopularItem = ({ viewType, item }) => {
   let styleList = {};
@@ -59,14 +60,14 @@ const MostPopularItem = ({ viewType, item }) => {
 
   const onSelectNfts = () => {
     dispatch({
-      type : LOAD_NFT_DETAIL,
-      payload : {
-        collectionAddress : item.collectionAddress,
-        tokenID : item.tokenID
-      }
+      type: LOAD_NFT_DETAIL,
+      payload: {
+        collectionAddress: item.collectionAddress,
+        tokenID: item.tokenID,
+      },
     });
-    navigate('/my-nft')
-  }
+    navigate("/my-nft");
+  };
 
   const calculateTimeLeftBeforeExpiration = (expirationDate, dateNow) => {
     const futurDate = new Date(0);
@@ -147,13 +148,15 @@ const MostPopularItem = ({ viewType, item }) => {
               </span>
             </p>
             <p>
-              <span>
-                Ends in{" "}
-                {calculateTimeLeftBeforeExpiration(
-                  itemInfos?.endAuction,
-                  dateTime
-                )}
-              </span>
+              {item.listingType === AUCTION && (
+                <span>
+                  Ends in{" "}
+                  {calculateTimeLeftBeforeExpiration(
+                    itemInfos?.endAuction,
+                    dateTime
+                  )}
+                </span>
+              )}
             </p>
           </div>
         </div>

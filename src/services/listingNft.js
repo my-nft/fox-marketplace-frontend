@@ -1,7 +1,9 @@
 import {
   AUTIONContractAddress,
   ERC20ContractAddress,
+  FIXEDContractAddress,
   getCurrentWalletConnected,
+  loadAFixedPriceContract,
   loadAuctionContract,
   loadERC20Contract,
   loadERC721Contract,
@@ -11,9 +13,11 @@ import {
 
 import { setNftToListed } from "../api/nftApi";
 import { toast } from "react-toastify";
+import { FIXED_PRICE } from "../utils/foxConstantes";
 
 const auctionContract = loadAuctionContract();
 const erc20Contract = loadERC20Contract();
+const fixedPriceContract = loadAFixedPriceContract();
 
 export const nftLoader = async (collectionAddress) => {
   const contract = loaderContract();
@@ -117,9 +121,8 @@ export const getAuctionInfos = async (auctionId) => {
 };
 
 export const placeBid = async (auctionId, bidValue) => {
-
   const connectWallet = getCurrentWalletConnected();
-  const bidValueTrans = web3.utils.toHex(bidValue*10**18);
+  const bidValueTrans = web3.utils.toHex(bidValue * 10 ** 18);
 
   try {
     const gasLimitApprouve = await erc20Contract.methods
@@ -129,11 +132,13 @@ export const placeBid = async (auctionId, bidValue) => {
         to: ERC20ContractAddress,
       });
 
-    await erc20Contract.methods.approve(AUTIONContractAddress, bidValueTrans).send({
-      from: connectWallet,
-      to: ERC20ContractAddress,
-      gasLimit: gasLimitApprouve,
-    });
+    await erc20Contract.methods
+      .approve(AUTIONContractAddress, bidValueTrans)
+      .send({
+        from: connectWallet,
+        to: ERC20ContractAddress,
+        gasLimit: gasLimitApprouve,
+      });
 
     const gasLimitPlaceBid = await auctionContract.methods
       .bid(auctionId, bidValueTrans)
@@ -149,6 +154,108 @@ export const placeBid = async (auctionId, bidValue) => {
     });
   } catch (error) {
     console.log(error);
-    toast.error(error.message)
+    toast.error(error.message);
   }
+};
+
+export const refundNft = async (auctionId) => {
+  try {
+    const connectWallet = getCurrentWalletConnected();
+    const gasLimit = await auctionContract.methods
+      .refund(auctionId)
+      .estimateGas({
+        from: connectWallet,
+        to: AUTIONContractAddress,
+      });
+    await auctionContract.methods.refund(auctionId).send({
+      from: connectWallet,
+      to: AUTIONContractAddress,
+      gasLimit,
+    });
+  } catch (error) {
+    console.log(error);
+    toast.error(error.message);
+  }
+};
+
+export const claimNFT = async (auctionId) => {
+  const connectWallet = getCurrentWalletConnected();
+  const gasLimit = await auctionContract.methods
+    .claimNFT(auctionId)
+    .estimateGas({
+      from: connectWallet,
+      to: AUTIONContractAddress,
+    });
+  await auctionContract.methods.claimNFT(auctionId).send({
+    from: connectWallet,
+    to: AUTIONContractAddress,
+    gasLimit,
+  });
+};
+
+export const claimToken = async (auctionId) => {
+  const connectWallet = getCurrentWalletConnected();
+  const gasLimit = await auctionContract.methods
+    .claimToken(auctionId)
+    .estimateGas({
+      from: connectWallet,
+      to: AUTIONContractAddress,
+    });
+  await auctionContract.methods.claimToken(auctionId).send({
+    from: connectWallet,
+    to: AUTIONContractAddress,
+    gasLimit,
+  });
+};
+
+export const createListing = async (collectionAddress, tokenID, priceInput) => {
+  const connectWallet = getCurrentWalletConnected();
+  const price = web3.utils.toHex(priceInput * 10 ** 18);
+  const collectionContract = loadERC721Contract(collectionAddress);
+
+  console.log("TOKENID : ", tokenID);
+  console.log("PRICE : ", price);
+  console.log("WALLET : ", connectWallet);
+  console.log("FIXEDContractAddress : ", FIXEDContractAddress);
+  console.log("collectionAddress", collectionAddress);
+  console.log("fixedPriceContract", fixedPriceContract);
+
+  const gasLimitApprouve = await collectionContract.methods
+    .setApprovalForAll(FIXEDContractAddress, "true")
+    .estimateGas({
+      from: connectWallet,
+      to: collectionAddress,
+    });
+
+  await collectionContract.methods.setApprovalForAll(FIXEDContractAddress, "true").send({
+    from: connectWallet,
+    to: collectionAddress,
+    gasLimit: gasLimitApprouve,
+  });
+
+  const gasLimit = await fixedPriceContract.methods
+    .createListing(collectionAddress, tokenID, price)
+    .estimateGas({
+      from: connectWallet,
+      to: FIXEDContractAddress,
+    });
+
+  const tnx = await fixedPriceContract.methods
+    .createListing(collectionAddress, tokenID, price)
+    .send({
+      from: connectWallet,
+      to: FIXEDContractAddress,
+      gasLimit,
+    });
+
+    console.log("#################=>", tnx)
+
+    // Mark the NFT as Listed in DB
+    await setNftToListed({
+      collectionAddress,
+      tokenID,
+      listingType : FIXED_PRICE,
+      price : priceInput,
+      listingId : Number(tnx)
+    });
 };

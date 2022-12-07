@@ -5,7 +5,7 @@ import {
   loadSearcheableCollectionSaga,
   showNftDetails,
 } from "./collectionSaga";
-import { loadListedNfts } from "./nftSaga";
+import { loadListedNfts, removeListingNftSaga } from "./nftSaga";
 import { loadUser } from "./userSaga";
 
 function* watchAll() {
@@ -15,7 +15,8 @@ function* watchAll() {
     loadSearcheableCollectionSaga(),
     showNftDetails(),
     loadAccountData(),
-    loadListedNfts()
+    loadListedNfts(),
+    removeListingNftSaga()
   ]);
 }
 
