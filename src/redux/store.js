@@ -4,7 +4,6 @@ import createSagaMiddleware from "redux-saga";
 import storage from "redux-persist/lib/storage";
 import { persistStore, persistReducer } from "redux-persist";
 import watchAll from "../saga/sagas";
-import { logger } from 'redux-logger';
 
 // Create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -12,8 +11,7 @@ const sagaMiddleware = createSagaMiddleware();
 const makeStore = () => {
   const persistConfig = {
     key: "root",
-    storage,
-    timeout: 2000,
+    storage
   };
 
   const persistedReducer = persistReducer(persistConfig, rootReducer);

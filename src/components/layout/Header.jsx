@@ -31,6 +31,7 @@ const Header = () => {
 
   const addWalletListener = () => {
     window.ethereum.on("accountsChanged", async (accounts) => {
+      console.log("{############################ account changed #######################}")
       dispatch({ type: "DESTROY_SESSION" });
 
       navigate("/");

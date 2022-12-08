@@ -1,4 +1,5 @@
 import { all } from "redux-saga/effects";
+import { acceptOfferSaga, buyNft, delistItem, makeOffer } from "./blockchain.js/blockChainInteractorSaga";
 import {
   loadAccountData,
   loadPopularCollectionSaga,
@@ -16,7 +17,11 @@ function* watchAll() {
     showNftDetails(),
     loadAccountData(),
     loadListedNfts(),
-    removeListingNftSaga()
+    removeListingNftSaga(),
+    buyNft(),
+    makeOffer(),
+    delistItem(),
+    acceptOfferSaga()
   ]);
 }
 

@@ -13,13 +13,11 @@ import PlaceBid from "../../components/nft/PlaceBid";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { sameAddress } from "../../utils/walletUtils";
 import { useDispatch } from "react-redux";
-import { REMOVE_LISTING_FROM_NFT } from "../../saga/actions";
 
 
-const ListedNft = ({ itemDetails, onPlaceBid }) => {
+const ListedNft = ({ itemDetails, onPlaceBid, removeListingFromToken }) => {
   const [itemInfos, setItemInfos] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const dispatch = useDispatch();
 
   const isTokenExpired = (endAuction) => {
     const date = new Date(0);
@@ -47,16 +45,6 @@ const ListedNft = ({ itemDetails, onPlaceBid }) => {
   const handleClaimToken = async () => {
     await claimToken(itemDetails.auctionId - 1);
     removeListingFromToken();
-  };
-
-  const removeListingFromToken = () => {
-    dispatch({
-      type: REMOVE_LISTING_FROM_NFT,
-      payload: {
-        tokenID: itemDetails.tokenID,
-        collectionAddress: itemDetails.collectionAddress,
-      },
-    });
   };
 
   const init = async () => {
