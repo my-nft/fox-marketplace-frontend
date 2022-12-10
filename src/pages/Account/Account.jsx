@@ -1,77 +1,151 @@
-import FilterInput from "./Filters"
-import ListNfts from './NFTs';
+import FilterInput from "./Filters";
+import ListNfts from "./NFTs";
 import { useState } from "react";
 import AccountHeader from "./AccountHeader";
 import { useEffect } from "react";
-import { getNfts } from '../../api/nftApi'
 import { useDispatch, useSelector } from "react-redux";
-import { selectConnectedUser } from "../../redux/userReducer";
-import { selectAccountOwner, selectCollected, selectCollections, selectCreated, selectIsLoadingAccount, selectNfts } from "../../redux/accountReducer";
+import { selectConnectedWallet } from "../../redux/userReducer";
+import {
+  selectAccountOwner,
+  selectCollections,
+  selectIsLoadingAccount,
+  selectNfts,
+} from "../../redux/accountReducer";
 import Spinner from "../../components/Spinner";
-import { LOAD_ACCOUNT_DATA, LOAD_USER } from "../../saga/actions";
+import { LOAD_ACCOUNT_COLLECTIONS, LOAD_ACCOUNT_NFTS } from "../../saga/actions";
+import Pagination from "../../components/pagination/pagination";
 
 const AccountPage = () => {
+  const [visible, setVisible] = useState(false);
+  const [viewType, setViewType] = useState("CHANGE_FOR_MIN");
+  const [activeSection, setActiveSection] = useState("COLLECTIONS");
+  const collections = useSelector(selectCollections);
+  const nfts = useSelector(selectNfts);
+  const [pagination, setPagination] = useState({
+    page : 1,
+    numberElements : 10,
+    maxPages: 5
+  })
 
-    const [visible, setVisible] = useState(false);
-    const [viewType, setViewType] = useState("CHANGE_FOR_MIN");
-    const [activeSection, setActiveSection] = useState("COLLECTIONS")
+  const [filters, setFilters] = useState({
+    searchPrompt: "",
+    buyNow: false,
+    isAuction: false,
+    isNew: false,
+    hasOffers: false,
+    buyWithCard: false,
+    minPrice: 0,
+    maxPrice: 0,
+    buyToken: "ETH",
+    categories: [],
+    sortBy: "RECENTLY_LISTED",
+  })
 
-    const dispatch = useDispatch()
-    const collectionAddress = useSelector(selectConnectedUser);
-    const isLoading = useSelector(selectIsLoadingAccount);
-    
-    const accountOwner = useSelector(selectAccountOwner);
-
-    const data = {
-        COLLECTIONS: useSelector(selectCollections),
-        NFTS: useSelector(selectNfts),
-        CREATED: useSelector(selectCreated),
-        COLLECTED: useSelector(selectCollected)
-        
-    }
-  
+  useEffect(() => {
+      console.log(filters)
+  }, [filters])
 
 
-    useEffect(() => {
-        if(collectionAddress){
-            dispatch({
-                type: LOAD_ACCOUNT_DATA,
-                payload: {
-                    collectionAddress: collectionAddress?.address,
-                    page: 1,
-                    numberElements: 10,
-                    filter: false
-                }
-            })
+
+
+  const dispatch = useDispatch();
+  const connectedWallet = useSelector(selectConnectedWallet);
+  const isLoading = useSelector(selectIsLoadingAccount);
+  const accountOwner = useSelector(selectAccountOwner);
+
+  const changePage = (page) => {
+    if( page < 1 || page > pagination.maxPages) return;
+    setPagination({
+      ...pagination,
+      page
+    })
+  }
+
+
+  const runDispatchNfts = (body) => {
+    dispatch({
+      type : LOAD_ACCOUNT_NFTS,
+      payload : {
+        ...body
+      }
+    })
+  }
+
+  const runInit = () => {
+    if (activeSection === "COLLECTIONS") {
+      dispatch({
+        type : LOAD_ACCOUNT_COLLECTIONS,
+        payload : {
+          ...pagination,
+          ownerAddress : connectedWallet
         }
-       
-       
-    }, [collectionAddress])
-   
+      })
+    } else if (activeSection === "NFTS") {
+      runDispatchNfts({
+        ownerAddress : connectedWallet
+      })
+    } else if (activeSection === "CREATED") {
+      runDispatchNfts({
+        creatorAddress : connectedWallet
+      })
+    } else if (activeSection === "COLLECTED") {
+      runDispatchNfts({
+        ownerAddress : connectedWallet,
+        collectedOnly : true
+      })
+    } else if (activeSection === "LISTED") {
+      runDispatchNfts({
+        isListed : true,
+        ownerAddress : connectedWallet,
+      })
+    }
+  }
 
-    return(
-        <div>
-           
-            {
-                isLoading
-                ? <Spinner />
-                :
-                <> 
-                        <AccountHeader user={accountOwner} />
-                        <FilterInput
-                            onOpenClose={() => setVisible(!visible)}
-                            onChangeSelectedView={setViewType}
-                            onChangeActiveSection={setActiveSection}
-                        />
-                        <ListNfts activeSection={activeSection} isVisible={visible} viewType={viewType} collectionNFTs={data} />
+  useEffect(() => {
+    console.log("ACTIVE SECTION ====> " , activeSection);
+    runInit();
+    setPagination({
+      ...pagination,
+      page : 1
+    })
+  }, [activeSection]);
 
-                </>
+  console.log("CT  ", activeSection)
 
-            }
-            <span className="d-block mt-4 mb-5"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ></span>
-           
-        </div>
-    )
-}
+  return (
+    <div>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <AccountHeader user={accountOwner} />
+          <FilterInput
+            onOpenClose={() => setVisible(!visible)}
+            onChangeSelectedView={setViewType}
+            onChangeActiveSection={setActiveSection}
+            changeFilterValue={setFilters}
+            filters={filters}
+            activeSection={activeSection}
+          />
+          <ListNfts
+            activeSection={activeSection}
+            isVisible={visible}
+            viewType={viewType}
+            nfts={nfts}
+            collections={collections}
+            filters={filters}
+            changeFilterValue={setFilters}
+          />
+          <Pagination
+            pages={pagination.maxPages}
+            currentPage={pagination.page}
+            setCurrentPage={changePage}
+          />
+        </>
+      )}
+      <span className="d-block mt-4 mb-5"></span>
+    </div>
+  );
+};
 
-export default AccountPage
+export default AccountPage;

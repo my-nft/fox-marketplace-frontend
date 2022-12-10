@@ -10,11 +10,11 @@ const TrendingCollection = (props) => {
 
   useEffect(() => {
     setLoading(true)
-    setItems(getCollections(null,'TRENDING'))
+    //setItems(getCollections(null,'TRENDING'))
     setLoading(false)
   }, [])
 
-  console.log(items)
+
 
   return (
     <>

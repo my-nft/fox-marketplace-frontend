@@ -13,7 +13,7 @@ const NftDetails = () => {
   useEffect(() => {
     setLoading(true);
     // get item details
-    let details = getNFTById();
+    let details = {};
     console.log("details", details);
     if(details) {
       setItemDetails(details);

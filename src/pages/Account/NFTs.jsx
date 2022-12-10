@@ -2,34 +2,27 @@ import AccordionPrice from "../Explorer/AccordionPrice";
 
 
 import MostPopularItem from "../../components/marketplace/MostPopularItem";
-import { useEffect } from "react";
-import { createPath } from "react-router-dom";
 import AccordingStatus from './../CollectionDetails/AccoringStatus';
 import AccordionCategory from './../CollectionDetails/AccordionCategory';
 import ListActivities from './../CollectionDetails/ListActivities';
 import AccordingCollection from './../Explorer/AccordingCollection';
+import ExplorePopularCollectionItem from "../../components/ExplorePopularCollectionItem";
 
-const ListNfts = ({ collectionNFTs, isVisible , viewType, activeSection}) => {
-  console.log("#####################",collectionNFTs)
-  useEffect(() => {
-    console.log("ListNfts", viewType);
-  },[])
-
-  console.log("tabsNft", viewType)
+const ListNfts = ({ nfts, collections, isVisible , viewType, activeSection, filters,changeFilterValue}) => {
 
   return (
     <section id="tabsNft" className="container-fluid accountListed">
-      <div className="row" style={{ display: "flex" }}>
+      <div className={`row collectionFilters ${!isVisible ? "filtersHide" : null}`} style={{ display: "flex" }}>
         <div
-          className="col"
+          className="col filtersCollapsible"
           id="filter"
-          style={!isVisible ? { display: "none" } : { display: "block" }}
+          style={{display: 'block'}}
         >
           <div className="col pl-0">
-            <AccordingStatus />
-            <AccordionPrice />
-            <AccordingCollection listSearcheableCollections={collectionNFTs["COLLECTIONS"]}  />
-            <AccordionCategory />
+            <AccordingStatus filters={filters} changeFilterValue={changeFilterValue} />
+            <AccordionPrice filters={filters} changeFilterValue={changeFilterValue} />
+            <AccordingCollection listSearcheableCollections={[]}  />
+            <AccordionCategory filters={filters} changeFilterValue={changeFilterValue} />
           </div>
         </div>
 
@@ -43,11 +36,16 @@ const ListNfts = ({ collectionNFTs, isVisible , viewType, activeSection}) => {
             >
               <div className="wrapperMostPopular row">
                 {
-                
-                  collectionNFTs[activeSection].map((item, index) => {
+                  activeSection === 'COLLECTIONS' ?
+                  collections.map((item, index) => {
+                    return <ExplorePopularCollectionItem key={index} itemData={item} viewType={viewType} />
+                  }) : null
+                }
+                {
+                  activeSection !== 'COLLECTIONS' ?
+                  nfts.map((item, index) => {
                     return <MostPopularItem key={index} item={item} viewType={viewType} />
-                  })
-                
+                  }) : null
                 }
               </div>
             </div>

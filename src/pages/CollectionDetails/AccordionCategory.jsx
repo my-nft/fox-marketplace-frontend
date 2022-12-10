@@ -1,6 +1,29 @@
 import SliderToggle from "../Account/SliderToggle";
 
-const AccordionCategory = () => {
+const AccordionCategory = ({filters, changeFilterValue}) => {
+
+  const handleCategoryToggle = (category, boolean) => {
+    if(boolean){
+      // item is checked
+      if(!filters.categories.includes(category)){
+        changeFilterValue({
+          ...filters,
+          categories: [...filters.categories, category]
+        })
+      }
+
+    }
+    else{
+      // item is unchecked
+      changeFilterValue({
+        ...filters,
+        categories: [...filters.categories.filter(item => item !== category)]
+      })
+    }
+ 
+  }
+
+
   return (
     <div id="accordionCategory">
       <div className="card">
@@ -35,14 +58,14 @@ const AccordionCategory = () => {
           data-parent="#accordionCategory"
         >
           <div className="card-body">
-            <SliderToggle title='Art' />
-            <SliderToggle title='Collectible' />
-            <SliderToggle title='Domain Names' />
-            <SliderToggle title='Music' />
-            <SliderToggle title='Photography' />
-            <SliderToggle title='Trending Cards' />
-            <SliderToggle title='Utility' />
-            <SliderToggle title='Virtual Worlds' />
+            <SliderToggle title='Art' active={filters.categories.includes("ART")} action={(boolean) => handleCategoryToggle("ART",boolean)} />
+            <SliderToggle title='Collectible' active={filters.categories.includes("COLLECTIBLE")} action={(boolean) => handleCategoryToggle("COLLECTIBLE",boolean)} />
+            <SliderToggle title='Domain Names' active={filters.categories.includes("DOMAIN_NAMES")} action={(boolean) => handleCategoryToggle("DOMAIN_NAMES",boolean)} />
+            <SliderToggle title='Music' active={filters.categories.includes("MUSIC")} action={(boolean) => handleCategoryToggle("MUSIC",boolean)} />
+            <SliderToggle title='Photography' active={filters.categories.includes("PHOTOGRAPHY")} action={(boolean) => handleCategoryToggle("PHOTOGRAPHY",boolean)} />
+            <SliderToggle title='Trending Cards' active={filters.categories.includes("TRENDING_CARDS")} action={(boolean) => handleCategoryToggle("TRENDING_CARDS",boolean)} />
+            <SliderToggle title='Utility' active={filters.categories.includes("UTILITY")} action={(boolean) => handleCategoryToggle("UTILITY",boolean)} />
+            <SliderToggle title='Virtual Worlds' active={filters.categories.includes("VIRTUAL_WORLDS")} action={(boolean) => handleCategoryToggle("VIRTUAL_WORLDS",boolean)} />
 
           </div>
         </div>

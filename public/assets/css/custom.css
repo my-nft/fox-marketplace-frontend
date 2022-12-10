@@ -1024,6 +1024,7 @@ footer a {
   background: #ff9758;
   display: block;
   position: relative;
+  cursor: pointer;
 }
 
 .onoffbtn.active {
@@ -1037,8 +1038,9 @@ footer a {
   display: block;
   border-radius: 50%;
   background: #fff;
-  top: 4px;
-  left: 3px;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 5px;
   content: "-";
   -webkit-transition: all 200ms ease-in-out;
   -moz-transition: all 200ms ease-in-out;
@@ -1106,6 +1108,10 @@ footer a {
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
   margin-bottom: 5px;
+}
+
+#accordionPrice button[type="submit"]:hover{
+  background-color: #f58103 !important;
 }
 
 .card .btn-link {
@@ -1468,7 +1474,7 @@ img.withGlow.active {
   top: 50%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  animation: glow 3s ease-in-out infinite;
+  animation: glow 3s ease-in-out forwards;
   z-index: 2;
 }
 
@@ -1478,13 +1484,13 @@ img.withGlow.active {
   0%{
     box-shadow: 0 0 0 0 rgba(255, 154, 27, 0);
   }
-  50%{
-    box-shadow: 0 0 24px 40px rgba(255, 154, 27, 0.35);
-  }
   100%{
+    box-shadow: 0 0 24px 40px rgba(255, 154, 27, 0.10);
+  }
+  /* 100%{
     box-shadow: 0 0 0 10px rgba(255, 154, 27, 0);
     
-  }
+  } */
 }
 
 
@@ -2307,4 +2313,130 @@ s #accordionListing table tr,
 
 #chooseLayout svg {
   cursor: pointer;
+}
+
+.paginationWrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 32px 16px 96px;
+}
+
+.paginationWrapper .paginationAction{
+  cursor: pointer;
+  transition: 300ms ease-in-out;
+  color: #212529;
+}
+
+.paginationWrapper .paginationAction:hover{
+  color: #f58103;
+}
+
+.paginationWrapper .paginationPageActive{
+  color: #f58103;
+}
+
+.paginationPagesWrapper{
+  display: flex;
+  align-items: center;
+}
+
+.paginationPage{
+  margin: 0 8px;
+  cursor: pointer;
+  transition: 300ms ease-in-out;
+}
+
+.paginationPage:hover{
+  color: #f5800383;
+}
+
+.paginationHide{
+  visibility: hidden;
+  opacity: 0;
+  cursor: default;
+}
+
+.filtersContainer{
+  max-height: 1280px;
+  transition: 300ms ease-in-out;
+
+}
+
+
+#remove arrows from number input
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
+    border: 1px solid transparent !important;
+}
+
+input[type=number]:focus-within{
+  outline: #f58103;
+  border: 1px solid #f58103 !important;
+}
+
+
+
+.filtersCollapsible{
+  transition: 300ms ease-in-out;
+  max-width: 100% !important;
+  max-height: 100%;
+}
+
+.filtersCollapsible *{
+  transition: 300ms ease-in-out;
+
+}
+
+.collectionFilters .filtersCollapsible{
+  max-width: 380px !important;
+}
+
+.filtersContainer #command .checkBox{
+  transition: 300ms ease-in-out;
+
+}
+
+.filtersHide.filtersExplorer{
+  max-width: 144px !important;
+}
+
+.filtersContainer #openClose{
+  min-width: 65px;
+
+}
+
+.filtersHide #command{
+  flex-wrap: nowrap;
+}
+
+.filtersHide #command  .checkBox{
+  opacity: 0;
+  max-width: 0;
+  max-height: 0;
+  overflow: hidden;
+  padding: 0;
+ 
+}
+
+
+.filtersHide .filtersCollapsible{
+  max-width: 0 !important;
+  max-height: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+
+
+.filtersHide .filtersCollapsible *{
+  opacity: 0;
+  transition-delay: 150ms;
 }

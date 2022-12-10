@@ -1,6 +1,9 @@
 import SliderToggle from "../Account/SliderToggle";
 
-const AccordingStatus = () => {
+const AccordingStatus = ({filters, changeFilterValue}) => {
+
+
+
   return (
     <div id="accordionStatus">
       <div className="card">
@@ -35,12 +38,44 @@ const AccordingStatus = () => {
           data-parent="#accordionStatus"
         >
           <div className="card-body">
-            <SliderToggle title={"Buy Now"}/>
-            <SliderToggle title={"On Action"}/>
-            <SliderToggle title={"New"}/>
-            <SliderToggle title={"Has Offers"}/>
-            <SliderToggle title={"Buy with Card"}/>
-         
+            <SliderToggle 
+              title={"Buy Now"} 
+              active={filters.buyNow} 
+              action={(boolean) => changeFilterValue({
+                ...filters,
+                "buyNow": boolean
+              }) }  
+            />
+            <SliderToggle 
+              title={"On Auction"} 
+              active={filters.isAuction} 
+              action={(boolean) => changeFilterValue({
+                ...filters,
+                "isAuction": boolean
+              }) } 
+            />
+            <SliderToggle 
+              title={"New"} 
+              active={filters.isNew} 
+              action={(boolean) => changeFilterValue({
+                ...filters,
+                "isNew": boolean
+              }) } />
+            <SliderToggle 
+              title={"Has Offers"} 
+              active={filters.hasOffers} 
+              action={(boolean) => changeFilterValue({
+                ...filters,
+                "hasOffers": boolean
+              }) } />
+            <SliderToggle 
+              title={"Buy with Card"} 
+              active={filters.buyWithCard} 
+              action={(boolean) => changeFilterValue({
+                ...filters,
+                "buyWithCard": boolean
+              }) } 
+            />
           </div>
         </div>
       </div>

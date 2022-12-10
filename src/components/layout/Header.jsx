@@ -31,6 +31,9 @@ const Header = () => {
 
   const addWalletListener = () => {
     window.ethereum.on("accountsChanged", async (accounts) => {
+      console.log(
+        "{############################ account changed #######################}"
+      );
       dispatch({ type: "DESTROY_SESSION" });
 
       navigate("/");
@@ -82,16 +85,6 @@ const Header = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/">
-                  Stats
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/">
-                  Resource
-                </Link>
-              </li>
-              <li className="nav-item">
                 <Link className="nav-link" to="/creation">
                   Create
                 </Link>
@@ -101,11 +94,18 @@ const Header = () => {
 
           <ul id="buttonIcon">
             {connectedWallet ? (
-              <li>
-                <Link to={"/profile"}>
-                  <img src="/assets/icon-white-user.png" alt="" />
-                </Link>
-              </li>
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/account">
+                    Account
+                  </Link>
+                </li>
+                <li>
+                  <Link to={"/profile"}>
+                    <img src="/assets/icon-white-user.png" alt="" />
+                  </Link>
+                </li>
+              </>
             ) : null}
             <li>
               <Link to="#">

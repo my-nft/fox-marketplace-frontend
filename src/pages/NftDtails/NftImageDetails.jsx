@@ -5,8 +5,6 @@ import AccordionProperties from "./AccordionProperties";
 
 const NftImageDetails = ({itemData}) => {
 
-  console.log(itemData)
-
   return (
     <div class="col-md-12  col-lg-5 order-2 order-lg-1 ">
       <div id="imgNft">

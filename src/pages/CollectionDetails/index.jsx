@@ -5,60 +5,91 @@ import { useEffect, useState } from "react";
 import {
   getCollectionByAddress,
   getCollectionNftsCall,
-} from "./../../api/collectionApi";
+} from "../../api/collectionApi";
 import Spinner from "../../components/Spinner";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LOAD_NFT_DETAIL } from "../../saga/actions";
-
-
-export const collectionAddress_tochange = '0xAFac09848E595061B22415159608bfD7bD8A83A7';
+import {
+  selectCollectionDetails,
+  selectCurrentCollectionNfts,
+  selectIsLoading,
+  selectIsLoadingNfts,
+} from "../../redux/collectionReducer";
+import Pagination from "../../components/pagination/pagination";
 
 const CollectionDetails = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [detailCollection, setDetailCollection] = useState();
-  const [nfts, setNfts] = useState([]);
+  
+  
+  const detailCollection = useSelector(selectCollectionDetails);
+  const nfts = useSelector(selectCurrentCollectionNfts);
+
+  const isLoadingCollection = useSelector(selectIsLoading);
+  const isLoadingNfts = useSelector(selectIsLoadingNfts);
+
   const [pagination, setPagination] = useState({
     page: 1,
-    numberElements: 20,
+    numberElements: 100,
+    maxPages: 5
   });
+
+  const [filters, setFilters] = useState({
+    searchPrompt: "",
+    buyNow: false,
+    isAuction: false,
+    isNew: false,
+    hasOffers: false,
+    buyWithCard: false,
+    minPrice: 0,
+    maxPrice: 0,
+    buyToken: "ETH",
+    sortBy: "RECENTLY_LISTED",
+    categories: []
+  })
+
+  useEffect(() => {
+      console.log(filters)
+  }, [filters])
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [visible, setVisible] = useState(false);
   const [viewType, setViewType] = useState("CHANGE_FOR_MIN");
-
 
   const changeSelectedView = (selection) => {
     console.log(selection);
     setViewType(selection);
   };
 
-  const init = async () => {
-    let collectionData = await getCollectionByAddress(collectionAddress_tochange);
-    let collectionNFTs = await getCollectionNftsCall(collectionAddress_tochange, pagination);
-
-    setDetailCollection(collectionData.data);
-    setNfts(collectionNFTs.data);
-    setIsLoading(false);
-  }
-
   useEffect(() => {
-    init();
-  }, []);
+    if (detailCollection && detailCollection.importProcessing) {
+      // dispatch in timer to reload
+    }
+  }, [detailCollection]);
 
   const handleSelectNfts = (tokenID) => {
     dispatch({
-      type : LOAD_NFT_DETAIL,
-      payload : {
-        collectionAddress : collectionAddress_tochange,
-        tokenID : tokenID
-      }
+      type: LOAD_NFT_DETAIL,
+      payload: {
+        collectionAddress: detailCollection.collectionAddress,
+        tokenID: tokenID,
+      },
     });
-    navigate('/my-nft')
+    navigate("/my-nft");
+  };
+
+  const changePage = (page) => {
+    if( page < 1 || page > pagination.maxPages) return;
+    setPagination({
+      ...pagination,
+      page
+    })
   }
 
-  return isLoading ? (
+
+  console.log("---------------------------", nfts);
+
+  return isLoadingCollection ? (
     <Spinner />
   ) : (
     <>
@@ -66,8 +97,27 @@ const CollectionDetails = () => {
       <FilterInput
         onOpenClose={() => setVisible(!visible)}
         onChangeSelectedView={changeSelectedView}
+        filters={filters}
+        changeFilterValue={setFilters}
       />
-      <ListNfts collectionNFTs={nfts} isVisible={visible} viewType={viewType} handleSelectNfts={handleSelectNfts} />
+      {isLoadingNfts ?  <Spinner /> : (
+        <>
+          <ListNfts
+            nfts={nfts}
+            isVisible={visible}
+            viewType={viewType}
+            handleSelectNfts={handleSelectNfts}
+            filters={filters}
+            changeFilterValue={setFilters}
+          />
+          <Pagination
+              currentPage={pagination.page}
+              pages={pagination.maxPages}
+              setCurrentPage={changePage}
+
+            />
+        </>
+      )}
     </>
   );
 };

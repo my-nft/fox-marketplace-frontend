@@ -10,7 +10,7 @@ const TopCollections = (props) => {
 
   useEffect(() => {
     setLoading(true)
-    setItems(getCollections(null,'TOP'))
+    //setItems(getCollections(null,'TOP'))
     setLoading(false)
   }, [])
 

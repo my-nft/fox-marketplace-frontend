@@ -1,17 +1,15 @@
-const AccordionDescription = ({itemData}) => {
-
-
+const AccordionAbout = () => {
   return (
-    <div id="accordionDescription">
+    <div id="accordionAbout">
       <div class="card">
-        <div class="card-header" id="headingOne">
+        <div class="card-header" id="headingSeven">
           <h5 class="mb-0">
             <button
               class="btn btn-link"
               data-toggle="collapse"
-              data-target="#collapseOne"
+              data-target="#collapsSeven"
               aria-expanded="true"
-              aria-controls="collapseOne"
+              aria-controls="collapsSeven"
             >
               <div>
                 <svg
@@ -19,15 +17,16 @@ const AccordionDescription = ({itemData}) => {
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-justify-left"
+                  class="bi bi-box-fill"
                   viewBox="0 0 16 16"
                 >
                   <path
                     fill-rule="evenodd"
-                    d="M2 12.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"
+                    d="M15.528 2.973a.75.75 0 0 1 .472.696v8.662a.75.75 0 0 1-.472.696l-7.25 2.9a.75.75 0 0 1-.557 0l-7.25-2.9A.75.75 0 0 1 0 12.331V3.669a.75.75 0 0 1 .471-.696L7.443.184l.004-.001.274-.11a.75.75 0 0 1 .558 0l.274.11.004.001 6.971 2.789Zm-1.374.527L8 5.962 1.846 3.5 1 3.839v.4l6.5 2.6v7.922l.5.2.5-.2V6.84l6.5-2.6v-.4l-.846-.339Z"
                   />
                 </svg>
-                <span class="pl-3">Description</span>
+                <span class="pl-3">About</span>
+                <strong> NameNFT</strong>
               </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -44,17 +43,17 @@ const AccordionDescription = ({itemData}) => {
         </div>
 
         <div
-          id="collapseOne"
-          class="collapse show"
-          aria-labelledby="headingOne"
-          data-parent="#accordionDescription"
+          id="collapsSeven"
+          class="collapse"
+          aria-labelledby="headingSeven"
+          data-parent="#accordionAbout"
         >
           <div class="card-body">
-            <p>
-              By <strong>{itemData.creator.username}</strong>
-            </p>
             <span>
-              {itemData.description}
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint,
+              maxime corrupti magnam odit deserunt cum quia aut quis non illo
+              harum amet itaque natus, suscipit doloribus ab optio recusandae
+              sed?
             </span>
           </div>
         </div>
@@ -63,5 +62,4 @@ const AccordionDescription = ({itemData}) => {
   );
 };
 
-
-export default AccordionDescription;
+export default AccordionAbout;

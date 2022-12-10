@@ -1,59 +1,150 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import NftMoreInfos from "../../components/nft/details/NftMoreInfos";
 import Spinner from "../../components/Spinner";
 import { selectNftDetails, selectIsLoading } from "../../redux/nftReducer";
-import { createAuction, nftLoader } from "../../services/listingNft";
-
-const FIXED_PRICE = "FIXED_PRICE";
-const AUCTION = "AUCTION";
+import { REMOVE_LISTING_FROM_NFT } from "../../saga/actions";
+import {
+  ACCEPT_OFFER,
+  BUY_NFT,
+  DELIST_ITEM,
+  LISTING_AUCTION,
+  LISTING_FIXED_PRICE,
+  MAKE_OFFER,
+  PLACE_BID,
+} from "../../saga/blockchain.js/blockChainActions";
+import { nftLoader } from "../../services/listingNft";
+import {
+  connectWallet,
+  getCurrentWalletConnected,
+} from "../../utils/blockchainInteractor";
+import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
+import { sameAddress } from "../../utils/walletUtils";
+import InfoNftDetails from "../NftDtails/InfoNftDetails";
+import ListedAuctionNft from "./listedAuctionNft";
+import ListedFixedNft from "./listedFixedNft";
+import NonListedMyNft from "./nonListedMyNft";
+import NonListedNft from "./nonListedNft";
 
 const MyNftDetails = () => {
+  const connectedWallet = getCurrentWalletConnected();
+  const nftDetailsSelector = useSelector(selectNftDetails);
   const [isLoadingPage, setIsLoadingPage] = useState(true);
-  const nftDetails = useSelector(selectNftDetails);
-  //const collectionDetails = useSelector(select)
+  const [nftDetails, setNftDetails] = useState();
   const isLoading = useSelector(selectIsLoading);
-  // can take FIXED_PRICE or AUCTION
-  const [type, setType] = useState(FIXED_PRICE);
-  // values
-  const [values, setValues] = useState({
-    fixedPrice: 0,
-    auctionPrice: 0,
-    time: 0,
-  });
-
-  const handleChange = (evt) => {
-    setValues({ ...values, [evt.target.name]: evt.target.value });
-  };
-
+  const dispatch = useDispatch();
   useEffect(() => {
     setIsLoadingPage(isLoading);
   }, [isLoading]);
 
+  useEffect(() => {
+    setNftDetails(nftDetailsSelector);
+  }, [nftDetailsSelector]);
+
   // see my own NFTs
   useEffect(() => {
-    nftLoader(nftDetails.collectionAddress);
-  }, []);
+    if (nftDetails) {
+      nftLoader(nftDetails.collectionAddress);
+    }
+  }, [nftDetails]);
 
-  const handleAuction = async (evt) => {
-    evt.preventDefault();
-    setIsLoadingPage(true);
+  const handleAuction = async (values) => {
     const auctionPrice = Number(values.auctionPrice);
     const endAuction = Number(values.time);
-    console.log(auctionPrice, endAuction);
-    const trx = await createAuction(
-      nftDetails.collectionAddress,
-      72,
-      auctionPrice,
-      endAuction,
-      AUCTION
-    );
-    console.log("Auction transaction", trx);
-    setIsLoadingPage(false);
+    dispatch({
+      type: LISTING_AUCTION,
+      payload: {
+        collectionAddress: nftDetails.collectionAddress,
+        tokenID: nftDetails.tokenID,
+        auctionPrice: auctionPrice,
+        endAuction: endAuction,
+      },
+    });
   };
 
-  const handleFixedPrice = (evt) => {
-    evt.preventDefault();
+  const handleFixedPrice = async (values) => {
+    const fixedPrice = Number(values.fixedPrice);
+    dispatch({
+      type: LISTING_FIXED_PRICE,
+      payload: {
+        collectionAddress: nftDetails.collectionAddress,
+        tokenID: nftDetails.tokenID,
+        fixedPrice: fixedPrice,
+      },
+    });
+  };
+
+  const onBuyItem = async (price) => {
+    dispatch({
+      type: BUY_NFT,
+      payload: {
+        listingId: nftDetails.listingId,
+        price,
+        tokenID: nftDetails.tokenID,
+        collectionAddress: nftDetails.collectionAddress,
+      },
+    });
+  };
+
+  const onMakeOffer = (offerPrice) => {
+    console.log("HERRE");
+    dispatch({
+      type: MAKE_OFFER,
+      payload: {
+        listingId: nftDetails.listingId,
+        price: offerPrice,
+        tokenID: nftDetails.tokenID,
+        collectionAddress: nftDetails.collectionAddress,
+      },
+    });
+  };
+
+  const onDelistItem = async () => {
+    console.log("####onDelestItem###");
+    dispatch({
+      type: DELIST_ITEM,
+      payload: {
+        listingId: nftDetails.listingId,
+        tokenID: nftDetails.tokenID,
+        collectionAddress: nftDetails.collectionAddress,
+      },
+    });
+  };
+
+  const onAcceptOffer = () => {
+    console.log("####onDelestItem###");
+    dispatch({
+      type: ACCEPT_OFFER,
+      payload: {
+        listingId: nftDetails.listingId,
+        tokenID: nftDetails.tokenID,
+        collectionAddress: nftDetails.collectionAddress,
+      },
+    });
+  };
+
+  const onPlaceBid = async (price) => {
+    console.log("####onPlaceBid###");
+    dispatch({
+      type: PLACE_BID,
+      payload: {
+        tokenID: nftDetails.tokenID,
+        collectionAddress: nftDetails.collectionAddress,
+        auctionId: nftDetails.auctionId - 1,
+        price,
+      },
+    });
+  };
+
+  const removeListingFromToken = () => {
+    dispatch({
+      type: REMOVE_LISTING_FROM_NFT,
+      payload: {
+        tokenID: nftDetails.tokenID,
+        collectionAddress: nftDetails.collectionAddress,
+      },
+    });
   };
 
   return isLoadingPage ? (
@@ -65,130 +156,60 @@ const MyNftDetails = () => {
       <div className="row">
         <div className="col-md-12  col-lg-5 order-2 order-lg-1 ">
           <div id="imgNft" className="imgForSale">
-            <img src={nftDetails.image} id="NFT" className="imgForSale" />
+            <img src={nftDetails?.image} id="NFT" className="imgForSale" />
           </div>
+          <NftMoreInfos nftDetails={nftDetails} />
         </div>
         <div className="col-md-12  col-lg-7 order-1 order-lg-2 ">
           <header id="infoNFT" className="mb-3">
-            <h4>{nftDetails.name}</h4>
+            <h4>{nftDetails?.name}</h4>
             <h2>RoboPunks number8 #1691</h2>
           </header>
 
-          <div className="card" id="cardNft">
-            <div className="card-body">
-              <div className="card-text">
-                <button
-                  id="fixedPrice"
-                  className={
-                    type === FIXED_PRICE
-                      ? "btn orangeBg active"
-                      : "btn orangeBg deactive"
-                  }
-                  onClick={() => setType(FIXED_PRICE)}
-                >
-                  Fixed price
-                </button>
-                <button
-                  id="timedAuction"
-                  className={
-                    type === AUCTION
-                      ? "btn orangeBg active"
-                      : "btn orangeBg deactive"
-                  }
-                  onClick={() => setType(AUCTION)}
-                >
-                  Timed auction
-                </button>
-              </div>
-            </div>
-          </div>
+          {
+            /*
+              CASE OF MY NFT
+            */
+            !nftDetails.isListed &&
+            sameAddress(connectedWallet, nftDetails.ownerAddress) ? (
+              <NonListedMyNft
+                nftDetails={nftDetails}
+                handleAuction={handleAuction}
+                handleFixedPrice={handleFixedPrice}
+              />
+            ) : null
+          }
 
-          {type === FIXED_PRICE ? (
-            <div className="card mt-2" id="fixedPriceDetails">
-              <div className="card-body">
-                <form id="setPrice">
-                  <div className="input-group">
-                    <div
-                      style={{
-                        width: "80%",
-                      }}
-                    >
-                      <label htmlFor="inputAmount">Price</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        aria-label="Text input with dropdown button"
-                        placeholder="Amount"
-                        id="fixedPrice"
-                        name="fixedPrice"
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <select id="nameofCoin">
-                      <option>FXG</option>
-                    </select>
-                  </div>
-                  <button
-                    id="makeOfferSubmit"
-                    className="btn contIcon"
-                    onClick={handleFixedPrice}
-                  >
-                    Make offer
-                  </button>
-                </form>
-              </div>
-            </div>
+          {
+            /*
+              CASE OF NOT MY NFT
+              */
+
+            !nftDetails.isListed &&
+            !sameAddress(connectedWallet, nftDetails.ownerAddress) ? (
+              <NonListedNft
+                itemDetails={nftDetails}
+                handleMakeOffer={onMakeOffer}
+              />
+            ) : null
+          }
+
+          {nftDetails.isListed && nftDetails.listingType === AUCTION ? (
+            <ListedAuctionNft
+              itemDetails={nftDetails}
+              onPlaceBid={onPlaceBid}
+              removeListingFromToken={removeListingFromToken}
+            />
           ) : null}
 
-          {type === AUCTION ? (
-            <div className="card mt-2" id="timedAuctionDetails">
-              <div className="card-body">
-                <div className="card-text">
-                  <form id="setAuction">
-                    <div className="input-group">
-                      <div
-                        style={{
-                          width: "80%",
-                        }}
-                      >
-                        <label htmlFor="inputAmount">Starting Price</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          aria-label="Text input with dropdown button"
-                          placeholder="Amount"
-                          id="auctionPrice"
-                          name="auctionPrice"
-                          onChange={handleChange}
-                        />
-                      </div>
-                      <select id="nameofCoin">
-                        <option>FXG</option>
-                      </select>
-                    </div>
-                    <div className="input-group mt-3">
-                      <label htmlFor="inputAmount">Duration</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        aria-label="Text input with dropdown button"
-                        placeholder="Duration"
-                        id="time"
-                        name="time"
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <button
-                      id="placeBidSubmit"
-                      className="btn contIcon"
-                      onClick={handleAuction}
-                    >
-                      Create auction
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
+          {nftDetails.isListed && nftDetails.listingType === FIXED_PRICE ? (
+            <ListedFixedNft
+              itemDetails={nftDetails}
+              onBuyItem={onBuyItem}
+              onMakeOffer={onMakeOffer}
+              onDelist={onDelistItem}
+              onAcceptOffer={onAcceptOffer}
+            />
           ) : null}
 
           <div className="card" id="fees">

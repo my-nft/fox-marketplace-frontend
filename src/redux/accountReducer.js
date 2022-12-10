@@ -4,8 +4,6 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 const INITIAL_STATE = {
     collections: [],
     nfts: [],
-    created: [],
-    collected: [],
     isLoading: false,
     accountOwner: false
 }
@@ -19,12 +17,6 @@ const AccountReducer = createSlice({
         },
         setAccountNfts: (state, action) => {
             state.nfts = action.payload;
-        },
-        setAccountCreated: (state, action) => {
-            state.created = action.payload;
-        },
-        setAccountCollected: (state, action) => {
-            state.collected = action.payload;
         },
         setIsLoadingAccount: (state, action) =>  {
             state.isLoading = action.payload;
@@ -50,16 +42,6 @@ export const selectNfts = createSelector(
     (account) => account.nfts
 )
 
-export const selectCreated = createSelector(
-    [selectSelf],
-    (account) => account.created
-)
-
-export const selectCollected = createSelector(
-    [selectSelf],
-    (account) => account.collected
-)
-
 export const selectIsLoadingAccount = createSelector(
     [selectSelf],
     (account) => account.isLoading 
@@ -73,11 +55,10 @@ export const selectAccountOwner = createSelector(
 export const { 
     setAccountCollections,
     setAccountNfts,
-    setAccountOwned,
-    setAccountCollected,
     setIsLoadingAccount,
     setAccountOwner
-    
 } = AccountActions;
+
+
 
 export default AccountReducer;

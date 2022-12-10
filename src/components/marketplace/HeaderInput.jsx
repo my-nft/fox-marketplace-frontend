@@ -1,8 +1,10 @@
-const HeaderInput = () => {
+const HeaderInput = ({filters, changeFilterValue}) => {
   return (
     <section id="headerInput">
-      <select>
-        <option value="">Recently Listed</option>
+      <select value={filters.sortBy} onChange={(e) => changeFilterValue({...filters, sortBy: e.target.value})} >
+        <option value="RECENTLY_LISTED">Recently Listed</option>
+        <option value="PRICE_ASC">Price Asc</option>
+        <option value="PRICE_DESC">Price Desc</option>
       </select>
       <button>
         <div>

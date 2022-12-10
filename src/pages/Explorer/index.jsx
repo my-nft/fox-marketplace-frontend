@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import HeaderInput from "../../components/marketplace/HeaderInput";
-import { MARKET_PLACE_DEFAULT_ADDRESS } from "../../config/blockChainConfig";
+import Pagination from "../../components/pagination/pagination";
 import Spinner from "../../components/Spinner";
 import {
-  selectIsLoadingMarketPlaceNfts,
-  selectIsLoadingMspl,
-  selectIsLoadingSearcheable,
-  selectMarketPlaceNfts,
   selectMostPopularCollections,
   selectSearcheableCollection,
 } from "../../redux/collectionReducer";
@@ -15,10 +11,7 @@ import {
 import {selectIsLoading, selectListedNfts} from '../../redux/nftReducer';
 
 import {
-  LOAD_LISTED_NFTS,
-  LOAD_MARKETPLACE_NFT,
-  LOAD_MOST_POPULAR_COLLECTION,
-  LOAD_SEARCHABLE_COLLECTION,
+  LOAD_MARKET_PLACE,
 } from "../../saga/actions";
 import AccordingCollection from "./AccordingCollection";
 import AccordingStatus from "./AccordingStatus";
@@ -33,79 +26,57 @@ const Explorer = () => {
   const mostPopularCollections = useSelector(selectMostPopularCollections);
   const searcheableCollections = useSelector(selectSearcheableCollection);
   const marketPlaceNfts = useSelector(selectListedNfts);
-  
-  
-  const isLoadingMostPopular = useSelector(selectIsLoadingMspl);
-  const isLoadingSearcheable = useSelector(selectIsLoadingSearcheable);
-  const isLoadingListedNfts = useSelector(selectIsLoading);
+ 
+  const isLoadingApi = useSelector(selectIsLoading);
+
+  const [filtersVisible, setFiltersVisible] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
+  const [pagination, setPagination] = useState({
+    numberElements: 10,
+    page: 1,
+    maxPages: 5
+  })
 
-  const loadMostPopularCollection = () => {
-    dispatch({
-      type: LOAD_MOST_POPULAR_COLLECTION,
-      payload: {
-        numberElements: 20,
-        page: 1,
-        /*
-        filter: {
-          tag: "MOST_POPULAR",
-        },
-        */
-      },
-    });
-  };
+  const [filters, setFilters] = useState({
+    minPrice: 0,
+    maxPrice: 0,
+    buyToken: "ETH",
+    status: "ALL",
+    showRaritiy: false,
+    sortBy: "RECENTLY_LISTED"
+  })
 
-  const loadSearcheableCollections = () => {
-    dispatch({
-      type: LOAD_SEARCHABLE_COLLECTION,
-      payload: {
-        numberElements: 10,
-        page: 1,
-        filter: {
-          tag: "MOST_POPULAR",
-        },
-      },
-    });
-  };
+  useEffect(() => {
+    console.log(filters)
+  }, [filters])
 
-  /*
-  const loadMarketPlaceNfts = () => {
-    dispatch({
-      type: LOAD_MARKETPLACE_NFT,
-      payload: {
-        numberElements: 10,
-        page: 1,
-        collectionAddress: MARKET_PLACE_DEFAULT_ADDRESS,
-        filter: {
-          tag: "MOST_POPULAR",
-        },
-      },
-    });
-  };
-  */
+  useEffect(() => {
+    setIsLoading(isLoadingApi);
+  }, [isLoadingApi])
 
-  const loadListedNfts = () => {
+  const loadMarketPlace = () => {
     dispatch({
-      type: LOAD_LISTED_NFTS,
+      type: LOAD_MARKET_PLACE,
       payload: {
-        numberElements: 10,
-        page: 1,
+        numberElements: pagination.numberElements,
+        page: pagination.page,
       },
     });
   }
 
   useEffect(() => {
-    loadMostPopularCollection();
-    loadSearcheableCollections();
-    loadListedNfts();
-  }, []);
+    loadMarketPlace();
+  }, [pagination]);
 
-  useEffect(() => {
-    setIsLoading(
-      isLoadingMostPopular  || isLoadingSearcheable || isLoadingListedNfts
-    );
-  }, [isLoadingMostPopular, isLoadingSearcheable, isLoadingListedNfts]);
+  const changePage = (page) => {
+    if( page < 1 || page > pagination.maxPages) return;
+    setPagination({
+      ...pagination,
+      page
+    })
+  }
+
 
   return isLoading ? (
     <Spinner />
@@ -114,19 +85,27 @@ const Explorer = () => {
       <MostPopularCollection collections={mostPopularCollections} />
       <section id="marketplace" class="container-fluid mb-5">
         <div class="row">
-          <div id="sx" class="col-md-3">
-            <Command />
-            <AccordingStatus />
-            <AccordionPrice />
+          <div id="sx" className={`col-md-3 filtersContainer filtersExplorer ${filtersVisible ? null : 'filtersHide'}`}>
+            <Command filters={filters} changeFilterValue={setFilters} toggleFilters={() => setFiltersVisible(!filtersVisible)} />
+            <div className="filtersCollapsible" >
+              <AccordingStatus filters={filters} changeFilterValue={setFilters} />
+              <AccordionPrice filters={filters} changeFilterValue={setFilters} />
 
-            <AccordingCollection
-              listSearcheableCollections={searcheableCollections}
-            />
+              <AccordingCollection
+                listSearcheableCollections={searcheableCollections}
+              />
+            </div>
+          
           </div>
-          <div id="dx" class="col-md-9">
-            <HeaderInput />
-
-            <MostPopular nfts={marketPlaceNfts} />
+          <div id="dx" className={`col-md-9`}>
+            <HeaderInput filters={filters} changeFilterValue={setFilters} />
+            <MostPopular nfts={marketPlaceNfts} pagination={pagination} changePage={changePage} />
+            <Pagination
+              pages={pagination.maxPages}
+              currentPage={pagination.page}
+              setCurrentPage={changePage}
+            
+            />
           </div>
         </div>
       </section>

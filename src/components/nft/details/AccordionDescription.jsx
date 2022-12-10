@@ -1,4 +1,6 @@
-const AccordionDescription = ({itemData}) => {
+import { optimizeWalletAddress } from "../../../utils/walletUtils";
+
+const AccordionDescription = ({nftDetails}) => {
 
 
   return (
@@ -10,7 +12,7 @@ const AccordionDescription = ({itemData}) => {
               class="btn btn-link"
               data-toggle="collapse"
               data-target="#collapseOne"
-              aria-expanded="true"
+              aria-expanded="false"
               aria-controls="collapseOne"
             >
               <div>
@@ -51,10 +53,10 @@ const AccordionDescription = ({itemData}) => {
         >
           <div class="card-body">
             <p>
-              By <strong>{itemData.creator.username}</strong>
+              By <strong>{optimizeWalletAddress(nftDetails.ownerAddress)}</strong>
             </p>
             <span>
-              {itemData.description}
+              {nftDetails.description}
             </span>
           </div>
         </div>

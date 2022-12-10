@@ -6,21 +6,24 @@ import MostPopularItem from "../../components/marketplace/MostPopularItem";
 import ListActivities from "./ListActivities";
 import { useEffect } from "react";
 
-const ListNfts = ({ collectionNFTs, isVisible , viewType, handleSelectNfts}) => {
+const ListNfts = ({ nfts, isVisible , viewType, handleSelectNfts, filters, changeFilterValue}) => {
+
+
+  console.log("(((((((((((((((((((",nfts);
   
   return (
     <section id="tabsNft" className="container-fluid accountListed">
-      <div className="row" style={{ display: "flex" }}>
+      <div className={`row collectionFilters ${!isVisible ? "filtersHide" : null}`} style={{ display: "flex" }}>
         <div
-          className="col"
+          className="col filtersCollapsible"
           id="filter"
-          style={!isVisible ? { display: "none" } : { display: "block" }}
+          style={{display: 'block'}}
         >
           <div className="col pl-0">
-            <AccordingStatus />
-            <AccordionPrice />
-            <AccordingCollection />
-            <AccordionCategory />
+            <AccordingStatus filters={filters} changeFilterValue={changeFilterValue} />
+            <AccordionPrice filters={filters} changeFilterValue={changeFilterValue} />
+            <AccordingCollection filters={filters} changeFilterValue={changeFilterValue} />
+            <AccordionCategory filters={filters} changeFilterValue={changeFilterValue} />
           </div>
         </div>
 
@@ -35,7 +38,7 @@ const ListNfts = ({ collectionNFTs, isVisible , viewType, handleSelectNfts}) => 
               <div className="wrapperMostPopular row">
                 {
                 
-                  collectionNFTs.map((item, index) => {
+                nfts.map((item, index) => {
                     return <MostPopularItem key={index} item={item} viewType={viewType} onSelectNfts={handleSelectNfts}/>
                   })
                 

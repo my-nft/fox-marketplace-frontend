@@ -1,10 +1,23 @@
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { LOAD_COLLECTION } from "../saga/actions";
 
 const ExplorePopularCollectionItem = ({itemData}) => {
-  console.log(itemData)
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleShowCollection = () => {
+    dispatch({
+      type: LOAD_COLLECTION,
+      payload : {
+        collectionAddress : itemData.collectionAddress
+      },
+      onSuccess: () => navigate("/collection")
+    })
+  }
+
   return (
-    <div className="listMostPopular" onClick={() => navigate("/collection")}>
+    <div className="listMostPopular" onClick={handleShowCollection}>
       <div className="wrapContent">
         <div className="wrapImg">
           <img
