@@ -75,7 +75,7 @@ const ListedNft = ({ itemDetails, onPlaceBid, removeListingFromToken }) => {
             priceDollar={itemInfos?.currentBidPrice / 10 ** 18}
           >
             {sameAddress(currentWallet, creator) && Number(bidCount) === 0 &&  isTokenExpired(
-                Number(itemInfos.endAuction)) && Number(bidCount) > 0
+                Number(itemInfos.endAuction))
                && (
               <button id="buyItem" class="btn" onClick={handleRefund}>
                 Refund

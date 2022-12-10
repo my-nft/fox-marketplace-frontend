@@ -6,6 +6,7 @@ import AccordingStatus from './../CollectionDetails/AccoringStatus';
 import AccordionCategory from './../CollectionDetails/AccordionCategory';
 import ListActivities from './../CollectionDetails/ListActivities';
 import AccordingCollection from './../Explorer/AccordingCollection';
+import ExplorePopularCollectionItem from "../../components/ExplorePopularCollectionItem";
 
 const ListNfts = ({ nfts, collections, isVisible , viewType, activeSection}) => {
 
@@ -37,7 +38,7 @@ const ListNfts = ({ nfts, collections, isVisible , viewType, activeSection}) => 
                 {
                   activeSection === 'COLLECTIONS' ?
                   collections.map((item, index) => {
-                    return <MostPopularItem key={index} item={item} viewType={viewType} />
+                    return <ExplorePopularCollectionItem key={index} itemData={item} viewType={viewType} />
                   }) : null
                 }
                 {

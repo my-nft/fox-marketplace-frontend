@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { call, cps, put, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest } from "redux-saga/effects";
 import * as api from "../api/collectionApi";
 import * as tokenApi from "../api/nftApi";
 import {
@@ -14,6 +14,9 @@ import {
   setSearcheableCollections,
   setIsLoadingSearcheableCollection,
   setIsLoading as setCollectionIsLoading,
+  setCollectionDetails,
+  setCurrentCollectionNfts,
+  setIsLoadingNfts,
 } from "../redux/collectionReducer";
 import {
   setIsLoading,
@@ -28,6 +31,8 @@ import {
   LOAD_SEARCHABLE_COLLECTION,
   LOAD_ACCOUNT_NFTS,
   LOAD_ACCOUNT_COLLECTIONS,
+  LOAD_COLLECTION,
+  LOAD_COLLECTION_NFTS,
 } from "./actions";
 
 function* importCollection(action) {
@@ -69,6 +74,44 @@ function* loadSearcheableCollection(action) {
     toast.error("An unexpected error occurred.");
   } finally {
     yield put(setIsLoadingSearcheableCollection(false));
+  }
+}
+
+function* runLoadCollection(action) {
+  try {
+    const { collectionAddress } = action.payload;
+
+    yield put(setIsLoading(true));
+    let response = yield call(api.getCollectionByAddress, collectionAddress);
+    yield put(setCollectionDetails(response.data));
+    yield put(setIsLoading(false));
+
+    yield put(setIsLoadingNfts(true));
+    response = yield call(api.getCollectionNftsCall, collectionAddress);
+    yield put(setCurrentCollectionNfts(response.data));
+    yield put(setIsLoadingNfts(false));
+
+    action.onSuccess();
+  } catch (error) {
+    console.log(error);
+    toast.error("An unexpected error occurred.");
+  } finally {
+    yield put(setIsLoading(false));
+    yield put(setIsLoadingNfts(false));
+  }
+}
+
+function* runLoadNfts(action) {
+  try {
+    const { collectionAddress } = action.payload;
+    yield put(setIsLoadingNfts(true));
+    const response = yield call(api.getCollectionNftsCall, collectionAddress);
+    yield put(setCurrentCollectionNfts(response.data));
+  } catch (error) {
+    console.log(error);
+    toast.error("An unexpected error occurred.");
+  } finally {
+    yield put(setIsLoadingNfts(false));
   }
 }
 
@@ -117,7 +160,7 @@ function* loadNftDetails(action) {
 }
 
 function* loadAccountCollections(action) {
-  console.log("LOAD ACCOUNT COLLECTIONS")
+  console.log("LOAD ACCOUNT COLLECTIONS");
   try {
     yield put(setIsLoadingAccount(true));
     const { ownerAddress, page, numberElements, filter } = action.payload;
@@ -138,7 +181,7 @@ function* loadAccountCollections(action) {
 }
 
 function* loadAccountNfts(action) {
-  console.log("LOAD ACCOUNT NFTS")
+  console.log("LOAD ACCOUNT NFTS");
 
   const {
     creatorAddress,
@@ -150,7 +193,6 @@ function* loadAccountNfts(action) {
   } = action.payload;
 
   try {
-
     yield put(setIsLoadingAccount(true));
 
     const response = yield call(tokenApi.getNftsCall, {
@@ -170,63 +212,6 @@ function* loadAccountNfts(action) {
     yield put(setIsLoadingAccount(false));
   }
 }
-
-/*
-function* loadAccountDataFromAPI(action) {
-  try {
-
-    console.log("##########-----------------------------------###########")
-
-    const { connectedWallet, page, numberElements } = action.payload;
-
-    yield put(setIsLoadingAccount(true));
-
-    yield call(loadMyCollections, { ownerAddress : connectedWallet, page, numberElements } );
-
-    console.log("##########-----------------------------------###########")
-
-    // load myNfts
-    const myNfts = yield call(loadNfts, {
-      ownerAddress: connectedWallet,
-      page,
-      numberElements,
-    });
-
-    // load nfts that i created
-    const myCreatedNfts = yield call(loadNfts, {
-      creatorAddress: connectedWallet,
-      page,
-      numberElements,
-    });
-
-    // load nfts that i collected
-    const myCollectedNfts = yield call(loadNfts, {
-      ownerAddress: connectedWallet,
-      page,
-      numberElements,
-      collectedOnly: true,
-    });
-
-    // load my listed Nfts
-    const myListedNfts = yield call(loadNfts, {
-      ownerAddress: connectedWallet,
-      page,
-      numberElements,
-      isListed: true,
-    });
-
-    yield put(setAccountNfts(myNfts));
-    yield put(setAccountCreated(myCreatedNfts));
-    yield put(setAccountCollected(myCollectedNfts));
-    yield put(setAccountListed(myListedNfts));
-  } catch (error) {
-    console.log("error ", error.response.status);
-    toast.error("An unexpected error occurred.");
-  } finally {
-    yield put(setIsLoadingAccount(false));
-  }
-}
-*/
 
 function* importCollectionSaga() {
   yield takeLatest(IMPORT_COLLECTION, importCollection);
@@ -258,6 +243,14 @@ function* loadMarketPlaceAll() {
   yield takeLatest(LOAD_MARKET_PLACE, runLoadMarketPlaceAll);
 }
 
+function* loadCollection() {
+  yield takeLatest(LOAD_COLLECTION, runLoadCollection);
+}
+
+function* loadCollectionNfts() {
+  yield takeLatest(LOAD_COLLECTION_NFTS, runLoadNfts);
+}
+
 export {
   loadPopularCollectionSaga,
   loadSearcheableCollectionSaga,
@@ -266,4 +259,6 @@ export {
   loadAccountCollectionsSaga,
   loadMarketPlaceAll,
   importCollectionSaga,
+  loadCollection,
+  loadCollectionNfts,
 };

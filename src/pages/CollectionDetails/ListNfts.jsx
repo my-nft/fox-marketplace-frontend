@@ -6,7 +6,10 @@ import MostPopularItem from "../../components/marketplace/MostPopularItem";
 import ListActivities from "./ListActivities";
 import { useEffect } from "react";
 
-const ListNfts = ({ collectionNFTs, isVisible , viewType, handleSelectNfts}) => {
+const ListNfts = ({ nfts, isVisible , viewType, handleSelectNfts}) => {
+
+
+  console.log("(((((((((((((((((((",nfts);
   
   return (
     <section id="tabsNft" className="container-fluid accountListed">
@@ -35,7 +38,7 @@ const ListNfts = ({ collectionNFTs, isVisible , viewType, handleSelectNfts}) => 
               <div className="wrapperMostPopular row">
                 {
                 
-                  collectionNFTs.map((item, index) => {
+                nfts.map((item, index) => {
                     return <MostPopularItem key={index} item={item} viewType={viewType} onSelectNfts={handleSelectNfts}/>
                   })
                 
