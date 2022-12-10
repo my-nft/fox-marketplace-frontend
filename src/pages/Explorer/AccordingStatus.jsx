@@ -1,4 +1,4 @@
-const AccordingStatus = () => {
+const AccordingStatus = ({filters, changeFilterValue}) => {
   return (
     <div id="accordionStatus">
       <div class="card">
@@ -33,8 +33,8 @@ const AccordingStatus = () => {
           data-parent="#accordionStatus"
         >
           <div class="card-body">
-            <button class="active">All</button>
-            <button>Buy Now</button>
+            <button className={`${filters.status === "ALL" ? "active" : null}`} onClick={() => changeFilterValue({...filters, status: "ALL"})}>All</button>
+            <button className={`${filters.status === "BUY_NOW" ? "active" : null}`} onClick={() => changeFilterValue({...filters, status: "BUY_NOW"})}>Buy Now</button>
           </div>
         </div>
       </div>

@@ -33,6 +33,24 @@ const CollectionDetails = () => {
     maxPages: 5
   });
 
+  const [filters, setFilters] = useState({
+    searchPrompt: "",
+    buyNow: false,
+    isAuction: false,
+    isNew: false,
+    hasOffers: false,
+    buyWithCard: false,
+    minPrice: 0,
+    maxPrice: 0,
+    buyToken: "ETH",
+    sortBy: "RECENTLY_LISTED",
+    categories: []
+  })
+
+  useEffect(() => {
+      console.log(filters)
+  }, [filters])
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
@@ -79,6 +97,8 @@ const CollectionDetails = () => {
       <FilterInput
         onOpenClose={() => setVisible(!visible)}
         onChangeSelectedView={changeSelectedView}
+        filters={filters}
+        changeFilterValue={setFilters}
       />
       {isLoadingNfts ?  <Spinner /> : (
         <>
@@ -87,6 +107,8 @@ const CollectionDetails = () => {
             isVisible={visible}
             viewType={viewType}
             handleSelectNfts={handleSelectNfts}
+            filters={filters}
+            changeFilterValue={setFilters}
           />
           <Pagination
               currentPage={pagination.page}

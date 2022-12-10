@@ -29,12 +29,27 @@ const Explorer = () => {
  
   const isLoadingApi = useSelector(selectIsLoading);
 
+  const [filtersVisible, setFiltersVisible] = useState(false);
+
   const [isLoading, setIsLoading] = useState(true);
   const [pagination, setPagination] = useState({
     numberElements: 10,
     page: 1,
     maxPages: 5
   })
+
+  const [filters, setFilters] = useState({
+    minPrice: 0,
+    maxPrice: 0,
+    buyToken: "ETH",
+    status: "ALL",
+    showRaritiy: false,
+    sortBy: "RECENTLY_LISTED"
+  })
+
+  useEffect(() => {
+    console.log(filters)
+  }, [filters])
 
   useEffect(() => {
     setIsLoading(isLoadingApi);
@@ -70,17 +85,20 @@ const Explorer = () => {
       <MostPopularCollection collections={mostPopularCollections} />
       <section id="marketplace" class="container-fluid mb-5">
         <div class="row">
-          <div id="sx" class="col-md-3">
-            <Command />
-            <AccordingStatus />
-            <AccordionPrice />
+          <div id="sx" className={`col-md-3 filtersContainer ${filtersVisible ? null : 'filtersHide'}`}>
+            <Command filters={filters} changeFilterValue={setFilters} toggleFilters={() => setFiltersVisible(!filtersVisible)} />
+            <div className="filtersCollapsible" >
+              <AccordingStatus filters={filters} changeFilterValue={setFilters} />
+              <AccordionPrice filters={filters} changeFilterValue={setFilters} />
 
-            <AccordingCollection
-              listSearcheableCollections={searcheableCollections}
-            />
+              <AccordingCollection
+                listSearcheableCollections={searcheableCollections}
+              />
+            </div>
+          
           </div>
-          <div id="dx" class="col-md-9">
-            <HeaderInput />
+          <div id="dx" class={`col-md-9 `}>
+            <HeaderInput filters={filters} changeFilterValue={setFilters} />
             <MostPopular nfts={marketPlaceNfts} pagination={pagination} changePage={changePage} />
             <Pagination
               pages={pagination.maxPages}

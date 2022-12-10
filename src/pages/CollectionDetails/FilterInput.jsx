@@ -1,4 +1,4 @@
-const FilterInput = ({onOpenClose, onChangeSelectedView}) => {
+const FilterInput = ({onOpenClose, onChangeSelectedView, filters, changeFilterValue}) => {
 
 
   return (
@@ -14,13 +14,21 @@ const FilterInput = ({onOpenClose, onChangeSelectedView}) => {
           aria-label="Search"
           id="formSearch"
           alt=""
+          value={filters.searchPrompt}
+          onChange={(e) => changeFilterValue({
+            ...filters,
+            searchPrompt: e.target.value
+          })}
         />
-        <select>
-          <option>Price low to high</option>
-          <option>Price high to low</option>
-          <option>Recently listed</option>
-          <option>Recently created</option>
-          <option>Recently sold</option>
+        <select value={filters.sortBy} onChange={(e) => changeFilterValue({
+          ...filters,
+          sortBy: e.target.value
+        })} >
+          <option value="PRICE_ASC" >Price low to high</option>
+          <option value="PRICE_DESC" >Price high to low</option>
+          <option value="RECENTLY_LISTED" >Recently listed</option>
+          <option value="RECENTLY_CREATED" >Recently created</option>
+          <option value="RECENTLY_SOLD" >Recently sold</option>
         </select>
 
         <ul id="chooseLayout">

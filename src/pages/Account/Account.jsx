@@ -27,6 +27,27 @@ const AccountPage = () => {
     maxPages: 5
   })
 
+  const [filters, setFilters] = useState({
+    searchPrompt: "",
+    buyNow: false,
+    isAuction: false,
+    isNew: false,
+    hasOffers: false,
+    buyWithCard: false,
+    minPrice: 0,
+    maxPrice: 0,
+    buyToken: "ETH",
+    categories: [],
+    sortBy: "RECENTLY_LISTED",
+  })
+
+  useEffect(() => {
+      console.log(filters)
+  }, [filters])
+
+
+
+
   const dispatch = useDispatch();
   const connectedWallet = useSelector(selectConnectedWallet);
   const isLoading = useSelector(selectIsLoadingAccount);
@@ -98,6 +119,8 @@ const AccountPage = () => {
             onOpenClose={() => setVisible(!visible)}
             onChangeSelectedView={setViewType}
             onChangeActiveSection={setActiveSection}
+            changeFilterValue={setFilters}
+            filters={filters}
             activeSection={activeSection}
           />
           <ListNfts
@@ -106,6 +129,8 @@ const AccountPage = () => {
             viewType={viewType}
             nfts={nfts}
             collections={collections}
+            filters={filters}
+            changeFilterValue={setFilters}
           />
           <Pagination
             pages={pagination.maxPages}

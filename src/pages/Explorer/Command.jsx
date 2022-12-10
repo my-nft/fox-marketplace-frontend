@@ -1,22 +1,17 @@
-import { useState } from "react";
+const Command = ({filters, changeFilterValue, toggleFilters}) => {
 
-const Command = () => {
-
-  const [checked, setChecked] = useState(false);
-
-  const handleChange = () => {
-    setChecked(!checked);
-  };
-  
   return (
     <div id="command">
-      <button id="openClose">
+      <button id="openClose" onClick={toggleFilters}>
         <img src="./assets/images/marketplace/button_open_close.jpg" alt="" />
       </button>
       <div className="checkBox">
         <span>show Rarity</span>
-        <label className={checked ? "onoffbtn active" : "onoffbtn"}>
-          <input type="checkbox" checked={checked} onChange={handleChange}/>
+        <label className={filters.showRarity ? "onoffbtn active" : "onoffbtn"}>
+          <input type="checkbox" checked={filters.showRarity} onChange={() => {
+            changeFilterValue({...filters, showRarity: !filters.showRarity})
+       
+          }}/>
         </label>
       </div>
     </div>

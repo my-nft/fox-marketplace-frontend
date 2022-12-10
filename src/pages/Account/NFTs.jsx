@@ -8,21 +8,21 @@ import ListActivities from './../CollectionDetails/ListActivities';
 import AccordingCollection from './../Explorer/AccordingCollection';
 import ExplorePopularCollectionItem from "../../components/ExplorePopularCollectionItem";
 
-const ListNfts = ({ nfts, collections, isVisible , viewType, activeSection}) => {
+const ListNfts = ({ nfts, collections, isVisible , viewType, activeSection, filters,changeFilterValue}) => {
 
   return (
     <section id="tabsNft" className="container-fluid accountListed">
-      <div className="row" style={{ display: "flex" }}>
+      <div className={`row collectionFilters ${!isVisible ? "filtersHide" : null}`} style={{ display: "flex" }}>
         <div
-          className="col"
+          className="col filtersCollapsible"
           id="filter"
-          style={!isVisible ? { display: "none" } : { display: "block" }}
+          style={{display: 'block'}}
         >
           <div className="col pl-0">
-            <AccordingStatus />
-            <AccordionPrice />
+            <AccordingStatus filters={filters} changeFilterValue={changeFilterValue} />
+            <AccordionPrice filters={filters} changeFilterValue={changeFilterValue} />
             <AccordingCollection listSearcheableCollections={[]}  />
-            <AccordionCategory />
+            <AccordionCategory filters={filters} changeFilterValue={changeFilterValue} />
           </div>
         </div>
 

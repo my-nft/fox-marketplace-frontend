@@ -3,13 +3,14 @@ import { useState } from "react";
 const SliderToggle = ({
     title,
     action=()=>{},
+    active
 }) => {
 
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(active);
 
   const handleChange = () => {
     setChecked(!checked);
-    action()
+    action(!active)
   };
   
   return (
