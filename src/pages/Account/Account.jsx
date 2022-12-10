@@ -104,6 +104,10 @@ const AccountPage = () => {
   useEffect(() => {
     console.log("ACTIVE SECTION ====> " , activeSection);
     runInit();
+    setPagination({
+      ...pagination,
+      page : 1
+    })
   }, [activeSection]);
 
   console.log("CT  ", activeSection)
