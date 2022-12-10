@@ -70,6 +70,7 @@ export const {
   setIsLoadingMspl,
   setSearcheableCollections,
   setIsLoadingSearcheableCollection,
+  setIsLoading
 } = CollectionReducer.actions;
 
 export default CollectionReducer;

@@ -1,24 +1,34 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { cps } from "redux-saga/effects";
+import NftMoreInfos from "../../components/nft/details/NftMoreInfos";
 import Spinner from "../../components/Spinner";
 import { selectNftDetails, selectIsLoading } from "../../redux/nftReducer";
-import { LOAD_NFT_DETAIL, REMOVE_LISTING_FROM_NFT } from "../../saga/actions";
-import { ACCEPT_OFFER, BUY_NFT, DELIST_ITEM, MAKE_OFFER } from "../../saga/blockchain.js/blockChainActions";
+import { REMOVE_LISTING_FROM_NFT } from "../../saga/actions";
 import {
-  createAuction,
-  nftLoader,
-  placeBid,
-  createListing,
-  deListItem,
-} from "../../services/listingNft";
+  ACCEPT_OFFER,
+  BUY_NFT,
+  DELIST_ITEM,
+  LISTING_AUCTION,
+  LISTING_FIXED_PRICE,
+  MAKE_OFFER,
+  PLACE_BID,
+} from "../../saga/blockchain.js/blockChainActions";
+import { nftLoader } from "../../services/listingNft";
+import {
+  connectWallet,
+  getCurrentWalletConnected,
+} from "../../utils/blockchainInteractor";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
+import { sameAddress } from "../../utils/walletUtils";
+import InfoNftDetails from "../NftDtails/InfoNftDetails";
 import ListedAuctionNft from "./listedAuctionNft";
 import ListedFixedNft from "./listedFixedNft";
+import NonListedMyNft from "./nonListedMyNft";
 import NonListedNft from "./nonListedNft";
 
 const MyNftDetails = () => {
+  const connectedWallet = getCurrentWalletConnected();
   const nftDetailsSelector = useSelector(selectNftDetails);
   const [isLoadingPage, setIsLoadingPage] = useState(true);
   const [nftDetails, setNftDetails] = useState();
@@ -29,10 +39,8 @@ const MyNftDetails = () => {
   }, [isLoading]);
 
   useEffect(() => {
-
     setNftDetails(nftDetailsSelector);
-
-  }, [nftDetailsSelector])
+  }, [nftDetailsSelector]);
 
   // see my own NFTs
   useEffect(() => {
@@ -42,40 +50,27 @@ const MyNftDetails = () => {
   }, [nftDetails]);
 
   const handleAuction = async (values) => {
-    setIsLoadingPage(true);
     const auctionPrice = Number(values.auctionPrice);
     const endAuction = Number(values.time);
-    const trx = await createAuction(
-      nftDetails.collectionAddress,
-      nftDetails.tokenID,
-      auctionPrice,
-      endAuction,
-      AUCTION
-    );
-    console.log("Auction transaction", trx);
-    reloadNft();
-    setIsLoadingPage(false);
-  };
-
-  const handleFixedPrice = async (values) => {
-    console.log("Fixed value", values);
-    setIsLoadingPage(true);
-    const fixedPrice = Number(values.fixedPrice);
-    await createListing(
-      nftDetails.collectionAddress,
-      nftDetails.tokenID,
-      fixedPrice
-    );
-    reloadNft();
-    setIsLoadingPage(false);
-  };
-
-  const reloadNft = () => {
     dispatch({
-      type: LOAD_NFT_DETAIL,
+      type: LISTING_AUCTION,
       payload: {
         collectionAddress: nftDetails.collectionAddress,
         tokenID: nftDetails.tokenID,
+        auctionPrice: auctionPrice,
+        endAuction: endAuction,
+      },
+    });
+  };
+
+  const handleFixedPrice = async (values) => {
+    const fixedPrice = Number(values.fixedPrice);
+    dispatch({
+      type: LISTING_FIXED_PRICE,
+      payload: {
+        collectionAddress: nftDetails.collectionAddress,
+        tokenID: nftDetails.tokenID,
+        fixedPrice: fixedPrice,
       },
     });
   };
@@ -95,10 +90,10 @@ const MyNftDetails = () => {
   const onMakeOffer = (offerPrice) => {
     console.log("HERRE");
     dispatch({
-      type : MAKE_OFFER,
+      type: MAKE_OFFER,
       payload: {
         listingId: nftDetails.listingId,
-        price : offerPrice,
+        price: offerPrice,
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
@@ -108,32 +103,38 @@ const MyNftDetails = () => {
   const onDelistItem = async () => {
     console.log("####onDelestItem###");
     dispatch({
-      type : DELIST_ITEM,
-      payload : {
+      type: DELIST_ITEM,
+      payload: {
         listingId: nftDetails.listingId,
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
-      }
-    })
+      },
+    });
   };
 
   const onAcceptOffer = () => {
     console.log("####onDelestItem###");
     dispatch({
-      type : ACCEPT_OFFER,
-      payload : {
+      type: ACCEPT_OFFER,
+      payload: {
         listingId: nftDetails.listingId,
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
-      }
-    })
-  }
+      },
+    });
+  };
 
   const onPlaceBid = async (price) => {
     console.log("####onPlaceBid###");
-    setIsLoadingPage(true);
-    await placeBid(nftDetails.auctionId - 1, price);
-    setIsLoadingPage(false);
+    dispatch({
+      type: PLACE_BID,
+      payload: {
+        tokenID: nftDetails.tokenID,
+        collectionAddress: nftDetails.collectionAddress,
+        auctionId: nftDetails.auctionId - 1,
+        price,
+      },
+    });
   };
 
   const removeListingFromToken = () => {
@@ -146,8 +147,6 @@ const MyNftDetails = () => {
     });
   };
 
-  console.log(nftDetails);
-
   return isLoadingPage ? (
     <Spinner />
   ) : (
@@ -159,6 +158,7 @@ const MyNftDetails = () => {
           <div id="imgNft" className="imgForSale">
             <img src={nftDetails?.image} id="NFT" className="imgForSale" />
           </div>
+          <NftMoreInfos nftDetails={nftDetails} />
         </div>
         <div className="col-md-12  col-lg-7 order-1 order-lg-2 ">
           <header id="infoNFT" className="mb-3">
@@ -166,15 +166,35 @@ const MyNftDetails = () => {
             <h2>RoboPunks number8 #1691</h2>
           </header>
 
-          {!nftDetails?.isListed ? (
-            <NonListedNft
-              nftDetails={nftDetails}
-              handleAuction={handleAuction}
-              handleFixedPrice={handleFixedPrice}
-            />
-          ) : null}
+          {
+            /*
+              CASE OF MY NFT
+            */
+            !nftDetails.isListed &&
+            sameAddress(connectedWallet, nftDetails.ownerAddress) ? (
+              <NonListedMyNft
+                nftDetails={nftDetails}
+                handleAuction={handleAuction}
+                handleFixedPrice={handleFixedPrice}
+              />
+            ) : null
+          }
 
-          {nftDetails?.isListed && nftDetails.listingType === AUCTION ? (
+          {
+            /*
+              CASE OF NOT MY NFT
+              */
+
+            !nftDetails.isListed &&
+            !sameAddress(connectedWallet, nftDetails.ownerAddress) ? (
+              <NonListedNft
+                itemDetails={nftDetails}
+                handleMakeOffer={onMakeOffer}
+              />
+            ) : null
+          }
+
+          {nftDetails.isListed && nftDetails.listingType === AUCTION ? (
             <ListedAuctionNft
               itemDetails={nftDetails}
               onPlaceBid={onPlaceBid}
@@ -182,7 +202,7 @@ const MyNftDetails = () => {
             />
           ) : null}
 
-          {nftDetails?.isListed && nftDetails.listingType === FIXED_PRICE ? (
+          {nftDetails.isListed && nftDetails.listingType === FIXED_PRICE ? (
             <ListedFixedNft
               itemDetails={nftDetails}
               onBuyItem={onBuyItem}

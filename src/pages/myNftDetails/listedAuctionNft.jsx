@@ -12,7 +12,6 @@ import {
 import PlaceBid from "../../components/nft/PlaceBid";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { sameAddress } from "../../utils/walletUtils";
-import { useDispatch } from "react-redux";
 
 
 const ListedNft = ({ itemDetails, onPlaceBid, removeListingFromToken }) => {

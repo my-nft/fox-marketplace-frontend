@@ -21,7 +21,6 @@ import NftDetails from "./pages/NftDtails";
 import { store } from "./redux/store";
 import AuthWrapper from "./components/authWrapper";
 import ProfileWrapper from "./pages/Profile/ProfileWrapper";
-import { ToastContainer } from "react-toastify";
 import MyNftDetails from "./pages/myNftDetails";
 import AccountPage from "./pages/Account/Account";
 

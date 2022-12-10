@@ -7,7 +7,7 @@ import AccordionCategory from './../CollectionDetails/AccordionCategory';
 import ListActivities from './../CollectionDetails/ListActivities';
 import AccordingCollection from './../Explorer/AccordingCollection';
 
-const ListNfts = ({ collectionNFTs, isVisible , viewType, activeSection}) => {
+const ListNfts = ({ nfts, collections, isVisible , viewType, activeSection}) => {
 
   return (
     <section id="tabsNft" className="container-fluid accountListed">
@@ -20,7 +20,7 @@ const ListNfts = ({ collectionNFTs, isVisible , viewType, activeSection}) => {
           <div className="col pl-0">
             <AccordingStatus />
             <AccordionPrice />
-            <AccordingCollection listSearcheableCollections={collectionNFTs["COLLECTIONS"]}  />
+            <AccordingCollection listSearcheableCollections={[]}  />
             <AccordionCategory />
           </div>
         </div>
@@ -35,11 +35,16 @@ const ListNfts = ({ collectionNFTs, isVisible , viewType, activeSection}) => {
             >
               <div className="wrapperMostPopular row">
                 {
-                
-                  collectionNFTs[activeSection].map((item, index) => {
+                  activeSection === 'COLLECTIONS' ?
+                  collections.map((item, index) => {
                     return <MostPopularItem key={index} item={item} viewType={viewType} />
-                  })
-                
+                  }) : null
+                }
+                {
+                  activeSection !== 'COLLECTIONS' ?
+                  nfts.map((item, index) => {
+                    return <MostPopularItem key={index} item={item} viewType={viewType} />
+                  }) : null
                 }
               </div>
             </div>

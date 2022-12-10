@@ -5,7 +5,6 @@ import CardNftWrapper from "../../components/nft/CardNftWrapper";
 import {
   getBestOffer,
   getPriceByListing,
-  ownerOf,
 } from "../../services/listingNft";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { sameAddress } from "../../utils/walletUtils";
@@ -17,7 +16,6 @@ const ListedFixedNft = ({
   onDelist,
   onAcceptOffer,
 }) => {
-  console.log("", itemDetails);
   const currentWallet = getCurrentWalletConnected();
   const [currentPrice, setCurrentPrice] = useState();
   const [currentOffer, setCurrentOffer] = useState(0);
@@ -35,8 +33,6 @@ const ListedFixedNft = ({
       itemDetails.tokenID
     );
     setCurrentPrice(currentPrice);
-
-    console.log("THEEEE BEST OFFER", bestOfferPrice);
     setBestOffer(bestOfferPrice);
   };
 

@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { LOAD_NFT_DETAIL } from "../../saga/actions";
 
 
-export const collectionAddress_tochange = '0xAFac09848E595061B22415159608bfD7bD8A83A7';
+export const collectionAddress_tochange = '0xebF483D0B20d5ae39E83553A92155A946083176B';
 
 const CollectionDetails = () => {
   const [isLoading, setIsLoading] = useState(true);

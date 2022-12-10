@@ -6,9 +6,21 @@ import {
   buyItem,
   deListItem,
   makeOfferToOwner,
-  acceptOffer
+  acceptOffer,
+  placeBid,
+  createListing,
+  createAuction,
 } from "../../services/listingNft";
-import { ACCEPT_OFFER, BUY_NFT, DELIST_ITEM, MAKE_OFFER } from "./blockChainActions";
+import {
+  ACCEPT_OFFER,
+  BUY_NFT,
+  DELIST_ITEM,
+  LISTING_AUCTION,
+  LISTING_FIXED_PRICE,
+  MAKE_OFFER,
+  PLACE_BID,
+} from "./blockChainActions";
+import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 
 function* runBuyNft(action) {
   try {
@@ -27,8 +39,6 @@ function* runBuyNft(action) {
     );
 
     yield put(setNftDetails(nftDetails.data));
-
-    //yield put(setListedNfts(response.data));
   } catch (error) {
     console.log("error ", error);
     toast.error("An unexpected error occurred.");
@@ -120,6 +130,107 @@ function* runAcceptOffer(action) {
   }
 }
 
+function* runPlaceBid(action) {
+  try {
+    const { acutionId, price, collectionAddress, tokenID } = action.payload;
+
+    yield put(setIsLoading(true));
+
+    // unlist from Blockchain
+    yield call(placeBid, acutionId, price);
+
+    const nftDetails = yield call(
+      nftApi.getNftCall,
+      collectionAddress,
+      tokenID
+    );
+
+    yield put(setNftDetails(nftDetails.data));
+  } catch (error) {
+    console.log("error ", error);
+    toast.error("An unexpected error occurred.");
+  } finally {
+    yield put(setIsLoading(false));
+  }
+}
+
+function* runListFixedPrice(action) {
+  try {
+    const { collectionAddress, tokenID, fixedPrice } = action.payload;
+
+    yield put(setIsLoading(true));
+
+    // unlist from Blockchain
+    const listingId = yield call(
+      createListing,
+      collectionAddress,
+      tokenID,
+      fixedPrice
+    );
+
+    // Mark the NFT as Listed in DB
+    yield call(nftApi.setNftToListed, {
+      collectionAddress,
+      tokenID,
+      listingType: FIXED_PRICE,
+      price: fixedPrice,
+      listingId: Number(listingId),
+    });
+
+    const nftDetails = yield call(
+      nftApi.getNftCall,
+      collectionAddress,
+      tokenID
+    );
+
+    yield put(setNftDetails(nftDetails.data));
+  } catch (error) {
+    console.log("error ", error);
+    toast.error("An unexpected error occurred.");
+  } finally {
+    yield put(setIsLoading(false));
+  }
+}
+
+function* runListingAuction(action) {
+  try {
+    const { collectionAddress, tokenID, auctionPrice, endAuction } =
+      action.payload;
+
+    yield put(setIsLoading(true));
+
+    const auctionId = yield call(
+      createAuction,
+      collectionAddress,
+      tokenID,
+      auctionPrice,
+      endAuction
+    );
+
+    yield call(nftApi.setNftToListed, {
+      collectionAddress,
+      tokenID,
+      auctionId,
+      endAuction,
+      listingType: AUCTION
+    });
+
+    const nftDetails = yield call(
+      nftApi.getNftCall,
+      collectionAddress,
+      tokenID
+    );
+
+    yield put(setNftDetails(nftDetails.data));
+
+  } catch (error) {
+    console.log("error ", error);
+    toast.error("An unexpected error occurred.");
+  } finally {
+    yield put(setIsLoading(false));
+  }
+}
+
 function* buyNft() {
   yield takeLatest(BUY_NFT, runBuyNft);
 }
@@ -136,5 +247,24 @@ function* acceptOfferSaga() {
   yield takeLatest(ACCEPT_OFFER, runAcceptOffer);
 }
 
+function* placeBidSaga() {
+  yield takeLatest(PLACE_BID, runPlaceBid);
+}
 
-export { buyNft, makeOffer, delistItem, acceptOfferSaga };
+function* listFixedPrice() {
+  yield takeLatest(LISTING_FIXED_PRICE, runListFixedPrice);
+}
+
+function* listingAuction() {
+  yield takeLatest(LISTING_AUCTION, runListingAuction);
+}
+
+export {
+  buyNft,
+  makeOffer,
+  delistItem,
+  acceptOfferSaga,
+  placeBidSaga,
+  listFixedPrice,
+  listingAuction,
+};

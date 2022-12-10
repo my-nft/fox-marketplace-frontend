@@ -17,7 +17,8 @@ const PopularCollection = () => {
 
   useEffect(() => {
     setLoading(true)
-    let items = getCollections(null, "MOST_POPULAR");
+    //let items = getCollections(null, "MOST_POPULAR");
+    let items = [];
 
     if(items.length !== 0) {
       setPopularCollections(items);

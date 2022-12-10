@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { cps } from "redux-saga/effects";
 import { LOAD_NFT_DETAIL } from "../../saga/actions";
 import { getAuctionInfos } from "../../services/listingNft";
 import { AUCTION } from "../../utils/foxConstantes";
@@ -65,8 +64,8 @@ const MostPopularItem = ({ viewType, item }) => {
         collectionAddress: item.collectionAddress,
         tokenID: item.tokenID,
       },
+      onSuccess: () => navigate("/my-nft"),
     });
-    navigate("/my-nft");
   };
 
   const calculateTimeLeftBeforeExpiration = (expirationDate, dateNow) => {
@@ -125,14 +124,30 @@ const MostPopularItem = ({ viewType, item }) => {
     >
       <div className="wrapContent">
         <div className="wrapImg">
-          <img src={item.image} className="bigImage" alt="" />
+          <img
+            src={item.image}
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null;
+              currentTarget.src = "./assets/images/nft_test.jpg";
+            }}
+            className="bigImage"
+            alt=""
+          />
         </div>
         <div className="wrappedAllText" style={styleWrappedText}>
           <div className="wrapText bg">
             <div className="nameItem">
               <span className="name">{item.name}</span>
               <span>
-                193 <img src={item.image} style={{ width: "14px" }} />
+                193{" "}
+                <img
+                  src={item.image}
+                  style={{ width: "14px" }}
+                  onError={({ currentTarget }) => {
+                    currentTarget.onerror = null;
+                    currentTarget.src = "./assets/images/nft_test.jpg";
+                  }}
+                />
               </span>
             </div>
           </div>

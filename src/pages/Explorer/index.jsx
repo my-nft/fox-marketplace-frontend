@@ -1,13 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import HeaderInput from "../../components/marketplace/HeaderInput";
-import { MARKET_PLACE_DEFAULT_ADDRESS } from "../../config/blockChainConfig";
 import Spinner from "../../components/Spinner";
 import {
-  selectIsLoadingMarketPlaceNfts,
-  selectIsLoadingMspl,
-  selectIsLoadingSearcheable,
-  selectMarketPlaceNfts,
   selectMostPopularCollections,
   selectSearcheableCollection,
 } from "../../redux/collectionReducer";
@@ -15,10 +10,7 @@ import {
 import {selectIsLoading, selectListedNfts} from '../../redux/nftReducer';
 
 import {
-  LOAD_LISTED_NFTS,
-  LOAD_MARKETPLACE_NFT,
-  LOAD_MOST_POPULAR_COLLECTION,
-  LOAD_SEARCHABLE_COLLECTION,
+  LOAD_MARKET_PLACE,
 } from "../../saga/actions";
 import AccordingCollection from "./AccordingCollection";
 import AccordingStatus from "./AccordingStatus";
@@ -33,61 +25,18 @@ const Explorer = () => {
   const mostPopularCollections = useSelector(selectMostPopularCollections);
   const searcheableCollections = useSelector(selectSearcheableCollection);
   const marketPlaceNfts = useSelector(selectListedNfts);
-  
-  
-  const isLoadingMostPopular = useSelector(selectIsLoadingMspl);
-  const isLoadingSearcheable = useSelector(selectIsLoadingSearcheable);
-  const isLoadingListedNfts = useSelector(selectIsLoading);
+ 
+  const isLoadingApi = useSelector(selectIsLoading);
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const loadMostPopularCollection = () => {
-    dispatch({
-      type: LOAD_MOST_POPULAR_COLLECTION,
-      payload: {
-        numberElements: 20,
-        page: 1,
-        /*
-        filter: {
-          tag: "MOST_POPULAR",
-        },
-        */
-      },
-    });
-  };
+  useEffect(() => {
+    setIsLoading(isLoadingApi);
+  }, [isLoadingApi])
 
-  const loadSearcheableCollections = () => {
+  const loadMarketPlace = () => {
     dispatch({
-      type: LOAD_SEARCHABLE_COLLECTION,
-      payload: {
-        numberElements: 10,
-        page: 1,
-        filter: {
-          tag: "MOST_POPULAR",
-        },
-      },
-    });
-  };
-
-  /*
-  const loadMarketPlaceNfts = () => {
-    dispatch({
-      type: LOAD_MARKETPLACE_NFT,
-      payload: {
-        numberElements: 10,
-        page: 1,
-        collectionAddress: MARKET_PLACE_DEFAULT_ADDRESS,
-        filter: {
-          tag: "MOST_POPULAR",
-        },
-      },
-    });
-  };
-  */
-
-  const loadListedNfts = () => {
-    dispatch({
-      type: LOAD_LISTED_NFTS,
+      type: LOAD_MARKET_PLACE,
       payload: {
         numberElements: 10,
         page: 1,
@@ -96,16 +45,9 @@ const Explorer = () => {
   }
 
   useEffect(() => {
-    loadMostPopularCollection();
-    loadSearcheableCollections();
-    loadListedNfts();
+    loadMarketPlace();
   }, []);
 
-  useEffect(() => {
-    setIsLoading(
-      isLoadingMostPopular  || isLoadingSearcheable || isLoadingListedNfts
-    );
-  }, [isLoadingMostPopular, isLoadingSearcheable, isLoadingListedNfts]);
 
   return isLoading ? (
     <Spinner />

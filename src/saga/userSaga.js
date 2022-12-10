@@ -6,15 +6,9 @@ import { signUp } from "../interactors/authInteractor";
 // Worker saga will be fired on USER_FETCH_REQUESTED actions
 function* getConnectedUser(action) {
   const address = action.payload;
-
-
-  console.log("====>", action.payload);
-
   try {
     yield put(setLoading(true));
-
     const response = yield call(api.getUserByAddress, address);
-
     yield put(setCurrentUser(response.data));
   } catch (error) {
     console.log("error ", error.response.status);

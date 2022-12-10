@@ -1,6 +1,6 @@
-const AccordionDetails = ({collectionData}) => {
+import { optimizeWalletAddress } from "../../../utils/walletUtils";
 
-  console.log(collectionData)
+const AccordionDetails = ({nftDetails}) => {
 
   return (
     <div id="accordionDetails">
@@ -54,27 +54,27 @@ const AccordionDetails = ({collectionData}) => {
             <ul>
               <li>
                 <span class="label">Contract Address</span>
-                <span class="value">{collectionData.address}</span>
+                <span class="value">{optimizeWalletAddress(nftDetails.collectionAddress)}</span>
               </li>
               <li>
                 <span class="label">Token ID</span>
-                <span class="value">{collectionData.tokenId}</span>
+                <span class="value">{nftDetails.tokenID}</span>
               </li>
               <li>
                 <span class="label">Token Standard</span>
-                <span class="value">{collectionData.tokenStandard}</span>
+                <span class="value">{nftDetails.tokenStandard}</span>
               </li>
               <li>
                 <span class="label">Chain</span>
-                <span class="value">{collectionData.chain}</span>
+                <span class="value">{nftDetails.chain}</span>
               </li>
               <li>
                 <span class="label">Last Updated</span>
-                <span class="value">{collectionData.lastUpdate}</span>
+                <span class="value">{nftDetails.lastUpdate}</span>
               </li>
               <li>
                 <span class="label">Creator Earnings</span>
-                <span class="value">{collectionData.creatorEarnings}%</span>
+                <span class="value">{nftDetails.creatorEarnings}%</span>
               </li>
             </ul>
           </div>

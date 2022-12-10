@@ -1,4 +1,4 @@
-const CardBody = ({title, price, priceDollar, bestOffer, children}) => {
+const CardBody = ({ title, price, priceDollar, bestOffer, children }) => {
   return (
     <div class="card-body">
       <div class="card-text">
@@ -6,16 +6,14 @@ const CardBody = ({title, price, priceDollar, bestOffer, children}) => {
         <p id="price">
           {price} <span id="priceDollar">${priceDollar}</span>
         </p>
-        {
-          bestOffer && (
-            <>
+        {bestOffer ? (
+          <>
             <h5>Best offer</h5>
             <p id="price">
               {bestOffer} <span id="priceDollar">${bestOffer}</span>
             </p>
-            </>
-          )
-        }
+          </>
+        ) : null}
         {children}
       </div>
     </div>

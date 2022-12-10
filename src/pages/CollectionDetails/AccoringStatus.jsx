@@ -36,7 +36,7 @@ const AccordingStatus = () => {
         >
           <div className="card-body">
             <SliderToggle title={"Buy Now"}/>
-            <SliderToggle title={"On Action"}/>
+            <SliderToggle title={"On Auction"}/>
             <SliderToggle title={"New"}/>
             <SliderToggle title={"Has Offers"}/>
             <SliderToggle title={"Buy with Card"}/>
