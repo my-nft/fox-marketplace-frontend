@@ -2399,6 +2399,33 @@ input[type=number]:focus-within{
   max-width: 380px !important;
 }
 
+.filtersContainer #command .checkBox{
+  transition: 300ms ease-in-out;
+
+}
+
+.filtersHide.filtersExplorer{
+  max-width: 144px !important;
+}
+
+.filtersContainer #openClose{
+  min-width: 65px;
+
+}
+
+.filtersHide #command{
+  flex-wrap: nowrap;
+}
+
+.filtersHide #command  .checkBox{
+  opacity: 0;
+  max-width: 0;
+  max-height: 0;
+  overflow: hidden;
+  padding: 0;
+ 
+}
+
 
 .filtersHide .filtersCollapsible{
   max-width: 0 !important;

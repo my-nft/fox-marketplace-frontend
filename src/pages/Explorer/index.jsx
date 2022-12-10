@@ -85,7 +85,7 @@ const Explorer = () => {
       <MostPopularCollection collections={mostPopularCollections} />
       <section id="marketplace" class="container-fluid mb-5">
         <div class="row">
-          <div id="sx" className={`col-md-3 filtersContainer ${filtersVisible ? null : 'filtersHide'}`}>
+          <div id="sx" className={`col-md-3 filtersContainer filtersExplorer ${filtersVisible ? null : 'filtersHide'}`}>
             <Command filters={filters} changeFilterValue={setFilters} toggleFilters={() => setFiltersVisible(!filtersVisible)} />
             <div className="filtersCollapsible" >
               <AccordingStatus filters={filters} changeFilterValue={setFilters} />
@@ -97,7 +97,7 @@ const Explorer = () => {
             </div>
           
           </div>
-          <div id="dx" class={`col-md-9 `}>
+          <div id="dx" className={`col-md-9`}>
             <HeaderInput filters={filters} changeFilterValue={setFilters} />
             <MostPopular nfts={marketPlaceNfts} pagination={pagination} changePage={changePage} />
             <Pagination
