@@ -113,7 +113,7 @@ const CollectionDetails = () => {
           <Pagination
               currentPage={pagination.page}
               pages={pagination.maxPages}
-              onChangePage={changePage}
+              setCurrentPage={changePage}
 
             />
         </>
