@@ -16,6 +16,7 @@ import {
   selectIsLoading,
   selectIsLoadingNfts,
 } from "../../redux/collectionReducer";
+import Pagination from "../../components/pagination/pagination";
 
 const CollectionDetails = () => {
   
@@ -29,6 +30,7 @@ const CollectionDetails = () => {
   const [pagination, setPagination] = useState({
     page: 1,
     numberElements: 100,
+    maxPages: 5
   });
 
   const dispatch = useDispatch();
@@ -58,6 +60,14 @@ const CollectionDetails = () => {
     navigate("/my-nft");
   };
 
+  const changePage = (page) => {
+    if( page < 1 || page > pagination.maxPages) return;
+    setPagination({
+      ...pagination,
+      page
+    })
+  }
+
 
   console.log("---------------------------", nfts);
 
@@ -71,12 +81,20 @@ const CollectionDetails = () => {
         onChangeSelectedView={changeSelectedView}
       />
       {isLoadingNfts ?  <Spinner /> : (
-        <ListNfts
-          nfts={nfts}
-          isVisible={visible}
-          viewType={viewType}
-          handleSelectNfts={handleSelectNfts}
-        />
+        <>
+          <ListNfts
+            nfts={nfts}
+            isVisible={visible}
+            viewType={viewType}
+            handleSelectNfts={handleSelectNfts}
+          />
+          <Pagination
+              currentPage={pagination.page}
+              pages={pagination.maxPages}
+              onChangePage={changePage}
+
+            />
+        </>
       )}
     </>
   );

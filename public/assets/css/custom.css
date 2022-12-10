@@ -2308,3 +2308,45 @@ s #accordionListing table tr,
 #chooseLayout svg {
   cursor: pointer;
 }
+
+.paginationWrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 32px 16px 96px;
+}
+
+.paginationWrapper .paginationAction{
+  cursor: pointer;
+  transition: 300ms ease-in-out;
+  color: #212529;
+}
+
+.paginationWrapper .paginationAction:hover{
+  color: #f58103;
+}
+
+.paginationWrapper .paginationPageActive{
+  color: #f58103;
+}
+
+.paginationPagesWrapper{
+  display: flex;
+  align-items: center;
+}
+
+.paginationPage{
+  margin: 0 8px;
+  cursor: pointer;
+  transition: 300ms ease-in-out;
+}
+
+.paginationPage:hover{
+  color: #f5800383;
+}
+
+.paginationHide{
+  visibility: hidden;
+  opacity: 0;
+  cursor: default;
+}

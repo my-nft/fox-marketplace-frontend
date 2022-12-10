@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import HeaderInput from "../../components/marketplace/HeaderInput";
+import Pagination from "../../components/pagination/pagination";
 import Spinner from "../../components/Spinner";
 import {
   selectMostPopularCollections,
@@ -29,6 +30,11 @@ const Explorer = () => {
   const isLoadingApi = useSelector(selectIsLoading);
 
   const [isLoading, setIsLoading] = useState(true);
+  const [pagination, setPagination] = useState({
+    numberElements: 10,
+    page: 1,
+    maxPages: 5
+  })
 
   useEffect(() => {
     setIsLoading(isLoadingApi);
@@ -38,15 +44,23 @@ const Explorer = () => {
     dispatch({
       type: LOAD_MARKET_PLACE,
       payload: {
-        numberElements: 10,
-        page: 1,
+        numberElements: pagination.numberElements,
+        page: pagination.page,
       },
     });
   }
 
   useEffect(() => {
     loadMarketPlace();
-  }, []);
+  }, [pagination]);
+
+  const changePage = (page) => {
+    if( page < 1 || page > pagination.maxPages) return;
+    setPagination({
+      ...pagination,
+      page
+    })
+  }
 
 
   return isLoading ? (
@@ -67,8 +81,13 @@ const Explorer = () => {
           </div>
           <div id="dx" class="col-md-9">
             <HeaderInput />
-
-            <MostPopular nfts={marketPlaceNfts} />
+            <MostPopular nfts={marketPlaceNfts} pagination={pagination} changePage={changePage} />
+            <Pagination
+              pages={pagination.maxPages}
+              currentPage={pagination.page}
+              setCurrentPage={changePage}
+            
+            />
           </div>
         </div>
       </section>

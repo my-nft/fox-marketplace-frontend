@@ -13,6 +13,7 @@ import {
 } from "../../redux/accountReducer";
 import Spinner from "../../components/Spinner";
 import { LOAD_ACCOUNT_COLLECTIONS, LOAD_ACCOUNT_NFTS } from "../../saga/actions";
+import Pagination from "../../components/pagination/pagination";
 
 const AccountPage = () => {
   const [visible, setVisible] = useState(false);
@@ -22,13 +23,23 @@ const AccountPage = () => {
   const nfts = useSelector(selectNfts);
   const [pagination, setPagination] = useState({
     page : 1,
-    numberElements : 10
+    numberElements : 10,
+    maxPages: 5
   })
 
   const dispatch = useDispatch();
   const connectedWallet = useSelector(selectConnectedWallet);
   const isLoading = useSelector(selectIsLoadingAccount);
   const accountOwner = useSelector(selectAccountOwner);
+
+  const changePage = (page) => {
+    if( page < 1 || page > pagination.maxPages) return;
+    setPagination({
+      ...pagination,
+      page
+    })
+  }
+
 
   const runDispatchNfts = (body) => {
     dispatch({
@@ -95,6 +106,11 @@ const AccountPage = () => {
             viewType={viewType}
             nfts={nfts}
             collections={collections}
+          />
+          <Pagination
+            pages={pagination.maxPages}
+            currentPage={pagination.page}
+            setCurrentPage={changePage}
           />
         </>
       )}
