@@ -164,6 +164,9 @@ function* loadAccountCollections(action) {
   try {
     yield put(setIsLoadingAccount(true));
     const { ownerAddress, page, numberElements, filter } = action.payload;
+
+    console.log("SAGA CALL",action.payload)
+
     const collectionsResponse = yield call(
       api.getAccountCollections,
       ownerAddress,
@@ -191,6 +194,8 @@ function* loadAccountNfts(action) {
     page,
     numberElements,
   } = action.payload;
+
+  console.log("SAGA CALL",action.payload)
 
   try {
     yield put(setIsLoadingAccount(true));

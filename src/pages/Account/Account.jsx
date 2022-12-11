@@ -66,7 +66,9 @@ const AccountPage = () => {
     dispatch({
       type : LOAD_ACCOUNT_NFTS,
       payload : {
-        ...body
+        ...body,
+        page: pagination.page,
+        numberElements: pagination.numberElements,
       }
     })
   }
@@ -77,7 +79,9 @@ const AccountPage = () => {
         type : LOAD_ACCOUNT_COLLECTIONS,
         payload : {
           ...pagination,
-          ownerAddress : connectedWallet
+          ownerAddress : connectedWallet,
+          page: pagination.page,
+          numberElements: pagination.numberElements
         }
       })
     } else if (activeSection === "NFTS") {
@@ -102,12 +106,17 @@ const AccountPage = () => {
   }
 
   useEffect(() => {
-    console.log("ACTIVE SECTION ====> " , activeSection);
     runInit();
+  }, [pagination])
+
+  useEffect(() => {
+    console.log("ACTIVE SECTION ====> " , activeSection);
     setPagination({
       ...pagination,
       page : 1
     })
+    runInit();
+    
   }, [activeSection]);
 
   console.log("CT  ", activeSection)

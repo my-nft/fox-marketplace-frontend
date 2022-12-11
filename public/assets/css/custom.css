@@ -1262,6 +1262,9 @@ input[type="radio"] {
 
 .wrapImg .bigImage {
   border-radius: 10px 10px 0 0;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center center;
 }
 
 .wrapContent {
@@ -2358,7 +2361,7 @@ s #accordionListing table tr,
 }
 
 .filtersContainer{
-  max-height: 1280px;
+  max-height: 1980px;
   transition: 300ms ease-in-out;
 
 }
@@ -2404,8 +2407,13 @@ input[type=number]:focus-within{
 
 }
 
+.filtersExplorer{
+  width: 100%;
+}
+
 .filtersHide.filtersExplorer{
-  max-width: 144px !important;
+  max-width: 114px !important;
+  margin-right: 56px;
 }
 
 .filtersContainer #openClose{
@@ -2439,4 +2447,8 @@ input[type=number]:focus-within{
 .filtersHide .filtersCollapsible *{
   opacity: 0;
   transition-delay: 150ms;
+}
+
+.explorerItems{
+  flex-grow: 2;
 }
