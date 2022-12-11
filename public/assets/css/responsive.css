@@ -28,6 +28,9 @@
            
         width: calc(100% / 3);
     }
+    #marketplace>.row{
+        flex-direction: column;
+    }
      
 
 }
