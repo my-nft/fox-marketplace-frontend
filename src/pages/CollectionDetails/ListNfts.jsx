@@ -4,12 +4,8 @@ import AccordingCollection from "../Explorer/AccordingCollection";
 import AccordionCategory from "./AccordionCategory";
 import MostPopularItem from "../../components/marketplace/MostPopularItem";
 import ListActivities from "./ListActivities";
-import { useEffect } from "react";
 
 const ListNfts = ({ nfts, isVisible , viewType, handleSelectNfts, filters, changeFilterValue}) => {
-
-
-  console.log("(((((((((((((((((((",nfts);
   
   return (
     <section id="tabsNft" className="container-fluid accountListed">

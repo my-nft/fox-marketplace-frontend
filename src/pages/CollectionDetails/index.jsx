@@ -16,15 +16,21 @@ import Pagination from "../../components/pagination/pagination";
 
 const CollectionDetails = () => {
   const detailCollection = useSelector(selectCollectionDetails);
-  const nfts = useSelector(selectCurrentCollectionNfts);
 
   const isLoadingCollection = useSelector(selectIsLoading);
-  const isLoadingNfts = useSelector(selectIsLoadingNfts);
+  const isLoadingNftsSelector = useSelector(selectIsLoadingNfts);
+  const [isLoadingNfts, setIsLoadingNfts] = useState(true);
+
+  const nftsSelector = useSelector(selectCurrentCollectionNfts);
+  const {totalElements, content} = nftsSelector;
+
+  useEffect(() => {
+    setIsLoadingNfts(isLoadingNftsSelector);
+  }, [isLoadingNftsSelector])
 
   const [pagination, setPagination] = useState({
     page: 1,
     numberElements: 20,
-    maxPages: 10,
   });
 
   const [filters, setFilters] = useState({
@@ -60,7 +66,7 @@ const CollectionDetails = () => {
       payload: {
         collectionAddress: detailCollection.collectionAddress,
         page: pagination.page,
-        numberElements: pagination.numberElements,
+        numberElements: 20,
       },
     });
   };
@@ -88,7 +94,7 @@ const CollectionDetails = () => {
   };
 
   const changePage = (page) => {
-    if (page < 1 || page > pagination.maxPages) return;
+    if (page < 1 || page > totalElements) return;
     setPagination({
       ...pagination,
       page,
@@ -115,7 +121,7 @@ const CollectionDetails = () => {
       ) : (
         <>
           <ListNfts
-            nfts={nfts}
+            nfts={content}
             isVisible={visible}
             viewType={viewType}
             handleSelectNfts={handleSelectNfts}
@@ -124,7 +130,7 @@ const CollectionDetails = () => {
           />
           <Pagination
             currentPage={pagination.page}
-            pages={pagination.maxPages}
+            pages={totalElements}
             setCurrentPage={changePage}
           />
         </>
