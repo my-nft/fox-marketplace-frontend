@@ -85,12 +85,6 @@ function* runLoadCollection(action) {
     let response = yield call(api.getCollectionByAddress, collectionAddress);
     yield put(setCollectionDetails(response.data));
     yield put(setIsLoading(false));
-
-    yield put(setIsLoadingNfts(true));
-    response = yield call(api.getCollectionNftsCall, collectionAddress);
-    yield put(setCurrentCollectionNfts(response.data));
-    yield put(setIsLoadingNfts(false));
-
     action.onSuccess();
   } catch (error) {
     console.log(error);
@@ -103,9 +97,10 @@ function* runLoadCollection(action) {
 
 function* runLoadNfts(action) {
   try {
-    const { collectionAddress } = action.payload;
+    const { collectionAddress, ...rest } = action.payload;
+    console.log("###################", rest)
     yield put(setIsLoadingNfts(true));
-    const response = yield call(api.getCollectionNftsCall, collectionAddress);
+    const response = yield call(api.getCollectionNftsCall, collectionAddress, rest);
     yield put(setCurrentCollectionNfts(response.data));
   } catch (error) {
     console.log(error);

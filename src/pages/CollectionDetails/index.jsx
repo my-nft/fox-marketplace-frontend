@@ -2,14 +2,10 @@ import FilterInput from "./FilterInput";
 import HeaderAccount from "./HeaderAccount";
 import ListNfts from "./ListNfts";
 import { useEffect, useState } from "react";
-import {
-  getCollectionByAddress,
-  getCollectionNftsCall,
-} from "../../api/collectionApi";
 import Spinner from "../../components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { LOAD_NFT_DETAIL } from "../../saga/actions";
+import { LOAD_COLLECTION_NFTS, LOAD_NFT_DETAIL } from "../../saga/actions";
 import {
   selectCollectionDetails,
   selectCurrentCollectionNfts,
@@ -19,8 +15,6 @@ import {
 import Pagination from "../../components/pagination/pagination";
 
 const CollectionDetails = () => {
-  
-  
   const detailCollection = useSelector(selectCollectionDetails);
   const nfts = useSelector(selectCurrentCollectionNfts);
 
@@ -29,8 +23,8 @@ const CollectionDetails = () => {
 
   const [pagination, setPagination] = useState({
     page: 1,
-    numberElements: 100,
-    maxPages: 5
+    numberElements: 20,
+    maxPages: 10,
   });
 
   const [filters, setFilters] = useState({
@@ -44,17 +38,32 @@ const CollectionDetails = () => {
     maxPrice: 0,
     buyToken: "ETH",
     sortBy: "RECENTLY_LISTED",
-    categories: []
-  })
-
-  useEffect(() => {
-      console.log(filters)
-  }, [filters])
+    categories: [],
+  });
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
   const [viewType, setViewType] = useState("CHANGE_FOR_MIN");
+
+  useEffect(() => {
+    console.log(filters);
+  }, [filters]);
+
+  useEffect(() => {
+    initLoadNfts();
+  }, []);
+
+  const initLoadNfts = () => {
+    dispatch({
+      type: LOAD_COLLECTION_NFTS,
+      payload: {
+        collectionAddress: detailCollection.collectionAddress,
+        page: pagination.page,
+        numberElements: pagination.numberElements,
+      },
+    });
+  };
 
   const changeSelectedView = (selection) => {
     console.log(selection);
@@ -79,15 +88,16 @@ const CollectionDetails = () => {
   };
 
   const changePage = (page) => {
-    if( page < 1 || page > pagination.maxPages) return;
+    if (page < 1 || page > pagination.maxPages) return;
     setPagination({
       ...pagination,
-      page
-    })
-  }
+      page,
+    });
+  };
 
-
-  console.log("---------------------------", nfts);
+  useEffect(() => {
+    initLoadNfts();
+  }, [pagination]);
 
   return isLoadingCollection ? (
     <Spinner />
@@ -100,7 +110,9 @@ const CollectionDetails = () => {
         filters={filters}
         changeFilterValue={setFilters}
       />
-      {isLoadingNfts ?  <Spinner /> : (
+      {isLoadingNfts ? (
+        <Spinner />
+      ) : (
         <>
           <ListNfts
             nfts={nfts}
@@ -111,11 +123,10 @@ const CollectionDetails = () => {
             changeFilterValue={setFilters}
           />
           <Pagination
-              currentPage={pagination.page}
-              pages={pagination.maxPages}
-              setCurrentPage={changePage}
-
-            />
+            currentPage={pagination.page}
+            pages={pagination.maxPages}
+            setCurrentPage={changePage}
+          />
         </>
       )}
     </>
