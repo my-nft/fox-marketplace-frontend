@@ -36,8 +36,6 @@ const ImportCollection = () => {
             toast.success(
               "Congratulations, your Collection has been imported successfully"
             );
-            await delay(5000);
-
             dispatch({
               type: LOAD_COLLECTION,
               payload : {

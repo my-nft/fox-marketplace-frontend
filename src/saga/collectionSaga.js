@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, delay, put, takeLatest } from "redux-saga/effects";
 import * as api from "../api/collectionApi";
 import * as tokenApi from "../api/nftApi";
 import {
@@ -80,6 +80,7 @@ function* runLoadCollection(action) {
 
     yield put(setIsLoading(true));
     let response = yield call(api.getCollectionByAddress, collectionAddress);
+    yield delay(1000);
     yield put(setCollectionDetails(response.data));
     yield put(setIsLoading(false));
     action.onSuccess();
