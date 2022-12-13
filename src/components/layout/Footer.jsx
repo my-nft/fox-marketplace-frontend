@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="container-fluid">
-      <div className="row">
-        <div className="col-md-4 col-sm-12">
-          <img src="/assets/images/Logo_bottom.png" />{" "}
-          <span className="pl-5"> Copyright 2022 by FoxChange </span>
+      <div className="d-flex flex-column justify-content-center align-items-center">
+        <div className="col-12 d-flex justify-content-center">
+          <Link to="/">
+            <img src="/assets/images/Logo_bottom.png" />{" "}
+          </Link>
         </div>
-        <div className="col-md-8 col-sm-12 navBottom">
+        <div className="col-md-8 col-sm-12 navBottom align-items-center d-flex justify-content-center">
           <ul>
             <li>
               <Link to="/">Home</Link>
@@ -24,6 +25,7 @@ const Footer = () => {
             </li>
           </ul>
         </div>
+        <span className="mt-5"> Copyright 2022 by FoxChange </span>
       </div>
     </footer>
   );
