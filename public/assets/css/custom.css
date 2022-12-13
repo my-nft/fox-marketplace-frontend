@@ -178,6 +178,7 @@ header a {
 
 .navbar-collapse {
   margin: 20px 0;
+  justify-content: flex-end;
 }
 
 #loginButton,
@@ -393,6 +394,10 @@ td span {
 .slider {
   position: relative;
   z-index: 999;
+}
+
+.explorerSlick .slick-track{
+  width: max-content;
 }
 
 .slick-track {
@@ -747,6 +752,11 @@ footer li {
 
 footer a {
   color: white;
+  transition: 300ms ease-in-out;
+}
+
+footer a:hover{
+  color: #e48223;
 }
 
 .navBottom {
@@ -979,7 +989,7 @@ footer a {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #fff;
+  background: #212529;
   border-radius: 10px;
   padding: 32px;
   min-width: 420px;
@@ -997,14 +1007,14 @@ footer a {
   font-weight: 600;
 }
 .popup-header-text{
-  color: #000;
+  color: #fff;
 }
 
 .popup-header-text h3{
   font-size: 24px;
   font-weight: 700;
   margin: 0 0 12px;
-  color: #000;
+  color: #fff;
 }
 
 .entry-fields{
@@ -1278,6 +1288,7 @@ input[type="radio"] {
 /* .listMostPopular:hover{scale: 1.1; z-index: 999; margin: 20px;} */
 .listMostPopular {
   transition: all 0.2s ease-out;
+
 }
 
 #tabsNft .listMostPopular {
@@ -1287,7 +1298,7 @@ input[type="radio"] {
 
 .listMostPopular {
   width: initial;
-  min-width: initial;
+  min-width: 240px;
   margin: 0;
   padding: 0 5px;
   transition: all 0.2s ease-out;
@@ -2413,7 +2424,7 @@ input[type=number]:focus-within{
 
 .filtersHide.filtersExplorer{
   max-width: 114px !important;
-  margin-right: 56px;
+  margin-right: 16px
 }
 
 .filtersContainer #openClose{

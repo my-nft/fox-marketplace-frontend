@@ -14,18 +14,24 @@ import {
 } from "../../redux/userReducer";
 import { LOAD_USER } from "../../saga/actions";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
+import useOutsideClick from './../../utils/useOutsideClick';
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
 
   const connectedUser = useSelector(selectConnectedUser);
   const connectedWallet = useSelector(selectConnectedWallet);
 
+  const clickRef = useOutsideClick(() => {
+    document.querySelector(".navbar-collapse").classList.remove("show");
+  })
+
   const handleSignIn = () => {
     connectWallet();
     const connectedWallet = getCurrentWalletConnected();
-    dispatch(setCurrentWallet(connectedWallet));
+    dispatch(setCurrentWallet("0x3e772a1Aedd9Baf457b144d454092481c46acaBC"));
     dispatch({ type: LOAD_USER, payload: connectedWallet });
   };
 
@@ -52,7 +58,7 @@ const Header = () => {
   return (
     <>
       <header className="container-fluid">
-        <nav className="navbar navbar-expand-lg">
+        <nav className="navbar navbar-expand-xl" ref={clickRef}>
           <Link className="navbar-brand" to="/">
             <img src="/assets/images/Logo_foxchange.png" alt="" />
           </Link>
@@ -90,9 +96,7 @@ const Header = () => {
                 </Link>
               </li>
             </ul>
-          </div>
-
-          <ul id="buttonIcon">
+            <ul id="buttonIcon">
             {connectedWallet ? (
               <>
                 <li className="nav-item">
@@ -121,6 +125,9 @@ const Header = () => {
               ? optimizeWalletAddress(connectedWallet)
               : "Connect Wallect"}{" "}
           </button>
+          </div>
+
+          
         </nav>
       </header>
       <ToastContainer />

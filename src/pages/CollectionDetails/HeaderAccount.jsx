@@ -12,7 +12,7 @@ const HeaderAccount = ({collectionData}) => {
         <img
           src={collectionData.imageBanner}
           id="bannerProfile"
-          alt=""
+          alt="profile banner"
         />
       </div>
       <div className="row p-4 mt-5" id="infoHeader">
@@ -78,7 +78,7 @@ const HeaderAccount = ({collectionData}) => {
             </li>
           </ul>
         </div>
-        <div id="accountButton">
+        {/* <div id="accountButton">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -124,7 +124,7 @@ const HeaderAccount = ({collectionData}) => {
               </ul>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

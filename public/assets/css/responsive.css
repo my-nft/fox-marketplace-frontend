@@ -1,4 +1,25 @@
 
+@media screen and (max-width: 1200px){
+    .navbar-collapse{
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .navbar-collapse ul#buttonIcon{
+        margin-right: 0;
+        flex-direction: column;
+        align-items: center;
+        display: flex;
+    }
+    .navbar-collapse ul#buttonIcon li{
+        margin: 0;
+        padding: 0;
+    }
+    .navbar-collapse button{
+        margin: 16px 0 0 !important;
+    }
+}
+
 @media (max-width: 1199px) {
     
     #checkBox {
@@ -10,10 +31,7 @@
         width: 15vw;
         
       }
-      .listMostPopular {
-           
-        width: calc(100% / 4);
-    }
+   
 }
 
 @media (max-width: 991px) {
@@ -24,10 +42,7 @@
       
         width: calc( 100%/2);
       }
-      .listMostPopular {
-           
-        width: calc(100% / 3);
-    }
+    
     #marketplace>.row{
         flex-direction: column;
     }
@@ -98,11 +113,31 @@
     #iconProfile {
         width: 20vw;
         
-      }
-      .listMostPopular {
-           
-        width: calc(100% / 2);
     }
+    .navbar{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    .navbar>a{
+        grid-area: 1/1/1/2;
+
+    }
+    .navbar>form{
+        grid-area: 2/1/2/3;
+    }
+    .navbar>form input{
+        width: 100% !important;
+    }
+    .navbar>button{
+        grid-area: 1/2/1/3;
+        justify-self: flex-end;
+    }
+    .navbar>div{
+        grid-row-start: 3;
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }
+    
 
 }
 
@@ -124,10 +159,7 @@
         width: 25px;
          margin-left: 20px;
         margin-right: 0;}
-        .listMostPopular {
-           
-            width: 100%!important;
-        }
+       
         #profile .navigation{display: none;}
 
         #profileImg{margin-top: 50px; padding: 0;  max-width: initial;}
