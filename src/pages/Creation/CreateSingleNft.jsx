@@ -12,8 +12,6 @@ const CreateSingleNft = () => {
   const [imageData, setImageData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [popupStatus, setPopupStatus] = useState(false);
-  const walletAddress = useSelector(selectConnectedWallet);
-  const token = useSelector(selectToken)
 
   const [nftData, setNftData] = useState({
     artworkName: "",

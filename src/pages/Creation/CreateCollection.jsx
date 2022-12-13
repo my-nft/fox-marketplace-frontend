@@ -2,15 +2,14 @@ import { useRef, useState } from "react";
 import { createNewCollection } from './../../services/createCollection';
 import Spinner from './../../components/Spinner';
 import { v4 } from 'uuid';
-import { useSelector } from "react-redux";
-import { selectConnectedWallet } from "../../redux/userReducer";
+import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 
 const CreateCollection = () => {
 
   const [imageUpload, setImageUpload] = useState(null);
   const [imageData, setImageData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const walletAddress = useSelector(selectConnectedWallet);
+  const walletAddress = getCurrentWalletConnected();
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];

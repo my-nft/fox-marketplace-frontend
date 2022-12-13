@@ -4,7 +4,6 @@ import { useState } from "react";
 import AccountHeader from "./AccountHeader";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectConnectedWallet } from "../../redux/userReducer";
 import {
   selectAccountOwner,
   selectCollections,
@@ -14,6 +13,7 @@ import {
 import Spinner from "../../components/Spinner";
 import { LOAD_ACCOUNT_COLLECTIONS, LOAD_ACCOUNT_NFTS } from "../../saga/actions";
 import Pagination from "../../components/pagination/pagination";
+import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 
 const AccountPage = () => {
   const [visible, setVisible] = useState(false);
@@ -49,7 +49,7 @@ const AccountPage = () => {
 
 
   const dispatch = useDispatch();
-  const connectedWallet = useSelector(selectConnectedWallet);
+  const connectedWallet = getCurrentWalletConnected();
   const isLoading = useSelector(selectIsLoadingAccount);
   const accountOwner = useSelector(selectAccountOwner);
 
