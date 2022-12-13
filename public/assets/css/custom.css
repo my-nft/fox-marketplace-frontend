@@ -99,6 +99,40 @@ form input[type="file"]{
   display: none;
 }
 
+.form-control-container{
+  background-color: #130f0a;
+  border: none;
+  border-radius: 25px;
+  width: 30vw !important;
+  transition: 300ms ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.form-control-container svg{
+  margin: 0 16px 0 24px;
+  color: #fefefe;
+  display: block;
+  width: 24px;
+  height: 24px;
+  transition: 300ms ease-in-out;
+  transform-origin: center;
+}
+
+.form-control-container:focus-within svg{
+  transform: rotate(15deg);
+  
+}
+
+.form-control-container:focus-within{
+  background-color: #855b20;
+  border: none;
+  box-shadow: none;
+  
+}
+
 input.form-control {
   background-color: #130f0a;
   border: none;
@@ -121,11 +155,42 @@ option {
   height: 50px;
 }
 
+.navbar .form-control-container input{
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.navbar .form-control-container input:focus{
+  background-color: transparent !important;
+}
+
+#filterInput .form-control-container{
+  width: 60vw !important;
+  border-radius: 10px;
+  height: 60px;
+  margin: 0 24px;
+}
+
+
+
 #filterInput .form-control {
   display: inline-block;
   width: 60vw !important;
   border-radius: 10px;
   height: 60px;
+}
+
+#filterInput .form-control-container input{
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+#filterInput .form-control-container input:focus{
+  background-color: transparent !important;
 }
 
 #filterInput select {
