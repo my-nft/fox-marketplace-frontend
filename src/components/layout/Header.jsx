@@ -52,7 +52,10 @@ const Header = () => {
 
 
   useEffect(() => {
-    addWalletListener();
+    if(window.ethereum) {
+      addWalletListener();
+    }
+    
   }, []);
 
   useEffect(() => {
