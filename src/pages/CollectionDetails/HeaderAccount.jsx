@@ -1,5 +1,14 @@
+import { useNavigate } from "react-router-dom";
+import { optimizeWalletAddress } from "../../utils/walletUtils";
+
+
 const HeaderAccount = ({collectionData}) => {
 
+  const blocExplorerUri = process.env.REACT_APP_BLOCEXPLORER;
+
+  const onClickExternal = () => {
+    window.location.href = `${blocExplorerUri}${collectionData.collectionAddress}`
+  }
 
   return (
     <section id="headerAccount" className="container-fluid">
@@ -16,11 +25,13 @@ const HeaderAccount = ({collectionData}) => {
         />
       </div>
       <div className="row p-4 mt-5" id="infoHeader">
-        <div id="accountName">
+        <div id="accountName" onClick={() => {
+          onClickExternal();
+        }}>
           <p>{collectionData.name}</p>
-          <span id="accountWallet">Wallet Address </span> -{collectionData.address}
-          <span className="dataLastVisit">Joined {
-            new Date(collectionData.creationDate).toLocaleDateString("en-US", {
+          <span id="accountWallet">{optimizeWalletAddress(collectionData.collectionAddress)}</span>
+          <span className="dataLastVisit"> - Created at {
+            new Date(collectionData.createdAt).toLocaleDateString("en-US", {
               year: "numeric",
               month: "short",
             })
@@ -37,7 +48,7 @@ const HeaderAccount = ({collectionData}) => {
             </li>
             <li>
               <span>Created</span>
-              <p>{new Date(collectionData.creationDate).toLocaleDateString("en-US", {
+              <p>{new Date(collectionData.createdAt).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "short",
               })}</p>

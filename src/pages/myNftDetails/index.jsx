@@ -21,7 +21,6 @@ import {
 } from "../../utils/blockchainInteractor";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 import { sameAddress } from "../../utils/walletUtils";
-import InfoNftDetails from "../NftDtails/InfoNftDetails";
 import ListedAuctionNft from "./listedAuctionNft";
 import ListedFixedNft from "./listedFixedNft";
 import NonListedMyNft from "./nonListedMyNft";

@@ -17,7 +17,6 @@ import CreateCollection from "./pages/Creation/CreateCollection";
 import ImportCollection from "./pages/Creation/ImportCollection";
 import Explorer from "./pages/Explorer";
 import CollectionDetails from "./pages/CollectionDetails";
-import NftDetails from "./pages/NftDtails";
 import { store } from "./redux/store";
 import AuthWrapper from "./components/authWrapper";
 import ProfileWrapper from "./pages/Profile/ProfileWrapper";
@@ -106,16 +105,6 @@ const router = createBrowserRouter(
         element={
           <>
             <CollectionDetails />
-            <Footer />
-          </>
-        }
-      />
-      {/*  NOT my NFT  */}
-      <Route
-        path="nft"
-        element={
-          <>
-            <NftDetails />
             <Footer />
           </>
         }

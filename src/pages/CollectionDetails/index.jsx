@@ -130,7 +130,7 @@ const CollectionDetails = () => {
           />
           <Pagination
             currentPage={pagination.page}
-            pages={totalElements}
+            pages={totalElements ? parseInt(totalElements/20) : 1}
             setCurrentPage={changePage}
           />
         </>

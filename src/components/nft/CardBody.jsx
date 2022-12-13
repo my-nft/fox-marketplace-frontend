@@ -3,9 +3,12 @@ const CardBody = ({ title, price, priceDollar, bestOffer, children }) => {
     <div class="card-body">
       <div class="card-text">
         <h3>{title}</h3>
-        <p id="price">
-          {price} <span id="priceDollar">${priceDollar}</span>
-        </p>
+        {price ? (
+          <p id="price">
+            {price} <span id="priceDollar">${priceDollar}</span>
+          </p>
+        ) : null}
+
         {bestOffer ? (
           <>
             <h5>Best offer</h5>
