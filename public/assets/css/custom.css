@@ -2168,6 +2168,10 @@ s #accordionListing table tr,
   width: 100% !important;
 }
 
+#nameofCoin{
+  height: 38px;
+}
+
 #setPrice .input-group,
 #setAuction .input-group {
   align-items: end;
@@ -2230,7 +2234,7 @@ s #accordionListing table tr,
 #placeBidSubmit,
 #placeBid {
   width: 50%;
-  margin-top: 25px;
+  margin-top: 25px !important;
   text-align: center;
   background-color: #2bf62a;
   font-family: gothamMedium;
