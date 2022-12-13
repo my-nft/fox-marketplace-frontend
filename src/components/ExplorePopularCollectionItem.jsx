@@ -10,7 +10,7 @@ const ExplorePopularCollectionItem = ({itemData}) => {
     dispatch({
       type: LOAD_COLLECTION,
       payload : {
-        collectionAddress : itemData.collectionAddress
+        collectionAddress : itemData.collectionAddress,
       },
       onSuccess: () => navigate("/collection")
     })

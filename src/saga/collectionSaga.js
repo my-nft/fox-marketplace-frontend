@@ -15,9 +15,6 @@ import {
   setIsLoadingSearcheableCollection,
   setIsLoading as setCollectionIsLoading,
   setCollectionDetails,
-  setCurrentCollectionNfts,
-  setIsLoadingNfts,
-  setCurrentCollectionNftsTotal,
 } from "../redux/collectionReducer";
 import {
   setIsLoading,
@@ -33,7 +30,6 @@ import {
   LOAD_ACCOUNT_NFTS,
   LOAD_ACCOUNT_COLLECTIONS,
   LOAD_COLLECTION,
-  LOAD_COLLECTION_NFTS,
 } from "./actions";
 
 function* importCollection(action) {
@@ -92,24 +88,9 @@ function* runLoadCollection(action) {
     toast.error("An unexpected error occurred.");
   } finally {
     yield put(setIsLoading(false));
-    yield put(setIsLoadingNfts(false));
   }
 }
 
-function* runLoadNfts(action) {
-  try {
-    const { collectionAddress, ...rest } = action.payload;
-    yield put(setIsLoadingNfts(true));
-    const response = yield call(api.getCollectionNftsCall, collectionAddress, rest);
-
-    yield put(setCurrentCollectionNfts(response.data));
-  } catch (error) {
-    console.log(error);
-    toast.error("An unexpected error occurred.");
-  } finally {
-    yield put(setIsLoadingNfts(false));
-  }
-}
 
 function* runLoadMarketPlaceAll(action) {
   try {
@@ -248,9 +229,6 @@ function* loadCollection() {
   yield takeLatest(LOAD_COLLECTION, runLoadCollection);
 }
 
-function* loadCollectionNfts() {
-  yield takeLatest(LOAD_COLLECTION_NFTS, runLoadNfts);
-}
 
 export {
   loadPopularCollectionSaga,
@@ -260,6 +238,5 @@ export {
   loadAccountCollectionsSaga,
   loadMarketPlaceAll,
   importCollectionSaga,
-  loadCollection,
-  loadCollectionNfts,
+  loadCollection
 };

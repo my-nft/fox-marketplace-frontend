@@ -10,9 +10,7 @@ const INITIAL_STATE = {
 
   // general loading
   collectionDetails: undefined,
-  currentCollectionNfts : undefined,
   isLoading: false,
-  isLoadingNfts: false
 };
 
 const CollectionReducer = createSlice({
@@ -34,14 +32,8 @@ const CollectionReducer = createSlice({
     setCollectionDetails: (state, action) => {
       state.collectionDetails = action.payload;
     },
-    setCurrentCollectionNfts: (state, action) => {
-      state.currentCollectionNfts = action.payload;
-    },
     setIsLoading : (state, action) => {
       state.isLoading = action.payload;
-    },
-    setIsLoadingNfts : (state, action) => {
-      state.isLoadingNfts = action.payload;
     }
   },
 });
@@ -70,11 +62,6 @@ export const selectIsLoadingSearcheable = createSelector(
   (collection) => collection.isLoadingSearcheable
 );
 
-export const selectCurrentCollectionNfts = createSelector(
-  [selectSelf],
-  (collection) => collection.currentCollectionNfts
-);
-
 export const selectCollectionDetails = createSelector(
   [selectSelf],
   (collection) => collection.collectionDetails
@@ -84,11 +71,6 @@ export const selectIsLoading = createSelector(
   [selectSelf],
   (collection) => collection.isLoading
 );
-export const selectIsLoadingNfts = createSelector(
-  [selectSelf],
-  (collection) => collection.isLoadingNfts
-);
-
 
 export const {
   setMostPopularCollections,
@@ -97,7 +79,6 @@ export const {
   setIsLoadingSearcheableCollection,
   setIsLoading,
   setCollectionDetails,
-  setCurrentCollectionNfts,
   setIsLoadingNfts
 } = CollectionReducer.actions;
 

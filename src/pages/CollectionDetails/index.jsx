@@ -5,28 +5,27 @@ import { useEffect, useState } from "react";
 import Spinner from "../../components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { LOAD_COLLECTION_NFTS, LOAD_NFT_DETAIL } from "../../saga/actions";
+import { LOAD_NFT_DETAIL } from "../../saga/actions";
 import {
   selectCollectionDetails,
-  selectCurrentCollectionNfts,
   selectIsLoading,
-  selectIsLoadingNfts,
+  setCollectionDetails,
 } from "../../redux/collectionReducer";
 import Pagination from "../../components/pagination/pagination";
+import { toast, ToastContainer } from "react-toastify";
+import {
+  getCollectionByAddress,
+  getCollectionNftsCall,
+} from "../../api/collectionApi";
 
 const CollectionDetails = () => {
   const detailCollection = useSelector(selectCollectionDetails);
 
   const isLoadingCollection = useSelector(selectIsLoading);
-  const isLoadingNftsSelector = useSelector(selectIsLoadingNfts);
   const [isLoadingNfts, setIsLoadingNfts] = useState(true);
 
-  const nftsSelector = useSelector(selectCurrentCollectionNfts);
-  const {totalElements, content} = nftsSelector || {};
-
-  useEffect(() => {
-    setIsLoadingNfts(isLoadingNftsSelector);
-  }, [isLoadingNftsSelector])
+  const [nfts, setNfts] = useState({});
+  const { totalElements, content } = nfts;
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -52,6 +51,7 @@ const CollectionDetails = () => {
   const [visible, setVisible] = useState(false);
   const [viewType, setViewType] = useState("CHANGE_FOR_MIN");
 
+
   useEffect(() => {
     console.log(filters);
   }, [filters]);
@@ -60,27 +60,22 @@ const CollectionDetails = () => {
     initLoadNfts();
   }, []);
 
-  const initLoadNfts = () => {
-    dispatch({
-      type: LOAD_COLLECTION_NFTS,
-      payload: {
-        collectionAddress: detailCollection.collectionAddress,
+  const initLoadNfts = async () => {
+    setIsLoadingNfts(true);
+    const nftsElements = await getCollectionNftsCall(
+      detailCollection.collectionAddress,
+      {
         page: pagination.page,
         numberElements: 20,
-      },
-    });
+      }
+    );
+    setNfts(nftsElements.data);
+    setIsLoadingNfts(false);
   };
 
   const changeSelectedView = (selection) => {
-    console.log(selection);
     setViewType(selection);
   };
-
-  useEffect(() => {
-    if (detailCollection && detailCollection.importProcessing) {
-      // dispatch in timer to reload
-    }
-  }, [detailCollection]);
 
   const handleSelectNfts = (tokenID) => {
     dispatch({
@@ -104,6 +99,35 @@ const CollectionDetails = () => {
   useEffect(() => {
     initLoadNfts();
   }, [pagination]);
+
+  const updateProcessing = async (interval) => {
+    const response = await getCollectionByAddress(
+      detailCollection.collectionAddress
+    );
+    const tempCollection = response.data;
+    if (!tempCollection.importProcessing) {
+      toast.clearWaitingQueue();
+      toast.dismiss();
+      toast.success("Congratulation your collection has been imported...");
+      dispatch(setCollectionDetails(tempCollection));
+      clearInterval(interval);    
+      return;
+    }
+  };
+
+  useEffect(() => {
+    if (detailCollection.importProcessing) {
+      toast.loading("Import progressing...");
+      const interval = setInterval(() => {
+        updateProcessing(interval);
+      }, 1000);
+      return () => {
+        toast.clearWaitingQueue();
+        toast.dismiss();
+        clearInterval(interval);
+      };
+    }
+  }, []);
 
   return isLoadingCollection ? (
     <Spinner />
@@ -130,7 +154,7 @@ const CollectionDetails = () => {
           />
           <Pagination
             currentPage={pagination.page}
-            pages={totalElements ? parseInt(totalElements/20) : 1}
+            pages={totalElements ? parseInt(totalElements / 20) : 1}
             setCurrentPage={changePage}
           />
         </>

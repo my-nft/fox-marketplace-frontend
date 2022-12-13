@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -55,13 +55,11 @@ const Header = () => {
     });
   };
 
-
-
   useEffect(() => {
+    // only if metamask is installed
     if(window.ethereum) {
       addWalletListener();
     }
-    
   }, []);
 
   useEffect(() => {
@@ -149,7 +147,7 @@ const Header = () => {
           
         </nav>
       </header>
-      <ToastContainer />
+      <ToastContainer limit={1}/>
 
       <Outlet />
     </>

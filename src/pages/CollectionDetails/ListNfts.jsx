@@ -34,9 +34,7 @@ const ListNfts = ({ nfts, isVisible , viewType, handleSelectNfts, filters, chang
               <div className="wrapperMostPopular row">
                 {
                 
-                nfts.map((item, index) => {
-                    return <MostPopularItem key={index} item={item} viewType={viewType} onSelectNfts={handleSelectNfts}/>
-                  })
+                nfts.map((item, index) => <MostPopularItem key={index} item={item} viewType={viewType} onSelectNfts={handleSelectNfts}/>)
                 
                 }
               </div>
