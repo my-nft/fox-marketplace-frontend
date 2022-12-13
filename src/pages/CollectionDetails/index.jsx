@@ -22,7 +22,7 @@ const CollectionDetails = () => {
   const [isLoadingNfts, setIsLoadingNfts] = useState(true);
 
   const nftsSelector = useSelector(selectCurrentCollectionNfts);
-  const {totalElements, content} = nftsSelector;
+  const {totalElements, content} = nftsSelector || {};
 
   useEffect(() => {
     setIsLoadingNfts(isLoadingNftsSelector);

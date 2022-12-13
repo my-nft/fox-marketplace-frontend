@@ -67,13 +67,9 @@ export function getTokenIdFromTxn(txn) {
 
 export const createNftDB = async (data, token, collectionAddress) => {
   const {
-    upload,
     artworkName,
     artistName,
-    email,
     description,
-    rightsLevel,
-    rightsDuration,
     walletAddress,
   } = data;
 
