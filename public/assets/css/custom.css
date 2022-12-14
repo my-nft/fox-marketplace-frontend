@@ -1079,12 +1079,20 @@ footer a:hover {
 }
 
 .entry-fields {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  display: flex;
+
   gap: 24px;
 }
 
 .entry-field {
+}
+
+.entry-field label {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: block;
 }
 
 .onoffbtn {
@@ -2519,4 +2527,45 @@ input[type="number"]:focus-within {
 
 .explorerItems {
   flex-grow: 2;
+}
+
+.grouped-fields {
+  display: flex;
+
+  align-items: center;
+  margin-left: auto;
+}
+
+.grouped-fields p {
+  margin: 0 16px;
+  color: #fefefe;
+  opacity: 0.6;
+}
+
+.popup-existing-value {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.popup-existing-value p:first-of-type {
+  color: #fefefe;
+  margin-right: 16px;
+}
+
+.popup-existing-value div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.popup-existing-values {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.trait-remove {
+  cursor: pointer;
+  color: #dc3535;
 }
