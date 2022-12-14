@@ -124,6 +124,7 @@ const MyNftDetails = () => {
   };
 
   const onPlaceBid = async (price) => {
+    
     console.log("####onPlaceBid###");
     dispatch({
       type: PLACE_BID,

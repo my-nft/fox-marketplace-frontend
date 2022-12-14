@@ -310,12 +310,6 @@ export const deListItem = async (listingId) => {
 
 export const makeOfferToOwner = async (listingId, price) => {
 
-
-  console.log("#####################################");
-  console.log("#####################################");
-  console.log("#####################################");
-  console.log("#####################################");
-
   const connectWallet = getCurrentWalletConnected();
 
   const offerPrice = web3.utils.toHex(price * 10 ** 18);
