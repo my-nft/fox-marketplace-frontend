@@ -79,7 +79,7 @@ const MyNftDetails = () => {
       type: BUY_NFT,
       payload: {
         listingId: nftDetails.listingId,
-        price,
+        price : Number(price),
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
@@ -87,12 +87,10 @@ const MyNftDetails = () => {
   };
 
   const onMakeOffer = (offerPrice) => {
-    console.log("HERRE");
     dispatch({
       type: MAKE_OFFER,
       payload: {
-        listingId: nftDetails.listingId,
-        price: offerPrice,
+        price: Number(offerPrice),
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },

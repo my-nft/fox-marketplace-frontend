@@ -49,11 +49,11 @@ function* runBuyNft(action) {
 
 function* runMakeOffer(action) {
   try {
-    const { listingId, price, tokenID, collectionAddress } = action.payload;
+    const { price, tokenID, collectionAddress } = action.payload;
 
     yield put(setIsLoading(true));
 
-    yield call(makeOfferToOwner, listingId, price);
+    yield call(makeOfferToOwner, collectionAddress, tokenID, price);
 
     const nftDetails = yield call(
       nftApi.getNftCall,

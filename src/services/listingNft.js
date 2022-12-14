@@ -8,7 +8,9 @@ import {
   loadERC20Contract,
   loadERC721Contract,
   loaderContract,
+  loadOfferSystemContract,
   marketplaceContractAddress,
+  OfferSystemAddress,
   web3,
 } from "../utils/blockchainInteractor";
 
@@ -20,6 +22,7 @@ const auctionContractReadOnly = loadAuctionContract(true);
 const erc20Contract = loadERC20Contract();
 const fixedPriceContract = loadAFixedPriceContract(false);
 const fixedPriceContractReadOnly = loadAFixedPriceContract(true);
+const offerSystemContract = loadOfferSystemContract();
 
 
 export const nftLoader = async (collectionAddress) => {
@@ -48,7 +51,7 @@ export const getPriceByListing = async (listingId) => {
 };
 
 export const getBestOffer = async (collectionAddress, tokenID) => {
-  const response = await fixedPriceContractReadOnly.methods
+  const response = await offerSystemContract.methods
     .activeBuyOffers(collectionAddress, tokenID)
     .call();
   return Number(response.price) / 10 ** 18;
@@ -251,11 +254,7 @@ export const createListing = async (collectionAddress, tokenID, priceInput) => {
 };
 
 export const buyItem = async (listingId, price) => {
-
-  console.log("###############################################")
-  console.log("###############################################")
-  console.log("###############################################")
-
+  
   const connectWallet = getCurrentWalletConnected();
   const listingPrice = web3.utils.toHex(price * 10 ** 18);
 
@@ -308,33 +307,39 @@ export const deListItem = async (listingId) => {
   }
 };
 
-export const makeOfferToOwner = async (listingId, price) => {
+export const makeOfferToOwner = async (collectionAddress, tokenID, price) => {
 
   const connectWallet = getCurrentWalletConnected();
 
-  const offerPrice = web3.utils.toHex(price * 10 ** 18);
+  let listingPrice = price;
+
+  listingPrice = web3.utils.toWei(listingPrice.toString(), 'ether')
+
+  listingPrice = web3.utils.toBN(listingPrice)
+
+  const offerPrice = web3.utils.toHex(listingPrice);
 
   const gasLimitApprouve = await erc20Contract.methods
-    .approve(FIXEDContractAddress, offerPrice)
+    .approve(OfferSystemAddress, offerPrice)
     .estimateGas({
       from: connectWallet,
       to: ERC20ContractAddress,
     });
 
-  await erc20Contract.methods.approve(FIXEDContractAddress, offerPrice).send({
+  await erc20Contract.methods.approve(OfferSystemAddress, offerPrice).send({
     from: connectWallet,
     to: ERC20ContractAddress,
     gasLimit: gasLimitApprouve,
   });
 
-  const gasLimitOffer = await fixedPriceContract.methods
-    .makeBuyOffer(listingId, offerPrice)
+  const gasLimitOffer = await offerSystemContract.methods
+    .makeBuyOffer(collectionAddress, tokenID, offerPrice)
     .estimateGas({
       from: connectWallet,
       to: FIXEDContractAddress,
     });
 
-  await fixedPriceContract.methods.makeBuyOffer(listingId, offerPrice).send({
+  await offerSystemContract.methods.makeBuyOffer(collectionAddress, tokenID, offerPrice).send({
     from: connectWallet,
     to: FIXEDContractAddress,
     gasLimit: gasLimitOffer,

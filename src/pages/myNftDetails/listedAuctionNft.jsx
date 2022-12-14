@@ -84,8 +84,8 @@ const ListedNft = ({ itemDetails, onPlaceBid, removeListingFromToken }) => {
 
             {sameAddress(currentWallet, currentBidOwner) &&
               isTokenExpired(
-                Number(itemInfos.endAuction) && Number(bidCount) > 0
-              ) && (
+                Number(itemInfos.endAuction)) && Number(bidCount) > 0
+               && (
                 <button id="buyItem" class="btn" onClick={handleClaimNFT}>
                   Claim NFT
                 </button>
