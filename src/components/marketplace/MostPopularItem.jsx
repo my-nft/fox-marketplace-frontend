@@ -58,14 +58,14 @@ const MostPopularItem = ({ viewType, item }) => {
   }, []);
 
   const onSelectNfts = () => {
-    // dispatch({
-    //   type: LOAD_NFT_DETAIL,
-    //   payload: {
-    //     collectionAddress: item.collectionAddress,
-    //     tokenID: item.tokenID,
-    //   },
-    //   onSuccess: () => navigate("/my-nft"),
-    // });
+    dispatch({
+      type: LOAD_NFT_DETAIL,
+      payload: {
+        collectionAddress: item.collectionAddress,
+        tokenID: item.tokenID,
+      },
+      onSuccess: () => navigate("/my-nft"),
+    });
   };
 
   const calculateTimeLeftBeforeExpiration = (expirationDate, dateNow) => {

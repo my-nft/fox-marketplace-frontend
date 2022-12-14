@@ -7,13 +7,13 @@ const ExplorePopularCollectionItem = ({ itemData }) => {
   const dispatch = useDispatch();
 
   const handleShowCollection = () => {
-    // dispatch({
-    //   type: LOAD_COLLECTION,
-    //   payload : {
-    //     collectionAddress : itemData.collectionAddress
-    //   },
-    //   onSuccess: () => navigate("/collection")
-    // })
+    dispatch({
+      type: LOAD_COLLECTION,
+      payload: {
+        collectionAddress: itemData.collectionAddress,
+      },
+      onSuccess: () => navigate("/collection"),
+    });
   };
 
   return (
