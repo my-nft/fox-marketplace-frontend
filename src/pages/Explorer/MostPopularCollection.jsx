@@ -31,7 +31,7 @@ const MostPopularCollection = ({ collections }) => {
       <img src="./assets/images/Background.jpg" id="layer" />
       <h3 className="mb-2 mt-2 text-center">Most popular collection</h3>
       {popularCollections.length > 0 ? (
-        <Slider {...settings} className="explorer-slick" onInit>
+        <Slider {...settings} className="explorer-slick">
           {popularCollections.map((item, index) => {
             return <ExplorePopularCollectionItem key={index} itemData={item} />;
           })}
