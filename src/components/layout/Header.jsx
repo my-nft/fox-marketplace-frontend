@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -12,6 +12,7 @@ import { LOAD_USER } from "../../saga/actions";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 import ScrollToTop from "../scrollToTop";
 import useOutsideClick from "./../../utils/useOutsideClick";
+import SearchBar from "./../searchBar/searchBar";
 
 const Header = () => {
   const dispatch = useDispatch();
