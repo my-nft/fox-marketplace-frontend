@@ -10,23 +10,16 @@ import {
 import { selectConnectedUser } from "../../redux/userReducer";
 import { LOAD_USER } from "../../saga/actions";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
-<<<<<<< HEAD
 import ScrollToTop from "../scrollToTop";
-=======
-import SearchBar from "../searchBar/searchBar";
->>>>>>> feature/create-react-project
 import useOutsideClick from "./../../utils/useOutsideClick";
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-<<<<<<< HEAD
-=======
 
   const [filters, setFilters] = useState({
     searchPrompt: "",
   });
->>>>>>> feature/create-react-project
 
   const connectedUser = useSelector(selectConnectedUser);
   const connectedWallet = getCurrentWalletConnected();
