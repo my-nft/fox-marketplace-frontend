@@ -132,12 +132,12 @@ function* runAcceptOffer(action) {
 
 function* runPlaceBid(action) {
   try {
-    const { acutionId, price, collectionAddress, tokenID } = action.payload;
+    const { auctionId, price, collectionAddress, tokenID } = action.payload;
 
     yield put(setIsLoading(true));
 
     // unlist from Blockchain
-    yield call(placeBid, acutionId, price);
+    yield call(placeBid, auctionId, price);
 
     const nftDetails = yield call(
       nftApi.getNftCall,

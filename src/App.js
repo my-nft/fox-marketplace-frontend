@@ -22,6 +22,7 @@ import AuthWrapper from "./components/authWrapper";
 import ProfileWrapper from "./pages/Profile/ProfileWrapper";
 import MyNftDetails from "./pages/myNftDetails";
 import AccountPage from "./pages/Account/Account";
+import ScrollToTop from "./components/scrollToTop";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -47,10 +48,10 @@ const router = createBrowserRouter(
       <Route
         path="/account"
         element={
-            <>
-              <AccountPage />
-              <Footer />
-            </>
+          <>
+            <AccountPage />
+            <Footer />
+          </>
         }
       />
       <Route

@@ -102,7 +102,7 @@ const ListedNft = ({ itemDetails, onPlaceBid, removeListingFromToken }) => {
               )}
           </CardBody>
         </CardNftWrapper>
-        {currentBidOwner === currentWallet && (
+        {(currentBidOwner !== currentWallet && creator !== currentWallet) && (
           <PlaceBid onPlaceBid={onPlaceBid} />
         )}
       </>

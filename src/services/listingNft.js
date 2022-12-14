@@ -251,6 +251,11 @@ export const createListing = async (collectionAddress, tokenID, priceInput) => {
 };
 
 export const buyItem = async (listingId, price) => {
+
+  console.log("###############################################")
+  console.log("###############################################")
+  console.log("###############################################")
+
   const connectWallet = getCurrentWalletConnected();
   const listingPrice = web3.utils.toHex(price * 10 ** 18);
 
@@ -258,12 +263,12 @@ export const buyItem = async (listingId, price) => {
     .approve(FIXEDContractAddress, listingPrice)
     .estimateGas({
       from: connectWallet,
-      to: marketplaceContractAddress,
+      to: FIXEDContractAddress,
     });
 
   await erc20Contract.methods.approve(FIXEDContractAddress, listingPrice).send({
     from: connectWallet,
-    to: marketplaceContractAddress,
+    to: FIXEDContractAddress,
     gasLimit: gasLimitApprouve,
   });
 
@@ -271,12 +276,12 @@ export const buyItem = async (listingId, price) => {
     .buyToken(listingId)
     .estimateGas({
       from: connectWallet,
-      to: marketplaceContractAddress,
+      to: FIXEDContractAddress,
     });
 
   await fixedPriceContract.methods.buyToken(listingId).send({
     from: connectWallet,
-    to: marketplaceContractAddress,
+    to: FIXEDContractAddress,
     gasLimit: gasLimitBuy,
   });
 };
@@ -304,6 +309,13 @@ export const deListItem = async (listingId) => {
 };
 
 export const makeOfferToOwner = async (listingId, price) => {
+
+
+  console.log("#####################################");
+  console.log("#####################################");
+  console.log("#####################################");
+  console.log("#####################################");
+
   const connectWallet = getCurrentWalletConnected();
 
   const offerPrice = web3.utils.toHex(price * 10 ** 18);
