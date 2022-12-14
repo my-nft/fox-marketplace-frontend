@@ -12,7 +12,7 @@ import {
   setCollectionDetails,
 } from "../../redux/collectionReducer";
 import Pagination from "../../components/pagination/pagination";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import {
   getCollectionByAddress,
   getCollectionNftsCall,

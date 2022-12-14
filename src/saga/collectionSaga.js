@@ -77,18 +77,17 @@ function* loadSearcheableCollection(action) {
 function* runLoadCollection(action) {
   try {
     const { collectionAddress } = action.payload;
-
-    yield put(setIsLoading(true));
+    yield put(setCollectionIsLoading(true));
     let response = yield call(api.getCollectionByAddress, collectionAddress);
     yield delay(1000);
     yield put(setCollectionDetails(response.data));
-    yield put(setIsLoading(false));
+    yield put(setCollectionIsLoading(false));
     action.onSuccess();
   } catch (error) {
     console.log(error);
     toast.error("An unexpected error occurred.");
   } finally {
-    yield put(setIsLoading(false));
+    yield put(setCollectionIsLoading(false));
   }
 }
 
