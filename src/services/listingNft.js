@@ -122,7 +122,7 @@ export const getAuctionInfos = async (auctionId) => {
 
 export const placeBid = async (auctionId, bidValue) => {
   const connectWallet = getCurrentWalletConnected();
-  const bidValueTrans = web3.utils.toHex(bidValue * 10 ** 18);
+  const bidValueTrans = bigNumberPricing(bidValue);
 
   const gasLimitApprouve = await erc20Contract.methods
     .approve(AUTIONContractAddress, bidValueTrans)
@@ -210,7 +210,7 @@ export const claimToken = async (auctionId) => {
 
 export const createListing = async (collectionAddress, tokenID, priceInput) => {
   const connectWallet = getCurrentWalletConnected();
-  const price = web3.utils.toHex(priceInput * 10 ** 18);
+  const price = bigNumberPricing(priceInput);
   const collectionContract = loadERC721Contract(collectionAddress, false);
 
   console.log("TOKENID : ", tokenID);
@@ -256,7 +256,7 @@ export const createListing = async (collectionAddress, tokenID, priceInput) => {
 export const buyItem = async (listingId, price) => {
   
   const connectWallet = getCurrentWalletConnected();
-  const listingPrice = web3.utils.toHex(price * 10 ** 18);
+  const listingPrice = bigNumberPricing(price);
 
   const gasLimitApprouve = await erc20Contract.methods
     .approve(FIXEDContractAddress, listingPrice)
@@ -311,13 +311,7 @@ export const makeOfferToOwner = async (collectionAddress, tokenID, price) => {
 
   const connectWallet = getCurrentWalletConnected();
 
-  let listingPrice = price;
-
-  listingPrice = web3.utils.toWei(listingPrice.toString(), 'ether')
-
-  listingPrice = web3.utils.toBN(listingPrice)
-
-  const offerPrice = web3.utils.toHex(listingPrice);
+  const offerPrice = bigNumberPricing(price); 
 
   const gasLimitApprouve = await erc20Contract.methods
     .approve(OfferSystemAddress, offerPrice)
@@ -362,3 +356,15 @@ export const acceptOffer = async (listingId) => {
     gasLimit: gasLimitAcceptOffer,
   });
 };
+
+
+
+const bigNumberPricing = (price) => {
+
+  let listingPrice = web3.utils.toWei(price.toString(), 'ether')
+
+  listingPrice = web3.utils.toBN(listingPrice)
+
+  return web3.utils.toHex(listingPrice);
+
+}
