@@ -46,10 +46,6 @@ const MostPopularItem = ({ viewType, item }) => {
     setItemInfos(infos);
 
     if (item.listingType === AUCTION) {
-      console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-      console.log("", itemInfos)
-      console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-
       setPrice(
         itemInfos?.currentBidPrice ? itemInfos.currentBidPrice / 10 ** 18 : null
       );
@@ -128,6 +124,11 @@ const MostPopularItem = ({ viewType, item }) => {
     return output;
   };
 
+  const timeEnd = calculateTimeLeftBeforeExpiration(
+    itemInfos?.endAuction,
+    dateTime
+  );
+
   return (
     <div
       className={
@@ -153,7 +154,6 @@ const MostPopularItem = ({ viewType, item }) => {
             <div className="nameItem">
               <span className="name">{item.name}</span>
               <span>
-                193{" "}
                 <img
                   src={item.image}
                   style={{ width: "14px" }}
@@ -179,11 +179,9 @@ const MostPopularItem = ({ viewType, item }) => {
             <p>
               {item.listingType === AUCTION && (
                 <span>
-                  Ends in{" "}
-                  {calculateTimeLeftBeforeExpiration(
-                    itemInfos?.endAuction,
-                    dateTime
-                  )}
+                  {
+                    timeEnd === 'Expired' ? 'Ended' : <>Ends in {timeEnd}</>
+                  }
                 </span>
               )}
             </p>
