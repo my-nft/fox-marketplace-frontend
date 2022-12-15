@@ -3,14 +3,17 @@ import { useState } from "react";
 import Spinner from "./../../components/Spinner";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { IMPORT_COLLECTION } from "../../saga/actions";
+import { IMPORT_COLLECTION, LOAD_COLLECTION } from "../../saga/actions";
 import { selectIsLoading } from "../../redux/collectionReducer";
 import { useEffect } from "react";
+import { delay } from "redux-saga/effects";
+import { useNavigate } from "react-router-dom";
 
 const ImportCollection = () => {
   const [loading, setLoading] = useState(true);
   const loadingSelector = useSelector(selectIsLoading);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -29,10 +32,18 @@ const ImportCollection = () => {
           payload: {
             collectionAddress: data["collectionAddress"],
           },
-          onSuccess: () =>
+          onSuccess: async () => {
             toast.success(
               "Congratulations, your Collection has been imported successfully"
-            ),
+            );
+            dispatch({
+              type: LOAD_COLLECTION,
+              payload : {
+                collectionAddress : data["collectionAddress"],
+              },
+              onSuccess: () => navigate("/collection")
+            })
+          }
         });
       } else {
         toast.error("Please fill the collection address !");

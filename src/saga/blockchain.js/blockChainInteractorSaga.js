@@ -49,11 +49,11 @@ function* runBuyNft(action) {
 
 function* runMakeOffer(action) {
   try {
-    const { listingId, price, tokenID, collectionAddress } = action.payload;
+    const { price, tokenID, collectionAddress } = action.payload;
 
     yield put(setIsLoading(true));
 
-    yield call(makeOfferToOwner, listingId, price);
+    yield call(makeOfferToOwner, collectionAddress, tokenID, price);
 
     const nftDetails = yield call(
       nftApi.getNftCall,
@@ -132,12 +132,12 @@ function* runAcceptOffer(action) {
 
 function* runPlaceBid(action) {
   try {
-    const { acutionId, price, collectionAddress, tokenID } = action.payload;
+    const { auctionId, price, collectionAddress, tokenID } = action.payload;
 
     yield put(setIsLoading(true));
 
     // unlist from Blockchain
-    yield call(placeBid, acutionId, price);
+    yield call(placeBid, auctionId, price);
 
     const nftDetails = yield call(
       nftApi.getNftCall,

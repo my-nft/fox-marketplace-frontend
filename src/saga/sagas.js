@@ -5,7 +5,6 @@ import {
   loadAccountCollectionsSaga,
   loadAccountNtsSaga,
   loadCollection,
-  loadCollectionNfts,
   loadMarketPlaceAll,
   loadPopularCollectionSaga,
   loadSearcheableCollectionSaga,
@@ -33,8 +32,7 @@ function* watchAll() {
     listingAuction(),
     loadMarketPlaceAll(),
     importCollectionSaga(),
-    loadCollection(),
-    loadCollectionNfts()
+    loadCollection()
   ]);
 }
 

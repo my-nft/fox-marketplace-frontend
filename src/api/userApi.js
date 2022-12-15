@@ -4,6 +4,7 @@ import methods from "../config/axiosConfig";
 const userEndpoint = apiUrl + "user/";
 
 export function getUserByAddress(address) {
+  console.log(process.env)
   return methods.get(userEndpoint + address);
 }
 

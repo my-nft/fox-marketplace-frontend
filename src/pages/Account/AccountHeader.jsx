@@ -16,7 +16,7 @@ const AccountHeader = ({ user }) => {
           <span id="accountWallet">Wallet Address {user.address}</span> -{" "}
           <span class="dataLastVisit">Joined June 2022</span>
         </div>
-        <div id="accountButton">
+        {/* <div id="accountButton">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -62,7 +62,7 @@ const AccountHeader = ({ user }) => {
               </ul>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

@@ -53,7 +53,7 @@ const ListedFixedNft = ({
             <button
               id="buyItem"
               class="btn"
-              onClick={() => onBuyItem(itemDetails.listingId, currentPrice)}
+              onClick={() => onBuyItem(currentPrice)}
             >
               Buy item
             </button>

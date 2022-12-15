@@ -38,7 +38,10 @@ const PlaceBid = ({ onPlaceBid }) => {
               id="placeBidSubmit"
               class="btn contIcon"
               disabled={!(Number(values.auctionPrice) > 0)}
-              onClick={() => onPlaceBid(values.auctionPrice)}
+              onClick={(evt) => {
+                evt.preventDefault();
+                onPlaceBid(values.auctionPrice);
+              }}
             >
               Place bid
             </button>

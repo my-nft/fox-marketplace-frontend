@@ -21,7 +21,6 @@ import {
 } from "../../utils/blockchainInteractor";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 import { sameAddress } from "../../utils/walletUtils";
-import InfoNftDetails from "../NftDtails/InfoNftDetails";
 import ListedAuctionNft from "./listedAuctionNft";
 import ListedFixedNft from "./listedFixedNft";
 import NonListedMyNft from "./nonListedMyNft";
@@ -80,7 +79,7 @@ const MyNftDetails = () => {
       type: BUY_NFT,
       payload: {
         listingId: nftDetails.listingId,
-        price,
+        price : Number(price),
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
@@ -88,12 +87,10 @@ const MyNftDetails = () => {
   };
 
   const onMakeOffer = (offerPrice) => {
-    console.log("HERRE");
     dispatch({
       type: MAKE_OFFER,
       payload: {
-        listingId: nftDetails.listingId,
-        price: offerPrice,
+        price: Number(offerPrice),
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
@@ -125,6 +122,7 @@ const MyNftDetails = () => {
   };
 
   const onPlaceBid = async (price) => {
+    
     console.log("####onPlaceBid###");
     dispatch({
       type: PLACE_BID,

@@ -3,7 +3,7 @@ export const ethereum = window.ethereum;
 
 
 const connectWallet = () => {
-  ethereum.request({
+  ethereum && ethereum.request({
     method: "eth_requestAccounts",
   });
 }

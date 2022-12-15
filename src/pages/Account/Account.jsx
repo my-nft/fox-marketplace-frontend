@@ -4,16 +4,17 @@ import { useState } from "react";
 import AccountHeader from "./AccountHeader";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectConnectedWallet } from "../../redux/userReducer";
 import {
   selectAccountOwner,
   selectCollections,
   selectIsLoadingAccount,
   selectNfts,
 } from "../../redux/accountReducer";
+import {selectIsLoading} from '../../redux/collectionReducer';
 import Spinner from "../../components/Spinner";
 import { LOAD_ACCOUNT_COLLECTIONS, LOAD_ACCOUNT_NFTS } from "../../saga/actions";
 import Pagination from "../../components/pagination/pagination";
+import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 
 const AccountPage = () => {
   const [visible, setVisible] = useState(false);
@@ -49,8 +50,9 @@ const AccountPage = () => {
 
 
   const dispatch = useDispatch();
-  const connectedWallet = useSelector(selectConnectedWallet);
+  const connectedWallet = getCurrentWalletConnected();
   const isLoading = useSelector(selectIsLoadingAccount);
+  const isLoadingCollection = useSelector(selectIsLoading)
   const accountOwner = useSelector(selectAccountOwner);
 
   const changePage = (page) => {
@@ -66,7 +68,9 @@ const AccountPage = () => {
     dispatch({
       type : LOAD_ACCOUNT_NFTS,
       payload : {
-        ...body
+        ...body,
+        page: pagination.page,
+        numberElements: pagination.numberElements,
       }
     })
   }
@@ -77,7 +81,9 @@ const AccountPage = () => {
         type : LOAD_ACCOUNT_COLLECTIONS,
         payload : {
           ...pagination,
-          ownerAddress : connectedWallet
+          ownerAddress : connectedWallet,
+          page: pagination.page,
+          numberElements: pagination.numberElements
         }
       })
     } else if (activeSection === "NFTS") {
@@ -102,19 +108,21 @@ const AccountPage = () => {
   }
 
   useEffect(() => {
-    console.log("ACTIVE SECTION ====> " , activeSection);
     runInit();
+  }, [pagination])
+
+  useEffect(() => {
     setPagination({
       ...pagination,
       page : 1
     })
+    runInit();
+    
   }, [activeSection]);
-
-  console.log("CT  ", activeSection)
 
   return (
     <div>
-      {isLoading ? (
+      {isLoading || isLoadingCollection ? (
         <Spinner />
       ) : (
         <>

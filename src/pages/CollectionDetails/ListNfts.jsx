@@ -4,12 +4,8 @@ import AccordingCollection from "../Explorer/AccordingCollection";
 import AccordionCategory from "./AccordionCategory";
 import MostPopularItem from "../../components/marketplace/MostPopularItem";
 import ListActivities from "./ListActivities";
-import { useEffect } from "react";
 
 const ListNfts = ({ nfts, isVisible , viewType, handleSelectNfts, filters, changeFilterValue}) => {
-
-
-  console.log("(((((((((((((((((((",nfts);
   
   return (
     <section id="tabsNft" className="container-fluid accountListed">
@@ -38,9 +34,7 @@ const ListNfts = ({ nfts, isVisible , viewType, handleSelectNfts, filters, chang
               <div className="wrapperMostPopular row">
                 {
                 
-                nfts.map((item, index) => {
-                    return <MostPopularItem key={index} item={item} viewType={viewType} onSelectNfts={handleSelectNfts}/>
-                  })
+                nfts.map((item, index) => <MostPopularItem key={index} item={item} viewType={viewType} onSelectNfts={handleSelectNfts}/>)
                 
                 }
               </div>

@@ -10,10 +10,13 @@ import {
 } from "../utils/blockchainInteractor";
 
 const erc20Contract = loadERC20Contract();
-const marketplaceContract = loadMarketplaceContract();
+const marketplaceContract = loadMarketplaceContract(false);
+const marketplaceContractReader = loadMarketplaceContract(true);
+
+
 
 export async function getMintFees() {
-  return await marketplaceContract.methods.mintFee().call();
+  return await marketplaceContractReader.methods.mintFee().call();
 }
 
 export const mintNft = (collectionAddress, data) => {
@@ -67,13 +70,9 @@ export function getTokenIdFromTxn(txn) {
 
 export const createNftDB = async (data, token, collectionAddress) => {
   const {
-    upload,
     artworkName,
     artistName,
-    email,
     description,
-    rightsLevel,
-    rightsDuration,
     walletAddress,
   } = data;
 

@@ -1,39 +1,40 @@
+import OpenCloseButton from "../../components/buttons/openClose";
+import SearchBar from "../../components/searchBar/searchBar";
+
 const FilterInput = ({
   onOpenClose,
   onChangeSelectedView,
   onChangeActiveSection,
   activeSection,
   changeFilterValue,
-  filters
+  filters,
 }) => {
   return (
     <section id="filterInput" className="container-fluid">
       <div className="mr-5 wrapper">
-        <button id="openClose" onClick={onOpenClose}>
-          <img src="./assets/images/marketplace/button_open_close.jpg" alt="" />
-        </button>
-        <input
-          className="form-control mr-sm-2"
-          type="search"
-          placeholder="Search NFTs, collections, artist and genres..."
-          aria-label="Search"
+        <OpenCloseButton clickAction={onOpenClose} />
+
+        <SearchBar
+          changeFilterValue={changeFilterValue}
+          filters={filters}
           id="formSearch"
-          alt=""
-          value={filters.searchPrompt}
-          onChange={(e) => changeFilterValue({
-            ...filters,
-            "searchPrompt": e.target.value
-          })}
+          placeholder="Search NFTs, collections, artist and genres..."
         />
-        <select value={filters.sortBy} onChange={(e) => changeFilterValue({
-          ...filters,
-          sortBy: e.target.value
-        })} >
-          <option value="PRICE_ASC" >Price low to high</option>
-          <option value="PRICE_DESC" >Price high to low</option>
-          <option value="RECENTLY_LISTED" >Recently listed</option>
-          <option value="RECENTLY_CREATED" >Recently created</option>
-          <option value="RECENTLY_SOLD" >Recently sold</option>
+
+        <select
+          value={filters.sortBy}
+          onChange={(e) =>
+            changeFilterValue({
+              ...filters,
+              sortBy: e.target.value,
+            })
+          }
+        >
+          <option value="PRICE_ASC">Price low to high</option>
+          <option value="PRICE_DESC">Price high to low</option>
+          <option value="RECENTLY_LISTED">Recently listed</option>
+          <option value="RECENTLY_CREATED">Recently created</option>
+          <option value="RECENTLY_SOLD">Recently sold</option>
         </select>
 
         <ul id="chooseLayout">
@@ -81,7 +82,9 @@ const FilterInput = ({
       <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
           <button
-            class={activeSection === "COLLECTIONS" ? "nav-link active" : "nav-link"}
+            class={
+              activeSection === "COLLECTIONS" ? "nav-link active" : "nav-link"
+            }
             id="pills-home-tab"
             onClick={() => onChangeActiveSection("COLLECTIONS")}
           >
@@ -110,7 +113,9 @@ const FilterInput = ({
         </li>
         <li class="nav-item" role="presentation">
           <button
-            class={activeSection === "COLLECTED" ? "nav-link active" : "nav-link"}
+            class={
+              activeSection === "COLLECTED" ? "nav-link active" : "nav-link"
+            }
             id="pills-contact-tab"
             type="button"
             onClick={() => onChangeActiveSection("COLLECTED")}

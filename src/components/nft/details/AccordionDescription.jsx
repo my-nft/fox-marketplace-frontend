@@ -47,7 +47,7 @@ const AccordionDescription = ({nftDetails}) => {
 
         <div
           id="collapseOne"
-          class="collapse show"
+          class="collapse"
           aria-labelledby="headingOne"
           data-parent="#accordionDescription"
         >

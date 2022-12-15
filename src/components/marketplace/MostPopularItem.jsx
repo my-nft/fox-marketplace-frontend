@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LOAD_NFT_DETAIL } from "../../saga/actions";
-import { getAuctionInfos } from "../../services/listingNft";
-import { AUCTION } from "../../utils/foxConstantes";
+import { getAuctionInfos, getPriceByListing } from "../../services/listingNft";
+import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 
 const MostPopularItem = ({ viewType, item }) => {
   let styleList = {};
@@ -39,10 +39,19 @@ const MostPopularItem = ({ viewType, item }) => {
   const [dateTime, setDateTime] = useState(new Date());
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [price, setPrice] = useState(0);
 
   const init = async () => {
     const infos = await getAuctionInfos(item.auctionId - 1);
     setItemInfos(infos);
+
+    if(item.listingType === AUCTION) {
+      setPrice(itemInfos?.currentBidPrice ? itemInfos.currentBidPrice / 10 ** 18 : null);
+    } else if(item.listingType === FIXED_PRICE) {
+      console.log("#######################################");
+      const priceSmt = await getPriceByListing(item.listingId);
+      setPrice(priceSmt);
+    }
   };
 
   useEffect(() => {
@@ -114,6 +123,7 @@ const MostPopularItem = ({ viewType, item }) => {
     return output;
   };
 
+
   return (
     <div
       className={
@@ -157,9 +167,9 @@ const MostPopularItem = ({ viewType, item }) => {
               <label>Price</label>
               <span className="orange">
                 <b>f(x)</b>{" "}
-                {itemInfos?.currentBidPrice
-                  ? itemInfos.currentBidPrice / 10 ** 18
-                  : null}
+                {
+                  price
+                }
               </span>
             </p>
             <p>
