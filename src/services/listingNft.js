@@ -340,19 +340,19 @@ export const makeOfferToOwner = async (collectionAddress, tokenID, price) => {
   });
 };
 
-export const acceptOffer = async (listingId) => {
+export const acceptOffer = async (collectionAddress, tokenID) => {
   const connectWallet = getCurrentWalletConnected();
 
-  const gasLimitAcceptOffer = await fixedPriceContract.methods
-    .acceptBuyOffer(listingId)
+  const gasLimitAcceptOffer = await offerSystemContract.methods
+    .acceptBuyOffer(collectionAddress, tokenID)
     .estimateGas({
       from: connectWallet,
-      to: FIXEDContractAddress,
+      to: OfferSystemAddress,
     });
 
-  await fixedPriceContract.methods.acceptBuyOffer(listingId).send({
+  await offerSystemContract.methods.acceptBuyOffer(collectionAddress, tokenID).send({
     from: connectWallet,
-    to: FIXEDContractAddress,
+    to: OfferSystemAddress,
     gasLimit: gasLimitAcceptOffer,
   });
 };

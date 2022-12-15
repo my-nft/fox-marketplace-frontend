@@ -102,12 +102,12 @@ function* runDelistItem(action) {
 
 function* runAcceptOffer(action) {
   try {
-    const { listingId, collectionAddress, tokenID } = action.payload;
+    const { collectionAddress, tokenID } = action.payload;
 
     yield put(setIsLoading(true));
 
     // unlist from Blockchain
-    yield call(acceptOffer, listingId);
+    yield call(acceptOffer, collectionAddress, tokenID);
 
     // unlist from DB
     yield call(nftApi.setNftToUnlisted, {

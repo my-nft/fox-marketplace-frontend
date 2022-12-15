@@ -110,11 +110,9 @@ const MyNftDetails = () => {
   };
 
   const onAcceptOffer = () => {
-    console.log("####onDelestItem###");
     dispatch({
       type: ACCEPT_OFFER,
       payload: {
-        listingId: nftDetails.listingId,
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
