@@ -9,7 +9,6 @@ import {
   loadERC721Contract,
   loaderContract,
   loadOfferSystemContract,
-  marketplaceContractAddress,
   OfferSystemAddress,
   web3,
 } from "../utils/blockchainInteractor";
@@ -64,7 +63,7 @@ export const createAuction = async (
   endAuction
 ) => {
   const connectWallet = getCurrentWalletConnected();
-  const price = web3.utils.toHex(initialPrice * 10 ** 18);
+  const price = bigNumberPricing(initialPrice);
   const erc721Contract = loadERC721Contract(collectionAddress, false);
 
   const gasLimitApprouve = await erc721Contract.methods
