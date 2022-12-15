@@ -4,17 +4,14 @@ import CardBody from "../../components/nft/CardBody";
 import CardHeader from "../../components/nft/CardHeader";
 import CardNftWrapper from "../../components/nft/CardNftWrapper";
 import {
-  claimNFT,
-  claimToken,
   getAuctionInfos,
-  refundNft,
 } from "../../services/listingNft";
 import PlaceBid from "../../components/nft/PlaceBid";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { sameAddress } from "../../utils/walletUtils";
 
 
-const ListedNft = ({ itemDetails, onPlaceBid, removeListingFromToken }) => {
+const ListedNft = ({ itemDetails, onPlaceBid, onRefund, onClaimNft, onClaimToken }) => {
   const [itemInfos, setItemInfos] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -29,21 +26,6 @@ const ListedNft = ({ itemDetails, onPlaceBid, removeListingFromToken }) => {
   const setAuctionItemInfos = async () => {
     const infos = await getAuctionInfos(itemDetails.auctionId - 1);
     setItemInfos(infos);
-  };
-
-  const handleRefund = async () => {
-    await refundNft(itemDetails.auctionId - 1);
-    removeListingFromToken();
-  };
-
-  const handleClaimNFT = async () => {
-    await claimNFT(itemDetails.auctionId - 1);
-    removeListingFromToken();
-  };
-
-  const handleClaimToken = async () => {
-    await claimToken(itemDetails.auctionId - 1);
-    removeListingFromToken();
   };
 
   const init = async () => {
@@ -77,7 +59,7 @@ const ListedNft = ({ itemDetails, onPlaceBid, removeListingFromToken }) => {
             {sameAddress(currentWallet, creator) && Number(bidCount) === 0 &&  isTokenExpired(
                 Number(itemInfos.endAuction))
                && (
-              <button id="buyItem" class="btn" onClick={handleRefund}>
+              <button id="buyItem" class="btn" onClick={onRefund}>
                 Refund
               </button>
             )}
@@ -86,7 +68,7 @@ const ListedNft = ({ itemDetails, onPlaceBid, removeListingFromToken }) => {
               isTokenExpired(
                 Number(itemInfos.endAuction)) && Number(bidCount) > 0
                && (
-                <button id="buyItem" class="btn" onClick={handleClaimNFT}>
+                <button id="buyItem" class="btn" onClick={onClaimNft}>
                   Claim NFT
                 </button>
               )}
@@ -96,7 +78,7 @@ const ListedNft = ({ itemDetails, onPlaceBid, removeListingFromToken }) => {
               isTokenExpired(
                 Number(itemInfos.endAuction)) && Number(bidCount) > 0 &&
               (
-                <button id="buyItem" class="btn" onClick={handleClaimToken}>
+                <button id="buyItem" class="btn" onClick={onClaimToken}>
                   Claim Token
                 </button>
               )}

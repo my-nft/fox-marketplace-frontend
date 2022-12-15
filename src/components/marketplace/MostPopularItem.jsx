@@ -45,10 +45,15 @@ const MostPopularItem = ({ viewType, item }) => {
     const infos = await getAuctionInfos(item.auctionId - 1);
     setItemInfos(infos);
 
-    if(item.listingType === AUCTION) {
-      setPrice(itemInfos?.currentBidPrice ? itemInfos.currentBidPrice / 10 ** 18 : null);
-    } else if(item.listingType === FIXED_PRICE) {
-      console.log("#######################################");
+    if (item.listingType === AUCTION) {
+      console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+      console.log("", itemInfos)
+      console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+
+      setPrice(
+        itemInfos?.currentBidPrice ? itemInfos.currentBidPrice / 10 ** 18 : null
+      );
+    } else if (item.listingType === FIXED_PRICE) {
       const priceSmt = await getPriceByListing(item.listingId);
       setPrice(priceSmt);
     }
@@ -123,7 +128,6 @@ const MostPopularItem = ({ viewType, item }) => {
     return output;
   };
 
-
   return (
     <div
       className={
@@ -163,15 +167,15 @@ const MostPopularItem = ({ viewType, item }) => {
           </div>
           <p className="nItem">#{item.id}</p>
           <div className="wrapText">
-            <p>
-              <label>Price</label>
-              <span className="orange">
-                <b>f(x)</b>{" "}
-                {
-                  price
-                }
-              </span>
-            </p>
+            {price ? (
+              <p>
+                <label>Price</label>
+                <span className="orange">
+                  <b>f(x)</b> {price}
+                </span>
+              </p>
+            ) : null}
+
             <p>
               {item.listingType === AUCTION && (
                 <span>

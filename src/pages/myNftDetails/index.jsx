@@ -8,17 +8,17 @@ import { REMOVE_LISTING_FROM_NFT } from "../../saga/actions";
 import {
   ACCEPT_OFFER,
   BUY_NFT,
+  CLAIM_NFT,
+  CLAIM_TOKEN,
   DELIST_ITEM,
   LISTING_AUCTION,
   LISTING_FIXED_PRICE,
   MAKE_OFFER,
   PLACE_BID,
+  REFUND_NFT,
 } from "../../saga/blockchain.js/blockChainActions";
 import { nftLoader } from "../../services/listingNft";
-import {
-  connectWallet,
-  getCurrentWalletConnected,
-} from "../../utils/blockchainInteractor";
+import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 import { sameAddress } from "../../utils/walletUtils";
 import ListedAuctionNft from "./listedAuctionNft";
@@ -62,6 +62,40 @@ const MyNftDetails = () => {
     });
   };
 
+  const handleRefund = async () => {
+    dispatch({
+      type: REFUND_NFT,
+      payload: {
+        tokenID: nftDetails.tokenID,
+        collectionAddress: nftDetails.collectionAddress,
+        auctionId: nftDetails.auctionId - 1,
+      },
+    });
+  };
+
+  const handleClaimNFT = async () => {
+    dispatch({
+      type: CLAIM_NFT,
+      payload: {
+        tokenID: nftDetails.tokenID,
+        collectionAddress: nftDetails.collectionAddress,
+        auctionId: nftDetails.auctionId - 1,
+      },
+    });
+  };
+
+  const handleClaimToken = async () => {
+    dispatch({
+      type: CLAIM_TOKEN,
+      payload: {
+        tokenID: nftDetails.tokenID,
+        collectionAddress: nftDetails.collectionAddress,
+        auctionId: nftDetails.auctionId - 1,
+      },
+    });
+  };
+
+
   const handleFixedPrice = async (values) => {
     const fixedPrice = Number(values.fixedPrice);
     dispatch({
@@ -79,7 +113,7 @@ const MyNftDetails = () => {
       type: BUY_NFT,
       payload: {
         listingId: nftDetails.listingId,
-        price : Number(price),
+        price: Number(price),
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
@@ -98,7 +132,6 @@ const MyNftDetails = () => {
   };
 
   const onDelistItem = async () => {
-    console.log("####onDelestItem###");
     dispatch({
       type: DELIST_ITEM,
       payload: {
@@ -120,8 +153,6 @@ const MyNftDetails = () => {
   };
 
   const onPlaceBid = async (price) => {
-    
-    console.log("####onPlaceBid###");
     dispatch({
       type: PLACE_BID,
       payload: {
@@ -129,16 +160,6 @@ const MyNftDetails = () => {
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId - 1,
         price,
-      },
-    });
-  };
-
-  const removeListingFromToken = () => {
-    dispatch({
-      type: REMOVE_LISTING_FROM_NFT,
-      payload: {
-        tokenID: nftDetails.tokenID,
-        collectionAddress: nftDetails.collectionAddress,
       },
     });
   };
@@ -194,7 +215,9 @@ const MyNftDetails = () => {
             <ListedAuctionNft
               itemDetails={nftDetails}
               onPlaceBid={onPlaceBid}
-              removeListingFromToken={removeListingFromToken}
+              onRefund={handleRefund}
+              onClaimNft={handleClaimNFT}
+              onClaimToken={handleClaimToken}
             />
           ) : null}
 
