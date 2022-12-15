@@ -293,12 +293,12 @@ export const deListItem = async (listingId) => {
       .deactivateListing(listingId)
       .estimateGas({
         from: connectWallet,
-        to: marketplaceContractAddress,
+        to: FIXEDContractAddress,
       });
 
     await fixedPriceContract.methods.deactivateListing(listingId).send({
       from: connectWallet,
-      to: marketplaceContractAddress,
+      to: FIXEDContractAddress,
       gasLimit: gasLimitBuy,
     });
   } catch (error) {
