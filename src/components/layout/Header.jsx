@@ -32,7 +32,10 @@ const Header = () => {
   const handleSignIn = () => {
     connectWallet();
     const connectedWallet = getCurrentWalletConnected();
-    dispatch({ type: LOAD_USER, payload: connectedWallet });
+    dispatch({
+      type: LOAD_USER,
+      payload: "0x3e772a1Aedd9Baf457b144d454092481c46acaBC",
+    });
   };
 
   const cleanSession = () => {

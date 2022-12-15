@@ -23,6 +23,7 @@ import ProfileWrapper from "./pages/Profile/ProfileWrapper";
 import MyNftDetails from "./pages/myNftDetails";
 import AccountPage from "./pages/Account/Account";
 import ScrollToTop from "./components/scrollToTop";
+import ConfirmationPopup from "./components/confirmationPopup/confirmationPopup";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -128,6 +129,10 @@ const router = createBrowserRouter(
 function App() {
   return (
     <Provider store={store}>
+      <ConfirmationPopup
+        title="Test"
+        message="KLMOASDASDASDAsd adwqe adwa dwqe q"
+      />
       <RouterProvider router={router}></RouterProvider>
     </Provider>
   );

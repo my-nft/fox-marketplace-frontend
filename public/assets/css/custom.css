@@ -852,6 +852,29 @@ footer a:hover {
   width: 95vw;
 }
 
+#marketplace #openClose{
+  width: 72px;
+  background: #0a0b0e;
+  margin-right: 24px;
+}
+
+#marketplace #headerInput{
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#marketplace #headerInput>select{
+  margin-left: 32px;
+}
+
+#marketplace #headerInput>select, #marketplace #headerInput>button{
+  height: 64px;
+}
+
+#marketplace #headerInput>button{
+  margin-left: auto;
+}
+
 .wrapperMostPopular {
   background-color: #080808;
   padding: 10px;
@@ -912,6 +935,7 @@ footer a:hover {
 
 #marketplace {
   width: 95vw;
+  margin-top: 56px;
 }
 
 #command {
@@ -1157,11 +1181,17 @@ footer a:hover {
   padding: 10px 0px;
 }
 
+#accordionProperties .checkBox{
+  background-color: transparent;
+  padding: 10px 0px;
+}
+
 .checkBox span {
   padding: 4px;
   color: white;
 }
 
+#accordionFilters .card,
 #accordionStatus .card,
 #accordionPrice .card,
 #accordionStatus .card,
@@ -2493,8 +2523,8 @@ input[type="number"]:focus-within {
 }
 
 .filtersHide.filtersExplorer {
-  max-width: 114px !important;
-  margin-right: 16px;
+  max-width: 0 !important;
+  margin-right: 0 !important;
 }
 
 .filtersContainer #openClose {
