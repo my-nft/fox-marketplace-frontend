@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import Spinner from "../../components/Spinner";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { LOAD_NFT_DETAIL } from "../../saga/actions";
 import Pagination from "../../components/pagination/pagination";
 import { toast } from "react-toastify";
 import {
