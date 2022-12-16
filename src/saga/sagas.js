@@ -1,5 +1,5 @@
 import { all } from "redux-saga/effects";
-import { acceptOfferSaga, buyNft, delistItem, listFixedPrice, listingAuction, makeOffer, placeBidSaga } from "./blockchain.js/blockChainInteractorSaga";
+import { acceptOfferSaga, buyNft, claimNFTSaga, claimTokenSaga, delistItem, listFixedPrice, listingAuction, makeOffer, placeBidSaga, refund } from "./blockchain.js/blockChainInteractorSaga";
 import {
   importCollectionSaga,
   loadAccountCollectionsSaga,
@@ -8,7 +8,6 @@ import {
   loadMarketPlaceAll,
   loadPopularCollectionSaga,
   loadSearcheableCollectionSaga,
-  showNftDetails,
 } from "./collectionSaga";
 import { loadListedNfts, removeListingNftSaga } from "./nftSaga";
 import { loadUser } from "./userSaga";
@@ -18,7 +17,6 @@ function* watchAll() {
     loadUser(),
     loadPopularCollectionSaga(),
     loadSearcheableCollectionSaga(),
-    showNftDetails(),
     loadAccountNtsSaga(),
     loadAccountCollectionsSaga(),
     loadListedNfts(),
@@ -32,7 +30,10 @@ function* watchAll() {
     listingAuction(),
     loadMarketPlaceAll(),
     importCollectionSaga(),
-    loadCollection()
+    loadCollection(),
+    refund(),
+    claimNFTSaga(),
+    claimTokenSaga()
   ]);
 }
 

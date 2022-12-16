@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LOAD_NFT_DETAIL } from "../../saga/actions";
-import { getAuctionInfos } from "../../services/listingNft";
-import { AUCTION } from "../../utils/foxConstantes";
+import { getAuctionInfos, getPriceByListing } from "../../services/listingNft";
+import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 
 const MostPopularItem = ({ viewType, item }) => {
   let styleList = {};
@@ -39,10 +39,20 @@ const MostPopularItem = ({ viewType, item }) => {
   const [dateTime, setDateTime] = useState(new Date());
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [price, setPrice] = useState(0);
 
   const init = async () => {
     const infos = await getAuctionInfos(item.auctionId - 1);
     setItemInfos(infos);
+
+    if (item.listingType === AUCTION) {
+      setPrice(
+        itemInfos?.currentBidPrice ? itemInfos.currentBidPrice / 10 ** 18 : null
+      );
+    } else if (item.listingType === FIXED_PRICE) {
+      const priceSmt = await getPriceByListing(item.listingId);
+      setPrice(priceSmt);
+    }
   };
 
   useEffect(() => {
@@ -58,14 +68,7 @@ const MostPopularItem = ({ viewType, item }) => {
   }, []);
 
   const onSelectNfts = () => {
-    dispatch({
-      type: LOAD_NFT_DETAIL,
-      payload: {
-        collectionAddress: item.collectionAddress,
-        tokenID: item.tokenID,
-      },
-      onSuccess: () => navigate("/my-nft"),
-    });
+    navigate(`/collection/${item.collectionAddress}/${item.tokenID}`);
   };
 
   const calculateTimeLeftBeforeExpiration = (expirationDate, dateNow) => {
@@ -114,6 +117,11 @@ const MostPopularItem = ({ viewType, item }) => {
     return output;
   };
 
+  const timeEnd = calculateTimeLeftBeforeExpiration(
+    itemInfos?.endAuction,
+    dateTime
+  );
+
   return (
     <div
       className={
@@ -139,7 +147,6 @@ const MostPopularItem = ({ viewType, item }) => {
             <div className="nameItem">
               <span className="name">{item.name}</span>
               <span>
-                193{" "}
                 <img
                   src={item.image}
                   style={{ width: "14px" }}
@@ -153,23 +160,19 @@ const MostPopularItem = ({ viewType, item }) => {
           </div>
           <p className="nItem">#{item.id}</p>
           <div className="wrapText">
-            <p>
-              <label>Price</label>
-              <span className="orange">
-                <b>f(x)</b>{" "}
-                {itemInfos?.currentBidPrice
-                  ? itemInfos.currentBidPrice / 10 ** 18
-                  : null}
-              </span>
-            </p>
+            {price ? (
+              <p>
+                <label>Price</label>
+                <span className="orange">
+                  <b>f(x)</b> {price}
+                </span>
+              </p>
+            ) : null}
+
             <p>
               {item.listingType === AUCTION && (
                 <span>
-                  Ends in{" "}
-                  {calculateTimeLeftBeforeExpiration(
-                    itemInfos?.endAuction,
-                    dateTime
-                  )}
+                  {timeEnd === "Expired" ? "Ended" : <>Ends in {timeEnd}</>}
                 </span>
               )}
             </p>

@@ -10,15 +10,21 @@ import {
   placeBid,
   createListing,
   createAuction,
+  refundNft,
+  claimNFT,
+  claimToken,
 } from "../../services/listingNft";
 import {
   ACCEPT_OFFER,
   BUY_NFT,
+  CLAIM_NFT,
+  CLAIM_TOKEN,
   DELIST_ITEM,
   LISTING_AUCTION,
   LISTING_FIXED_PRICE,
   MAKE_OFFER,
   PLACE_BID,
+  REFUND_NFT,
 } from "./blockChainActions";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 
@@ -49,11 +55,11 @@ function* runBuyNft(action) {
 
 function* runMakeOffer(action) {
   try {
-    const { listingId, price, tokenID, collectionAddress } = action.payload;
+    const { price, tokenID, collectionAddress } = action.payload;
 
     yield put(setIsLoading(true));
 
-    yield call(makeOfferToOwner, listingId, price);
+    yield call(makeOfferToOwner, collectionAddress, tokenID, price);
 
     const nftDetails = yield call(
       nftApi.getNftCall,
@@ -102,12 +108,12 @@ function* runDelistItem(action) {
 
 function* runAcceptOffer(action) {
   try {
-    const { listingId, collectionAddress, tokenID } = action.payload;
+    const { collectionAddress, tokenID } = action.payload;
 
     yield put(setIsLoading(true));
 
     // unlist from Blockchain
-    yield call(acceptOffer, listingId);
+    yield call(acceptOffer, collectionAddress, tokenID);
 
     // unlist from DB
     yield call(nftApi.setNftToUnlisted, {
@@ -231,6 +237,118 @@ function* runListingAuction(action) {
   }
 }
 
+function* runHandleRefund(action) {
+
+  const {auctionId, collectionAddress, tokenID} = action.payload;
+  
+  try {
+
+    yield put(setIsLoading(true));
+
+    yield call(refundNft, auctionId);
+
+    yield call(nftApi.setNftToUnlisted, {
+      collectionAddress,
+      tokenID,
+    });
+    // get the nft details
+    const response = yield call(
+      nftApi.getNftCall,
+      collectionAddress,
+      tokenID
+    );
+    // putting the NFT details
+    yield put(setNftDetails(response.data));
+
+
+
+  } catch (error) {
+    console.log("error ", error);
+    toast.error("An unexpected error occurred.");
+  } finally {
+    yield put(setIsLoading(false));
+  }
+}
+
+function* runHandleClaimNFT(action) {
+
+  const {auctionId, collectionAddress, tokenID} = action.payload;
+  
+  try {
+
+    yield put(setIsLoading(true));
+
+    yield call(claimNFT, auctionId);
+
+    yield call(nftApi.setNftToUnlisted, {
+      collectionAddress,
+      tokenID,
+    });
+    // get the nft details
+    const response = yield call(
+      nftApi.getNftCall,
+      collectionAddress,
+      tokenID
+    );
+    // putting the NFT details
+    yield put(setNftDetails(response.data));
+
+
+
+  } catch (error) {
+    console.log("error ", error);
+    toast.error("An unexpected error occurred.");
+  } finally {
+    yield put(setIsLoading(false));
+  }
+  
+}
+
+function* runHandleClaimToken(action) {
+  const {auctionId, collectionAddress, tokenID} = action.payload;
+  
+  try {
+
+    yield put(setIsLoading(true));
+
+    yield call(claimToken, auctionId);
+
+    yield call(nftApi.setNftToUnlisted, {
+      collectionAddress,
+      tokenID,
+    });
+    // get the nft details
+    const response = yield call(
+      nftApi.getNftCall,
+      collectionAddress,
+      tokenID
+    );
+    // putting the NFT details
+    yield put(setNftDetails(response.data));
+
+
+
+  } catch (error) {
+    console.log("error ", error);
+    toast.error("An unexpected error occurred.");
+  } finally {
+    yield put(setIsLoading(false));
+  }
+}
+
+
+function* refund() {
+  yield takeLatest(REFUND_NFT, runHandleRefund);
+}
+
+function* claimNFTSaga() {
+  yield takeLatest(CLAIM_NFT, runHandleClaimNFT);
+}
+
+function* claimTokenSaga() {
+  yield takeLatest(CLAIM_TOKEN, runHandleClaimToken);
+}
+
 function* buyNft() {
   yield takeLatest(BUY_NFT, runBuyNft);
 }
@@ -267,4 +385,7 @@ export {
   placeBidSaga,
   listFixedPrice,
   listingAuction,
+  refund,
+  claimNFTSaga,
+  claimTokenSaga
 };

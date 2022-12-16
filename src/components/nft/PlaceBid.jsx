@@ -17,7 +17,7 @@ const PlaceBid = ({ onPlaceBid }) => {
           <form id="setAuction">
             <div class="input-group">
               <div style={{ width: "80%" }}>
-                <label for="inputAmount">Price</label>
+                <label htmlFor="inputAmount">Price</label>
                 <input
                   type="text"
                   class="form-control"

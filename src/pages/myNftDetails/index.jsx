@@ -1,24 +1,24 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { getNftCall } from "../../api/nftApi";
 import NftMoreInfos from "../../components/nft/details/NftMoreInfos";
 import Spinner from "../../components/Spinner";
 import { selectNftDetails, selectIsLoading } from "../../redux/nftReducer";
-import { REMOVE_LISTING_FROM_NFT } from "../../saga/actions";
 import {
   ACCEPT_OFFER,
   BUY_NFT,
+  CLAIM_NFT,
+  CLAIM_TOKEN,
   DELIST_ITEM,
   LISTING_AUCTION,
   LISTING_FIXED_PRICE,
   MAKE_OFFER,
   PLACE_BID,
+  REFUND_NFT,
 } from "../../saga/blockchain.js/blockChainActions";
-import { nftLoader } from "../../services/listingNft";
-import {
-  connectWallet,
-  getCurrentWalletConnected,
-} from "../../utils/blockchainInteractor";
+import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 import { sameAddress } from "../../utils/walletUtils";
 import ListedAuctionNft from "./listedAuctionNft";
@@ -27,26 +27,26 @@ import NonListedMyNft from "./nonListedMyNft";
 import NonListedNft from "./nonListedNft";
 
 const MyNftDetails = () => {
+
+  const {collectionAddress, tokenID} = useParams();
   const connectedWallet = getCurrentWalletConnected();
-  const nftDetailsSelector = useSelector(selectNftDetails);
+  const isLoading = useSelector(selectIsLoading)
   const [isLoadingPage, setIsLoadingPage] = useState(true);
   const [nftDetails, setNftDetails] = useState();
-  const isLoading = useSelector(selectIsLoading);
   const dispatch = useDispatch();
-  useEffect(() => {
-    setIsLoadingPage(isLoading);
-  }, [isLoading]);
+
+
+  const loadNft = async () => {
+    setIsLoadingPage(true);
+    const nft = await getNftCall(collectionAddress, tokenID);
+    setNftDetails(nft.data);
+    setIsLoadingPage(false);
+  }
 
   useEffect(() => {
-    setNftDetails(nftDetailsSelector);
-  }, [nftDetailsSelector]);
+    loadNft();
+  }, []);
 
-  // see my own NFTs
-  useEffect(() => {
-    if (nftDetails) {
-      nftLoader(nftDetails.collectionAddress);
-    }
-  }, [nftDetails]);
 
   const handleAuction = async (values) => {
     const auctionPrice = Number(values.auctionPrice);
@@ -61,6 +61,40 @@ const MyNftDetails = () => {
       },
     });
   };
+
+  const handleRefund = async () => {
+    dispatch({
+      type: REFUND_NFT,
+      payload: {
+        tokenID: nftDetails.tokenID,
+        collectionAddress: nftDetails.collectionAddress,
+        auctionId: nftDetails.auctionId - 1,
+      },
+    });
+  };
+
+  const handleClaimNFT = async () => {
+    dispatch({
+      type: CLAIM_NFT,
+      payload: {
+        tokenID: nftDetails.tokenID,
+        collectionAddress: nftDetails.collectionAddress,
+        auctionId: nftDetails.auctionId - 1,
+      },
+    });
+  };
+
+  const handleClaimToken = async () => {
+    dispatch({
+      type: CLAIM_TOKEN,
+      payload: {
+        tokenID: nftDetails.tokenID,
+        collectionAddress: nftDetails.collectionAddress,
+        auctionId: nftDetails.auctionId - 1,
+      },
+    });
+  };
+
 
   const handleFixedPrice = async (values) => {
     const fixedPrice = Number(values.fixedPrice);
@@ -79,7 +113,7 @@ const MyNftDetails = () => {
       type: BUY_NFT,
       payload: {
         listingId: nftDetails.listingId,
-        price,
+        price: Number(price),
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
@@ -87,12 +121,10 @@ const MyNftDetails = () => {
   };
 
   const onMakeOffer = (offerPrice) => {
-    console.log("HERRE");
     dispatch({
       type: MAKE_OFFER,
       payload: {
-        listingId: nftDetails.listingId,
-        price: offerPrice,
+        price: Number(offerPrice),
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
@@ -100,7 +132,6 @@ const MyNftDetails = () => {
   };
 
   const onDelistItem = async () => {
-    console.log("####onDelestItem###");
     dispatch({
       type: DELIST_ITEM,
       payload: {
@@ -112,11 +143,9 @@ const MyNftDetails = () => {
   };
 
   const onAcceptOffer = () => {
-    console.log("####onDelestItem###");
     dispatch({
       type: ACCEPT_OFFER,
       payload: {
-        listingId: nftDetails.listingId,
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
@@ -124,8 +153,6 @@ const MyNftDetails = () => {
   };
 
   const onPlaceBid = async (price) => {
-    
-    console.log("####onPlaceBid###");
     dispatch({
       type: PLACE_BID,
       payload: {
@@ -137,21 +164,11 @@ const MyNftDetails = () => {
     });
   };
 
-  const removeListingFromToken = () => {
-    dispatch({
-      type: REMOVE_LISTING_FROM_NFT,
-      payload: {
-        tokenID: nftDetails.tokenID,
-        collectionAddress: nftDetails.collectionAddress,
-      },
-    });
-  };
-
-  return isLoadingPage ? (
+  return isLoadingPage || isLoading ? (
     <Spinner />
   ) : (
     <div className="container my-5" id="nftPage">
-      <img src="./assets/images/Background.jpg" id="layer" />
+      <img src="/assets/images/Background.jpg" id="layer" />
       <h3 className="my-5 text-center">List Item for Sale</h3>
       <div className="row">
         <div className="col-md-12  col-lg-5 order-2 order-lg-1 ">
@@ -198,7 +215,9 @@ const MyNftDetails = () => {
             <ListedAuctionNft
               itemDetails={nftDetails}
               onPlaceBid={onPlaceBid}
-              removeListingFromToken={removeListingFromToken}
+              onRefund={handleRefund}
+              onClaimNft={handleClaimNFT}
+              onClaimToken={handleClaimToken}
             />
           ) : null}
 

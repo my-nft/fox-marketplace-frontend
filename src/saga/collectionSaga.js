@@ -37,6 +37,7 @@ function* importCollection(action) {
     yield put(setCollectionIsLoading(true));
     const { collectionAddress } = action.payload;
     yield call(api.importCollectionCall, collectionAddress);
+    yield delay(1000);
     action.onSuccess();
   } catch (error) {
     console.log("error ", error.response.status);
@@ -77,18 +78,17 @@ function* loadSearcheableCollection(action) {
 function* runLoadCollection(action) {
   try {
     const { collectionAddress } = action.payload;
-
-    yield put(setIsLoading(true));
+    yield put(setCollectionIsLoading(true));
     let response = yield call(api.getCollectionByAddress, collectionAddress);
     yield delay(1000);
     yield put(setCollectionDetails(response.data));
-    yield put(setIsLoading(false));
+    yield put(setCollectionIsLoading(false));
     action.onSuccess();
   } catch (error) {
     console.log(error);
     toast.error("An unexpected error occurred.");
   } finally {
-    yield put(setIsLoading(false));
+    yield put(setCollectionIsLoading(false));
   }
 }
 
@@ -111,26 +111,6 @@ function* runLoadMarketPlaceAll(action) {
     yield put(setListedNfts(response.data));
   } catch (error) {
     console.log(error);
-    toast.error("An unexpected error occurred.");
-  } finally {
-    yield put(setIsLoading(false));
-  }
-}
-
-function* loadNftDetails(action) {
-  try {
-    yield put(setIsLoading(true));
-    const { collectionAddress, tokenID, onSuccess = {} } = action.payload;
-    const response = yield call(
-      tokenApi.getNftCall,
-      collectionAddress,
-      tokenID
-    );
-    yield put(setNftDetails(response.data));
-
-    action.onSuccess();
-  } catch (error) {
-    console.log("error ", error.response.status);
     toast.error("An unexpected error occurred.");
   } finally {
     yield put(setIsLoading(false));
@@ -210,10 +190,6 @@ function* loadSearcheableCollectionSaga() {
   yield takeLatest(LOAD_SEARCHABLE_COLLECTION, loadSearcheableCollection);
 }
 
-function* showNftDetails() {
-  yield takeLatest(LOAD_NFT_DETAIL, loadNftDetails);
-}
-
 function* loadAccountNtsSaga() {
   yield takeLatest(LOAD_ACCOUNT_NFTS, loadAccountNfts);
 }
@@ -234,7 +210,6 @@ function* loadCollection() {
 export {
   loadPopularCollectionSaga,
   loadSearcheableCollectionSaga,
-  showNftDetails,
   loadAccountNtsSaga,
   loadAccountCollectionsSaga,
   loadMarketPlaceAll,

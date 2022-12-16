@@ -3,10 +3,9 @@ import { useState } from "react";
 import Spinner from "./../../components/Spinner";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { IMPORT_COLLECTION, LOAD_COLLECTION } from "../../saga/actions";
+import { IMPORT_COLLECTION } from "../../saga/actions";
 import { selectIsLoading } from "../../redux/collectionReducer";
 import { useEffect } from "react";
-import { delay } from "redux-saga/effects";
 import { useNavigate } from "react-router-dom";
 
 const ImportCollection = () => {
@@ -36,13 +35,7 @@ const ImportCollection = () => {
             toast.success(
               "Congratulations, your Collection has been imported successfully"
             );
-            dispatch({
-              type: LOAD_COLLECTION,
-              payload : {
-                collectionAddress : data["collectionAddress"],
-              },
-              onSuccess: () => navigate("/collection")
-            })
+            navigate(`/collection/${data["collectionAddress"]}`);
           }
         });
       } else {

@@ -3,26 +3,22 @@ import HeaderAccount from "./HeaderAccount";
 import ListNfts from "./ListNfts";
 import { useEffect, useState } from "react";
 import Spinner from "../../components/Spinner";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import { LOAD_NFT_DETAIL } from "../../saga/actions";
-import {
-  selectCollectionDetails,
-  selectIsLoading,
-  setCollectionDetails,
-} from "../../redux/collectionReducer";
 import Pagination from "../../components/pagination/pagination";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import {
   getCollectionByAddress,
   getCollectionNftsCall,
 } from "../../api/collectionApi";
 
 const CollectionDetails = () => {
-  const detailCollection = useSelector(selectCollectionDetails);
 
-  const isLoadingCollection = useSelector(selectIsLoading);
+  let {collectionAddress} = useParams();
+  const [isLoadingCollection, setIsLoadingCollection] = useState(true);
   const [isLoadingNfts, setIsLoadingNfts] = useState(true);
+  const [collectionDetails, setCollectionDetails] = useState();
 
   const [nfts, setNfts] = useState({});
   const { totalElements, content } = nfts;
@@ -57,13 +53,21 @@ const CollectionDetails = () => {
   }, [filters]);
 
   useEffect(() => {
-    initLoadNfts();
+    initLoadCollection();
   }, []);
+
+
+  const initLoadCollection = async () => {
+    setIsLoadingCollection(true);
+    const collection = await getCollectionByAddress(collectionAddress);
+    setCollectionDetails(collection.data);
+    setIsLoadingCollection(false);
+  }
 
   const initLoadNfts = async () => {
     setIsLoadingNfts(true);
     const nftsElements = await getCollectionNftsCall(
-      detailCollection.collectionAddress,
+      collectionDetails.collectionAddress,
       {
         page: pagination.page,
         numberElements: 20,
@@ -78,14 +82,7 @@ const CollectionDetails = () => {
   };
 
   const handleSelectNfts = (tokenID) => {
-    dispatch({
-      type: LOAD_NFT_DETAIL,
-      payload: {
-        collectionAddress: detailCollection.collectionAddress,
-        tokenID: tokenID,
-      },
-    });
-    navigate("/my-nft");
+    navigate(`/collection/${collectionDetails.collectionAddress}/${tokenID}`)
   };
 
   const changePage = (page) => {
@@ -97,12 +94,14 @@ const CollectionDetails = () => {
   };
 
   useEffect(() => {
-    initLoadNfts();
-  }, [pagination]);
+    if(collectionDetails) {
+      initLoadNfts();
+    }
+  }, [collectionDetails, pagination])
 
   const updateProcessing = async (interval) => {
     const response = await getCollectionByAddress(
-      detailCollection.collectionAddress
+      collectionDetails.collectionAddress
     );
     const tempCollection = response.data;
     if (!tempCollection.importProcessing) {
@@ -116,7 +115,7 @@ const CollectionDetails = () => {
   };
 
   useEffect(() => {
-    if (detailCollection.importProcessing) {
+    if (collectionDetails && collectionDetails.importProcessing) {
       toast.loading("Import progressing...");
       const interval = setInterval(() => {
         updateProcessing(interval);
@@ -127,13 +126,13 @@ const CollectionDetails = () => {
         clearInterval(interval);
       };
     }
-  }, []);
+  }, [collectionDetails]);
 
   return isLoadingCollection ? (
     <Spinner />
   ) : (
     <>
-      <HeaderAccount collectionData={detailCollection} />
+      <HeaderAccount collectionData={collectionDetails} />
       <FilterInput
         onOpenClose={() => setVisible(!visible)}
         onChangeSelectedView={changeSelectedView}

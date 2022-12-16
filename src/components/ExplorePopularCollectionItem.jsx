@@ -1,19 +1,10 @@
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { LOAD_COLLECTION } from "../saga/actions";
 
 const ExplorePopularCollectionItem = ({ itemData }) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handleShowCollection = () => {
-    dispatch({
-      type: LOAD_COLLECTION,
-      payload: {
-        collectionAddress: itemData.collectionAddress,
-      },
-      onSuccess: () => navigate("/collection"),
-    });
+    navigate(`/collection/${itemData.collectionAddress}`)
   };
 
   return (

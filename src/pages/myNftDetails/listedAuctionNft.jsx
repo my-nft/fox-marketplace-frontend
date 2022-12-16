@@ -4,46 +4,30 @@ import CardBody from "../../components/nft/CardBody";
 import CardHeader from "../../components/nft/CardHeader";
 import CardNftWrapper from "../../components/nft/CardNftWrapper";
 import {
-  claimNFT,
-  claimToken,
   getAuctionInfos,
-  refundNft,
 } from "../../services/listingNft";
 import PlaceBid from "../../components/nft/PlaceBid";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { sameAddress } from "../../utils/walletUtils";
 
 
-const ListedNft = ({ itemDetails, onPlaceBid, removeListingFromToken }) => {
+const ListedAuctionNft = ({ itemDetails, onPlaceBid, onRefund, onClaimNft, onClaimToken }) => {
   const [itemInfos, setItemInfos] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
   const isTokenExpired = (endAuction) => {
-    const date = new Date(0);
-    date.setUTCSeconds(endAuction);
-  
-    return new Date() - date > 0;
+    if(endAuction) {
+      const date = new Date(0);
+      date.setUTCSeconds(endAuction);
+      return new Date() - date > 0;
+    }
+    return false;
   };
   
 
   const setAuctionItemInfos = async () => {
     const infos = await getAuctionInfos(itemDetails.auctionId - 1);
     setItemInfos(infos);
-  };
-
-  const handleRefund = async () => {
-    await refundNft(itemDetails.auctionId - 1);
-    removeListingFromToken();
-  };
-
-  const handleClaimNFT = async () => {
-    await claimNFT(itemDetails.auctionId - 1);
-    removeListingFromToken();
-  };
-
-  const handleClaimToken = async () => {
-    await claimToken(itemDetails.auctionId - 1);
-    removeListingFromToken();
   };
 
   const init = async () => {
@@ -62,8 +46,6 @@ const ListedNft = ({ itemDetails, onPlaceBid, removeListingFromToken }) => {
   const currentWallet = getCurrentWalletConnected();
   const creator = itemInfos?.creator;
 
-  console.table(currentBidOwner, bidCount, currentWallet, creator);
-
   return (
     !isLoading && (
       <>
@@ -75,18 +57,18 @@ const ListedNft = ({ itemDetails, onPlaceBid, removeListingFromToken }) => {
             priceDollar={itemInfos?.currentBidPrice / 10 ** 18}
           >
             {sameAddress(currentWallet, creator) && Number(bidCount) === 0 &&  isTokenExpired(
-                Number(itemInfos.endAuction))
+                Number(itemInfos?.endAuction))
                && (
-              <button id="buyItem" class="btn" onClick={handleRefund}>
+              <button id="buyItem" className="btn" onClick={onRefund}>
                 Refund
               </button>
             )}
 
             {sameAddress(currentWallet, currentBidOwner) &&
               isTokenExpired(
-                Number(itemInfos.endAuction) && Number(bidCount) > 0
-              ) && (
-                <button id="buyItem" class="btn" onClick={handleClaimNFT}>
+                Number(itemInfos?.endAuction)) && Number(bidCount) > 0
+               && (
+                <button id="buyItem" className="btn" onClick={onClaimNft}>
                   Claim NFT
                 </button>
               )}
@@ -94,15 +76,16 @@ const ListedNft = ({ itemDetails, onPlaceBid, removeListingFromToken }) => {
             {sameAddress(currentWallet, creator) &&
               Number(bidCount) > 0 &&
               isTokenExpired(
-                Number(itemInfos.endAuction)) && Number(bidCount) > 0 &&
+                Number(itemInfos?.endAuction)) && Number(bidCount) > 0 &&
               (
-                <button id="buyItem" class="btn" onClick={handleClaimToken}>
+                <button id="buyItem" className="btn" onClick={onClaimToken}>
                   Claim Token
                 </button>
               )}
           </CardBody>
         </CardNftWrapper>
-        {(currentBidOwner !== currentWallet && creator !== currentWallet) && (
+        {!isTokenExpired(
+                Number(itemInfos?.endAuction)) && !sameAddress(currentBidOwner, currentWallet) && !sameAddress(creator ,currentWallet) && (
           <PlaceBid onPlaceBid={onPlaceBid} />
         )}
       </>
@@ -110,4 +93,4 @@ const ListedNft = ({ itemDetails, onPlaceBid, removeListingFromToken }) => {
   );
 };
 
-export default ListedNft;
+export default ListedAuctionNft;

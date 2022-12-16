@@ -10,6 +10,7 @@ import {
   selectIsLoadingAccount,
   selectNfts,
 } from "../../redux/accountReducer";
+import {selectIsLoading} from '../../redux/collectionReducer';
 import Spinner from "../../components/Spinner";
 import {
   LOAD_ACCOUNT_COLLECTIONS,
@@ -17,7 +18,6 @@ import {
 } from "../../saga/actions";
 import Pagination from "../../components/pagination/pagination";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
-import { selectIsLoading } from "../../redux/nftReducer";
 
 const AccountPage = () => {
   const [visible, setVisible] = useState(false);
@@ -52,9 +52,8 @@ const AccountPage = () => {
   const dispatch = useDispatch();
   const connectedWallet = getCurrentWalletConnected();
   const isLoading = useSelector(selectIsLoadingAccount);
+  const isLoadingCollection = useSelector(selectIsLoading)
   const accountOwner = useSelector(selectAccountOwner);
-
-  const isLoadingApi = useSelector(selectIsLoading);
 
   const changePage = (page) => {
     if (page < 1 || page > pagination.maxPages) return;
@@ -112,7 +111,6 @@ const AccountPage = () => {
   }, [pagination]);
 
   useEffect(() => {
-    console.log("ACTIVE SECTION ====> ", activeSection);
     setPagination({
       ...pagination,
       page: 1,
@@ -120,11 +118,9 @@ const AccountPage = () => {
     runInit();
   }, [activeSection]);
 
-  console.log("CT  ", activeSection);
-
   return (
     <div>
-      {isLoading || isLoadingApi ? (
+      {isLoading || isLoadingCollection ? (
         <Spinner />
       ) : (
         <>
