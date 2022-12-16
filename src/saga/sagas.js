@@ -9,7 +9,7 @@ import {
   loadPopularCollectionSaga,
   loadSearcheableCollectionSaga,
 } from "./collectionSaga";
-import { loadListedNfts, removeListingNftSaga } from "./nftSaga";
+import { loadListedNfts } from "./nftSaga";
 import { loadUser } from "./userSaga";
 
 function* watchAll() {
@@ -20,7 +20,6 @@ function* watchAll() {
     loadAccountNtsSaga(),
     loadAccountCollectionsSaga(),
     loadListedNfts(),
-    removeListingNftSaga(),
     buyNft(),
     makeOffer(),
     delistItem(),

@@ -59,6 +59,7 @@ const MyNftDetails = () => {
         auctionPrice: auctionPrice,
         endAuction: endAuction,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
@@ -70,6 +71,7 @@ const MyNftDetails = () => {
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId - 1,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
@@ -81,6 +83,7 @@ const MyNftDetails = () => {
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId - 1,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
@@ -92,6 +95,7 @@ const MyNftDetails = () => {
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId - 1,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
@@ -105,6 +109,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         fixedPrice: fixedPrice,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
@@ -117,6 +122,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
@@ -128,6 +134,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
@@ -139,6 +146,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
@@ -149,6 +157,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
@@ -161,6 +170,7 @@ const MyNftDetails = () => {
         auctionId: nftDetails.auctionId - 1,
         price,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
