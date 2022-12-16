@@ -68,14 +68,7 @@ const MostPopularItem = ({ viewType, item }) => {
   }, []);
 
   const onSelectNfts = () => {
-    dispatch({
-      type: LOAD_NFT_DETAIL,
-      payload: {
-        collectionAddress: item.collectionAddress,
-        tokenID: item.tokenID,
-      },
-      onSuccess: () => navigate("/my-nft"),
-    });
+    navigate(`/collection/${item.collectionAddress}/${item.tokenID}`);
   };
 
   const calculateTimeLeftBeforeExpiration = (expirationDate, dateNow) => {
@@ -179,9 +172,7 @@ const MostPopularItem = ({ viewType, item }) => {
             <p>
               {item.listingType === AUCTION && (
                 <span>
-                  {
-                    timeEnd === 'Expired' ? 'Ended' : <>Ends in {timeEnd}</>
-                  }
+                  {timeEnd === "Expired" ? "Ended" : <>Ends in {timeEnd}</>}
                 </span>
               )}
             </p>

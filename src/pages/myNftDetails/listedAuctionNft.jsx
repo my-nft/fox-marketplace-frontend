@@ -11,15 +11,17 @@ import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { sameAddress } from "../../utils/walletUtils";
 
 
-const ListedNft = ({ itemDetails, onPlaceBid, onRefund, onClaimNft, onClaimToken }) => {
+const ListedAuctionNft = ({ itemDetails, onPlaceBid, onRefund, onClaimNft, onClaimToken }) => {
   const [itemInfos, setItemInfos] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
   const isTokenExpired = (endAuction) => {
-    const date = new Date(0);
-    date.setUTCSeconds(endAuction);
-  
-    return new Date() - date > 0;
+    if(endAuction) {
+      const date = new Date(0);
+      date.setUTCSeconds(endAuction);
+      return new Date() - date > 0;
+    }
+    return false;
   };
   
 
@@ -44,8 +46,6 @@ const ListedNft = ({ itemDetails, onPlaceBid, onRefund, onClaimNft, onClaimToken
   const currentWallet = getCurrentWalletConnected();
   const creator = itemInfos?.creator;
 
-  console.table(currentBidOwner, bidCount, currentWallet, creator);
-
   return (
     !isLoading && (
       <>
@@ -57,18 +57,18 @@ const ListedNft = ({ itemDetails, onPlaceBid, onRefund, onClaimNft, onClaimToken
             priceDollar={itemInfos?.currentBidPrice / 10 ** 18}
           >
             {sameAddress(currentWallet, creator) && Number(bidCount) === 0 &&  isTokenExpired(
-                Number(itemInfos.endAuction))
+                Number(itemInfos?.endAuction))
                && (
-              <button id="buyItem" class="btn" onClick={onRefund}>
+              <button id="buyItem" className="btn" onClick={onRefund}>
                 Refund
               </button>
             )}
 
             {sameAddress(currentWallet, currentBidOwner) &&
               isTokenExpired(
-                Number(itemInfos.endAuction)) && Number(bidCount) > 0
+                Number(itemInfos?.endAuction)) && Number(bidCount) > 0
                && (
-                <button id="buyItem" class="btn" onClick={onClaimNft}>
+                <button id="buyItem" className="btn" onClick={onClaimNft}>
                   Claim NFT
                 </button>
               )}
@@ -76,16 +76,16 @@ const ListedNft = ({ itemDetails, onPlaceBid, onRefund, onClaimNft, onClaimToken
             {sameAddress(currentWallet, creator) &&
               Number(bidCount) > 0 &&
               isTokenExpired(
-                Number(itemInfos.endAuction)) && Number(bidCount) > 0 &&
+                Number(itemInfos?.endAuction)) && Number(bidCount) > 0 &&
               (
-                <button id="buyItem" class="btn" onClick={onClaimToken}>
+                <button id="buyItem" className="btn" onClick={onClaimToken}>
                   Claim Token
                 </button>
               )}
           </CardBody>
         </CardNftWrapper>
         {!isTokenExpired(
-                Number(itemInfos.endAuction)) && !sameAddress(currentBidOwner, currentWallet) && !sameAddress(creator ,currentWallet) && (
+                Number(itemInfos?.endAuction)) && !sameAddress(currentBidOwner, currentWallet) && !sameAddress(creator ,currentWallet) && (
           <PlaceBid onPlaceBid={onPlaceBid} />
         )}
       </>
@@ -93,4 +93,4 @@ const ListedNft = ({ itemDetails, onPlaceBid, onRefund, onClaimNft, onClaimToken
   );
 };
 
-export default ListedNft;
+export default ListedAuctionNft;

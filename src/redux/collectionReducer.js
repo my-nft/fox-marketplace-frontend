@@ -7,9 +7,7 @@ const INITIAL_STATE = {
   searcheableCollections: [],
   isLoadingSearcheable: false,
 
-
   // general loading
-  collectionDetails: undefined,
   isLoading: false,
 };
 
@@ -28,9 +26,6 @@ const CollectionReducer = createSlice({
     },
     setSearcheableCollections: (state, action) => {
       state.searcheableCollections = action.payload;
-    },
-    setCollectionDetails: (state, action) => {
-      state.collectionDetails = action.payload;
     },
     setIsLoading : (state, action) => {
       state.isLoading = action.payload;
@@ -60,11 +55,6 @@ export const selectSearcheableCollection = createSelector(
 export const selectIsLoadingSearcheable = createSelector(
   [selectSelf],
   (collection) => collection.isLoadingSearcheable
-);
-
-export const selectCollectionDetails = createSelector(
-  [selectSelf],
-  (collection) => collection.collectionDetails
 );
 
 export const selectIsLoading = createSelector(

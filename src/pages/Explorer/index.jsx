@@ -19,6 +19,7 @@ import AccordionPrice from "./AccordionPrice";
 import Command from "./Command";
 import MostPopular from "./MostPopular";
 import MostPopularCollection from "./MostPopularCollection";
+import AccordionPropertiesFilter from './PropertiesFilter';
 
 const Explorer = () => {
   const dispatch = useDispatch();
@@ -44,7 +45,8 @@ const Explorer = () => {
     buyToken: "ETH",
     status: "ALL",
     showRaritiy: false,
-    sortBy: "RECENTLY_LISTED"
+    sortBy: "RECENTLY_LISTED",
+    properties: []
   })
 
   useEffect(() => {
@@ -86,7 +88,6 @@ const Explorer = () => {
       <section id="marketplace" class="container-fluid mb-5">
         <div class="row flex-nowrap md-flex-row flex-col">
           <div id="sx" className={`filtersContainer filtersExplorer ${filtersVisible ? null : 'filtersHide'}`}>
-            <Command filters={filters} changeFilterValue={setFilters} toggleFilters={() => setFiltersVisible(!filtersVisible)} />
             <div className="filtersCollapsible" >
               <AccordingStatus filters={filters} changeFilterValue={setFilters} />
               <AccordionPrice filters={filters} changeFilterValue={setFilters} />
@@ -94,11 +95,12 @@ const Explorer = () => {
               <AccordingCollection
                 listSearcheableCollections={searcheableCollections}
               />
+              <AccordionPropertiesFilter availableProperties={["Lmao","Test"]} filters={filters} propertiesFilter={filters.properties} changeFilterValue={setFilters} />
             </div>
           
           </div>
           <div id="dx" className={`explorerItems ml-4`}>
-            <HeaderInput filters={filters} changeFilterValue={setFilters} />
+            <HeaderInput filters={filters} changeFilterValue={setFilters} filtersVisible={filtersVisible} setFiltersVisible={setFiltersVisible} />
             <MostPopular nfts={marketPlaceNfts} pagination={pagination} changePage={changePage} />
             <Pagination
               pages={pagination.maxPages}

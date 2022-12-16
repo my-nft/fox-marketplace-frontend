@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { getNftCall } from "../../api/nftApi";
 import NftMoreInfos from "../../components/nft/details/NftMoreInfos";
 import Spinner from "../../components/Spinner";
 import { selectNftDetails, selectIsLoading } from "../../redux/nftReducer";
-import { REMOVE_LISTING_FROM_NFT } from "../../saga/actions";
 import {
   ACCEPT_OFFER,
   BUY_NFT,
@@ -17,7 +18,6 @@ import {
   PLACE_BID,
   REFUND_NFT,
 } from "../../saga/blockchain.js/blockChainActions";
-import { nftLoader } from "../../services/listingNft";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 import { sameAddress } from "../../utils/walletUtils";
@@ -27,26 +27,26 @@ import NonListedMyNft from "./nonListedMyNft";
 import NonListedNft from "./nonListedNft";
 
 const MyNftDetails = () => {
+
+  const {collectionAddress, tokenID} = useParams();
   const connectedWallet = getCurrentWalletConnected();
-  const nftDetailsSelector = useSelector(selectNftDetails);
+  const isLoading = useSelector(selectIsLoading)
   const [isLoadingPage, setIsLoadingPage] = useState(true);
   const [nftDetails, setNftDetails] = useState();
-  const isLoading = useSelector(selectIsLoading);
   const dispatch = useDispatch();
-  useEffect(() => {
-    setIsLoadingPage(isLoading);
-  }, [isLoading]);
+
+
+  const loadNft = async () => {
+    setIsLoadingPage(true);
+    const nft = await getNftCall(collectionAddress, tokenID);
+    setNftDetails(nft.data);
+    setIsLoadingPage(false);
+  }
 
   useEffect(() => {
-    setNftDetails(nftDetailsSelector);
-  }, [nftDetailsSelector]);
+    loadNft();
+  }, []);
 
-  // see my own NFTs
-  useEffect(() => {
-    if (nftDetails) {
-      nftLoader(nftDetails.collectionAddress);
-    }
-  }, [nftDetails]);
 
   const handleAuction = async (values) => {
     const auctionPrice = Number(values.auctionPrice);
@@ -59,6 +59,7 @@ const MyNftDetails = () => {
         auctionPrice: auctionPrice,
         endAuction: endAuction,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
@@ -70,6 +71,7 @@ const MyNftDetails = () => {
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId - 1,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
@@ -81,6 +83,7 @@ const MyNftDetails = () => {
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId - 1,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
@@ -92,6 +95,7 @@ const MyNftDetails = () => {
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId - 1,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
@@ -105,6 +109,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         fixedPrice: fixedPrice,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
@@ -117,6 +122,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
@@ -128,6 +134,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
@@ -139,6 +146,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
@@ -149,6 +157,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
@@ -161,14 +170,15 @@ const MyNftDetails = () => {
         auctionId: nftDetails.auctionId - 1,
         price,
       },
+      onSuccess: (nft) => setNftDetails(nft)
     });
   };
 
-  return isLoadingPage ? (
+  return isLoadingPage || isLoading ? (
     <Spinner />
   ) : (
     <div className="container my-5" id="nftPage">
-      <img src="./assets/images/Background.jpg" id="layer" />
+      <img src="/assets/images/Background.jpg" id="layer" />
       <h3 className="my-5 text-center">List Item for Sale</h3>
       <div className="row">
         <div className="col-md-12  col-lg-5 order-2 order-lg-1 ">

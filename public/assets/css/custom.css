@@ -852,6 +852,29 @@ footer a:hover {
   width: 95vw;
 }
 
+#marketplace #openClose{
+  width: 72px;
+  background: #0a0b0e;
+  margin-right: 24px;
+}
+
+#marketplace #headerInput{
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#marketplace #headerInput>select{
+  margin-left: 32px;
+}
+
+#marketplace #headerInput>select, #marketplace #headerInput>button{
+  height: 64px;
+}
+
+#marketplace #headerInput>button{
+  margin-left: auto;
+}
+
 .wrapperMostPopular {
   background-color: #080808;
   padding: 10px;
@@ -912,6 +935,7 @@ footer a:hover {
 
 #marketplace {
   width: 95vw;
+  margin-top: 56px;
 }
 
 #command {
@@ -1157,11 +1181,17 @@ footer a:hover {
   padding: 10px 0px;
 }
 
+#accordionProperties .checkBox{
+  background-color: transparent;
+  padding: 10px 0px;
+}
+
 .checkBox span {
   padding: 4px;
   color: white;
 }
 
+#accordionFilters .card,
 #accordionStatus .card,
 #accordionPrice .card,
 #accordionStatus .card,
@@ -2493,8 +2523,8 @@ input[type="number"]:focus-within {
 }
 
 .filtersHide.filtersExplorer {
-  max-width: 114px !important;
-  margin-right: 16px;
+  max-width: 0 !important;
+  margin-right: 0 !important;
 }
 
 .filtersContainer #openClose {
@@ -2568,4 +2598,98 @@ input[type="number"]:focus-within {
 .trait-remove {
   cursor: pointer;
   color: #dc3535;
+}
+
+.confirmation-popup {
+  max-width: 520px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 16px;
+  right: -200%;
+  transition: 500ms ease-in-out;
+  background: #1f1f1f;
+  z-index: 55000;
+  padding: 16px 24px;
+  width: 100%;
+}
+
+.confirmation-popup p {
+  color: #fefefe;
+  margin: 0;
+  opacity: 0.6;
+}
+
+.confirmation-popup h3 {
+  color: #fefefe;
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.confirmation-popup > div:first-of-type {
+  width: 80%;
+}
+
+.confirmation-popup > div:first-of-type {
+  width: 80%;
+}
+
+.confirmation-popup img {
+  width: 64px;
+  height: 64px;
+  margin-right: 24px;
+}
+
+.confirmation-popup svg path {
+  stroke-width: 2px;
+}
+
+.confirmation-buttons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: 24px;
+}
+
+.confirmation-buttons div {
+  cursor: pointer;
+}
+
+.confirmation-buttons svg {
+  transition: 300ms ease-in-out;
+}
+
+.deny {
+  background: #dc3535;
+  padding: 12px;
+  border-radius: 8px;
+  transition: 300ms ease-in-out;
+}
+
+.deny:hover {
+  background: #a52222;
+}
+
+.deny:hover svg {
+  transform: rotate(360deg);
+}
+
+.confirm {
+  background: #54b435;
+  padding: 12px;
+  border-radius: 8px;
+  transition: 300ms ease-in-out;
+}
+
+.confirm:hover {
+  background: #2e7e0e;
+}
+
+.confirm:hover svg {
+  transform: rotate(360deg);
+}
+
+.confirmation-show {
+  right: 24px;
 }

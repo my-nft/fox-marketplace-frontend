@@ -28,7 +28,7 @@ const MostPopularCollection = ({ collections }) => {
 
   return (
     <section id="marketPlace" className="container-fluid">
-      <img src="./assets/images/Background.jpg" id="layer" />
+      <img src="/assets/images/Background.jpg" id="layer" />
       <h3 className="mb-2 mt-2 text-center">Most popular collection</h3>
       {popularCollections.length > 0 ? (
         <Slider {...settings} className="explorer-slick">

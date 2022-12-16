@@ -1,4 +1,4 @@
-import { setIsLoading, setNftDetails } from "../../redux/nftReducer";
+import { setIsLoading } from "../../redux/nftReducer";
 import * as nftApi from "../../api/nftApi";
 import { call, put, takeLatest } from "redux-saga/effects";
 import { toast } from "react-toastify";
@@ -44,7 +44,9 @@ function* runBuyNft(action) {
       tokenID
     );
 
-    yield put(setNftDetails(nftDetails.data));
+    // putting the NFT details
+    yield put(setIsLoading(false));
+    action.onSuccess(nftDetails.data);
   } catch (error) {
     console.log("error ", error);
     toast.error("An unexpected error occurred.");
@@ -67,7 +69,9 @@ function* runMakeOffer(action) {
       tokenID
     );
 
-    yield put(setNftDetails(nftDetails.data));
+    // putting the NFT details
+    yield put(setIsLoading(false));
+    action.onSuccess(nftDetails.data);
   } catch (error) {
     console.log("error ", error);
     toast.error("An unexpected error occurred.");
@@ -96,8 +100,9 @@ function* runDelistItem(action) {
       collectionAddress,
       tokenID
     );
-
-    yield put(setNftDetails(nftDetails.data));
+    // putting the NFT details
+    yield put(setIsLoading(false));
+    action.onSuccess(nftDetails.data);
   } catch (error) {
     console.log("error ", error);
     toast.error("An unexpected error occurred.");
@@ -121,13 +126,11 @@ function* runAcceptOffer(action) {
       tokenID,
     });
 
-    const nftDetails = yield call(
-      nftApi.getNftCall,
-      collectionAddress,
-      tokenID
-    );
+    const response = yield call(nftApi.getNftCall, collectionAddress, tokenID);
 
-    yield put(setNftDetails(nftDetails.data));
+    // putting the NFT details
+    yield put(setIsLoading(false));
+    action.onSuccess(response.data);
   } catch (error) {
     console.log("error ", error);
     toast.error("An unexpected error occurred.");
@@ -145,13 +148,11 @@ function* runPlaceBid(action) {
     // unlist from Blockchain
     yield call(placeBid, auctionId, price);
 
-    const nftDetails = yield call(
-      nftApi.getNftCall,
-      collectionAddress,
-      tokenID
-    );
+    const response = yield call(nftApi.getNftCall, collectionAddress, tokenID);
 
-    yield put(setNftDetails(nftDetails.data));
+    // putting the NFT details
+    yield put(setIsLoading(false));
+    action.onSuccess(response.data);
   } catch (error) {
     console.log("error ", error);
     toast.error("An unexpected error occurred.");
@@ -183,13 +184,11 @@ function* runListFixedPrice(action) {
       listingId: Number(listingId),
     });
 
-    const nftDetails = yield call(
-      nftApi.getNftCall,
-      collectionAddress,
-      tokenID
-    );
+    const response = yield call(nftApi.getNftCall, collectionAddress, tokenID);
 
-    yield put(setNftDetails(nftDetails.data));
+    // putting the NFT details
+    yield put(setIsLoading(false));
+    action.onSuccess(response.data);
   } catch (error) {
     console.log("error ", error);
     toast.error("An unexpected error occurred.");
@@ -218,7 +217,7 @@ function* runListingAuction(action) {
       tokenID,
       auctionId,
       endAuction,
-      listingType: AUCTION
+      listingType: AUCTION,
     });
 
     const nftDetails = yield call(
@@ -227,8 +226,8 @@ function* runListingAuction(action) {
       tokenID
     );
 
-    yield put(setNftDetails(nftDetails.data));
-
+    yield put(setIsLoading(false));
+    action.onSuccess(nftDetails.data);
   } catch (error) {
     console.log("error ", error);
     toast.error("An unexpected error occurred.");
@@ -238,11 +237,9 @@ function* runListingAuction(action) {
 }
 
 function* runHandleRefund(action) {
+  const { auctionId, collectionAddress, tokenID } = action.payload;
 
-  const {auctionId, collectionAddress, tokenID} = action.payload;
-  
   try {
-
     yield put(setIsLoading(true));
 
     yield call(refundNft, auctionId);
@@ -252,16 +249,10 @@ function* runHandleRefund(action) {
       tokenID,
     });
     // get the nft details
-    const response = yield call(
-      nftApi.getNftCall,
-      collectionAddress,
-      tokenID
-    );
-    // putting the NFT details
-    yield put(setNftDetails(response.data));
+    const response = yield call(nftApi.getNftCall, collectionAddress, tokenID);
 
-
-
+    yield put(setIsLoading(false));
+    action.onSuccess(response.data);
   } catch (error) {
     console.log("error ", error);
     toast.error("An unexpected error occurred.");
@@ -271,11 +262,9 @@ function* runHandleRefund(action) {
 }
 
 function* runHandleClaimNFT(action) {
+  const { auctionId, collectionAddress, tokenID } = action.payload;
 
-  const {auctionId, collectionAddress, tokenID} = action.payload;
-  
   try {
-
     yield put(setIsLoading(true));
 
     yield call(claimNFT, auctionId);
@@ -285,30 +274,22 @@ function* runHandleClaimNFT(action) {
       tokenID,
     });
     // get the nft details
-    const response = yield call(
-      nftApi.getNftCall,
-      collectionAddress,
-      tokenID
-    );
+    const response = yield call(nftApi.getNftCall, collectionAddress, tokenID);
     // putting the NFT details
-    yield put(setNftDetails(response.data));
-
-
-
+    yield put(setIsLoading(false));
+    action.onSuccess(response.data);
   } catch (error) {
     console.log("error ", error);
     toast.error("An unexpected error occurred.");
   } finally {
     yield put(setIsLoading(false));
   }
-  
 }
 
 function* runHandleClaimToken(action) {
-  const {auctionId, collectionAddress, tokenID} = action.payload;
-  
-  try {
+  const { auctionId, collectionAddress, tokenID } = action.payload;
 
+  try {
     yield put(setIsLoading(true));
 
     yield call(claimToken, auctionId);
@@ -318,16 +299,11 @@ function* runHandleClaimToken(action) {
       tokenID,
     });
     // get the nft details
-    const response = yield call(
-      nftApi.getNftCall,
-      collectionAddress,
-      tokenID
-    );
+    const response = yield call(nftApi.getNftCall, collectionAddress, tokenID);
+
     // putting the NFT details
-    yield put(setNftDetails(response.data));
-
-
-
+    yield put(setIsLoading(false));
+    action.onSuccess(response.data);
   } catch (error) {
     console.log("error ", error);
     toast.error("An unexpected error occurred.");
@@ -335,7 +311,6 @@ function* runHandleClaimToken(action) {
     yield put(setIsLoading(false));
   }
 }
-
 
 function* refund() {
   yield takeLatest(REFUND_NFT, runHandleRefund);
@@ -387,5 +362,5 @@ export {
   listingAuction,
   refund,
   claimNFTSaga,
-  claimTokenSaga
+  claimTokenSaga,
 };

@@ -12,7 +12,10 @@ import {
 } from "../../redux/accountReducer";
 import {selectIsLoading} from '../../redux/collectionReducer';
 import Spinner from "../../components/Spinner";
-import { LOAD_ACCOUNT_COLLECTIONS, LOAD_ACCOUNT_NFTS } from "../../saga/actions";
+import {
+  LOAD_ACCOUNT_COLLECTIONS,
+  LOAD_ACCOUNT_NFTS,
+} from "../../saga/actions";
 import Pagination from "../../components/pagination/pagination";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 
@@ -23,10 +26,10 @@ const AccountPage = () => {
   const collections = useSelector(selectCollections);
   const nfts = useSelector(selectNfts);
   const [pagination, setPagination] = useState({
-    page : 1,
-    numberElements : 10,
-    maxPages: 5
-  })
+    page: 1,
+    numberElements: 10,
+    maxPages: 5,
+  });
 
   const [filters, setFilters] = useState({
     searchPrompt: "",
@@ -40,14 +43,11 @@ const AccountPage = () => {
     buyToken: "ETH",
     categories: [],
     sortBy: "RECENTLY_LISTED",
-  })
+  });
 
   useEffect(() => {
-      console.log(filters)
-  }, [filters])
-
-
-
+    console.log(filters);
+  }, [filters]);
 
   const dispatch = useDispatch();
   const connectedWallet = getCurrentWalletConnected();
@@ -56,68 +56,66 @@ const AccountPage = () => {
   const accountOwner = useSelector(selectAccountOwner);
 
   const changePage = (page) => {
-    if( page < 1 || page > pagination.maxPages) return;
+    if (page < 1 || page > pagination.maxPages) return;
     setPagination({
       ...pagination,
-      page
-    })
-  }
-
+      page,
+    });
+  };
 
   const runDispatchNfts = (body) => {
     dispatch({
-      type : LOAD_ACCOUNT_NFTS,
-      payload : {
+      type: LOAD_ACCOUNT_NFTS,
+      payload: {
         ...body,
         page: pagination.page,
         numberElements: pagination.numberElements,
-      }
-    })
-  }
+      },
+    });
+  };
 
   const runInit = () => {
     if (activeSection === "COLLECTIONS") {
       dispatch({
-        type : LOAD_ACCOUNT_COLLECTIONS,
-        payload : {
+        type: LOAD_ACCOUNT_COLLECTIONS,
+        payload: {
           ...pagination,
-          ownerAddress : connectedWallet,
+          ownerAddress: connectedWallet,
           page: pagination.page,
-          numberElements: pagination.numberElements
-        }
-      })
+          numberElements: pagination.numberElements,
+        },
+      });
     } else if (activeSection === "NFTS") {
       runDispatchNfts({
-        ownerAddress : connectedWallet
-      })
+        ownerAddress: connectedWallet,
+      });
     } else if (activeSection === "CREATED") {
       runDispatchNfts({
-        creatorAddress : connectedWallet
-      })
+        creatorAddress: connectedWallet,
+      });
     } else if (activeSection === "COLLECTED") {
       runDispatchNfts({
-        ownerAddress : connectedWallet,
-        collectedOnly : true
-      })
+        ownerAddress: connectedWallet,
+        collectedOnly: true,
+      });
     } else if (activeSection === "LISTED") {
       runDispatchNfts({
-        isListed : true,
-        ownerAddress : connectedWallet,
-      })
+        isListed: true,
+        ownerAddress: connectedWallet,
+      });
     }
-  }
+  };
 
   useEffect(() => {
     runInit();
-  }, [pagination])
+  }, [pagination]);
 
   useEffect(() => {
     setPagination({
       ...pagination,
-      page : 1
-    })
+      page: 1,
+    });
     runInit();
-    
   }, [activeSection]);
 
   return (
