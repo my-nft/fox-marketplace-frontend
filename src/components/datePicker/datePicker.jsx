@@ -78,11 +78,11 @@ const CustomDatePicker = ({
     >
       <div className="datePickerBackground"></div>
       <div className="datePickerContent">
+        <p className="popup-close" onClick={() => closeAction()}>
+          X
+        </p>
         <div className="datePickerTexture"></div>
         <div className="datePickerItems">
-          <p className="popup-close" onClick={() => closeAction()}>
-            X
-          </p>
           <img src={logo} alt="" />
           <h2>Auction Duration</h2>
           <div className="datePickerInput">

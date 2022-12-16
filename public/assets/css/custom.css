@@ -2894,10 +2894,11 @@ input[type="number"]:focus-within {
 .datePickerContent .popup-close {
   opacity: 1 !important;
   transition: 300ms ease-in-out;
+  z-index: 30000;
 }
 
 .datePickerContent .popup-close:hover {
-  color: #f58103;
+  color: #f58103 !important;
 }
 
 .confirmDatePicker {
