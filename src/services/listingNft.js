@@ -331,6 +331,12 @@ export const makeOfferToOwner = async (collectionAddress, tokenID, price) => {
 export const acceptOffer = async (collectionAddress, tokenID) => {
   const connectWallet = getCurrentWalletConnected();
 
+  console.log("collectionAddress",collectionAddress)
+  console.log("tokenID", tokenID)
+  console.log("connectWallet",connectWallet)
+  console.log("OfferSystemAddress", OfferSystemAddress)
+
+
   const gasLimitAcceptOffer = await offerSystemContract.methods
     .acceptBuyOffer(collectionAddress, tokenID)
     .estimateGas({

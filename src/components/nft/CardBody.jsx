@@ -1,4 +1,4 @@
-const CardBody = ({ title, price, priceDollar, bestOffer, children }) => {
+const CardBody = ({ title, price, priceDollar, bestOffer, onAcceptOffer = () => {}, children }) => {
   return (
     <div class="card-body">
       <div class="card-text">
@@ -15,6 +15,9 @@ const CardBody = ({ title, price, priceDollar, bestOffer, children }) => {
             <p id="price">
               {bestOffer} <span id="priceDollar">${bestOffer}</span>
             </p>
+            <button id="makeOffer" class="btn" onClick={onAcceptOffer}>
+              Accept Offer
+            </button>
           </>
         ) : null}
         {children}
