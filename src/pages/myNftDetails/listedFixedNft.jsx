@@ -54,14 +54,14 @@ const ListedFixedNft = ({
           <>
             <button
               id="buyItem"
-              class="btn"
+              className="btn"
               onClick={() => onBuyItem(currentPrice)}
             >
               Buy item
             </button>
             <button
               id="makeOffer"
-              class="btn"
+              className="btn"
               onClick={() => setShowMakeOffer(!showMakeOffer)}
             >
               Make offer
@@ -112,7 +112,7 @@ const ListedFixedNft = ({
 
         {sameAddress(currentWallet, itemDetails.ownerAddress) ? (
           <>
-            <button id="makeOffer" class="btn" onClick={onDelist}>
+            <button id="makeOffer" className="btn" onClick={onDelist}>
               DeList
             </button>
           </>

@@ -80,9 +80,9 @@ const FilterInput = ({
         </ul>
       </div>
       <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
-        <li class="nav-item" role="presentation">
+        <li className="nav-item" role="presentation">
           <button
-            class={
+            className={
               activeSection === "COLLECTIONS" ? "nav-link active" : "nav-link"
             }
             id="pills-home-tab"
@@ -91,9 +91,9 @@ const FilterInput = ({
             Collections
           </button>
         </li>
-        <li class="nav-item" role="presentation">
+        <li className="nav-item" role="presentation">
           <button
-            class={activeSection === "NFTS" ? "nav-link active" : "nav-link"}
+            className={activeSection === "NFTS" ? "nav-link active" : "nav-link"}
             id="pills-profile-tab"
             type="button"
             onClick={() => onChangeActiveSection("NFTS")}
@@ -101,9 +101,9 @@ const FilterInput = ({
             NFTs
           </button>
         </li>
-        <li class="nav-item" role="presentation">
+        <li className="nav-item" role="presentation">
           <button
-            class={activeSection === "CREATED" ? "nav-link active" : "nav-link"}
+            className={activeSection === "CREATED" ? "nav-link active" : "nav-link"}
             id="pills-contact-tab"
             type="button"
             onClick={() => onChangeActiveSection("CREATED")}
@@ -111,9 +111,9 @@ const FilterInput = ({
             Created
           </button>
         </li>
-        <li class="nav-item" role="presentation">
+        <li className="nav-item" role="presentation">
           <button
-            class={
+            className={
               activeSection === "COLLECTED" ? "nav-link active" : "nav-link"
             }
             id="pills-contact-tab"
@@ -123,9 +123,9 @@ const FilterInput = ({
             Collected
           </button>
         </li>
-        <li class="nav-item" role="presentation">
+        <li className="nav-item" role="presentation">
           <button
-            class={activeSection === "LISTED" ? "nav-link active" : "nav-link"}
+            className={activeSection === "LISTED" ? "nav-link active" : "nav-link"}
             id="pills-contact-tab"
             type="button"
             onClick={() => onChangeActiveSection("LISTED")}

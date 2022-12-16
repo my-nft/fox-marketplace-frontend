@@ -36,6 +36,18 @@ const MyNftDetails = () => {
   const [collectionDetails, setCollectionDetails] = useState();
   const dispatch = useDispatch();
 
+  console.log("{{{{##########################}}}}}}}")
+  console.log("{{{{##########################}}}}}}}")
+  console.log("{{{{##########################}}}}}}}")
+
+  console.log("--------", nftDetails)
+
+
+  console.log("{{{{##########################}}}}}}}")
+  console.log("{{{{##########################}}}}}}}")
+  console.log("{{{{##########################}}}}}}}")
+
+
   const loadNft = async () => {
     setIsLoadingPage(true);
     const nft = await getNftCall(collectionAddress, tokenID);
