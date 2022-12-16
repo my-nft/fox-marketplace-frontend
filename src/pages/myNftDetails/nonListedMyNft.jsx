@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
-import DatePicker from "../../components/datePicker/datePicker";
+import CustomDatePicker from "../../components/datePicker/datePicker";
 import CardBody from "../../components/nft/CardBody";
 import CardNftWrapper from "../../components/nft/CardNftWrapper";
 import { getBestOffer } from "../../services/listingNft";
 import { FIXED_PRICE, AUCTION } from "../../utils/foxConstantes";
 
-const NonListedMyNft = ({ handleAuction, handleFixedPrice, handleAcceptOffer, nftDetails }) => {
+const NonListedMyNft = ({
+  handleAuction,
+  handleFixedPrice,
+  handleAcceptOffer,
+  nftDetails,
+}) => {
   const [type, setType] = useState(FIXED_PRICE);
   const [showPicker, setShowPicker] = useState(false);
   const [bestOffer, setBestOffer] = useState();
@@ -57,7 +62,7 @@ const NonListedMyNft = ({ handleAuction, handleFixedPrice, handleAcceptOffer, nf
 
   return (
     <>
-      <DatePicker
+      <CustomDatePicker
         showPicker={showPicker}
         closeAction={() => setShowPicker(false)}
         dateSetAction={handleDateChange}
