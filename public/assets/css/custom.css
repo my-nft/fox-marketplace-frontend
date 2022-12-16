@@ -2696,7 +2696,7 @@ input[type="number"]:focus-within {
 }
 
 .datePicker {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: -180%;
   z-index: 10000;
@@ -3141,4 +3141,11 @@ input[type="number"]:focus-within {
 
 .delete:hover {
   opacity: 1;
+}
+
+input:read-only {
+  background: #130f0a !important;
+  color: #fefefe;
+  border: none;
+  border-radius: 10px !important;
 }

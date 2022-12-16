@@ -2,7 +2,11 @@ import { useState } from "react";
 import logo from "../../assets/images/Logo_fox.png";
 import { getDayCountForMonth } from "./utils";
 
-const DatePicker = ({ dateSetAction = () => {}, showPicker }) => {
+const DatePicker = ({
+  dateSetAction = () => {},
+  closeAction = () => {},
+  showPicker,
+}) => {
   const [dateState, setDateState] = useState({
     date: new Date().toLocaleDateString("en-US", {
       day: "2-digit",
@@ -49,7 +53,13 @@ const DatePicker = ({ dateSetAction = () => {}, showPicker }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(dateState);
-    dateSetAction(dateState);
+
+    //transform dateState object to valid datetime object
+    let dateObj = new Date(dateState.date);
+    dateObj.setHours(dateState.hour);
+    dateObj.setMinutes(dateState.minute);
+
+    dateSetAction(dateObj);
   };
 
   useState(() => {
@@ -73,7 +83,9 @@ const DatePicker = ({ dateSetAction = () => {}, showPicker }) => {
     >
       <div className="datePickerBackground"></div>
       <div className="datePickerContent">
-        <p className="popup-close">X</p>
+        <p className="popup-close" onClick={() => closeAction()}>
+          X
+        </p>
         <img src={logo} alt="" />
         <h2>Auction Duration</h2>
         <div className="datePickerInput">
