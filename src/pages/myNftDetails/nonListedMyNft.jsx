@@ -5,7 +5,12 @@ import CardNftWrapper from "../../components/nft/CardNftWrapper";
 import { getBestOffer } from "../../services/listingNft";
 import { FIXED_PRICE, AUCTION } from "../../utils/foxConstantes";
 
-const NonListedMyNft = ({ handleAuction, handleFixedPrice, handleAcceptOffer, nftDetails }) => {
+const NonListedMyNft = ({
+  handleAuction,
+  handleFixedPrice,
+  handleAcceptOffer,
+  nftDetails,
+}) => {
   const [type, setType] = useState(FIXED_PRICE);
   const [showPicker, setShowPicker] = useState(false);
   const [bestOffer, setBestOffer] = useState();
@@ -63,7 +68,11 @@ const NonListedMyNft = ({ handleAuction, handleFixedPrice, handleAcceptOffer, nf
         dateSetAction={handleDateChange}
       />
       <CardNftWrapper>
-        <CardBody bestOffer={bestOffer} onAcceptOffer={handleAcceptOffer}>
+        <CardBody
+          bestOffer={bestOffer}
+          onAcceptOffer={handleAcceptOffer}
+          ownerAddress={nftDetails.ownerAddress}
+        >
           <div className="card" id="cardNft">
             <div className="card-body">
               <div className="card-text">

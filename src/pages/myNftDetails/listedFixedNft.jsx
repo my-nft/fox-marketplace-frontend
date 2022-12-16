@@ -47,6 +47,8 @@ const ListedFixedNft = ({
         price={currentPrice}
         priceDollar={currentPrice}
         bestOffer={bestOffer}
+        onAcceptOffer={onAcceptOffer}
+        ownerAddress={itemDetails.ownerAddress}
       >
         {!sameAddress(currentWallet, itemDetails.ownerAddress) && (
           <>
@@ -113,11 +115,6 @@ const ListedFixedNft = ({
             <button id="makeOffer" class="btn" onClick={onDelist}>
               DeList
             </button>
-            {bestOffer ? (
-              <button id="makeOffer" class="btn" onClick={onAcceptOffer}>
-                Accept Offer
-              </button>
-            ) : null}
           </>
         ) : null}
       </CardBody>

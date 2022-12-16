@@ -17,25 +17,33 @@ import SearchBar from "./../searchBar/searchBar";
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [connectedWallet, setConnectedWallet] = useState(
+    getCurrentWalletConnected()
+  );
 
   const [filters, setFilters] = useState({
     searchPrompt: "",
   });
 
   const connectedUser = useSelector(selectConnectedUser);
-  const connectedWallet = getCurrentWalletConnected();
 
   const clickRef = useOutsideClick(() => {
     document.querySelector(".navbar-collapse").classList.remove("show");
   });
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     connectWallet();
-    dispatch({
-      type: LOAD_USER,
-      payload: connectedWallet,
-    });
+    setConnectedWallet(getCurrentWalletConnected());
   };
+
+  useEffect(() => {
+    if (connectWallet) {
+      dispatch({
+        type: LOAD_USER,
+        payload: connectedWallet,
+      });
+    }
+  }, [connectWallet]);
 
   const cleanSession = () => {
     dispatch({ type: "DESTROY_SESSION" });
