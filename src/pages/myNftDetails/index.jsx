@@ -27,26 +27,23 @@ import NonListedMyNft from "./nonListedMyNft";
 import NonListedNft from "./nonListedNft";
 
 const MyNftDetails = () => {
-
-  const {collectionAddress, tokenID} = useParams();
+  const { collectionAddress, tokenID } = useParams();
   const connectedWallet = getCurrentWalletConnected();
-  const isLoading = useSelector(selectIsLoading)
+  const isLoading = useSelector(selectIsLoading);
   const [isLoadingPage, setIsLoadingPage] = useState(true);
   const [nftDetails, setNftDetails] = useState();
   const dispatch = useDispatch();
-
 
   const loadNft = async () => {
     setIsLoadingPage(true);
     const nft = await getNftCall(collectionAddress, tokenID);
     setNftDetails(nft.data);
     setIsLoadingPage(false);
-  }
+  };
 
   useEffect(() => {
     loadNft();
   }, []);
-
 
   const handleAuction = async (values) => {
     const auctionPrice = Number(values.auctionPrice);
@@ -59,7 +56,7 @@ const MyNftDetails = () => {
         auctionPrice: auctionPrice,
         endAuction: endAuction,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
@@ -71,7 +68,7 @@ const MyNftDetails = () => {
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId - 1,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
@@ -83,7 +80,7 @@ const MyNftDetails = () => {
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId - 1,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
@@ -95,10 +92,9 @@ const MyNftDetails = () => {
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId - 1,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
-
 
   const handleFixedPrice = async (values) => {
     const fixedPrice = Number(values.fixedPrice);
@@ -109,7 +105,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         fixedPrice: fixedPrice,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
@@ -122,7 +118,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
@@ -134,7 +130,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
@@ -146,7 +142,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
@@ -157,7 +153,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
@@ -170,7 +166,7 @@ const MyNftDetails = () => {
         auctionId: nftDetails.auctionId - 1,
         price,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
