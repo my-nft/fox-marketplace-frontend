@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import DatePicker from "../../components/datePicker/datePicker";
+import CustomDatePicker from "../../components/datePicker/datePicker";
 import CardBody from "../../components/nft/CardBody";
 import CardNftWrapper from "../../components/nft/CardNftWrapper";
 import { getBestOffer } from "../../services/listingNft";
@@ -62,7 +62,7 @@ const NonListedMyNft = ({
 
   return (
     <>
-      <DatePicker
+      <CustomDatePicker
         showPicker={showPicker}
         closeAction={() => setShowPicker(false)}
         dateSetAction={handleDateChange}
