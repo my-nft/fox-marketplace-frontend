@@ -23,6 +23,8 @@ import ProfileWrapper from "./pages/Profile/ProfileWrapper";
 import MyNftDetails from "./pages/myNftDetails";
 import AccountPage from "./pages/Account/Account";
 import ConfirmationPopup from "./components/confirmationPopup/confirmationPopup";
+import DatePicker from "./components/datePicker/datePicker";
+import CollectionSettings from './pages/collectionSettings/collectionSettings';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -58,6 +60,7 @@ const router = createBrowserRouter(
         path="single-nft"
         element={
           <>
+            <DatePicker />
             <CreateSingleNft />
             <Footer />
           </>
@@ -111,6 +114,16 @@ const router = createBrowserRouter(
           </>
         }
       />
+      <Route 
+        path="settings"
+        exact
+        element={
+          <>
+            <CollectionSettings />
+            <Footer />
+          </>
+        }
+      />
 
       {/*  NOT my NFT  */}
       <Route
@@ -130,6 +143,7 @@ const router = createBrowserRouter(
 function App() {
   return (
     <Provider store={store}>
+     
       {
         /*
       <ConfirmationPopup

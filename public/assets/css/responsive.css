@@ -1,214 +1,257 @@
+@media screen and (max-width: 1280px) {
+  .collectionSettingsWrapper {
+    gap: 48px;
+  }
+  .settingsForm {
+    grid-column: span 6;
+  }
+  .imageChange {
+    grid-column: span 4;
+  }
+  .ownership {
+    flex-direction: column;
+  }
+  .transferOwnership {
+    width: 100%;
+    margin: 8px 0 0 0;
+    text-align: center;
+  }
+}
 
-@media screen and (max-width: 1200px){
-    .navbar-collapse{
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-    .navbar-collapse ul#buttonIcon{
-        margin-right: 0;
-        flex-direction: column;
-        align-items: center;
-        display: flex;
-    }
-    .navbar-collapse ul#buttonIcon li{
-        margin: 0;
-        padding: 0;
-    }
-    .navbar-collapse button{
-        margin: 16px 0 0 !important;
-    }
+@media screen and (max-width: 1200px) {
+  .navbar-collapse {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .navbar-collapse ul#buttonIcon {
+    margin-right: 0;
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+  }
+  .navbar-collapse ul#buttonIcon li {
+    margin: 0;
+    padding: 0;
+  }
+  .navbar-collapse button {
+    margin: 16px 0 0 !important;
+  }
 }
 
 @media (max-width: 1199px) {
-    
-    #checkBox {
-      
-        min-width: initial;
-      
-    }   
-    #iconProfile {
-        width: 15vw;
-        
-      }
-   
+  #checkBox {
+    min-width: initial;
+  }
+  #iconProfile {
+    width: 15vw;
+  }
 }
 
 @media (max-width: 991px) {
+  .collectionSettingsWrapper {
+    display: flex;
+    flex-direction: column;
+  }
 
-    #chooseLayout{display: none;}
+  .settingsForm,
+  .imageChange {
+    padding: 32px;
+  }
+  .settingsForm {
+    margin: 32px auto 16px;
+  }
+  .imageChange {
+    margin: 0 auto 32px;
+  }
+  #chooseLayout {
+    display: none;
+  }
 
-    .popularItems {
-      
-        width: calc( 100%/2);
-      }
-    
-    #marketplace>.row{
-        flex-direction: column;
-    }
-    #marketplace #headerInput{
-    
-        margin-top: 72px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        row-gap: 16px;
-    }
+  .popularItems {
+    width: calc(100% / 2);
+  }
 
-    #marketplace #headerInput>div{
-        grid-column-start: 1;
-        grid-column-end: 3;
-    }
-    #marketplace #headerInput>select{
-        grid-column-start: 1;
-        grid-column-end: 2;
-        margin-left: 0;
-    }
-    #marketplace #headerInput>button{
-        grid-column-start: 2;
-        grid-column-end: 3;
-    }
+  #marketplace > .row {
+    flex-direction: column;
+  }
+  #marketplace #headerInput {
+    margin-top: 72px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 16px;
+  }
 
+  #marketplace #headerInput > div {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+  #marketplace #headerInput > select {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    margin-left: 0;
+  }
+  #marketplace #headerInput > button {
+    grid-column-start: 2;
+    grid-column-end: 3;
+  }
 }
 
 @media (max-width: 768px) {
-    
-    header .form-control-container{
-        width: 100% !important;
-        margin-top: 24px;
-    }
+  header .form-control-container {
+    width: 100% !important;
+    margin-top: 24px;
+  }
 
-    .confirmation-popup{
-        max-width: unset;
-        width: 80%;
-        flex-direction: column;
-        top: unset;
-        bottom: 24px;
-        text-align: center;
-    }
+  .confirmation-popup {
+    max-width: unset;
+    width: 80%;
+    flex-direction: column;
+    top: unset;
+    bottom: 24px;
+    text-align: center;
+  }
 
-    .confirmation-buttons{
-        margin-top: 32px;
-    }
+  .confirmation-buttons {
+    margin-top: 32px;
+  }
 
-    .confirmation-popup img{
-        margin: 0 0 24px;
-    }
+  .confirmation-popup img {
+    margin: 0 0 24px;
+  }
 
-    .confirmation-show {
-        right: 50%;
-        transform: translateX(50%);
-      }
+  .confirmation-show {
+    right: 50%;
+    transform: translateX(50%);
+  }
 
-    .hiddenOnMobile{display: none;}
-    #filter {
-        display: none;
-        max-width: 100%;
-    }
-  
-    #formSearch {
-        margin-left: 0;
-    }
-    #topSection h2 {
-        width: initial;
-        margin: 20px!important;
-        
-    }
-    #infoNFT h2 {
-        font-size: 30px;
-    }
-    h2 {
-        font-size: 35px;
-        color: white;
-        font-family: GothamBlack;
-    }
-    #topSection h3 {
-        width:initial;
-        
-        font-size: 17px;
-        
-    }
-    .listElements {
-        z-index: -2;
-        position: relative;
-        padding: 5px;
-        max-width: calc(100vw/5);
-    }
-    #ranks {
-        margin-top: 2vh;
-        width: 100vw;
-    }
-    td img{max-width: 55px;}
-    td, td span {
-        padding-left: 5px;
-        font-size: 13px;
-    }
-    #ranks .nav-pills li {
-        padding: 20px 0;
-        margin-right: 20px;
-    }
-    #wrapperPopularItems{display: block;}
-    .popularItems {
-       padding: 20px 0;
-       width: initial;
-  
-    }
-    input.form-control {
-        
-        width: 65vw !important;
-    }
+  .hiddenOnMobile {
+    display: none;
+  }
+  #filter {
+    display: none;
+    max-width: 100%;
+  }
 
-    #iconProfile {
-        width: 20vw;
-        
-    }
-    .navbar{
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-    }
-    .navbar>a{
-        grid-area: 1/1/1/2;
+  #formSearch {
+    margin-left: 0;
+  }
+  #topSection h2 {
+    width: initial;
+    margin: 20px !important;
+  }
+  #infoNFT h2 {
+    font-size: 30px;
+  }
+  h2 {
+    font-size: 35px;
+    color: white;
+    font-family: GothamBlack;
+  }
+  #topSection h3 {
+    width: initial;
 
-    }
-    .navbar>form{
-        grid-area: 2/1/2/3;
-    }
-    .navbar>form input{
-        width: 100% !important;
-    }
-    .navbar>button{
-        grid-area: 1/2/1/3;
-        justify-self: flex-end;
-    }
-    .navbar>div{
-        grid-row-start: 3;
-        grid-column-start: 1;
-        grid-column-end: 3;
-    }
-    
+    font-size: 17px;
+  }
+  .listElements {
+    z-index: -2;
+    position: relative;
+    padding: 5px;
+    max-width: calc(100vw / 5);
+  }
+  #ranks {
+    margin-top: 2vh;
+    width: 100vw;
+  }
+  td img {
+    max-width: 55px;
+  }
+  td,
+  td span {
+    padding-left: 5px;
+    font-size: 13px;
+  }
+  #ranks .nav-pills li {
+    padding: 20px 0;
+    margin-right: 20px;
+  }
+  #wrapperPopularItems {
+    display: block;
+  }
+  .popularItems {
+    padding: 20px 0;
+    width: initial;
+  }
+  input.form-control {
+    width: 65vw !important;
+  }
 
+  #iconProfile {
+    width: 20vw;
+  }
+  .navbar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .navbar > a {
+    grid-area: 1/1/1/2;
+  }
+  .navbar > form {
+    grid-area: 2/1/2/3;
+  }
+  .navbar > form input {
+    width: 100% !important;
+  }
+  .navbar > button {
+    grid-area: 1/2/1/3;
+    justify-self: flex-end;
+  }
+  .navbar > div {
+    grid-row-start: 3;
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
 }
 
 @media (max-width: 575px) {
-    #accountButton{margin-top: 15px;}
+  .settingsButtons {
+    display: flex;
+    flex-direction: column;
+  }
+  .settingsButtons button {
+    margin: 8px 0;
+    width: 100%;
+  }
+  .settingsButtons .delete {
+    margin: 0 0 16px;
+  }
+  #accountButton {
+    margin-top: 15px;
+  }
 
-    #profile .navigation {
-        padding: 15px;
-        border-right: 1px solid #2d2d2d;
-        height: 100vw;
-    }
+  #profile .navigation {
+    padding: 15px;
+    border-right: 1px solid #2d2d2d;
+    height: 100vw;
+  }
 
+  #iconProfile {
+    width: 25vw;
+  }
+  #infoHeader svg {
+    color: #ff7000;
+    width: 25px;
+    margin-left: 20px;
+    margin-right: 0;
+  }
 
-      #iconProfile {
-        width: 25vw;
-        
-      }
-      #infoHeader svg{color: #ff7000;
-        width: 25px;
-         margin-left: 20px;
-        margin-right: 0;}
-       
-        #profile .navigation{display: none;}
+  #profile .navigation {
+    display: none;
+  }
 
-        #profileImg{margin-top: 50px; padding: 0;  max-width: initial;}
-  
+  #profileImg {
+    margin-top: 50px;
+    padding: 0;
+    max-width: initial;
+  }
 }
