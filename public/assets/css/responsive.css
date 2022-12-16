@@ -46,6 +46,12 @@
   #iconProfile {
     width: 15vw;
   }
+  .datePickerContent {
+    width: 80%;
+  }
+  .timeEntry input {
+    font-size: 40px;
+  }
 }
 
 @media (max-width: 991px) {
