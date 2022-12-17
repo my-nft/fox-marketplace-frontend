@@ -15,20 +15,19 @@ import useOutsideClick from "./../../utils/useOutsideClick";
 import SearchBar from "./../searchBar/searchBar";
 
 const Header = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [connectedWallet, setConnectedWallet] = useState(
-    getCurrentWalletConnected()
-  );
-
-  const [filters, setFilters] = useState({
-    searchPrompt: "",
-  });
-
-  const connectedUser = useSelector(selectConnectedUser);
 
   const clickRef = useOutsideClick(() => {
     document.querySelector(".navbar-collapse").classList.remove("show");
+  });
+
+
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [connectedWallet, setConnectedWallet] = useState();
+  const connectedUser = useSelector(selectConnectedUser);
+  const [filters, setFilters] = useState({
+    searchPrompt: "",
   });
 
   const handleSignIn = async () => {
@@ -37,13 +36,16 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (connectWallet) {
+    if (connectedWallet) {
       dispatch({
         type: LOAD_USER,
         payload: connectedWallet,
       });
+    } else {
+      connectWallet();
+      setConnectedWallet(getCurrentWalletConnected())
     }
-  }, [connectWallet]);
+  }, [connectedWallet]);
 
   const cleanSession = () => {
     dispatch({ type: "DESTROY_SESSION" });
@@ -72,6 +74,7 @@ const Header = () => {
     // only if metamask is installed
     if (window.ethereum) {
       addWalletListener();
+      setConnectedWallet(getCurrentWalletConnected());
     }
   }, []);
 
