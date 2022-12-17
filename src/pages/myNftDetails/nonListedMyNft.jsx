@@ -60,6 +60,8 @@ const NonListedMyNft = ({
     setValues({ ...values, time: dateObj.getTime() });
   };
 
+  console.log(new Date(values.time).toLocaleString());
+
   return (
     <>
       <CustomDatePicker
@@ -183,7 +185,16 @@ const NonListedMyNft = ({
                         onClick={() => setShowPicker(true)}
                         readOnly
                         value={
-                          values.time ? new Date(values.time).toUTCString() : ""
+                          values.time
+                            ? new Date(values.time).toLocaleString([], {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                hour12: false,
+                              })
+                            : ""
                         }
                       />
                     </div>

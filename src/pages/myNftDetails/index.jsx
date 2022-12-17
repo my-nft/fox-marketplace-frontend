@@ -3,10 +3,9 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getNftCall } from "../../api/nftApi";
-import { getCollectionByAddress } from '../../api/collectionApi';
 import NftMoreInfos from "../../components/nft/details/NftMoreInfos";
 import Spinner from "../../components/Spinner";
-import { selectIsLoading } from "../../redux/nftReducer";
+import { selectNftDetails, selectIsLoading } from "../../redux/nftReducer";
 import {
   ACCEPT_OFFER,
   BUY_NFT,
@@ -33,7 +32,6 @@ const MyNftDetails = () => {
   const isLoading = useSelector(selectIsLoading);
   const [isLoadingPage, setIsLoadingPage] = useState(true);
   const [nftDetails, setNftDetails] = useState();
-  const [collectionDetails, setCollectionDetails] = useState();
   const dispatch = useDispatch();
 
   console.log("{{{{##########################}}}}}}}")
@@ -51,9 +49,7 @@ const MyNftDetails = () => {
   const loadNft = async () => {
     setIsLoadingPage(true);
     const nft = await getNftCall(collectionAddress, tokenID);
-    const collection = await getCollectionByAddress(collectionAddress);
     setNftDetails(nft.data);
-    setCollectionDetails(collection.data);
     setIsLoadingPage(false);
   };
 
@@ -191,7 +187,7 @@ const MyNftDetails = () => {
   ) : (
     <div className="container my-5" id="nftPage">
       <img src="/assets/images/Background.jpg" id="layer" />
-      <h3 className="my-5 text-center">{collectionDetails.name}/{nftDetails.name}</h3>
+      <h3 className="my-5 text-center">List Item for Sale</h3>
       <div className="row">
         <div className="col-md-12  col-lg-5 order-2 order-lg-1 ">
           <div id="imgNft" className="imgForSale">
@@ -215,7 +211,6 @@ const MyNftDetails = () => {
                 nftDetails={nftDetails}
                 handleAuction={handleAuction}
                 handleFixedPrice={handleFixedPrice}
-                handleAcceptOffer={onAcceptOffer}
               />
             ) : null
           }
