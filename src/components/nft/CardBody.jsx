@@ -1,7 +1,13 @@
-const CardBody = ({ title, price, priceDollar, bestOffer, children }) => {
+import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
+import { sameAddress } from "../../utils/walletUtils";
+
+const CardBody = ({ title, price, ownerAddress, priceDollar, bestOffer, onAcceptOffer = () => {}, children }) => {
+  
+  const currentWallet = getCurrentWalletConnected();
+  
   return (
-    <div class="card-body">
-      <div class="card-text">
+    <div className="card-body">
+      <div className="card-text">
         <h3>{title}</h3>
         {price ? (
           <p id="price">
@@ -15,6 +21,14 @@ const CardBody = ({ title, price, priceDollar, bestOffer, children }) => {
             <p id="price">
               {bestOffer} <span id="priceDollar">${bestOffer}</span>
             </p>
+            {
+              sameAddress(currentWallet, ownerAddress) ? (
+                <button id="makeOffer" className="btn" onClick={onAcceptOffer}>
+              Accept Offer
+            </button>
+              ) : null
+            }
+            
           </>
         ) : null}
         {children}

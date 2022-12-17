@@ -71,9 +71,11 @@ const MostPopularItem = ({ viewType, item }) => {
     navigate(`/collection/${item.collectionAddress}/${item.tokenID}`);
   };
 
+  console.log(itemInfos?.endAuction);
+
   const calculateTimeLeftBeforeExpiration = (expirationDate, dateNow) => {
-    const futurDate = new Date(0);
-    futurDate.setUTCSeconds(expirationDate);
+    const futurDate = new Date(Number(expirationDate));
+
     const difference = futurDate - dateNow;
     let timeLeft = {};
     let output = "";
@@ -96,15 +98,15 @@ const MostPopularItem = ({ viewType, item }) => {
       };
 
       if (timeLeft.days > 0) {
-        output += timeLeft.days + "d";
+        output += timeLeft.days + "d ";
       }
 
       if (timeLeft.hours > 0) {
-        output += timeLeft.hours + "h";
+        output += timeLeft.hours + "h ";
       }
 
       if (timeLeft.minutes > 0) {
-        output += timeLeft.minutes + "m";
+        output += timeLeft.minutes + "m ";
       }
 
       if (timeLeft.seconds > 0) {

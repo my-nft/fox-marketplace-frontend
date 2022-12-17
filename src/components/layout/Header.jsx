@@ -15,28 +15,37 @@ import useOutsideClick from "./../../utils/useOutsideClick";
 import SearchBar from "./../searchBar/searchBar";
 
 const Header = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const [filters, setFilters] = useState({
-    searchPrompt: "",
-  });
-
-  const connectedUser = useSelector(selectConnectedUser);
-  const connectedWallet = getCurrentWalletConnected();
 
   const clickRef = useOutsideClick(() => {
     document.querySelector(".navbar-collapse").classList.remove("show");
   });
 
-  const handleSignIn = () => {
+
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [connectedWallet, setConnectedWallet] = useState();
+  const connectedUser = useSelector(selectConnectedUser);
+  const [filters, setFilters] = useState({
+    searchPrompt: "",
+  });
+
+  const handleSignIn = async () => {
     connectWallet();
-    const connectedWallet = getCurrentWalletConnected();
-    dispatch({
-      type: LOAD_USER,
-      payload: "0x3e772a1Aedd9Baf457b144d454092481c46acaBC",
-    });
+    setConnectedWallet(getCurrentWalletConnected());
   };
+
+  useEffect(() => {
+    if (connectedWallet) {
+      dispatch({
+        type: LOAD_USER,
+        payload: connectedWallet,
+      });
+    } else {
+      connectWallet();
+      setConnectedWallet(getCurrentWalletConnected())
+    }
+  }, [connectedWallet]);
 
   const cleanSession = () => {
     dispatch({ type: "DESTROY_SESSION" });
@@ -65,6 +74,7 @@ const Header = () => {
     // only if metamask is installed
     if (window.ethereum) {
       addWalletListener();
+      setConnectedWallet(getCurrentWalletConnected());
     }
   }, []);
 

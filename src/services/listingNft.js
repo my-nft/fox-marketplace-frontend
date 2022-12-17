@@ -65,6 +65,8 @@ export const createAuction = async (
   const price = bigNumberPricing(initialPrice);
   const erc721Contract = loadERC721Contract(collectionAddress, false);
 
+  console.log("HERRRE");
+  
   const gasLimitApprouve = await erc721Contract.methods
     .approve(AUTIONContractAddress, tokenID)
     .estimateGas({
@@ -330,6 +332,27 @@ export const makeOfferToOwner = async (collectionAddress, tokenID, price) => {
 
 export const acceptOffer = async (collectionAddress, tokenID) => {
   const connectWallet = getCurrentWalletConnected();
+
+  console.log("collectionAddress", collectionAddress);
+  console.log("tokenID", tokenID);
+  console.log("connectWallet", connectWallet);
+  console.log("OfferSystemAddress", OfferSystemAddress);
+  console.log("offreContract", offerSystemContract);
+
+  const collectionContract = loadERC721Contract(collectionAddress, false);
+
+  const gasLimitApprouve = await collectionContract.methods
+    .approve(OfferSystemAddress, tokenID)
+    .estimateGas({
+      from: connectWallet,
+      to: OfferSystemAddress,
+    });
+
+  await collectionContract.methods.approve(OfferSystemAddress, tokenID).send({
+    from: connectWallet,
+    to: OfferSystemAddress,
+    gasLimit: gasLimitApprouve,
+  });
 
   const gasLimitAcceptOffer = await offerSystemContract.methods
     .acceptBuyOffer(collectionAddress, tokenID)

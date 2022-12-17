@@ -3,9 +3,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getNftCall } from "../../api/nftApi";
+import {getCollectionByAddress} from '../../api/collectionApi';
 import NftMoreInfos from "../../components/nft/details/NftMoreInfos";
 import Spinner from "../../components/Spinner";
-import { selectNftDetails, selectIsLoading } from "../../redux/nftReducer";
+import { selectIsLoading } from "../../redux/nftReducer";
 import {
   ACCEPT_OFFER,
   BUY_NFT,
@@ -20,47 +21,50 @@ import {
 } from "../../saga/blockchain.js/blockChainActions";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
-import { sameAddress } from "../../utils/walletUtils";
+import { optimizeWalletAddress, sameAddress } from "../../utils/walletUtils";
 import ListedAuctionNft from "./listedAuctionNft";
 import ListedFixedNft from "./listedFixedNft";
 import NonListedMyNft from "./nonListedMyNft";
 import NonListedNft from "./nonListedNft";
 
 const MyNftDetails = () => {
-
-  const {collectionAddress, tokenID} = useParams();
+  const { collectionAddress, tokenID } = useParams();
   const connectedWallet = getCurrentWalletConnected();
-  const isLoading = useSelector(selectIsLoading)
+  const isLoading = useSelector(selectIsLoading);
   const [isLoadingPage, setIsLoadingPage] = useState(true);
   const [nftDetails, setNftDetails] = useState();
+  const [collectionDetails, setCollectionDetails] = useState();
   const dispatch = useDispatch();
 
 
   const loadNft = async () => {
     setIsLoadingPage(true);
     const nft = await getNftCall(collectionAddress, tokenID);
+    const collection = await getCollectionByAddress(collectionAddress);
     setNftDetails(nft.data);
+    setCollectionDetails(collection.data);
     setIsLoadingPage(false);
-  }
+  };
 
   useEffect(() => {
     loadNft();
   }, []);
 
-
   const handleAuction = async (values) => {
     const auctionPrice = Number(values.auctionPrice);
-    const endAuction = Number(values.time);
+    const endAuction = (values.time - new Date().getTime()) / 1000;
+
     dispatch({
       type: LISTING_AUCTION,
       payload: {
         collectionAddress: nftDetails.collectionAddress,
         tokenID: nftDetails.tokenID,
         auctionPrice: auctionPrice,
-        endAuction: endAuction,
+        endAuction: Math.floor(endAuction) ,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
+    
   };
 
   const handleRefund = async () => {
@@ -71,7 +75,7 @@ const MyNftDetails = () => {
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId - 1,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
@@ -83,7 +87,7 @@ const MyNftDetails = () => {
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId - 1,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
@@ -95,10 +99,9 @@ const MyNftDetails = () => {
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId - 1,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
-
 
   const handleFixedPrice = async (values) => {
     const fixedPrice = Number(values.fixedPrice);
@@ -109,7 +112,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         fixedPrice: fixedPrice,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
@@ -122,7 +125,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
@@ -134,7 +137,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
@@ -146,7 +149,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
@@ -157,7 +160,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
@@ -170,7 +173,7 @@ const MyNftDetails = () => {
         auctionId: nftDetails.auctionId - 1,
         price,
       },
-      onSuccess: (nft) => setNftDetails(nft)
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
@@ -179,7 +182,7 @@ const MyNftDetails = () => {
   ) : (
     <div className="container my-5" id="nftPage">
       <img src="/assets/images/Background.jpg" id="layer" />
-      <h3 className="my-5 text-center">List Item for Sale</h3>
+      <h3 className="my-5 text-center">{collectionDetails?.name}</h3>
       <div className="row">
         <div className="col-md-12  col-lg-5 order-2 order-lg-1 ">
           <div id="imgNft" className="imgForSale">
@@ -189,8 +192,8 @@ const MyNftDetails = () => {
         </div>
         <div className="col-md-12  col-lg-7 order-1 order-lg-2 ">
           <header id="infoNFT" className="mb-3">
-            <h4>{nftDetails?.name}</h4>
-            <h2>RoboPunks number8 #1691</h2>
+            <h3>{`${nftDetails?.name}(${nftDetails?.tokenID})`}  </h3>
+            <h4>Owned by {sameAddress(connectedWallet, nftDetails.ownerAddress) ? 'You' : optimizeWalletAddress(nftDetails.ownerAddress)}</h4>
           </header>
 
           {
@@ -203,6 +206,7 @@ const MyNftDetails = () => {
                 nftDetails={nftDetails}
                 handleAuction={handleAuction}
                 handleFixedPrice={handleFixedPrice}
+                handleAcceptOffer={onAcceptOffer}
               />
             ) : null
           }

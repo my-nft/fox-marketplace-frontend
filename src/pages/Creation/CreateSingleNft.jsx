@@ -12,7 +12,7 @@ const CreateSingleNft = () => {
   const [imageUpload, setImageUpload] = useState(null);
   const [imageData, setImageData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [popupStatus, setPopupStatus] = useState("properties");
+  const [popupStatus, setPopupStatus] = useState(null);
 
   const [nftData, setNftData] = useState({
     artworkName: "",

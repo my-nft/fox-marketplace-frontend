@@ -852,26 +852,27 @@ footer a:hover {
   width: 95vw;
 }
 
-#marketplace #openClose{
+#marketplace #openClose {
   width: 72px;
   background: #0a0b0e;
   margin-right: 24px;
 }
 
-#marketplace #headerInput{
+#marketplace #headerInput {
   justify-content: flex-start;
   align-items: center;
 }
 
-#marketplace #headerInput>select{
+#marketplace #headerInput > select {
   margin-left: 32px;
 }
 
-#marketplace #headerInput>select, #marketplace #headerInput>button{
+#marketplace #headerInput > select,
+#marketplace #headerInput > button {
   height: 64px;
 }
 
-#marketplace #headerInput>button{
+#marketplace #headerInput > button {
   margin-left: auto;
 }
 
@@ -1181,7 +1182,7 @@ footer a:hover {
   padding: 10px 0px;
 }
 
-#accordionProperties .checkBox{
+#accordionProperties .checkBox {
   background-color: transparent;
   padding: 10px 0px;
 }
@@ -2692,4 +2693,485 @@ input[type="number"]:focus-within {
 
 .confirmation-show {
   right: 24px;
+}
+
+.datePicker {
+  position: fixed;
+  top: 0;
+  left: -180%;
+  z-index: 10000;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 300ms ease-in-out;
+}
+
+.showPicker {
+  left: 0;
+}
+
+.datePickerBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.datePickerContent {
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+  background: #131313;
+  border-radius: 12px;
+  padding: 40px 48px;
+}
+
+.datePickerItems {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes glowImage {
+  0% {
+    filter: drop-shadow(0 0 0 #131313);
+  }
+  50% {
+    filter: drop-shadow(0 0 12px #f58103);
+  }
+  100% {
+    filter: drop-shadow(0 0 0 #131313);
+  }
+}
+
+.datePickerContent * {
+  position: relative;
+}
+
+.datePickerItems {
+  position: relative;
+  z-index: 10005;
+}
+
+.datePickerTexture {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  overflow: hidden;
+}
+
+.datePickerTexture::before {
+  width: 30%;
+  height: 200%;
+  transform: rotate(30deg);
+  background: rgba(255, 255, 255, 0.03);
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: 55%;
+  z-index: 10001;
+}
+
+.datePickerTexture::after {
+  width: 30%;
+  height: 200%;
+  transform: rotate(-30deg);
+  background: #352310;
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: 55%;
+  z-index: 10002;
+}
+
+.datePickerContent .popup-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  cursor: pointer;
+}
+
+.datePickerItems > img {
+  height: 96px;
+  object-fit: contain;
+  margin: 0 0 24px;
+  animation: glowImage 5s ease-in-out infinite;
+}
+
+.datePickerItems > h2 {
+  color: #fefefe;
+  font-size: 24px;
+}
+
+.datePickerItems > p {
+  color: #fefefe;
+  font-size: 16px;
+  margin: 0 0 24px;
+  opacity: 0.6;
+}
+
+.selectContainer label {
+  color: #fefefe;
+  font-size: 16px;
+  margin: 0 0 8px;
+}
+
+.selectDate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  transition: 300ms ease-in-out;
+  cursor: pointer;
+}
+
+.selectDate label {
+  cursor: pointer;
+}
+
+.selectDate p {
+  color: #fefefe;
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+
+.selectDate input {
+  display: none;
+}
+
+.timeEntry {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+
+.selectTime {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.selectTime span {
+  color: #fefefe;
+  font-size: 32px;
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.timeEntry input {
+  width: 80px;
+  border-radius: 8px;
+  border: none !important;
+  background: #131313;
+  color: rgba(254, 254, 254, 0.6);
+  font-size: 64px;
+  padding: 0;
+  text-align: center;
+  transition: 300ms ease-in-out;
+  box-shadow: 0 3px 2px rgba(0, 0, 0, 0.65);
+}
+
+.timeEntry input:focus {
+  border: none !important;
+  outline: none !important;
+  color: #fefefe;
+  transform: scale(1.05);
+}
+
+.datePickerContent .popup-close {
+  opacity: 1 !important;
+  transition: 300ms ease-in-out;
+  z-index: 30000;
+}
+
+.datePickerContent .popup-close:hover {
+  color: #f58103 !important;
+}
+
+.confirmDatePicker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+  outline: none;
+  border: 1px solid #f58103;
+  padding: 18px 72px;
+  border-radius: 8px;
+  transition: 300ms ease-in-out;
+  background: transparent;
+  color: #f58103;
+}
+
+.confirmDatePicker:hover {
+  background: #f58103;
+  color: #fff;
+}
+
+.collectionSettingsWrapper {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  max-width: 1600px;
+  gap: 72px;
+  margin: 0 auto;
+  width: 90%;
+}
+
+.settingsForm {
+  padding: 40px 56px;
+  background: #131313;
+  border-radius: 12px;
+  margin: 56px auto 96px;
+  color: #fefefe;
+  width: 100%;
+  grid-column: span 7;
+}
+
+.imageChange {
+  grid-column: span 3;
+  padding: 40px 56px;
+  background: #131313;
+  border-radius: 12px;
+  margin: 56px auto 96px;
+  color: #fefefe;
+  width: 100%;
+  height: max-content;
+}
+
+.imageChange button {
+  width: 100%;
+}
+
+.collectionSettings h1 {
+  font-size: 40px;
+  font-weight: 600;
+  margin: 48px auto 24px;
+  color: #fefefe;
+  text-align: center;
+  width: 80%;
+}
+
+.collectionSettings > p {
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0 0 24px;
+  color: #fefefe;
+  opacity: 0.4;
+  text-align: center;
+  max-width: 620px;
+  margin: 0 auto;
+  width: 80%;
+}
+
+.collectionSettings form > p {
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0 0 12px;
+  color: #fefefe;
+  opacity: 0.4;
+}
+
+.settingsTitle {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: #fefefe;
+}
+
+.settingsDescription {
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0 0 24px;
+  color: #fefefe;
+  opacity: 0.6;
+}
+
+.settingGroup {
+  display: flex;
+  flex-direction: column;
+  padding: 32px 12px;
+  border-bottom: 1px solid rgba(254, 254, 254, 0.1);
+}
+
+.settingGroup label {
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0 0 4px;
+  opacity: 0.6;
+}
+
+.settingGroup input {
+  border: none;
+  background: transparent;
+  color: #fefefe;
+  font-size: 16px;
+  transition: 300ms ease-in-out;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid rgba(254, 254, 254, 0.8);
+  transition: 300ms ease-in-out;
+  padding: 12px;
+  gap: 16px;
+}
+
+.inputWrapper input {
+  flex-grow: 2;
+}
+
+.inputWrapper svg {
+  cursor: pointer;
+  opacity: 0.75;
+}
+
+.inputWrapper:focus-within {
+  border-bottom: 1px solid #f58103;
+}
+
+.settingGroup input:focus {
+  outline: none;
+}
+
+.transferOwnership {
+  padding: 12px 56px;
+  border-radius: 12px;
+  color: #f58103;
+  border: 1px solid #f58103;
+  cursor: pointer;
+  transition: 300ms ease-in-out;
+  width: max-content;
+  white-space: nowrap;
+  margin: 0 0 0 24px;
+}
+
+.ownership {
+  display: flex;
+  gap: 16px;
+}
+
+.transferOwnership:hover {
+  background: #f58103;
+  color: #fff;
+}
+
+.imageChange label > img {
+  width: 100%;
+  object-fit: contain;
+}
+
+.imageChange label {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.changeOverlay {
+  background: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  opacity: 0;
+  transition: 300ms ease-in-out;
+  cursor: pointer;
+}
+
+.changeOverlay img {
+  height: 144px;
+  object-fit: contain;
+}
+
+.changeOverlay p {
+  margin-top: -24px;
+  font-weight: 600;
+}
+
+.imageChange label:hover .changeOverlay {
+  opacity: 1;
+}
+
+.settingsButtons {
+  display: flex;
+  align-items: center;
+  margin-top: 32px;
+  gap: 24px;
+}
+
+.settingsButtons button {
+  padding: 12px 48px;
+  border-radius: 8px;
+  outline: none;
+  cursor: pointer;
+  background: none;
+  transition: 300ms ease-in-out;
+  color: #f58103;
+  border: 1px solid #f58103;
+}
+
+.settingsButtons button:hover {
+  background: #f58103;
+  color: #fff;
+}
+
+.settingsButtons .delete {
+  display: flex;
+  align-items: center;
+  color: #eb455f;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: 300ms ease-in-out;
+  margin: 0 0 0 auto;
+}
+
+.delete svg path {
+  fill: #eb455f;
+}
+
+.delete:hover {
+  opacity: 1;
+}
+
+input:read-only {
+  background: #130f0a !important;
+  color: #fefefe;
+  border: none;
+  border-radius: 10px !important;
+}
+/* 
+.datePicker .react-datepicker-popper {
+  transform: translate(0, -32px) !important;
+} */
+
+.react-datepicker__navigation {
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+}
+
+.react-datepicker__navigation-icon::before {
+  top: 12px !important;
 }
