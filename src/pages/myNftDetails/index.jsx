@@ -73,7 +73,7 @@ const MyNftDetails = () => {
       payload: {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
-        auctionId: nftDetails.auctionId - 1,
+        auctionId: nftDetails.auctionId,
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -85,7 +85,7 @@ const MyNftDetails = () => {
       payload: {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
-        auctionId: nftDetails.auctionId - 1,
+        auctionId: nftDetails.auctionId,
       },
       onSuccess: (nft) => setNftDetails(nft),
     });

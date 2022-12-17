@@ -19,6 +19,9 @@ const ListedAuctionNft = ({
   const [isLoading, setIsLoading] = useState(true);
 
 
+  console.log(itemInfos);
+
+
   console.log("****************************", itemInfos?.endAuction)
 
 
@@ -33,8 +36,12 @@ const ListedAuctionNft = ({
   };
 
   const setAuctionItemInfos = async () => {
-    const infos = await getAuctionInfos(itemDetails.auctionId - 1);
+    const infos = await getAuctionInfos(itemDetails.auctionId);
     setItemInfos(infos);
+    console.log("#############################")
+    console.log("#############################", itemDetails.auctionId)
+    console.log("#############################" , infos)
+
   };
 
   const init = async () => {

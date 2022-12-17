@@ -66,7 +66,7 @@ export const createAuction = async (
   const erc721Contract = loadERC721Contract(collectionAddress, false);
 
   console.log("HERRRE");
-  
+
   const gasLimitApprouve = await erc721Contract.methods
     .approve(AUTIONContractAddress, tokenID)
     .estimateGas({
@@ -93,7 +93,7 @@ export const createAuction = async (
       to: AUTIONContractAddress,
     });
 
-  const tnx = await auctionContract.methods
+  await auctionContract.methods
     .createAuction(
       collectionAddress,
       ERC20ContractAddress,
@@ -107,16 +107,16 @@ export const createAuction = async (
       gasLimit,
     });
 
-  return tnx.events.NewAuction.returnValues[0];
+  const auctionId = await auctionContract.methods
+    .auctionIdByToken(collectionAddress, tokenID)
+    .call();
+
+  return auctionId;
 };
 
 export const getAuctionInfos = async (auctionId) => {
   try {
-    if (auctionId) {
-      return await auctionContractReadOnly.methods
-        .allAuctions(auctionId)
-        .call();
-    }
+    return await auctionContractReadOnly.methods.allAuctions(auctionId).call();
   } catch (error) {
     console.warn(error);
   }
