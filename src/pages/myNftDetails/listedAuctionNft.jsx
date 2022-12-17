@@ -29,7 +29,6 @@ const ListedAuctionNft = ({
     if (endAuction && !isNaN(endAuction)) {
       const end = endAuction*1000;
       const now = new Date().getTime();
-
       return end - now < 0;
     }
     return true;
@@ -38,10 +37,6 @@ const ListedAuctionNft = ({
   const setAuctionItemInfos = async () => {
     const infos = await getAuctionInfos(itemDetails.auctionId);
     setItemInfos(infos);
-    console.log("#############################")
-    console.log("#############################", itemDetails.auctionId)
-    console.log("#############################" , infos)
-
   };
 
   const init = async () => {
@@ -53,6 +48,8 @@ const ListedAuctionNft = ({
   useEffect(() => {
     init();
   }, []);
+
+  console.log(itemInfos);
 
   const currentBidOwner = itemInfos?.currentBidOwner;
   const bidCount = itemInfos?.bidCount;

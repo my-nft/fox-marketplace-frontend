@@ -88,6 +88,7 @@ const CollectionSettings = (props) => {
                 type="text"
                 name="name"
                 id="name"
+                disabled
                 placeholder="Collection Address"
                 value={settingsState.address}
                 onChange={(e) =>
