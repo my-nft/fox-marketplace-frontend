@@ -153,8 +153,6 @@ function* loadAccountNfts(action) {
     numberElements,
   } = action.payload;
 
-  console.log("SAGA CALL",action.payload)
-
   try {
     yield put(setIsLoadingAccount(true));
 

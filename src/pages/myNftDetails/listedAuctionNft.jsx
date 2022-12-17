@@ -35,7 +35,7 @@ const ListedAuctionNft = ({
   };
 
   const setAuctionItemInfos = async () => {
-    const infos = await getAuctionInfos(itemDetails.auctionId);
+    const infos = await getAuctionInfos(itemDetails.auctionId - 1);
     setItemInfos(infos);
   };
 
@@ -48,8 +48,6 @@ const ListedAuctionNft = ({
   useEffect(() => {
     init();
   }, []);
-
-  console.log(itemInfos);
 
   const currentBidOwner = itemInfos?.currentBidOwner;
   const bidCount = itemInfos?.bidCount;
