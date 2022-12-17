@@ -18,13 +18,18 @@ const ListedAuctionNft = ({
   const [itemInfos, setItemInfos] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
+
+  console.log("****************************", itemInfos?.endAuction)
+
+
   const isTokenExpired = (endAuction) => {
-    if (endAuction) {
-      const date = new Date(0);
-      date.setUTCSeconds(endAuction);
-      return new Date() - date > 0;
+    if (endAuction && !isNaN(endAuction)) {
+      const end = endAuction*1000;
+      const now = new Date().getTime();
+
+      return end - now < 0;
     }
-    return false;
+    return true;
   };
 
   const setAuctionItemInfos = async () => {
@@ -46,8 +51,6 @@ const ListedAuctionNft = ({
   const bidCount = itemInfos?.bidCount;
   const currentWallet = getCurrentWalletConnected();
   const creator = itemInfos?.creator;
-
-  console.log(itemInfos);
 
   return (
     !isLoading && (

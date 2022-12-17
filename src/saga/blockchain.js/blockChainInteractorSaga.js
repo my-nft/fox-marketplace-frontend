@@ -121,7 +121,7 @@ function* runAcceptOffer(action) {
     yield call(acceptOffer, collectionAddress, tokenID);
 
     // unlist from DB
-    yield call(nftApi.setNftToUnlisted, {
+    yield call(nftApi.acceptOffer, {
       collectionAddress,
       tokenID,
     });

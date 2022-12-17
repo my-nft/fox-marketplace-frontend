@@ -47,6 +47,15 @@ export const setNftToUnlisted = (body) => {
   );
 };
 
+export const acceptOffer = (body) => {
+  const { collectionAddress, tokenID } = body;
+
+  return methods.put(
+    `${collectionEndpoint}${collectionAddress}/nfts/${tokenID}/accept-offer`
+  );
+};
+
+
 export const getListedNfts = (page, numberElements) => {
   return methods.get(nftEndpoint + "listed", {
     params: {

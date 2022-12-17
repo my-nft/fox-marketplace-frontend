@@ -57,7 +57,7 @@ const NonListedMyNft = ({
 
   const handleDateChange = (dateObj) => {
     setShowPicker(false);
-    setValues({ ...values, time: dateObj.getTime() });
+    setValues({ ...values, time: dateObj.getTime()});
   };
 
   console.log(new Date(values.time).toLocaleString());
