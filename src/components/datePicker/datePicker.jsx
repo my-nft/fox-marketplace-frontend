@@ -47,7 +47,6 @@ const CustomDatePicker = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(dateState);
 
     //transform dateState object to valid datetime object
     let dateObj = new Date(dateState.date);

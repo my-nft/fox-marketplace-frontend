@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
 
-const getDate = (auctionEnd) => {
-  const d = new Date(0);
-  d.setUTCSeconds(auctionEnd);
-  return d;
-};
-
 const CardHeader = ({ endDate }) => {
-  const [saleEndDate, _] = useState(getDate(endDate));
+  const [saleEndDate, _] = useState(new Date(endDate));
   const [daysLeft, setDaysLeft] = useState(0);
   const [hoursLeft, setHoursLeft] = useState(0);
   const [minutesLeft, setMinutesLeft] = useState(0);
@@ -73,12 +67,14 @@ const CardHeader = ({ endDate }) => {
     <div className="card-header">
       <p className="text-center pb-3">
         Sale ends{" "}
-        {saleEndDate.toLocaleDateString("en-US", {
+        {saleEndDate.toLocaleString([], {
           year: "numeric",
           month: "long",
           day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
         })}{" "}
-        at 23:59pm GMT+1
       </p>
       <div className="countdown">
         <div className="countdown__days">
