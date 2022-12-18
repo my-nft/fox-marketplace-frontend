@@ -5,9 +5,7 @@
   .settingsForm {
     grid-column: span 6;
   }
-  .imageChange {
-    grid-column: span 4;
-  }
+
   .ownership {
     flex-direction: column;
   }
@@ -15,6 +13,25 @@
     width: 100%;
     margin: 8px 0 0 0;
     text-align: center;
+  }
+  .collectionUpdateSettings {
+    max-width: unset;
+    width: 90%;
+    flex-direction: column;
+    align-items: center;
+  }
+  .collectionSettingsImages {
+    width: 75%;
+    gap: 0;
+  }
+  .collectionSettingsData {
+    width: 100%;
+  }
+  .settingsWidthHalf {
+    width: 100% !important;
+  }
+  .settingsSplitGrouping {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -61,15 +78,10 @@
   }
 
   .settingsForm,
-  .imageChange {
-    padding: 32px;
-  }
   .settingsForm {
     margin: 32px auto 16px;
   }
-  .imageChange {
-    margin: 0 auto 32px;
-  }
+
   #chooseLayout {
     display: none;
   }

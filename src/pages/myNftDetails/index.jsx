@@ -177,6 +177,8 @@ const MyNftDetails = () => {
     });
   };
 
+  console.log(nftDetails);
+
   return isLoadingPage || isLoading ? (
     <Spinner />
   ) : (

@@ -13,8 +13,7 @@ import {
 } from "../../api/collectionApi";
 
 const CollectionDetails = () => {
-
-  let {collectionAddress} = useParams();
+  let { collectionAddress } = useParams();
   const [isLoadingCollection, setIsLoadingCollection] = useState(true);
   const [isLoadingNfts, setIsLoadingNfts] = useState(true);
   const [collectionDetails, setCollectionDetails] = useState();
@@ -46,7 +45,6 @@ const CollectionDetails = () => {
   const [visible, setVisible] = useState(false);
   const [viewType, setViewType] = useState("CHANGE_FOR_MIN");
 
-
   useEffect(() => {
     console.log(filters);
   }, [filters]);
@@ -55,13 +53,12 @@ const CollectionDetails = () => {
     initLoadCollection();
   }, []);
 
-
   const initLoadCollection = async () => {
     setIsLoadingCollection(true);
     const collection = await getCollectionByAddress(collectionAddress);
     setCollectionDetails(collection.data);
     setIsLoadingCollection(false);
-  }
+  };
 
   const initLoadNfts = async () => {
     setIsLoadingNfts(true);
@@ -81,7 +78,7 @@ const CollectionDetails = () => {
   };
 
   const handleSelectNfts = (tokenID) => {
-    navigate(`/collection/${collectionDetails.collectionAddress}/${tokenID}`)
+    navigate(`/collection/${collectionDetails.collectionAddress}/${tokenID}`);
   };
 
   const changePage = (page) => {
@@ -93,10 +90,10 @@ const CollectionDetails = () => {
   };
 
   useEffect(() => {
-    if(collectionDetails) {
+    if (collectionDetails) {
       initLoadNfts();
     }
-  }, [collectionDetails, pagination])
+  }, [collectionDetails, pagination]);
 
   const updateProcessing = async (interval) => {
     const response = await getCollectionByAddress(
@@ -108,7 +105,7 @@ const CollectionDetails = () => {
       toast.dismiss();
       toast.success("Congratulation your collection has been imported...");
       dispatch(setCollectionDetails(tempCollection));
-      clearInterval(interval);    
+      clearInterval(interval);
       return;
     }
   };
@@ -150,11 +147,13 @@ const CollectionDetails = () => {
             filters={filters}
             changeFilterValue={setFilters}
           />
-          <Pagination
-            currentPage={pagination.page}
-            pages={totalElements ? parseInt(totalElements / 20) : 1}
-            setCurrentPage={changePage}
-          />
+          {totalElements / 20 > 1 ? (
+            <Pagination
+              currentPage={pagination.page}
+              pages={totalElements ? parseInt(totalElements / 20) : 1}
+              setCurrentPage={changePage}
+            />
+          ) : null}
         </>
       )}
     </>

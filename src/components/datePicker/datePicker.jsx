@@ -4,13 +4,15 @@ import { getDayCountForMonth } from "./utils";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+const today = new Date();
+
 const CustomDatePicker = ({
   dateSetAction = () => {},
   closeAction = () => {},
   showPicker,
 }) => {
   const [dateState, setDateState] = useState({
-    date: new Date().toLocaleDateString("en-US", {
+    date: today.toLocaleDateString("en-US", {
       day: "2-digit",
       month: "short",
       year: "numeric",
@@ -20,7 +22,7 @@ const CustomDatePicker = ({
   });
 
   const processDateEntry = (e) => {
-    if (e.getTime() > new Date().getTime()) {
+    if (e.getTime() >= today.getTime()) {
       setDateState({
         ...dateState,
         date: e.getTime(),
@@ -59,7 +61,7 @@ const CustomDatePicker = ({
   useState(() => {
     if (!showPicker) {
       setDateState({
-        date: new Date().toLocaleDateString("en-US", {
+        date: today.toLocaleDateString("en-US", {
           day: "2-digit",
           month: "short",
           year: "numeric",
@@ -120,9 +122,9 @@ const CustomDatePicker = ({
               <label htmlFor="date">
                 <DatePicker
                   id="date"
-                  minDate={new Date()}
-                  selected={new Date(dateState.date)}
+                  minDate={today}
                   value={new Date(dateState.date)}
+                  selected={new Date(dateState.date)}
                   onChange={processDateEntry}
                   name="date"
                   customInput={
