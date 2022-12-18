@@ -57,7 +57,7 @@ const NonListedMyNft = ({
 
   const handleDateChange = (dateObj) => {
     setShowPicker(false);
-    setValues({ ...values, time: dateObj.getUTCSeconds });
+    setValues({ ...values, time: dateObj.getTime() });
   };
 
   return (
@@ -68,7 +68,11 @@ const NonListedMyNft = ({
         dateSetAction={handleDateChange}
       />
       <CardNftWrapper>
-        <CardBody bestOffer={bestOffer} onAcceptOffer={handleAcceptOffer}>
+        <CardBody
+          bestOffer={bestOffer}
+          onAcceptOffer={handleAcceptOffer}
+          ownerAddress={nftDetails.ownerAddress}
+        >
           <div className="card" id="cardNft">
             <div className="card-body">
               <div className="card-text">

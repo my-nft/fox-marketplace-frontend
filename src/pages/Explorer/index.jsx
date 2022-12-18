@@ -85,8 +85,8 @@ const Explorer = () => {
   ) : (
     <>
       <MostPopularCollection collections={mostPopularCollections} />
-      <section id="marketplace" class="container-fluid mb-5">
-        <div class="row flex-nowrap md-flex-row flex-col">
+      <section id="marketplace" className="container-fluid mb-5">
+        <div className="row flex-nowrap md-flex-row flex-col">
           <div id="sx" className={`filtersContainer filtersExplorer ${filtersVisible ? null : 'filtersHide'}`}>
             <div className="filtersCollapsible" >
               <AccordingStatus filters={filters} changeFilterValue={setFilters} />

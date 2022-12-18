@@ -1,6 +1,6 @@
 const CardNftWrapper = ({children}) => {
   return (
-    <div class="card" id="cardNft">
+    <div className="card" id="cardNft">
       {children}
     </div>
   );

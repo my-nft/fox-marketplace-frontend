@@ -5,9 +5,9 @@ const ListItemCollection = () => {
   const navigate = useNavigate();
 
   return (
-    <div class="listItemCollection" onClick={() => navigate("/nft")}>
+    <div className="listItemCollection" onClick={() => navigate("/nft")}>
       <img src="./assets/images/marketplace/icon1_collection.jpg" alt="" />
-      <div class="itemText">
+      <div className="itemText">
         <p>Moon Apes Pow Club</p>
         <p>
           <span>28868 ETH </span>

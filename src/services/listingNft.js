@@ -65,6 +65,8 @@ export const createAuction = async (
   const price = bigNumberPricing(initialPrice);
   const erc721Contract = loadERC721Contract(collectionAddress, false);
 
+  console.log("HERRRE");
+  
   const gasLimitApprouve = await erc721Contract.methods
     .approve(AUTIONContractAddress, tokenID)
     .estimateGas({

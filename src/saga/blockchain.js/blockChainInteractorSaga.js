@@ -49,7 +49,7 @@ function* runBuyNft(action) {
     action.onSuccess(nftDetails.data);
   } catch (error) {
     console.log("error ", error);
-    toast.error("An unexpected error occurred.");
+    toast.error(error.message || "An unexpected error occurred.");
   } finally {
     yield put(setIsLoading(false));
   }
@@ -74,7 +74,7 @@ function* runMakeOffer(action) {
     action.onSuccess(nftDetails.data);
   } catch (error) {
     console.log("error ", error);
-    toast.error("An unexpected error occurred.");
+    toast.error(error.message || "An unexpected error occurred.");
   } finally {
     yield put(setIsLoading(false));
   }
@@ -105,7 +105,7 @@ function* runDelistItem(action) {
     action.onSuccess(nftDetails.data);
   } catch (error) {
     console.log("error ", error);
-    toast.error("An unexpected error occurred.");
+    toast.error(error.message || "An unexpected error occurred.");
   } finally {
     yield put(setIsLoading(false));
   }
@@ -121,7 +121,7 @@ function* runAcceptOffer(action) {
     yield call(acceptOffer, collectionAddress, tokenID);
 
     // unlist from DB
-    yield call(nftApi.setNftToUnlisted, {
+    yield call(nftApi.acceptOffer, {
       collectionAddress,
       tokenID,
     });
@@ -133,7 +133,7 @@ function* runAcceptOffer(action) {
     action.onSuccess(response.data);
   } catch (error) {
     console.log("error ", error);
-    toast.error("An unexpected error occurred.");
+    toast.error(error.message || "An unexpected error occurred.");
   } finally {
     yield put(setIsLoading(false));
   }
@@ -155,7 +155,7 @@ function* runPlaceBid(action) {
     action.onSuccess(response.data);
   } catch (error) {
     console.log("error ", error);
-    toast.error("An unexpected error occurred.");
+    toast.error(error.message || "An unexpected error occurred.");
   } finally {
     yield put(setIsLoading(false));
   }
@@ -191,7 +191,7 @@ function* runListFixedPrice(action) {
     action.onSuccess(response.data);
   } catch (error) {
     console.log("error ", error);
-    toast.error("An unexpected error occurred.");
+    toast.error(error.message || "An unexpected error occurred.");
   } finally {
     yield put(setIsLoading(false));
   }
@@ -230,7 +230,7 @@ function* runListingAuction(action) {
     action.onSuccess(nftDetails.data);
   } catch (error) {
     console.log("error ", error);
-    toast.error("An unexpected error occurred.");
+    toast.error(error.message || "An unexpected error occurred.");
   } finally {
     yield put(setIsLoading(false));
   }
@@ -255,7 +255,7 @@ function* runHandleRefund(action) {
     action.onSuccess(response.data);
   } catch (error) {
     console.log("error ", error);
-    toast.error("An unexpected error occurred.");
+    toast.error(error.message || "An unexpected error occurred.");
   } finally {
     yield put(setIsLoading(false));
   }
@@ -280,7 +280,7 @@ function* runHandleClaimNFT(action) {
     action.onSuccess(response.data);
   } catch (error) {
     console.log("error ", error);
-    toast.error("An unexpected error occurred.");
+    toast.error(error.message || "An unexpected error occurred.");
   } finally {
     yield put(setIsLoading(false));
   }
@@ -306,7 +306,7 @@ function* runHandleClaimToken(action) {
     action.onSuccess(response.data);
   } catch (error) {
     console.log("error ", error);
-    toast.error("An unexpected error occurred.");
+    toast.error(error.message || "An unexpected error occurred.");
   } finally {
     yield put(setIsLoading(false));
   }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const CardHeader = ({ endDate }) => {
-  const [saleEndDate, _] = useState(new Date(endDate));
+  const [saleEndDate, _] = useState(new Date(endDate * 1000));
   const [daysLeft, setDaysLeft] = useState(0);
   const [hoursLeft, setHoursLeft] = useState(0);
   const [minutesLeft, setMinutesLeft] = useState(0);
