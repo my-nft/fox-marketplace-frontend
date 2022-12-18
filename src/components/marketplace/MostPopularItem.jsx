@@ -73,7 +73,7 @@ const MostPopularItem = ({ viewType, item }) => {
   console.log(itemInfos?.endAuction);
 
   const calculateTimeLeftBeforeExpiration = (expirationDate, dateNow) => {
-    const futurDate = new Date(Number(expirationDate));
+    const futurDate = new Date(Number(expirationDate * 1000));
 
     const difference = futurDate - dateNow;
     let timeLeft = {};

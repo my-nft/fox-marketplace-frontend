@@ -35,7 +35,7 @@ const ListedAuctionNft = ({
   };
 
   const setAuctionItemInfos = async () => {
-    const infos = await getAuctionInfos(itemDetails.auctionId - 1);
+    const infos = await getAuctionInfos(itemDetails.auctionId);
     setItemInfos(infos);
   };
 

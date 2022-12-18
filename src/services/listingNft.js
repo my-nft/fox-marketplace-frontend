@@ -55,6 +55,11 @@ export const getBestOffer = async (collectionAddress, tokenID) => {
   return Number(response.price) / 10 ** 18;
 };
 
+export const getListingIdByToken = async (collectionAddress, tokenID) => {
+  const response = await fixedPriceContractReadOnly.methods.listingIdByToken(collectionAddress, tokenID).call();
+  return response;
+}
+
 export const createAuction = async (
   collectionAddress,
   tokenID,
