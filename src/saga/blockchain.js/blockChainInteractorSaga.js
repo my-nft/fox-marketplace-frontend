@@ -13,6 +13,7 @@ import {
   refundNft,
   claimNFT,
   claimToken,
+  getListingIdByToken,
 } from "../../services/listingNft";
 import {
   ACCEPT_OFFER,
@@ -116,6 +117,17 @@ function* runAcceptOffer(action) {
     const { collectionAddress, tokenID } = action.payload;
 
     yield put(setIsLoading(true));
+
+    const listingId = yield call(
+      getListingIdByToken,
+      collectionAddress,
+      tokenID
+    );
+
+    if (listingId) {
+      // unlist manually from blockchain
+      yield call(deListItem, listingId);
+    }
 
     // unlist from Blockchain
     yield call(acceptOffer, collectionAddress, tokenID);

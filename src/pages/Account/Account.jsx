@@ -25,10 +25,12 @@ const AccountPage = () => {
   const [activeSection, setActiveSection] = useState("COLLECTIONS");
   const collections = useSelector(selectCollections);
   const nfts = useSelector(selectNfts);
+
+  const {content = [], totalElements} = nfts || {};
+
   const [pagination, setPagination] = useState({
     page: 1,
-    numberElements: 10,
-    maxPages: 5,
+    numberElements: 20,
   });
 
   const [filters, setFilters] = useState({
@@ -137,15 +139,15 @@ const AccountPage = () => {
             activeSection={activeSection}
             isVisible={visible}
             viewType={viewType}
-            nfts={nfts}
+            nfts={content}
             collections={collections}
             filters={filters}
             changeFilterValue={setFilters}
           />
           <Pagination
-            pages={pagination.maxPages}
             currentPage={pagination.page}
             setCurrentPage={changePage}
+            pages={totalElements ? parseInt(totalElements / 20) : 1}
           />
         </>
       )}

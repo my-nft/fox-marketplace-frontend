@@ -33,7 +33,6 @@ const PlaceBid = ({ onPlaceBid }) => {
                 <option>FXG</option>
               </select>
             </div>
-
             <button
               id="placeBidSubmit"
               className="btn contIcon"

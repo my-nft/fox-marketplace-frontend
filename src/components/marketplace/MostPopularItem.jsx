@@ -37,12 +37,11 @@ const MostPopularItem = ({ viewType, item }) => {
 
   const [itemInfos, setItemInfos] = useState({});
   const [dateTime, setDateTime] = useState(new Date());
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [price, setPrice] = useState(0);
 
   const init = async () => {
-    const infos = await getAuctionInfos(item.auctionId - 1);
+    const infos = await getAuctionInfos(item.auctionId);
     setItemInfos(infos);
 
     if (item.listingType === AUCTION) {
@@ -74,7 +73,7 @@ const MostPopularItem = ({ viewType, item }) => {
   console.log(itemInfos?.endAuction);
 
   const calculateTimeLeftBeforeExpiration = (expirationDate, dateNow) => {
-    const futurDate = new Date(Number(expirationDate));
+    const futurDate = new Date(Number(expirationDate * 1000));
 
     const difference = futurDate - dateNow;
     let timeLeft = {};
