@@ -18,7 +18,7 @@ export const ERC721ContractAddress = "";
 
 export const FIXEDContractAddress = "0xD4efCc65F493f9DD9A343Ef91B10706a5226E1a1";
 export const ERC20ContractAddress = "0x7A060167b9d9508896c04a506a0BFf4e6A1C37e7";
-export const AUTIONContractAddress = "0x23CC0335f51707fFE7AcA9a2c66946E84ce1d914";
+export const AUTIONContractAddress = "0x8b428414eE3c481d6062d0e9314D6b7e4B140445";
 export const LoaderContractAddress = "0x4e749ecaa475888eE8df3B749f69f92Ec42Cc514";
 export const OfferSystemAddress = "0xF8716Ff8aFB1390B51FfFfE50C8Ff87e536Cf7b3";
 
