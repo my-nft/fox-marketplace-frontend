@@ -115,7 +115,7 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path="settings"
+        path="collection/:collectionAddress/settings"
         exact
         element={
           <>
