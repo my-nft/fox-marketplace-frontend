@@ -208,7 +208,7 @@ const MyNftDetails = () => {
               CASE OF NOT MY NFT
               */
 
-            !nftDetails.isListed &&
+            nftDetails.isListed &&
             !sameAddress(connectedWallet, nftDetails.ownerAddress) ? (
               <NonListedNft
                 itemDetails={nftDetails}

@@ -1,158 +1,224 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Select from "react-select";
 import { ReactComponent as Clipboard } from "../../assets/icons/clipboard.svg";
-import { ReactComponent as Trash } from "../../assets/icons/trash.svg";
-import uploadIcon from "../../assets/images/create_icon_3.png";
+import { ReactComponent as WebIcon } from "../../assets/icons/web.svg";
+import { ReactComponent as MediumIcon } from "../../assets/icons/medium.svg";
+import { ReactComponent as TelegramIcon } from "../../assets/icons/telegram.svg";
 
-const CollectionSettings = (props) => {
+import uploadIcon from "../../assets/images/create_icon_3.png";
+import SettingsImages from "./settingsImages";
+import Socials from "./socials";
+import { useNavigate, useNavigation } from "react-router-dom";
+
+const selectStyles = {
+  control: (styles) => ({
+    ...styles,
+    backgroundColor: "transparent",
+    border: "none",
+    borderBottom: "1px solid rgba(254, 254, 254, 0.8)",
+    borderRadius: "0",
+    boxShadow: "none",
+  }),
+  menu: (styles) => ({
+    ...styles,
+    backgroundColor: "#000000",
+    border: "1px solid #f58103",
+    borderRadius: "8px",
+    boxShadow: "0px 4px 4px #f5800373",
+    boxShadow: "none",
+  }),
+  option: (styles, { isFocused }) => ({
+    ...styles,
+    backgroundColor: "transparent",
+    color: "#FFFFFF",
+    cursor: "pointer",
+    ":hover": {
+      backgroundColor: "#f58103",
+      color: "#fff",
+    },
+  }),
+  singleValue: (styles) => ({
+    ...styles,
+    color: "#FFFFFF",
+    padding: "8px 8px",
+    height: "46px",
+  }),
+};
+
+const CollectionSettings = () => {
   const [settingsState, setSettingsState] = useState({
-    name: "Shading Clouds",
     token: "asd556wdw",
-    address: "0x1234567890",
-    owner: "TheOni",
-    imgUrl: "../../assets/images/Element19.png",
+    url: "0x1234567890",
+    description: "This is a description",
+    category: "Art",
+    linkWebsite: "",
+    linkMedium: "",
+    linkTelegram: "",
+    royaltyAddress: "",
+    rightsDuration: "10 Years",
+    profileImage: "../../assets/images/Element19.png",
+    bannerImage: "../../assets/images/Element19.png",
   });
 
-  const handleImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      let reader = new FileReader();
-      reader.onload = (e) => {
-        setSettingsState({
-          ...settingsState,
-          imgUrl: e.target.result,
-        });
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    }
+  const navigate = useNavigate();
+
+  const handleSubmitData = (e) => {
+    e.preventDefault();
+    // navigate("/")
   };
 
   const clipboardCopy = (value) => {
     navigator.clipboard.writeText(value);
   };
 
+  useEffect(() => {
+    console.log(settingsState);
+  }, [settingsState]);
+
   return (
-    <div className="collectionSettings">
-      <h1>Configure Your Collection</h1>
-      <p>
-        Here you can configure your collection. You can change the collection
-        name, collection image, collection token, collection address and
-        collection owner.
-      </p>
-      <div className="collectionSettingsWrapper">
-        <form className="settingsForm">
-          <h2 className="settingsTitle">Collection Info</h2>
-          <p className="setttingsDescription">
-            Here you can change information regarding the collection
-          </p>
-          <div className="settingGroup">
-            <label htmlFor="name">Collection Name</label>
-            <div className="inputWrapper">
-              <input
-                type="text"
-                name="name"
-                id="name"
-                placeholder="Collection Name"
-                value={settingsState.name}
-                onChange={(e) =>
-                  setSettingsState({
-                    ...settingsState,
-                    name: e.target.value,
-                  })
-                }
-              />
+    <div id="createCollection">
+      <h2 className="collectionSettingsTitle">Create Collection</h2>
+      <div className="collectionUpdateSettings">
+        <SettingsImages
+          settingsState={settingsState}
+          setSettingsState={setSettingsState}
+        />
+        <form onSubmit={handleSubmitData} className="collectionSettingsData">
+          <div className="settingsGroup">
+            <h2>Collection Info</h2>
+            <div className="settingGroup settingsWidthHalf">
+              <label htmlFor="name">Collection Token Name</label>
+              <div className="inputWrapper">
+                <input
+                  type="text"
+                  name="token"
+                  id="token"
+                  placeholder="Collection Token"
+                  value={settingsState.token}
+                  onChange={(e) =>
+                    setSettingsState({
+                      ...settingsState,
+                      token: e.target.value,
+                    })
+                  }
+                />
+              </div>
             </div>
-          </div>
-
-          <div className="settingGroup">
-            <label htmlFor="name">Collection Token</label>
-            <div className="inputWrapper">
-              <input
-                type="text"
-                name="token"
-                id="token"
-                placeholder="Collection Token"
-                value={settingsState.token}
-                onChange={(e) =>
-                  setSettingsState({
-                    ...settingsState,
-                    token: e.target.value,
-                  })
-                }
-              />
-            </div>
-          </div>
-
-          <div className="settingGroup">
-            <label htmlFor="name">Collection Address</label>
-            <div className="inputWrapper">
-              <input
-                type="text"
-                name="name"
-                id="name"
-                placeholder="Collection Address"
-                value={settingsState.address}
-                onChange={(e) =>
-                  setSettingsState({
-                    ...settingsState,
-                    address: e.target.value,
-                  })
-                }
-              />
-              <Clipboard onClick={() => clipboardCopy(settingsState.address)} />
-            </div>
-          </div>
-
-          <div className="settingGroup">
-            <label htmlFor="name">Collection Owner</label>
-            <div className="ownership">
+            <div className="settingGroup settingsWidthFull">
+              <label htmlFor="name">Url</label>
               <div className="inputWrapper">
                 <input
                   type="text"
                   name="name"
                   id="name"
-                  placeholder="Collection Owner"
-                  value={settingsState.owner}
+                  placeholder="Collection url"
+                  value={settingsState.url}
                   onChange={(e) =>
                     setSettingsState({
                       ...settingsState,
-                      owner: e.target.value,
+                      url: e.target.value,
                     })
                   }
                 />
-                <Clipboard onClick={() => clipboardCopy(settingsState.owner)} />
+                <Clipboard onClick={() => clipboardCopy(settingsState.url)} />
               </div>
-              <p className="transferOwnership">Transfer Ownership</p>
             </div>
-          </div>
+            <div className="settingGroup settingsWidthFull">
+              <label htmlFor="name">Item Description</label>
+              <div className="inputWrapper">
+                <textarea
+                  name="description"
+                  id="description"
+                  placeholder="Item Description"
+                  value={settingsState.description}
+                  onChange={(e) =>
+                    setSettingsState({
+                      ...settingsState,
+                      description: e.target.value,
+                    })
+                  }
+                />
+              </div>
+            </div>
+            <div className="settingGroup settingsWidthHalf">
+              <label htmlFor="name">Category</label>
 
-          <div className="settingsButtons">
-            <button type="submit">Save Changes</button>
-            <p className="delete">
-              <Trash />
-              Delete Collection
-            </p>
-          </div>
-        </form>
-        <form action="" className="imageChange">
-          <h2 className="settingsTitle">Collection Image</h2>
-          <p className="settingsDescription">
-            Here you can change the collection image
-          </p>
-          <label htmlFor="imageChange">
-            <img src={settingsState.imgUrl} />
-            <div className="changeOverlay">
-              <img src={uploadIcon} />
-              <p>Change image</p>
+              <Select
+                className="settingsWidthFull"
+                name="category"
+                id="category"
+                value={{
+                  value: settingsState.category,
+                  label: settingsState.category,
+                }}
+                onChange={(e) =>
+                  setSettingsState({
+                    ...settingsState,
+                    category: e.value,
+                  })
+                }
+                options={[
+                  { value: "Art", label: "Art" },
+                  { value: "Collectibles", label: "Collectibles" },
+                  { value: "Music NFTs", label: "Music NFTs" },
+                  { value: "Photography", label: "Photography" },
+                  { value: "Sports NFTs", label: "Sports NFTs" },
+                  { value: "Trading Cards NFTs", label: "Trading Cards NFTs" },
+                  { value: "Utility NFTs", label: "Utility NFTs" },
+                ]}
+                styles={selectStyles}
+              />
             </div>
-            <input
-              type="file"
-              name="imageChange"
-              id="imageChange"
-              onChange={handleImageChange}
-            />
-          </label>
-          <div className="settingsButtons">
-            <button type="submit">Save changes</button>
           </div>
+          <Socials
+            settingsState={settingsState}
+            setSettingsState={setSettingsState}
+          />
+          <div className="settingsSplitGrouping">
+            <div className="settingGroup">
+              <label htmlFor="royaltyAddress">Royalty Address</label>
+              <div className="inputWrapper">
+                <input
+                  type="text"
+                  name="royaltyAddress"
+                  id="royaltyAddress"
+                  placeholder="Royalty Address"
+                  value={settingsState.royaltyAddress}
+                  onChange={(e) =>
+                    setSettingsState({
+                      ...settingsState,
+                      royaltyAddress: e.target.value,
+                    })
+                  }
+                />
+              </div>
+            </div>
+            <div className="settingGroup">
+              <label htmlFor="rightsDuration">Rights Duration</label>
+              <Select
+                className="settingsWidthFull"
+                name="rightsDuration"
+                id="rightsDuration"
+                value={{
+                  value: settingsState.rightsDuration,
+                  label: settingsState.rightsDuration,
+                }}
+                onChange={(e) =>
+                  setSettingsState({
+                    ...settingsState,
+                    rightsDuration: e.value,
+                  })
+                }
+                options={[
+                  { value: "10 Years", label: "10 Years" },
+                  { value: "20 Years", label: "20 Years" },
+                  { value: "30 Years", label: "30 Years" },
+                ]}
+                styles={selectStyles}
+              />
+            </div>
+          </div>
+          <button type="submit">Create Collection</button>
         </form>
       </div>
     </div>
