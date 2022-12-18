@@ -8,18 +8,15 @@ import {
   selectSearcheableCollection,
 } from "../../redux/collectionReducer";
 
-import {selectIsLoading, selectListedNfts} from '../../redux/nftReducer';
+import { selectIsLoading, selectListedNfts } from "../../redux/nftReducer";
 
-import {
-  LOAD_MARKET_PLACE,
-} from "../../saga/actions";
+import { LOAD_MARKET_PLACE } from "../../saga/actions";
 import AccordingCollection from "./AccordingCollection";
 import AccordingStatus from "./AccordingStatus";
 import AccordionPrice from "./AccordionPrice";
-import Command from "./Command";
 import MostPopular from "./MostPopular";
 import MostPopularCollection from "./MostPopularCollection";
-import AccordionPropertiesFilter from './PropertiesFilter';
+import AccordionPropertiesFilter from "./PropertiesFilter";
 
 const Explorer = () => {
   const dispatch = useDispatch();
@@ -27,17 +24,18 @@ const Explorer = () => {
   const mostPopularCollections = useSelector(selectMostPopularCollections);
   const searcheableCollections = useSelector(selectSearcheableCollection);
   const marketPlaceNfts = useSelector(selectListedNfts);
- 
+
+  const { totalElements, content } = marketPlaceNfts || {};
+
   const isLoadingApi = useSelector(selectIsLoading);
 
   const [filtersVisible, setFiltersVisible] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
   const [pagination, setPagination] = useState({
-    numberElements: 10,
+    numberElements: 20,
     page: 1,
-    maxPages: 5
-  })
+  });
 
   const [filters, setFilters] = useState({
     minPrice: 0,
@@ -46,16 +44,16 @@ const Explorer = () => {
     status: "ALL",
     showRaritiy: false,
     sortBy: "RECENTLY_LISTED",
-    properties: []
-  })
+    properties: [],
+  });
 
   useEffect(() => {
-    console.log(filters)
-  }, [filters])
+    console.log(filters);
+  }, [filters]);
 
   useEffect(() => {
     setIsLoading(isLoadingApi);
-  }, [isLoadingApi])
+  }, [isLoadingApi]);
 
   const loadMarketPlace = () => {
     dispatch({
@@ -65,20 +63,19 @@ const Explorer = () => {
         page: pagination.page,
       },
     });
-  }
+  };
 
   useEffect(() => {
     loadMarketPlace();
   }, [pagination]);
 
   const changePage = (page) => {
-    if( page < 1 || page > pagination.maxPages) return;
+    if (page < 1 || page > parseInt(totalElements / 20)) return;
     setPagination({
       ...pagination,
-      page
-    })
-  }
-
+      page,
+    });
+  };
 
   return isLoading ? (
     <Spinner />
@@ -87,27 +84,53 @@ const Explorer = () => {
       <MostPopularCollection collections={mostPopularCollections} />
       <section id="marketplace" className="container-fluid mb-5">
         <div className="row flex-nowrap md-flex-row flex-col">
-          <div id="sx" className={`filtersContainer filtersExplorer ${filtersVisible ? null : 'filtersHide'}`}>
-            <div className="filtersCollapsible" >
-              <AccordingStatus filters={filters} changeFilterValue={setFilters} />
-              <AccordionPrice filters={filters} changeFilterValue={setFilters} />
+          <div
+            id="sx"
+            className={`filtersContainer filtersExplorer ${
+              filtersVisible ? null : "filtersHide"
+            }`}
+          >
+            <div className="filtersCollapsible">
+              <AccordingStatus
+                filters={filters}
+                changeFilterValue={setFilters}
+              />
+              <AccordionPrice
+                filters={filters}
+                changeFilterValue={setFilters}
+              />
 
               <AccordingCollection
                 listSearcheableCollections={searcheableCollections}
               />
-              <AccordionPropertiesFilter availableProperties={["Lmao","Test"]} filters={filters} propertiesFilter={filters.properties} changeFilterValue={setFilters} />
+              <AccordionPropertiesFilter
+                availableProperties={["Lmao", "Test"]}
+                filters={filters}
+                propertiesFilter={filters.properties}
+                changeFilterValue={setFilters}
+              />
             </div>
-          
           </div>
           <div id="dx" className={`explorerItems ml-4`}>
-            <HeaderInput filters={filters} changeFilterValue={setFilters} filtersVisible={filtersVisible} setFiltersVisible={setFiltersVisible} />
-            <MostPopular nfts={marketPlaceNfts} pagination={pagination} changePage={changePage} />
-            <Pagination
-              pages={pagination.maxPages}
-              currentPage={pagination.page}
-              setCurrentPage={changePage}
-            
+            <HeaderInput
+              filters={filters}
+              changeFilterValue={setFilters}
+              filtersVisible={filtersVisible}
+              setFiltersVisible={setFiltersVisible}
             />
+            <MostPopular
+              nfts={content}
+              pagination={pagination}
+              changePage={changePage}
+            />
+
+            {totalElements && parseInt(totalElements / 20) > 0 ? (
+              <Pagination
+                pages={totalElements ? parseInt(totalElements / 20) : 1}
+                currentPage={pagination.page}
+                setCurrentPage={changePage}
+              />
+            ) : null}
           </div>
         </div>
       </section>
