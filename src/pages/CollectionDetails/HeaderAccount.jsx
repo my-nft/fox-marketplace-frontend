@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 
 
@@ -89,6 +89,8 @@ const HeaderAccount = ({collectionData}) => {
             </li>
           </ul>
         </div>
+
+        <Link to={`/collection/${collectionData.collectionAddress}/settings`}>Settings</Link>
         {/* <div id="accountButton">
           <svg
             xmlns="http://www.w3.org/2000/svg"

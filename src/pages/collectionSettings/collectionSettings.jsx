@@ -8,7 +8,9 @@ import { ReactComponent as TelegramIcon } from "../../assets/icons/telegram.svg"
 import uploadIcon from "../../assets/images/create_icon_3.png";
 import SettingsImages from "./settingsImages";
 import Socials from "./socials";
-import { useNavigate, useNavigation } from "react-router-dom";
+import { useNavigate, useNavigation, useParams } from "react-router-dom";
+import { getCollectionByAddress } from "../../api/collectionApi";
+import Spinner from "../../components/Spinner";
 
 const selectStyles = {
   control: (styles) => ({
@@ -46,21 +48,20 @@ const selectStyles = {
 };
 
 const CollectionSettings = () => {
-  const [settingsState, setSettingsState] = useState({
-    token: "asd556wdw",
-    url: "0x1234567890",
-    description: "This is a description",
-    category: "Art",
-    linkWebsite: "",
-    linkMedium: "",
-    linkTelegram: "",
-    royaltyAddress: "",
-    rightsDuration: "10 Years",
-    profileImage: "../../assets/images/Element19.png",
-    bannerImage: "../../assets/images/Element19.png",
-  });
+  const { collectionAddress } = useParams();
+  const [isLoadingCollection, setIsLoadingCollection] = useState(true);
+  const [collectionDetails, setCollectionDetails] = useState();
 
-  const navigate = useNavigate();
+  const init = async () => {
+    setIsLoadingCollection(true);
+    const collection = await getCollectionByAddress(collectionAddress);
+    setCollectionDetails(collection.data);
+    setIsLoadingCollection(false);
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
 
   const handleSubmitData = (e) => {
     e.preventDefault();
@@ -71,39 +72,22 @@ const CollectionSettings = () => {
     navigator.clipboard.writeText(value);
   };
 
-  useEffect(() => {
-    console.log(settingsState);
-  }, [settingsState]);
 
-  return (
+  return isLoadingCollection ? (
+    <Spinner />
+  ) : (
     <div id="createCollection">
-      <h2 className="collectionSettingsTitle">Create Collection</h2>
+      <h2 className="collectionSettingsTitle">Collection Settings</h2>
       <div className="collectionUpdateSettings">
         <SettingsImages
-          settingsState={settingsState}
-          setSettingsState={setSettingsState}
+          collectionDetails={collectionDetails}
+          setCollectionDetails={setCollectionDetails}
+          image={collectionDetails.image}
+          banner={collectionDetails.banner}
         />
         <form onSubmit={handleSubmitData} className="collectionSettingsData">
           <div className="settingsGroup">
             <h2>Collection Info</h2>
-            <div className="settingGroup settingsWidthHalf">
-              <label htmlFor="name">Collection Token Name</label>
-              <div className="inputWrapper">
-                <input
-                  type="text"
-                  name="token"
-                  id="token"
-                  placeholder="Collection Token"
-                  value={settingsState.token}
-                  onChange={(e) =>
-                    setSettingsState({
-                      ...settingsState,
-                      token: e.target.value,
-                    })
-                  }
-                />
-              </div>
-            </div>
             <div className="settingGroup settingsWidthFull">
               <label htmlFor="name">Url</label>
               <div className="inputWrapper">
@@ -112,15 +96,15 @@ const CollectionSettings = () => {
                   name="name"
                   id="name"
                   placeholder="Collection url"
-                  value={settingsState.url}
+                  value={collectionDetails.url}
                   onChange={(e) =>
-                    setSettingsState({
-                      ...settingsState,
+                    setCollectionDetails({
+                      ...collectionDetails,
                       url: e.target.value,
                     })
                   }
                 />
-                <Clipboard onClick={() => clipboardCopy(settingsState.url)} />
+                <Clipboard onClick={() => clipboardCopy(collectionDetails.url)} />
               </div>
             </div>
             <div className="settingGroup settingsWidthFull">
@@ -130,10 +114,10 @@ const CollectionSettings = () => {
                   name="description"
                   id="description"
                   placeholder="Item Description"
-                  value={settingsState.description}
+                  value={collectionDetails.description}
                   onChange={(e) =>
-                    setSettingsState({
-                      ...settingsState,
+                    setCollectionDetails({
+                      ...collectionDetails,
                       description: e.target.value,
                     })
                   }
@@ -148,12 +132,12 @@ const CollectionSettings = () => {
                 name="category"
                 id="category"
                 value={{
-                  value: settingsState.category,
-                  label: settingsState.category,
+                  value: collectionDetails.category,
+                  label: collectionDetails.category,
                 }}
                 onChange={(e) =>
-                  setSettingsState({
-                    ...settingsState,
+                  setCollectionDetails({
+                    ...collectionDetails,
                     category: e.value,
                   })
                 }
@@ -171,8 +155,8 @@ const CollectionSettings = () => {
             </div>
           </div>
           <Socials
-            settingsState={settingsState}
-            setSettingsState={setSettingsState}
+            collectionDetails={collectionDetails}
+            setCollectionDetails={setCollectionDetails}
           />
           <div className="settingsSplitGrouping">
             <div className="settingGroup">
@@ -183,10 +167,10 @@ const CollectionSettings = () => {
                   name="royaltyAddress"
                   id="royaltyAddress"
                   placeholder="Royalty Address"
-                  value={settingsState.royaltyAddress}
+                  value={collectionDetails.royaltyAddress}
                   onChange={(e) =>
-                    setSettingsState({
-                      ...settingsState,
+                    setCollectionDetails({
+                      ...collectionDetails,
                       royaltyAddress: e.target.value,
                     })
                   }
@@ -194,31 +178,31 @@ const CollectionSettings = () => {
               </div>
             </div>
             <div className="settingGroup">
-              <label htmlFor="rightsDuration">Rights Duration</label>
+              <label htmlFor="royaltyPercent">Rights Amount</label>
               <Select
                 className="settingsWidthFull"
-                name="rightsDuration"
-                id="rightsDuration"
+                name="royaltyPercent"
+                id="royaltyPercent"
                 value={{
-                  value: settingsState.rightsDuration,
-                  label: settingsState.rightsDuration,
+                  value: collectionDetails.royaltyPercent,
+                  label: collectionDetails.royaltyPercent
                 }}
                 onChange={(e) =>
-                  setSettingsState({
-                    ...settingsState,
-                    rightsDuration: e.value,
+                  setCollectionDetails({
+                    ...collectionDetails,
+                    royaltyPercent: e.value,
                   })
                 }
                 options={[
-                  { value: "10 Years", label: "10 Years" },
-                  { value: "20 Years", label: "20 Years" },
-                  { value: "30 Years", label: "30 Years" },
+                  { value: "10%", label: "10%" },
+                  { value: "20%", label: "20%" },
+                  { value: "30%", label: "30%" },
                 ]}
                 styles={selectStyles}
               />
             </div>
           </div>
-          <button type="submit">Create Collection</button>
+          <button type="submit">Update</button>
         </form>
       </div>
     </div>

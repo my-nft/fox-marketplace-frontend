@@ -2,7 +2,7 @@ import { ReactComponent as WebIcon } from "../../assets/icons/web.svg";
 import { ReactComponent as MediumIcon } from "../../assets/icons/medium.svg";
 import { ReactComponent as TelegramIcon } from "../../assets/icons/telegram.svg";
 
-const Socials = ({ settingsState, setSettingsState }) => {
+const Socials = ({ collectionDetails, setCollectionDetails }) => {
   return (
     <div className="socials settingsGroup">
       <h2>Social Links</h2>
@@ -15,10 +15,10 @@ const Socials = ({ settingsState, setSettingsState }) => {
               name="websiteUrl"
               id="websiteUrl"
               placeholder="Website Url"
-              value={settingsState.linkWebsite}
+              value={collectionDetails.linkWebsite}
               onChange={(e) =>
-                setSettingsState({
-                  ...settingsState,
+                setCollectionDetails({
+                  ...collectionDetails,
                   linkWebsite: e.target.value,
                 })
               }
@@ -35,10 +35,10 @@ const Socials = ({ settingsState, setSettingsState }) => {
               name="mediumUrl"
               id="mediumUrl"
               placeholder="Medium Url"
-              value={settingsState.linkMedium}
+              value={collectionDetails.linkMedium}
               onChange={(e) =>
-                setSettingsState({
-                  ...settingsState,
+                setCollectionDetails({
+                  ...collectionDetails,
                   linkMedium: e.target.value,
                 })
               }
@@ -55,10 +55,10 @@ const Socials = ({ settingsState, setSettingsState }) => {
               name="telegramUrl"
               id="telegramUrl"
               placeholder="Telegram Url"
-              value={settingsState.linkTelegram}
+              value={collectionDetails.linkTelegram}
               onChange={(e) =>
-                setSettingsState({
-                  ...settingsState,
+                setCollectionDetails({
+                  ...collectionDetails,
                   linkTelegram: e.target.value,
                 })
               }
