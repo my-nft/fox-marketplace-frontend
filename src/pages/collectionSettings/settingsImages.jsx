@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import uploadIcon from "../../assets/images/create_icon_3.png";
+import {Buffer} from 'buffer';
 
 const SettingsImages = ({ banner, image, collectionDetails }) => {
 
