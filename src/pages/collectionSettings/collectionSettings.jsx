@@ -70,7 +70,7 @@ const CollectionSettings = () => {
 
   const handleSubmitData = (e) => {
     e.preventDefault();
-
+    setIsLoadingCollection(true);
     dispatch({
       type: UPDATE_COLLECTION,
       payload: {
@@ -98,7 +98,11 @@ const CollectionSettings = () => {
       },
       
       onSuccess: () => {
-        navigate(`/collections/${collectionAddress}`)
+        setIsLoadingCollection(false);
+        navigate(`/collection/${collectionAddress}`)
+      },
+      onError(){
+        setIsLoadingCollection(false);
       }
     })
 

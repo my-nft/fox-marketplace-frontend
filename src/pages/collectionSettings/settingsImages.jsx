@@ -7,22 +7,22 @@ const SettingsImages = ({ banner, image, collectionDetails, setCollectionDetails
   const [imageUrl, setImageUrl] = useState();
   const [bannerUrl, setBannerUrl] = useState();
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    if(image && image.data) {
-      const base64 = Buffer.from(image.data.data).toString('base64')
-      setImageUrl(base64);
-    }
+  //   if(image && image.data) {
+  //     const base64 = Buffer.from(image.data.data).toString('base64')
+  //     setImageUrl(base64);
+  //   }
 
-    console.log(banner);
+  //   console.log(banner);
     
-    if(banner && banner.data) {
-      const base64 = Buffer.from(banner.data.data).toString('base64')
-      setBannerUrl(base64);
-    }
+  //   if(banner && banner.data) {
+  //     const base64 = Buffer.from(banner.data.data).toString('base64')
+  //     setBannerUrl(base64);
+  //   }
     
 
-  }, [image, banner])
+  // }, [image, banner])
 
 
   const handleImageChange = (e, type) => {
@@ -68,7 +68,7 @@ const SettingsImages = ({ banner, image, collectionDetails, setCollectionDetails
             src={
               image
                 ? `data:image/png;base64,${imageUrl}`
-                : uploadIcon
+                : null
             }
             alt="profile"
           />
@@ -91,7 +91,7 @@ const SettingsImages = ({ banner, image, collectionDetails, setCollectionDetails
             src={
               banner
                 ? `data:image/png;base64,${bannerUrl}`
-                : uploadIcon
+                : null
             }
             alt="banner"
           />

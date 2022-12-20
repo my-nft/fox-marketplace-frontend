@@ -82,6 +82,7 @@ function* runLoadCollection(action) {
     yield put(setCollectionIsLoading(true));
     let response = yield call(api.getCollectionByAddress, collectionAddress);
     yield delay(1000);
+   
     yield put(setCollectionDetails(response.data));
     yield put(setCollectionIsLoading(false));
     action.onSuccess();
@@ -108,7 +109,7 @@ function* updateCollectionInformation(action) {
     });
 
     yield delay(1000);
-    yield put(setCollectionDetails(response.data));
+    toast.success("Collection updated successfully");
     action.onSuccess();
 
 
@@ -116,6 +117,7 @@ function* updateCollectionInformation(action) {
   catch(error){
     console.log(error);
     toast.error("An unexpected error occurred.");
+    action.onError()
   }
  
 }

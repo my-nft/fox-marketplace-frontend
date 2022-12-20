@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
-
+import {Buffer} from 'buffer';
 
 const HeaderAccount = ({collectionData}) => {
 
@@ -10,16 +10,26 @@ const HeaderAccount = ({collectionData}) => {
     window.location.href = `${blocExplorerUri}${collectionData.collectionAddress}`
   }
 
+  
+
   return (
     <section id="headerAccount" className="container-fluid">
       <div className="row p-4" id="infoProfile">
         <img
-          src="./assets/images/account/img_account_default.jpg"
+          src={
+            collectionData.image
+              ? collectionData.image
+              : null
+          }
           id="iconProfile"
           alt=""
         />
         <img
-          src={collectionData.imageBanner}
+          src={
+            collectionData.banner
+              ? collectionData.banner
+              : null
+          }
           id="bannerProfile"
           alt="profile banner"
         />
@@ -55,7 +65,7 @@ const HeaderAccount = ({collectionData}) => {
             </li>
             <li>
               <span>Creator fee</span>
-              <p>{collectionData.creatorEarnings}%</p>
+              <p>{collectionData.royaltyPercent}</p>
             </li>
             <li>
               <span>Chain</span>
