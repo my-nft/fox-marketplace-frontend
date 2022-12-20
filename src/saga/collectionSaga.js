@@ -30,6 +30,7 @@ import {
   LOAD_ACCOUNT_NFTS,
   LOAD_ACCOUNT_COLLECTIONS,
   LOAD_COLLECTION,
+  UPDATE_COLLECTION,
 } from "./actions";
 
 function* importCollection(action) {
@@ -90,6 +91,33 @@ function* runLoadCollection(action) {
   } finally {
     yield put(setCollectionIsLoading(false));
   }
+}
+
+
+function* updateCollectionInformation(action) {
+  
+  try{
+    const { collectionAddress,   image, banner, data } = action.payload;
+
+    console.log(action.payload)
+
+    let response = yield call(api.updateCollection, collectionAddress, {
+      image,
+      banner,
+      collection: data,
+    });
+
+    yield delay(1000);
+    yield put(setCollectionDetails(response.data));
+    action.onSuccess();
+
+
+  }
+  catch(error){
+    console.log(error);
+    toast.error("An unexpected error occurred.");
+  }
+ 
 }
 
 
@@ -196,6 +224,10 @@ function* loadAccountCollectionsSaga() {
   yield takeLatest(LOAD_ACCOUNT_COLLECTIONS, loadAccountCollections);
 }
 
+function* updateCollectionInformationSaga() {
+  yield takeLatest(UPDATE_COLLECTION, updateCollectionInformation);
+}
+
 function* loadMarketPlaceAll() {
   yield takeLatest(LOAD_MARKET_PLACE, runLoadMarketPlaceAll);
 }
@@ -210,6 +242,7 @@ export {
   loadSearcheableCollectionSaga,
   loadAccountNtsSaga,
   loadAccountCollectionsSaga,
+  updateCollectionInformationSaga,
   loadMarketPlaceAll,
   importCollectionSaga,
   loadCollection

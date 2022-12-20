@@ -8,6 +8,7 @@ import {
   loadMarketPlaceAll,
   loadPopularCollectionSaga,
   loadSearcheableCollectionSaga,
+  updateCollectionInformationSaga,
 } from "./collectionSaga";
 import { loadListedNfts } from "./nftSaga";
 import { loadUser } from "./userSaga";
@@ -30,6 +31,7 @@ function* watchAll() {
     loadMarketPlaceAll(),
     importCollectionSaga(),
     loadCollection(),
+    updateCollectionInformationSaga(),
     refund(),
     claimNFTSaga(),
     claimTokenSaga()

@@ -2,14 +2,10 @@ import { useEffect, useState } from "react";
 import uploadIcon from "../../assets/images/create_icon_3.png";
 import {Buffer} from 'buffer';
 
-const SettingsImages = ({ banner, image, collectionDetails }) => {
+const SettingsImages = ({ banner, image, collectionDetails, setCollectionDetails }) => {
 
   const [imageUrl, setImageUrl] = useState();
   const [bannerUrl, setBannerUrl] = useState();
-
-  const handleImageChange = (e, type) => {
-
-  }
 
   useEffect(() => {
 
@@ -26,30 +22,42 @@ const SettingsImages = ({ banner, image, collectionDetails }) => {
     }
     
 
-  }, [])
+  }, [image, banner])
 
-  /*
+
   const handleImageChange = (e, type) => {
     if (e.target.files && e.target.files[0]) {
-      let reader = new FileReader();
 
-      reader.onload = (e) => {
+      //convert image to arrayBuffer
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const arrayBuffer = Buffer.from(reader.result)
+        console.log(arrayBuffer)
+        const fileObj = {
+          contentType: e.target.files[0].type,
+          data: {
+            data: arrayBuffer,
+            type: "Buffer"
+          }
+        }
+
         if (type === "profile") {
           setCollectionDetails({
             ...collectionDetails,
-            profileImage: e.target.result,
+            image: fileObj,
           });
         } else {
           setCollectionDetails({
             ...collectionDetails,
-            bannerImage: e.target.result,
+            banner: fileObj,
           });
         }
-      };
-      reader.readAsDataURL(e.target.files[0]);
+      }
+      reader.readAsArrayBuffer(e.target.files[0]);
+
     }
   };
-  */
+
 
   return (
     <form className="collectionSettingsImages">
