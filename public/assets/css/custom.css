@@ -3361,6 +3361,27 @@ input:read-only {
   border: 1px solid #f58103;
 }
 
+.settingsIcon{
+  padding: 12px;
+  border-radius: 10px;
+  background: #15191d;
+  cursor: pointer;
+  height: max-content;
+  transition: 300ms ease-in-out;
+}
+.settingsIcon svg{
+  margin-right: 0 !important;
+}
+
+.settingsIcon svg path{
+  fill: #faffff;
+}
+
+.settingsIcon:hover{
+  background: #f58103;
+}
+
+
 img{
 
   font-size: 0;
