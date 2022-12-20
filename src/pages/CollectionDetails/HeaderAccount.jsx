@@ -1,8 +1,23 @@
 import { Link, useNavigate } from "react-router-dom";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 import {Buffer} from 'buffer';
+import { useEffect, useState } from "react";
 
 const HeaderAccount = ({collectionData}) => {
+
+  const [image, setImage] = useState();
+  const [banner, setBanner] = useState();
+
+  useEffect(() => {
+
+    if(collectionData && collectionData.banner && collectionData.banner.data) {
+      setBanner(Buffer.from(collectionData.banner.data.data).toString("base64"));
+    }
+
+    if(collectionData && collectionData.image && collectionData.image.data) {
+      setImage(Buffer.from(collectionData.image.data.data).toString("base64"))
+    }
+  }, [])
 
   const blocExplorerUri = process.env.REACT_APP_BLOCEXPLORER;
 
@@ -16,20 +31,12 @@ const HeaderAccount = ({collectionData}) => {
     <section id="headerAccount" className="container-fluid">
       <div className="row p-4" id="infoProfile">
         <img
-          src={
-            collectionData.image
-              ? collectionData.image
-              : null
-          }
+          src={image ? `data:image/png;base64,${image}` : null}
           id="iconProfile"
           alt=""
         />
         <img
-          src={
-            collectionData.banner
-              ? collectionData.banner
-              : null
-          }
+          src={banner ? `data:image/png;base64,${banner}` : null}
           id="bannerProfile"
           alt="profile banner"
         />
