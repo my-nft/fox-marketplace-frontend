@@ -3,6 +3,8 @@ import { optimizeWalletAddress } from "../../utils/walletUtils";
 import {Buffer} from 'buffer';
 import { useEffect, useState } from "react";
 
+import { ReactComponent as SettingsIcon } from '../../assets/icons/settings.svg'
+
 const HeaderAccount = ({collectionData}) => {
 
   const [image, setImage] = useState();
@@ -107,7 +109,9 @@ const HeaderAccount = ({collectionData}) => {
           </ul>
         </div>
 
-        <Link to={`/collection/${collectionData.collectionAddress}/settings`}>Settings</Link>
+        <Link to={`/collection/${collectionData.collectionAddress}/settings`} className='settingsIcon' >
+          <SettingsIcon />
+        </Link>
         {/* <div id="accountButton">
           <svg
             xmlns="http://www.w3.org/2000/svg"
