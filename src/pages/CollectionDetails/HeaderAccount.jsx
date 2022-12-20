@@ -1,8 +1,25 @@
 import { Link, useNavigate } from "react-router-dom";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
+import {Buffer} from 'buffer';
+import { useEffect, useState } from "react";
 
+import { ReactComponent as SettingsIcon } from '../../assets/icons/settings.svg'
 
 const HeaderAccount = ({collectionData}) => {
+
+  const [image, setImage] = useState();
+  const [banner, setBanner] = useState();
+
+  useEffect(() => {
+
+    if(collectionData && collectionData.banner && collectionData.banner.data) {
+      setBanner(Buffer.from(collectionData.banner.data.data).toString("base64"));
+    }
+
+    if(collectionData && collectionData.image && collectionData.image.data) {
+      setImage(Buffer.from(collectionData.image.data.data).toString("base64"))
+    }
+  }, [])
 
   const blocExplorerUri = process.env.REACT_APP_BLOCEXPLORER;
 
@@ -10,16 +27,18 @@ const HeaderAccount = ({collectionData}) => {
     window.location.href = `${blocExplorerUri}${collectionData.collectionAddress}`
   }
 
+  
+
   return (
     <section id="headerAccount" className="container-fluid">
       <div className="row p-4" id="infoProfile">
         <img
-          src="./assets/images/account/img_account_default.jpg"
+          src={image ? `data:image/png;base64,${image}` : null}
           id="iconProfile"
           alt=""
         />
         <img
-          src={collectionData.imageBanner}
+          src={banner ? `data:image/png;base64,${banner}` : null}
           id="bannerProfile"
           alt="profile banner"
         />
@@ -55,7 +74,7 @@ const HeaderAccount = ({collectionData}) => {
             </li>
             <li>
               <span>Creator fee</span>
-              <p>{collectionData.creatorEarnings}%</p>
+              <p>{collectionData.royaltyPercent}</p>
             </li>
             <li>
               <span>Chain</span>
@@ -90,7 +109,9 @@ const HeaderAccount = ({collectionData}) => {
           </ul>
         </div>
 
-        <Link to={`/collection/${collectionData.collectionAddress}/settings`}>Settings</Link>
+        <Link to={`/collection/${collectionData.collectionAddress}/settings`} className='settingsIcon' >
+          <SettingsIcon />
+        </Link>
         {/* <div id="accountButton">
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -1,5 +1,6 @@
 import apiUrl from "../config/api";
 import methods from "../config/axiosConfig";
+import { Buffer } from "buffer";
 
 const collectionEndpoint = apiUrl + "collections/";
 
@@ -16,9 +17,29 @@ export function getCollectionsCall(body) {
 }
 
 export function getCollectionNftsCall(collectionAddress, body) {
+
   return methods.get(collectionEndpoint + collectionAddress + `/nfts`, {
     params: body,
   });
+}
+
+export function updateCollection(collectionAddress, body) {
+  console.log("COLLECTION ADDRESS", collectionAddress);
+  console.log("BODY", body);
+  let formData = new FormData();
+  formData.append("image", body.image);
+  formData.append("banner", body.banner)
+  formData.append("collection", JSON.stringify(body.collection))
+
+  return methods.put(collectionEndpoint + collectionAddress, formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        "Access-Control-Allow-Origin": "*"
+      }
+    }
+  
+  );
 }
 
 

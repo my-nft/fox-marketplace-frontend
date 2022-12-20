@@ -11,6 +11,8 @@ import Socials from "./socials";
 import { useNavigate, useNavigation, useParams } from "react-router-dom";
 import { getCollectionByAddress } from "../../api/collectionApi";
 import Spinner from "../../components/Spinner";
+import { useDispatch } from 'react-redux';
+import { UPDATE_COLLECTION } from "../../saga/actions";
 
 const selectStyles = {
   control: (styles) => ({
@@ -51,6 +53,11 @@ const CollectionSettings = () => {
   const { collectionAddress } = useParams();
   const [isLoadingCollection, setIsLoadingCollection] = useState(true);
   const [collectionDetails, setCollectionDetails] = useState();
+  const [imageState, setImageState] = useState();
+
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
 
   const init = async () => {
     setIsLoadingCollection(true);
@@ -65,12 +72,51 @@ const CollectionSettings = () => {
 
   const handleSubmitData = (e) => {
     e.preventDefault();
+    setIsLoadingCollection(true);
+    dispatch({
+      type: UPDATE_COLLECTION,
+      payload: {
+        collectionAddress,
+        image: collectionDetails.image,
+        banner: collectionDetails.banner,
+        data: {
+          category: collectionDetails.category,
+          collectionAddress: collectionDetails.collectionAddress,
+          createdAt: collectionDetails.createdAt,
+          description: collectionDetails.description,
+          importProcessing: false,
+          linkMedium: collectionDetails.linkMedium,
+          linkTelegram: collectionDetails.linkTelegram,
+          linkWebsite: collectionDetails.linkWebsite,
+          modificationDate: new Date().toISOString(),
+          name: collectionDetails.name,
+          ownerAddress: collectionDetails.ownerAddress,
+          royaltyAddress: collectionDetails.royaltyAddress,
+          royaltyPercent: collectionDetails.royaltyPercent,
+          symbol: collectionDetails.symbol,
+          tags: collectionDetails.tags,
+          totalSupply: collectionDetails.totalSupply,
+        }
+      },
+      
+      onSuccess: () => {
+        setIsLoadingCollection(false);
+        navigate(`/collection/${collectionAddress}`)
+      },
+      onError(){
+        setIsLoadingCollection(false);
+      }
+    })
+
+
+
     // navigate("/")
   };
 
   const clipboardCopy = (value) => {
     navigator.clipboard.writeText(value);
   };
+  console.log(collectionDetails)
 
 
   return isLoadingCollection ? (

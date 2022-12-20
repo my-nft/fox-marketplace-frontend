@@ -26,6 +26,8 @@ const CollectionDetails = () => {
     numberElements: 20,
   });
 
+  console.log(collectionDetails)
+
   const [filters, setFilters] = useState({
     searchPrompt: "",
     buyNow: false,
@@ -56,6 +58,7 @@ const CollectionDetails = () => {
   const initLoadCollection = async () => {
     setIsLoadingCollection(true);
     const collection = await getCollectionByAddress(collectionAddress);
+    console.log(collection.data)
     setCollectionDetails(collection.data);
     setIsLoadingCollection(false);
   };
@@ -69,6 +72,7 @@ const CollectionDetails = () => {
         numberElements: 20,
       }
     );
+   
     setNfts(nftsElements.data);
     setIsLoadingNfts(false);
   };

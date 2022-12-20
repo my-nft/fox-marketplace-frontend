@@ -2,54 +2,63 @@ import { useEffect, useState } from "react";
 import uploadIcon from "../../assets/images/create_icon_3.png";
 import {Buffer} from 'buffer';
 
-const SettingsImages = ({ banner, image, collectionDetails }) => {
+const SettingsImages = ({ banner, image, collectionDetails, setCollectionDetails }) => {
 
   const [imageUrl, setImageUrl] = useState();
   const [bannerUrl, setBannerUrl] = useState();
 
-  const handleImageChange = (e, type) => {
-
-  }
-
   useEffect(() => {
 
-    if(image && image.data) {
-      const base64 = Buffer.from(image.data.data).toString('base64')
-      setImageUrl(base64);
+    if(image){
+      if(image.data) {
+        const base64 = Buffer.from(image.data.data).toString('base64')
+        setImageUrl(`data:image/png;base64,${base64}`);
+      }
+      else if(image.type){
+        let url = URL.createObjectURL(image);
+        console.log(url)
+        setImageUrl(url);
+      }
+      else if(typeof image === "string"){
+        setImageUrl(image);
+      }
     }
 
-    console.log(banner);
-    
-    if(banner && banner.data) {
-      const base64 = Buffer.from(banner.data.data).toString('base64')
-      setBannerUrl(base64);
+    if(banner){
+      if(banner.data) {
+        const base64 = Buffer.from(banner.data.data).toString('base64')
+        setBannerUrl(`data:image/png;base64,${base64}`);
+      }
+      else if(banner.type){
+        let url = URL.createObjectURL(banner);
+        setBannerUrl(url);
+      }
+      else if(typeof banner === "string"){
+        setBannerUrl(banner);
+      }
     }
-    
 
-  }, [])
+  }, [image, banner])
 
-  /*
+
   const handleImageChange = (e, type) => {
     if (e.target.files && e.target.files[0]) {
-      let reader = new FileReader();
 
-      reader.onload = (e) => {
-        if (type === "profile") {
-          setCollectionDetails({
-            ...collectionDetails,
-            profileImage: e.target.result,
-          });
-        } else {
-          setCollectionDetails({
-            ...collectionDetails,
-            bannerImage: e.target.result,
-          });
-        }
-      };
-      reader.readAsDataURL(e.target.files[0]);
+      if(type === "profile") {
+        setCollectionDetails({
+          ...collectionDetails,
+          image: e.target.files[0],
+        })
+      }
+      else{
+        setCollectionDetails({
+          ...collectionDetails,
+          banner: e.target.files[0],
+        })
+      }
     }
   };
-  */
+
 
   return (
     <form className="collectionSettingsImages">
@@ -59,8 +68,8 @@ const SettingsImages = ({ banner, image, collectionDetails }) => {
           <img
             src={
               image
-                ? `data:image/png;base64,${imageUrl}`
-                : uploadIcon
+                ? imageUrl
+                : null
             }
             alt="profile"
           />
@@ -82,8 +91,8 @@ const SettingsImages = ({ banner, image, collectionDetails }) => {
           <img
             src={
               banner
-                ? `data:image/png;base64,${bannerUrl}`
-                : uploadIcon
+                ? bannerUrl
+                : null
             }
             alt="banner"
           />

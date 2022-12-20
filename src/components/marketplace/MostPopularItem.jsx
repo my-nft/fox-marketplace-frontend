@@ -70,8 +70,6 @@ const MostPopularItem = ({ viewType, item }) => {
     navigate(`/collection/${item.collectionAddress}/${item.tokenID}`);
   };
 
-  console.log(itemInfos?.endAuction);
-
   const calculateTimeLeftBeforeExpiration = (expirationDate, dateNow) => {
     const futurDate = new Date(Number(expirationDate * 1000));
 
