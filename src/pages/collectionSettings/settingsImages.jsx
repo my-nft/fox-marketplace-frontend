@@ -7,54 +7,55 @@ const SettingsImages = ({ banner, image, collectionDetails, setCollectionDetails
   const [imageUrl, setImageUrl] = useState();
   const [bannerUrl, setBannerUrl] = useState();
 
-  // useEffect(() => {
+  useEffect(() => {
 
-  //   if(image && image.data) {
-  //     const base64 = Buffer.from(image.data.data).toString('base64')
-  //     setImageUrl(base64);
-  //   }
+    if(image){
+      if(image.data) {
+        const base64 = Buffer.from(image.data.data).toString('base64')
+        setImageUrl(`data:image/png;base64,${base64}`);
+      }
+      else if(image.type){
+        let url = URL.createObjectURL(image);
+        console.log(url)
+        setImageUrl(url);
+      }
+      else if(typeof image === "string"){
+        setImageUrl(image);
+      }
+    }
 
-  //   console.log(banner);
-    
-  //   if(banner && banner.data) {
-  //     const base64 = Buffer.from(banner.data.data).toString('base64')
-  //     setBannerUrl(base64);
-  //   }
-    
+    if(banner){
+      if(banner.data) {
+        const base64 = Buffer.from(banner.data.data).toString('base64')
+        setBannerUrl(`data:image/png;base64,${base64}`);
+      }
+      else if(banner.type){
+        let url = URL.createObjectURL(banner);
+        setBannerUrl(url);
+      }
+      else if(typeof banner === "string"){
+        setBannerUrl(banner);
+      }
+    }
 
-  // }, [image, banner])
+  }, [image, banner])
 
 
   const handleImageChange = (e, type) => {
     if (e.target.files && e.target.files[0]) {
 
-      //convert image to arrayBuffer
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const arrayBuffer = Buffer.from(reader.result)
-        console.log(arrayBuffer)
-        const fileObj = {
-          contentType: e.target.files[0].type,
-          data: {
-            data: arrayBuffer,
-            type: "Buffer"
-          }
-        }
-
-        if (type === "profile") {
-          setCollectionDetails({
-            ...collectionDetails,
-            image: fileObj,
-          });
-        } else {
-          setCollectionDetails({
-            ...collectionDetails,
-            banner: fileObj,
-          });
-        }
+      if(type === "profile") {
+        setCollectionDetails({
+          ...collectionDetails,
+          image: e.target.files[0],
+        })
       }
-      reader.readAsArrayBuffer(e.target.files[0]);
-
+      else{
+        setCollectionDetails({
+          ...collectionDetails,
+          banner: e.target.files[0],
+        })
+      }
     }
   };
 
@@ -67,7 +68,7 @@ const SettingsImages = ({ banner, image, collectionDetails, setCollectionDetails
           <img
             src={
               image
-                ? `data:image/png;base64,${imageUrl}`
+                ? imageUrl
                 : null
             }
             alt="profile"
@@ -90,7 +91,7 @@ const SettingsImages = ({ banner, image, collectionDetails, setCollectionDetails
           <img
             src={
               banner
-                ? `data:image/png;base64,${bannerUrl}`
+                ? bannerUrl
                 : null
             }
             alt="banner"

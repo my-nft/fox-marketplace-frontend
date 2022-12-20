@@ -99,9 +99,7 @@ function* updateCollectionInformation(action) {
   
   try{
     const { collectionAddress,   image, banner, data } = action.payload;
-
-    console.log(action.payload)
-
+    
     let response = yield call(api.updateCollection, collectionAddress, {
       image,
       banner,
