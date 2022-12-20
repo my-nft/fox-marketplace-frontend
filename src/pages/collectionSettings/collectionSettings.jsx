@@ -53,6 +53,8 @@ const CollectionSettings = () => {
   const { collectionAddress } = useParams();
   const [isLoadingCollection, setIsLoadingCollection] = useState(true);
   const [collectionDetails, setCollectionDetails] = useState();
+  const [imageState, setImageState] = useState();
+
 
   const dispatch = useDispatch()
   const navigate = useNavigate();

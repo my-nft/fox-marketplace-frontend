@@ -3,7 +3,7 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 const INITIAL_STATE = {
   // general loading
   nftDetails: undefined,
-  listedNfts : [],
+  listedNfts : {},
   isLoading: false,
 };
 
