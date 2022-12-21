@@ -4,6 +4,7 @@ import AccordingCollection from "../Explorer/AccordingCollection";
 import AccordionCategory from "./AccordionCategory";
 import MostPopularItem from "../../components/marketplace/MostPopularItem";
 import ListActivities from "./ListActivities";
+import AccordionPropertiesFilter from "../Explorer/PropertiesFilter";
 
 const ListNfts = ({ nfts, isVisible , viewType, handleSelectNfts, filters, changeFilterValue}) => {
   
@@ -20,6 +21,17 @@ const ListNfts = ({ nfts, isVisible , viewType, handleSelectNfts, filters, chang
             <AccordionPrice filters={filters} changeFilterValue={changeFilterValue} />
             <AccordingCollection filters={filters} changeFilterValue={changeFilterValue} />
             <AccordionCategory filters={filters} changeFilterValue={changeFilterValue} />
+            <AccordionPropertiesFilter 
+                filters={filters}
+                changeFilterValue={changeFilterValue}
+                propertiesFilter={filters.properties}
+                availableProperties={[
+                  "Image",
+                  "Music",
+                  "Art"
+                ]}
+
+            />
           </div>
         </div>
 

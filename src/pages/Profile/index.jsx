@@ -1,8 +1,65 @@
 import { useSelector } from "react-redux";
 import { selectConnectedUser } from "../../redux/userReducer";
+import { getCurrentWalletConnected } from './../../utils/blockchainInteractor';
 
-const Profile = ({ values }) => {
-  console.log(values);
+import uploadIcon from "../../assets/images/create_icon_3.png";
+import { useEffect, useState } from "react";
+
+const Profile = ({ values, handleChange }) => {
+  const [imageUrl, setImageUrl] = useState(null);
+  const [bannerUrl, setBannerUrl] = useState(null);
+
+  useEffect(() => {
+    console.log(values);
+  }, [values])
+
+  const walletAddress = getCurrentWalletConnected()
+
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+
+    handleChange({ target: { name: e.target.name, value: file } });
+    
+  }
+
+  useEffect(() => {
+
+    const {banner, image} = values;
+
+  
+    if(image){
+      if(image.data) {
+        const base64 = Buffer.from(image.data.data).toString('base64')
+        setImageUrl(`data:image/png;base64,${base64}`);
+      }
+      else if(image.type){
+        let url = URL.createObjectURL(image);
+        console.log(url)
+        setImageUrl(url);
+      }
+      else if(typeof image === "string"){
+        setImageUrl(image);
+      }
+    }
+
+    if(banner){
+      if(banner.data) {
+        const base64 = Buffer.from(banner.data.data).toString('base64')
+        setBannerUrl(`data:image/png;base64,${base64}`);
+      }
+      else if(banner.type){
+        let url = URL.createObjectURL(banner);
+        setBannerUrl(url);
+      }
+      else if(typeof banner === "string"){
+        setBannerUrl(banner);
+      }
+    }
+
+
+  }, [values.image, values.banner])
+
 
   return (
     <div className="container-fluid" id="profile">
@@ -32,43 +89,50 @@ const Profile = ({ values }) => {
               <form>
                 <div className="form-row">
                   <div className="form-group col-md-12">
-                    <label htmlFor="inputArtName">Username</label>
+                    <label htmlFor="username">Username</label>
                     <input
                       type="text"
                       className="form-control"
-                      id="inputUserName"
+                      id="username"
+                      name="username"
                       placeholder="Enter user name"
+                      onChange={handleChange}
                       value={values.username}
                     />
                   </div>
                   <div className="form-group col-md-12">
-                    <label htmlFor="ItemDescription">Bio</label>
+                    <label htmlFor="bio">Bio</label>
                     <textarea
                       maxLength="140"
                       placeholder="Tell the world your story!"
                       id="bio"
                       name="bio"
+                      onChange={handleChange}
                       className="form-control"
                       value={values.bio}
                     ></textarea>
                   </div>
                   <div className="form-group col-md-12">
-                    <label htmlFor="inputArtName">Email Address</label>
+                    <label htmlFor="emailAddress">Email Address</label>
                     <input
                       type="email"
                       className="form-control"
-                      id="inputEmail"
+                      id="emailAddress"
+                      name='email'
                       placeholder="Enter email"
+                      onChange={handleChange}
                       value={values.email}
                     />
                   </div>
                   <div className="form-group col-md-12">
-                    <label htmlFor="inputArtName">Confirm Email Address</label>
+                    <label htmlFor="inputConfirmEmail">Confirm Email Address</label>
                     <input
                       type="email"
                       className="form-control"
                       id="inputConfirmEmail"
+                      name="emailConfirm"
                       placeholder="Confirm email"
+                      // onChange={handleChange}
                     />
                   </div>
                   <div id="socialConnection">
@@ -114,12 +178,14 @@ const Profile = ({ values }) => {
                     </ul> */}
                   </div>
                   <div className="form-group col-md-12">
-                    <label htmlFor="inputArtName">Links</label>
+                    <label htmlFor="linkWeb">Links</label>
                     <input
                       type="text"
                       className="form-control"
-                      id="inputSiteweb"
+                      name="linkWeb"
+                      id="linkWeb"
                       placeholder="yoursite.io"
+                      onChange={handleChange}
                     />
                   </div>
                   <div className="form-group col-md-12">
@@ -130,34 +196,57 @@ const Profile = ({ values }) => {
                       id="inputSiteweb"
                       placeholder="yoursite.io"
                       readOnly
-                      value={values.walletAddress}
+                      value={walletAddress}
                     />
                   </div>
-                  <button>Save</button>
+                  <button type='submit' className="confirmButton">Save</button>
                 </div>
               </form>
             </div>
-            <div className="col-md-6 col-sm-12 text-center" id="profileImg">
-              <div>
+            <div className="col-md-6 col-sm-12 text-center imageChange" id="profileImg">
+              <div className="imageUpload">
                 <h4>Profile Image</h4>
-                <img
-                  src="./assets/images/account/img_account_default.jpg"
-                  id="iconDetails"
-                  alt=""
-                />
+                <label htmlFor="image" className="profileImageUpload">
+                  <img
+                    src={imageUrl}
+                
+                    alt=""
+                  />
+                  <div className="changeOverlay">
+                    <img src={uploadIcon} />
+                    <p>Change image</p>
+                  </div>
+                  <input
+                    type="file"
+                    name="image"
+                    id="image"
+                    onChange={handleImageUpload}
+                  />
+                </label>
               </div>
 
-              <button id="uploadImage">Upload</button>
 
-              <div>
+              <div className="imageUpload">
                 <h4 className="mt-5">Profile Banner</h4>
-                <img
-                  src="./assets/images/account/profile_img_banner.jpg"
-                  id="iconBanner"
-                  alt=""
-                />
+                <label htmlFor="banner" className="bannerImageUpload">
+                  <img
+                    src={bannerUrl}
+                    alt=""
+                  />
+                  <div className="changeOverlay">
+                    <img src={uploadIcon} />
+                    <p>Change image</p>
+                  </div>
+                  <input
+                    type="file"
+                    name="banner"
+                    id="banner"
+                    onChange={handleImageUpload}
+             
+                  />
+
+                </label>
               </div>
-              <button id="uploadBanner">Upload</button>
             </div>
           </div>
         </div>
