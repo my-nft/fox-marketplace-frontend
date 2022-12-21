@@ -40,6 +40,7 @@ const CollectionDetails = () => {
     buyToken: "ETH",
     sortBy: "RECENTLY_LISTED",
     categories: [],
+    properties: []
   });
 
   const dispatch = useDispatch();

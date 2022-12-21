@@ -1,8 +1,11 @@
 import { withFormik } from "formik";
 import * as Yup from "yup";
+import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import Profile from './index';
 
 const EMAIL_REGEX = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}$";
+
+const walletAddress = getCurrentWalletConnected()
 
 const formikEnhancer = withFormik({
   validationSchema: Yup.object().shape({
@@ -14,7 +17,14 @@ const formikEnhancer = withFormik({
   mapPropsToValues: (props) => {
 
     return {
-      ...props?.connectedUser,
+      // ...props?.connectedUser,
+      username: "",
+      bio: "",
+      email: "",
+      linkWebsite: "",
+      address: walletAddress,
+      image: false,
+      banner: false
     };
   },
 

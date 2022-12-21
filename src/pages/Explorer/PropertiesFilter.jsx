@@ -42,7 +42,7 @@ const AccordionPropertiesFilter = ({ availableProperties, propertiesFilter, filt
                         <button
                         className="btn btn-link"
                         data-toggle="collapse"
-                        data-target="#collapseFour"
+                        data-target="#collapseFive"
                         aria-expanded="true"
                         aria-controls="collapseOne"
                         >
@@ -61,7 +61,7 @@ const AccordionPropertiesFilter = ({ availableProperties, propertiesFilter, filt
                     </h5>
                 </div>
                 <div
-                    id="collapseFour"
+                    id="collapseFive"
                     className="collapse show"
                     aria-labelledby="headingOne"
                     data-parent="#accordionProperties"

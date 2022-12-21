@@ -3113,7 +3113,7 @@ input[type="number"]:focus-within {
 }
 
 .changeOverlay img {
-  height: 144px;
+  height: 128px;
   object-fit: contain;
 }
 
@@ -3348,6 +3348,19 @@ input:read-only {
   border-radius: 8px;
 }
 
+.confirmButton{
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+  padding: 12px 48px !important;
+  border-radius: 12px;
+  background: #f58103;
+  display:block;
+  outline : none;
+  border: none;
+  font-weight: 600 !important;
+}
+
 .socialLink .settingGroup {
   width: 100%;
 }
@@ -3385,4 +3398,49 @@ input:read-only {
 img{
 
   font-size: 0;
+}
+
+.imageUpload h4{
+  font-size: 16px;
+  font-weight: 600;
+  color: #fefefe;
+  margin-bottom: 16px;
+}
+
+.profileImageUpload{
+  width: 172px !important;
+  height: 172px !important;
+  object-fit: cover;
+  border-radius: 50% !important;
+  object-position: center;
+  overflow: hidden;
+  border: 1px solid #f58103;
+  position: relative;
+}
+
+
+
+.profileImageUpload>img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  overflow: hidden;
+  max-width: unset !important;
+}
+
+
+.profileImageUpload input, .bannerImageUpload input{
+  display: none;
+}
+
+.bannerImageUpload{
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  object-position: center;
+  overflow: hidden;
+  border: 1px solid #f58103;
+  border-radius: 16px;
+  position: relative;
 }
