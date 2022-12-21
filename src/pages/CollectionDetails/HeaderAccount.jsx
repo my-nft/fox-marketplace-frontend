@@ -1,35 +1,67 @@
-const HeaderAccount = ({collectionData}) => {
+import { Link, useNavigate } from "react-router-dom";
+import { optimizeWalletAddress, sameAddress } from "../../utils/walletUtils";
+import { Buffer } from "buffer";
+import { useEffect, useState } from "react";
 
+import { ReactComponent as SettingsIcon } from "../../assets/icons/settings.svg";
+import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
+
+const HeaderAccount = ({ collectionData }) => {
+  const [image, setImage] = useState();
+  const [banner, setBanner] = useState();
+
+  useEffect(() => {
+    if (collectionData && collectionData.banner && collectionData.banner.data) {
+      setBanner(
+        Buffer.from(collectionData.banner.data.data).toString("base64")
+      );
+    }
+
+    if (collectionData && collectionData.image && collectionData.image.data) {
+      setImage(Buffer.from(collectionData.image.data.data).toString("base64"));
+    }
+  }, []);
+
+  const blocExplorerUri = process.env.REACT_APP_BLOCEXPLORER;
+
+  const onClickExternal = () => {
+    window.location.href = `${blocExplorerUri}${collectionData.collectionAddress}`;
+  };
 
   return (
     <section id="headerAccount" className="container-fluid">
       <div className="row p-4" id="infoProfile">
         <img
-          src="./assets/images/account/img_account_default.jpg"
+          src={image ? `data:image/png;base64,${image}` : null}
           id="iconProfile"
           alt=""
         />
         <img
-          src={collectionData.imageBanner}
+          src={banner ? `data:image/png;base64,${banner}` : null}
           id="bannerProfile"
-          alt=""
+          alt="profile banner"
         />
       </div>
       <div className="row p-4 mt-5" id="infoHeader">
-        <div id="accountName">
+        <div
+          id="accountName"
+          onClick={() => {
+            onClickExternal();
+          }}
+        >
           <p>{collectionData.name}</p>
-          <span id="accountWallet">Wallet Address </span> -{collectionData.address}
-          <span className="dataLastVisit">Joined {
-            new Date(collectionData.creationDate).toLocaleDateString("en-US", {
+          <span id="accountWallet">
+            {optimizeWalletAddress(collectionData.collectionAddress)}
+          </span>
+          <span className="dataLastVisit">
+            {" "}
+            - Created at{" "}
+            {new Date(collectionData.createdAt).toLocaleDateString("en-US", {
               year: "numeric",
               month: "short",
-            })
-          }</span>
-          <p className="description">
-            {
-              collectionData.description
-            }
-          </p>
+            })}
+          </span>
+          <p className="description">{collectionData.description}</p>
           <ul id="totalItemsInfo">
             <li>
               <span>Items</span>
@@ -37,14 +69,19 @@ const HeaderAccount = ({collectionData}) => {
             </li>
             <li>
               <span>Created</span>
-              <p>{new Date(collectionData.creationDate).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "short",
-              })}</p>
+              <p>
+                {new Date(collectionData.createdAt).toLocaleDateString(
+                  "en-US",
+                  {
+                    year: "numeric",
+                    month: "short",
+                  }
+                )}
+              </p>
             </li>
             <li>
               <span>Creator fee</span>
-              <p>{collectionData.creatorEarnings}%</p>
+              <p>{collectionData.royaltyPercent}</p>
             </li>
             <li>
               <span>Chain</span>
@@ -53,15 +90,21 @@ const HeaderAccount = ({collectionData}) => {
           </ul>
           <ul id="totalItemsPrice">
             <li>
-              <p>{collectionData.totalVolume} {collectionData.chain}</p>
+              <p>
+                {collectionData.totalVolume} {collectionData.chain}
+              </p>
               <span>total Volume</span>
             </li>
             <li>
-              <p>{collectionData.floorPrice} {collectionData.chain}</p>
+              <p>
+                {collectionData.floorPrice} {collectionData.chain}
+              </p>
               <span>floor price</span>
             </li>
             <li>
-              <p>{collectionData.bestOffer} {collectionData.chain}</p>
+              <p>
+                {collectionData.bestOffer} {collectionData.chain}
+              </p>
               <span>best offer</span>
             </li>
             <li>
@@ -78,13 +121,26 @@ const HeaderAccount = ({collectionData}) => {
             </li>
           </ul>
         </div>
-        <div id="accountButton">
+
+        {sameAddress(
+          collectionData.ownerAddress,
+          getCurrentWalletConnected()
+        ) ? (
+          <Link
+            to={`/collection/${collectionData.collectionAddress}/settings`}
+            className="settingsIcon"
+          >
+            <SettingsIcon />
+          </Link>
+        ) : null}
+
+        {/* <div id="accountButton">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
             height="16"
             fill="currentColor"
-            class="bi bi-share"
+            className="bi bi-share"
             viewBox="0 0 16 16"
           >
             <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />
@@ -124,7 +180,7 @@ const HeaderAccount = ({collectionData}) => {
               </ul>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

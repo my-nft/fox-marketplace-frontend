@@ -21,19 +21,18 @@ const NonListedNft = ({ handleMakeOffer, itemDetails }) => {
   };
 
   const init = async () => {
-    const bestOfferPrice = await getBestOffer(
-      itemDetails.collectionAddress,
-      itemDetails.tokenID
-    );
-    setBestOffer(bestOfferPrice);
+    if(itemDetails) {
+      const bestOfferPrice = await getBestOffer(
+        itemDetails.collectionAddress,
+        itemDetails.tokenID
+      );
+      setBestOffer(bestOfferPrice);
+    }
   };
 
   useEffect(() => {
     init();
   }, []);
-
-
-  console.log(itemDetails)
 
   return (
     <CardNftWrapper>

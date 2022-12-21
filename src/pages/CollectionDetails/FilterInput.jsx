@@ -1,34 +1,38 @@
-const FilterInput = ({onOpenClose, onChangeSelectedView, filters, changeFilterValue}) => {
+import SearchBar from "../../components/searchBar/searchBar";
+import OpenCloseButton from "./../../components/buttons/openClose";
 
-
+const FilterInput = ({
+  onOpenClose,
+  onChangeSelectedView,
+  filters,
+  changeFilterValue,
+}) => {
   return (
     <section id="filterInput" className="container-fluid">
       <div className="mr-5 wrapper">
-        <button id="openClose" onClick={onOpenClose}>
-          <img src="./assets/images/marketplace/button_open_close.jpg" alt="" />
-        </button>
-        <input
-          className="form-control mr-sm-2"
-          type="search"
+        <OpenCloseButton clickAction={onOpenClose} />
+
+        <SearchBar
+          filters={filters}
+          changeFilterValue={changeFilterValue}
+          id={"formSearch"}
           placeholder="Search NFTs, collections, artist and genres..."
-          aria-label="Search"
-          id="formSearch"
-          alt=""
-          value={filters.searchPrompt}
-          onChange={(e) => changeFilterValue({
-            ...filters,
-            searchPrompt: e.target.value
-          })}
         />
-        <select value={filters.sortBy} onChange={(e) => changeFilterValue({
-          ...filters,
-          sortBy: e.target.value
-        })} >
-          <option value="PRICE_ASC" >Price low to high</option>
-          <option value="PRICE_DESC" >Price high to low</option>
-          <option value="RECENTLY_LISTED" >Recently listed</option>
-          <option value="RECENTLY_CREATED" >Recently created</option>
-          <option value="RECENTLY_SOLD" >Recently sold</option>
+
+        <select
+          value={filters.sortBy}
+          onChange={(e) =>
+            changeFilterValue({
+              ...filters,
+              sortBy: e.target.value,
+            })
+          }
+        >
+          <option value="PRICE_ASC">Price low to high</option>
+          <option value="PRICE_DESC">Price high to low</option>
+          <option value="RECENTLY_LISTED">Recently listed</option>
+          <option value="RECENTLY_CREATED">Recently created</option>
+          <option value="RECENTLY_SOLD">Recently sold</option>
         </select>
 
         <ul id="chooseLayout">
@@ -37,7 +41,7 @@ const FilterInput = ({onOpenClose, onChangeSelectedView, filters, changeFilterVa
               xmlns="http://www.w3.org/2000/svg"
               width="16"
               height="16"
-              fill="currentColor" 
+              fill="currentColor"
               className="bi bi-grid-fill"
               viewBox="0 0 16 16"
               onClick={() => onChangeSelectedView("CHANGE_FOR_MIN")}
@@ -107,6 +111,5 @@ const FilterInput = ({onOpenClose, onChangeSelectedView, filters, changeFilterVa
     </section>
   );
 };
-
 
 export default FilterInput;

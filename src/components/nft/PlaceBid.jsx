@@ -11,16 +11,16 @@ const PlaceBid = ({ onPlaceBid }) => {
   };
 
   return (
-    <div class="card mt-2" id="timedAuctionDetails">
-      <div class="card-body">
-        <div class="card-text">
+    <div className="card mt-2" id="timedAuctionDetails">
+      <div className="card-body">
+        <div className="card-text">
           <form id="setAuction">
-            <div class="input-group">
+            <div className="input-group">
               <div style={{ width: "80%" }}>
-                <label for="inputAmount">Price</label>
+                <label htmlFor="inputAmount">Price</label>
                 <input
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   aria-label="Text input with dropdown button"
                   placeholder="Amount"
                   id="amount"
@@ -33,12 +33,14 @@ const PlaceBid = ({ onPlaceBid }) => {
                 <option>FXG</option>
               </select>
             </div>
-
             <button
               id="placeBidSubmit"
-              class="btn contIcon"
+              className="btn contIcon"
               disabled={!(Number(values.auctionPrice) > 0)}
-              onClick={() => onPlaceBid(values.auctionPrice)}
+              onClick={(evt) => {
+                evt.preventDefault();
+                onPlaceBid(values.auctionPrice);
+              }}
             >
               Place bid
             </button>

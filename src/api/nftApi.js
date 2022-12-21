@@ -30,22 +30,48 @@ export const getNftsCall = ({
   });
 };
 
-export const setNftToListed = (body) => {
+export const setNftToListed = (body, token) => {
   const { collectionAddress, tokenID, ...rest } = body;
 
   return methods.put(
     `${collectionEndpoint}${collectionAddress}/nfts/${tokenID}/set-listed`,
-    rest
+    rest,
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      }
+    }
   );
 };
 
-export const setNftToUnlisted = (body) => {
+export const setNftToUnlisted = (body, token) => {
   const { collectionAddress, tokenID } = body;
 
   return methods.put(
-    `${collectionEndpoint}${collectionAddress}/nfts/${tokenID}/remove-listed`
+    `${collectionEndpoint}${collectionAddress}/nfts/${tokenID}/remove-listed`,
+    {},
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      }
+    }
   );
 };
+
+export const acceptOffer = (body, token) => {
+  const { collectionAddress, tokenID } = body;
+
+  return methods.put(
+    `${collectionEndpoint}${collectionAddress}/nfts/${tokenID}/accept-offer`,
+    {},
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      }
+    }
+  );
+};
+
 
 export const getListedNfts = (page, numberElements) => {
   return methods.get(nftEndpoint + "listed", {

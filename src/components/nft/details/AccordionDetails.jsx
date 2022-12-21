@@ -4,11 +4,11 @@ const AccordionDetails = ({nftDetails}) => {
 
   return (
     <div id="accordionDetails">
-      <div class="card">
-        <div class="card-header" id="headingThree">
-          <h5 class="mb-0">
+      <div className="card">
+        <div className="card-header" id="headingThree">
+          <h5 className="mb-0">
             <button
-              class="btn btn-link"
+              className="btn btn-link"
               data-toggle="collapse"
               data-target="#collapseThree"
               aria-expanded="true"
@@ -20,22 +20,22 @@ const AccordionDetails = ({nftDetails}) => {
                   width="16"
                   height="16"
                   fill="currentColor"
-                  class="bi bi-list-ul"
+                  className="bi bi-list-ul"
                   viewBox="0 0 16 16"
                 >
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
                   />
                 </svg>
-                <span class="pl-3">Collection</span>
+                <span className="pl-3">Collection</span>
               </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
                 fill="currentColor"
-                class="bi bi-caret-down-fill"
+                className="bi bi-caret-down-fill"
                 viewBox="0 0 16 16"
               >
                 <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
@@ -46,35 +46,35 @@ const AccordionDetails = ({nftDetails}) => {
 
         <div
           id="collapseThree"
-          class="collapse"
+          className="collapse"
           aria-labelledby="headingThree"
           data-parent="#accordionDetails"
         >
-          <div class="card-body">
+          <div className="card-body">
             <ul>
               <li>
-                <span class="label">Contract Address</span>
-                <span class="value">{optimizeWalletAddress(nftDetails.collectionAddress)}</span>
+                <span className="label">Contract Address</span>
+                <span className="value">{optimizeWalletAddress(nftDetails.collectionAddress)}</span>
               </li>
               <li>
-                <span class="label">Token ID</span>
-                <span class="value">{nftDetails.tokenID}</span>
+                <span className="label">Token ID</span>
+                <span className="value">{nftDetails.tokenID}</span>
               </li>
               <li>
-                <span class="label">Token Standard</span>
-                <span class="value">{nftDetails.tokenStandard}</span>
+                <span className="label">Token Standard</span>
+                <span className="value">{nftDetails.tokenStandard}</span>
               </li>
               <li>
-                <span class="label">Chain</span>
-                <span class="value">{nftDetails.chain}</span>
+                <span className="label">Chain</span>
+                <span className="value">{nftDetails.chain}</span>
               </li>
               <li>
-                <span class="label">Last Updated</span>
-                <span class="value">{nftDetails.lastUpdate}</span>
+                <span className="label">Last Updated</span>
+                <span className="value">{nftDetails.lastUpdate}</span>
               </li>
               <li>
-                <span class="label">Creator Earnings</span>
-                <span class="value">{nftDetails.creatorEarnings}%</span>
+                <span className="label">Creator Earnings</span>
+                <span className="value">{nftDetails.creatorEarnings}%</span>
               </li>
             </ul>
           </div>

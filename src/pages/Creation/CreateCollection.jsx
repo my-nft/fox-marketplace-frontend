@@ -2,15 +2,17 @@ import { useRef, useState } from "react";
 import { createNewCollection } from './../../services/createCollection';
 import Spinner from './../../components/Spinner';
 import { v4 } from 'uuid';
-import { useSelector } from "react-redux";
-import { selectConnectedWallet } from "../../redux/userReducer";
+import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
+import { useNavigate } from 'react-router';
 
 const CreateCollection = () => {
 
   const [imageUpload, setImageUpload] = useState(null);
   const [imageData, setImageData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const walletAddress = useSelector(selectConnectedWallet);
+  const walletAddress = getCurrentWalletConnected();
+
+  const navigate = useNavigate();
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -19,7 +21,7 @@ const CreateCollection = () => {
         const url = URL.createObjectURL(file);
         let reader = new FileReader();
         reader.onloadend = () => {
-            setImageData(reader.result);
+            setImageData(file);
             setImageUpload(url);
         }
         reader.readAsDataURL(file);
@@ -46,12 +48,21 @@ const CreateCollection = () => {
       if(dataValid){
         data["collectionAddress"] = v4().replace("-", "");
         // create new collection
-        let createCollectionResponse = await createNewCollection(data);
+        await createNewCollection(data).then((res) => {
+          setLoading(res)
+          navigate('/collection/' + data["collectionAddress"]);
+        })
+        .catch((err) => {
+          setLoading(false)
+          console.log(err);
+        })
         
       }
     }
 
   }
+
+
 
 
 

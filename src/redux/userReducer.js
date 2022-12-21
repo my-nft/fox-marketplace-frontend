@@ -1,7 +1,6 @@
 import { createSlice, createSelector } from "@reduxjs/toolkit";
 
 const INITIAL_STATE = {
-  currentWallet: undefined,
   currentUser: undefined,
   token: undefined,
   loading: false,
@@ -30,11 +29,6 @@ const selectSelf = (state) => state.user;
 
 export const UserActions = UserReducer.actions;
 
-export const selectConnectedWallet = createSelector(
-  [selectSelf],
-  (user) => user.currentWallet
-);
-
 export const selectConnectedUser = createSelector(
   [selectSelf],
   (user) => user.currentUser
@@ -50,6 +44,6 @@ export const selectToken = createSelector(
   (user) => user.token
 )
 
-export const { setCurrentWallet, setCurrentUser, setLoading, setToken } = UserReducer.actions;
+export const { setCurrentUser, setLoading, setToken } = UserReducer.actions;
 
 export default UserReducer;

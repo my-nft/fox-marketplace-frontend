@@ -225,6 +225,30 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "auctionIdByToken",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "commission",
     "outputs": [
@@ -240,6 +264,19 @@
   {
     "inputs": [],
     "name": "feeAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "foxNftAddress",
     "outputs": [
       {
         "internalType": "address",
@@ -298,6 +335,32 @@
       }
     ],
     "name": "setCommission",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_foxNft",
+        "type": "address"
+      }
+    ],
+    "name": "setFoxNft",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_feeAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setFeeAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -441,6 +504,16 @@
         "internalType": "uint256",
         "name": "_auctionIndex",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "royaltiesAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "royaltiesAmount",
+        "type": "uint256"
       }
     ],
     "name": "claimNFT",
@@ -453,6 +526,16 @@
       {
         "internalType": "uint256",
         "name": "_auctionIndex",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "royaltiesAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "royaltiesAmount",
         "type": "uint256"
       }
     ],

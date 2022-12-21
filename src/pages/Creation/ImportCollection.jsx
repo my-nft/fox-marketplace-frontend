@@ -6,11 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { IMPORT_COLLECTION } from "../../saga/actions";
 import { selectIsLoading } from "../../redux/collectionReducer";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ImportCollection = () => {
   const [loading, setLoading] = useState(true);
   const loadingSelector = useSelector(selectIsLoading);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -29,10 +31,12 @@ const ImportCollection = () => {
           payload: {
             collectionAddress: data["collectionAddress"],
           },
-          onSuccess: () =>
+          onSuccess: async () => {
             toast.success(
               "Congratulations, your Collection has been imported successfully"
-            ),
+            );
+            navigate(`/collection/${data["collectionAddress"]}`);
+          }
         });
       } else {
         toast.error("Please fill the collection address !");

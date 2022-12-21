@@ -4,16 +4,20 @@ import { useState } from "react";
 import AccountHeader from "./AccountHeader";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectConnectedWallet } from "../../redux/userReducer";
 import {
   selectAccountOwner,
   selectCollections,
   selectIsLoadingAccount,
   selectNfts,
 } from "../../redux/accountReducer";
+import {selectIsLoading} from '../../redux/collectionReducer';
 import Spinner from "../../components/Spinner";
-import { LOAD_ACCOUNT_COLLECTIONS, LOAD_ACCOUNT_NFTS } from "../../saga/actions";
+import {
+  LOAD_ACCOUNT_COLLECTIONS,
+  LOAD_ACCOUNT_NFTS,
+} from "../../saga/actions";
 import Pagination from "../../components/pagination/pagination";
+import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 
 const AccountPage = () => {
   const [visible, setVisible] = useState(false);
@@ -21,11 +25,13 @@ const AccountPage = () => {
   const [activeSection, setActiveSection] = useState("COLLECTIONS");
   const collections = useSelector(selectCollections);
   const nfts = useSelector(selectNfts);
+
+  const {content = [], totalElements} = nfts || {};
+
   const [pagination, setPagination] = useState({
-    page : 1,
-    numberElements : 10,
-    maxPages: 5
-  })
+    page: 1,
+    numberElements: 20,
+  });
 
   const [filters, setFilters] = useState({
     searchPrompt: "",
@@ -39,82 +45,84 @@ const AccountPage = () => {
     buyToken: "ETH",
     categories: [],
     sortBy: "RECENTLY_LISTED",
-  })
+  });
 
   useEffect(() => {
-      console.log(filters)
-  }, [filters])
-
-
-
+    console.log(filters);
+  }, [filters]);
 
   const dispatch = useDispatch();
-  const connectedWallet = useSelector(selectConnectedWallet);
+  const connectedWallet = getCurrentWalletConnected();
   const isLoading = useSelector(selectIsLoadingAccount);
+  const isLoadingCollection = useSelector(selectIsLoading)
   const accountOwner = useSelector(selectAccountOwner);
 
   const changePage = (page) => {
-    if( page < 1 || page > pagination.maxPages) return;
+    if (page < 1 || page > pagination.maxPages) return;
     setPagination({
       ...pagination,
-      page
-    })
-  }
-
+      page,
+    });
+  };
 
   const runDispatchNfts = (body) => {
     dispatch({
-      type : LOAD_ACCOUNT_NFTS,
-      payload : {
-        ...body
-      }
-    })
-  }
+      type: LOAD_ACCOUNT_NFTS,
+      payload: {
+        ...body,
+        page: pagination.page,
+        numberElements: pagination.numberElements,
+      },
+    });
+  };
 
   const runInit = () => {
     if (activeSection === "COLLECTIONS") {
       dispatch({
-        type : LOAD_ACCOUNT_COLLECTIONS,
-        payload : {
+        type: LOAD_ACCOUNT_COLLECTIONS,
+        payload: {
           ...pagination,
-          ownerAddress : connectedWallet
-        }
-      })
+          ownerAddress: connectedWallet,
+          page: pagination.page,
+          numberElements: pagination.numberElements,
+        },
+      });
     } else if (activeSection === "NFTS") {
       runDispatchNfts({
-        ownerAddress : connectedWallet
-      })
+        ownerAddress: connectedWallet,
+      });
     } else if (activeSection === "CREATED") {
       runDispatchNfts({
-        creatorAddress : connectedWallet
-      })
+        creatorAddress: connectedWallet,
+      });
     } else if (activeSection === "COLLECTED") {
       runDispatchNfts({
-        ownerAddress : connectedWallet,
-        collectedOnly : true
-      })
+        ownerAddress: connectedWallet,
+        collectedOnly: true,
+      });
     } else if (activeSection === "LISTED") {
       runDispatchNfts({
-        isListed : true,
-        ownerAddress : connectedWallet,
-      })
+        isListed: true,
+        ownerAddress: connectedWallet,
+      });
     }
-  }
+  };
 
   useEffect(() => {
-    console.log("ACTIVE SECTION ====> " , activeSection);
     runInit();
+  }, [pagination]);
+
+  useEffect(() => {
     setPagination({
       ...pagination,
-      page : 1
-    })
+      page: 1,
+    });
+    runInit();
   }, [activeSection]);
-
-  console.log("CT  ", activeSection)
 
   return (
     <div>
-      {isLoading ? (
+      {isLoading || isLoadingCollection ? (
         <Spinner />
       ) : (
         <>
@@ -131,15 +139,15 @@ const AccountPage = () => {
             activeSection={activeSection}
             isVisible={visible}
             viewType={viewType}
-            nfts={nfts}
+            nfts={content}
             collections={collections}
             filters={filters}
             changeFilterValue={setFilters}
           />
           <Pagination
-            pages={pagination.maxPages}
             currentPage={pagination.page}
             setCurrentPage={changePage}
+            pages={totalElements ? parseInt(totalElements / 20) : 1}
           />
         </>
       )}

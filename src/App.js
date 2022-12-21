@@ -17,12 +17,14 @@ import CreateCollection from "./pages/Creation/CreateCollection";
 import ImportCollection from "./pages/Creation/ImportCollection";
 import Explorer from "./pages/Explorer";
 import CollectionDetails from "./pages/CollectionDetails";
-import NftDetails from "./pages/NftDtails";
 import { store } from "./redux/store";
 import AuthWrapper from "./components/authWrapper";
 import ProfileWrapper from "./pages/Profile/ProfileWrapper";
 import MyNftDetails from "./pages/myNftDetails";
 import AccountPage from "./pages/Account/Account";
+import ConfirmationPopup from "./components/confirmationPopup/confirmationPopup";
+import DatePicker from "./components/datePicker/datePicker";
+import CollectionSettings from "./pages/collectionSettings/collectionSettings";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -45,13 +47,14 @@ const router = createBrowserRouter(
           </>
         }
       />
+
       <Route
         path="/account"
         element={
-            <>
-              <AccountPage />
-              <Footer />
-            </>
+          <>
+            <AccountPage />
+            <Footer />
+          </>
         }
       />
       <Route
@@ -102,7 +105,8 @@ const router = createBrowserRouter(
       />
 
       <Route
-        path="collection"
+        path="collection/:collectionAddress"
+        exact
         element={
           <>
             <CollectionDetails />
@@ -110,12 +114,12 @@ const router = createBrowserRouter(
           </>
         }
       />
-      {/*  NOT my NFT  */}
       <Route
-        path="nft"
+        path="collection/:collectionAddress/settings"
+        exact
         element={
           <>
-            <NftDetails />
+            <CollectionSettings />
             <Footer />
           </>
         }
@@ -123,7 +127,8 @@ const router = createBrowserRouter(
 
       {/*  NOT my NFT  */}
       <Route
-        path="my-nft"
+        path="collection/:collectionAddress/:tokenID"
+        exact
         element={
           <>
             <MyNftDetails />
@@ -138,6 +143,13 @@ const router = createBrowserRouter(
 function App() {
   return (
     <Provider store={store}>
+      {/*
+      <ConfirmationPopup
+        title="Test"
+        message="KLMOASDASDASDAsd adwqe adwa dwqe q"
+      />
+        */}
+
       <RouterProvider router={router}></RouterProvider>
     </Provider>
   );

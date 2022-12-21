@@ -1,9 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import CustomDatePicker from "../../components/datePicker/datePicker";
+import CardBody from "../../components/nft/CardBody";
+import CardNftWrapper from "../../components/nft/CardNftWrapper";
+import { getBestOffer } from "../../services/listingNft";
 import { FIXED_PRICE, AUCTION } from "../../utils/foxConstantes";
 
-
-const NonListedMyNft = ({ handleAuction, handleFixedPrice }) => {
+const NonListedMyNft = ({
+  handleAuction,
+  handleFixedPrice,
+  handleAcceptOffer,
+  nftDetails,
+}) => {
   const [type, setType] = useState(FIXED_PRICE);
+  const [showPicker, setShowPicker] = useState(false);
+  const [bestOffer, setBestOffer] = useState();
+
   // values
   const [values, setValues] = useState({
     fixedPrice: 0,
@@ -15,136 +26,190 @@ const NonListedMyNft = ({ handleAuction, handleFixedPrice }) => {
     setValues({ ...values, [evt.target.name]: evt.target.value });
   };
 
-
-    const onSubmitForm = async (evt) => {
+  const onSubmitForm = async (evt) => {
     evt.preventDefault();
-    console.log("HERE")
-    if(type === AUCTION) {
+    if (type === AUCTION) {
       handleAuction(values);
-    } else if(type === FIXED_PRICE) {
-      handleFixedPrice(values)
+    } else if (type === FIXED_PRICE) {
+      handleFixedPrice(values);
     }
   };
 
+  const init = async () => {
+    const bestOfferPrice = await getBestOffer(
+      nftDetails.collectionAddress,
+      nftDetails.tokenID
+    );
+    setBestOffer(bestOfferPrice);
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  useEffect(() => {
+    if (type === AUCTION) {
+      setShowPicker(true);
+    } else {
+      setShowPicker(false);
+    }
+  }, [type]);
+
+  const handleDateChange = (dateObj) => {
+    setShowPicker(false);
+    setValues({ ...values, time: dateObj.getTime() });
+  };
 
   return (
     <>
-      <div className="card" id="cardNft">
-        <div className="card-body">
-          <div className="card-text">
-            <button
-              id="fixedPrice"
-              className={
-                type === FIXED_PRICE
-                  ? "btn orangeBg active"
-                  : "btn orangeBg deactive"
-              }
-              onClick={() => setType(FIXED_PRICE)}
-            >
-              Fixed price
-            </button>
-            <button
-              id="timedAuction"
-              className={
-                type === AUCTION
-                  ? "btn orangeBg active"
-                  : "btn orangeBg deactive"
-              }
-              onClick={() => setType(AUCTION)}
-            >
-              Timed auction
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {type === FIXED_PRICE ? (
-        <div className="card mt-2" id="fixedPriceDetails">
-          <div className="card-body">
-            <form id="setPrice">
-              <div className="input-group">
-                <div
-                  style={{
-                    width: "80%",
-                  }}
-                >
-                  <label htmlFor="inputAmount">Price</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    aria-label="Text input with dropdown button"
-                    placeholder="Amount"
-                    id="fixedPrice"
-                    name="fixedPrice"
-                    onChange={handleChange}
-                  />
-                </div>
-                <select id="nameofCoin">
-                  <option>FXG</option>
-                </select>
-              </div>
-              <button
-                id="makeOfferSubmit"
-                className="btn contIcon"
-                onClick={onSubmitForm}
-              >
-                Item for sale
-              </button>
-            </form>
-          </div>
-        </div>
-      ) : null}
-
-      {type === AUCTION ? (
-        <div className="card mt-2" id="timedAuctionDetails">
-          <div className="card-body">
-            <div className="card-text">
-              <form id="setAuction">
-                <div className="input-group">
-                  <div
-                    style={{
-                      width: "80%",
-                    }}
-                  >
-                    <label htmlFor="inputAmount">Starting Price</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      aria-label="Text input with dropdown button"
-                      placeholder="Amount"
-                      id="auctionPrice"
-                      name="auctionPrice"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <select id="nameofCoin">
-                    <option>FXG</option>
-                  </select>
-                </div>
-                <div className="input-group mt-3">
-                  <label htmlFor="inputAmount">Duration</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    aria-label="Text input with dropdown button"
-                    placeholder="Duration"
-                    id="time"
-                    name="time"
-                    onChange={handleChange}
-                  />
-                </div>
+      <CustomDatePicker
+        showPicker={showPicker}
+        closeAction={() => setShowPicker(false)}
+        dateSetAction={handleDateChange}
+      />
+      <CardNftWrapper>
+        <CardBody
+          bestOffer={bestOffer}
+          onAcceptOffer={handleAcceptOffer}
+          ownerAddress={nftDetails.ownerAddress}
+        >
+          <div className="card" id="cardNft">
+            <div className="card-body">
+              <div className="card-text">
                 <button
-                  id="placeBidSubmit"
-                  className="btn contIcon"
-                  onClick={onSubmitForm}
+                  id="fixedPrice"
+                  className={
+                    type === FIXED_PRICE
+                      ? "btn orangeBg active"
+                      : "btn orangeBg deactive"
+                  }
+                  onClick={() => setType(FIXED_PRICE)}
                 >
-                  Create auction
+                  Fixed price
                 </button>
-              </form>
+                <button
+                  id="timedAuction"
+                  className={
+                    type === AUCTION
+                      ? "btn orangeBg active"
+                      : "btn orangeBg deactive"
+                  }
+                  onClick={() => setType(AUCTION)}
+                >
+                  Timed auction
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      ) : null}
+
+          {type === FIXED_PRICE ? (
+            <div className="card mt-2" id="fixedPriceDetails">
+              <div className="card-body">
+                <form id="setPrice">
+                  <div className="input-group">
+                    <div
+                      style={{
+                        width: "80%",
+                      }}
+                    >
+                      <label htmlFor="inputAmount">Price</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        aria-label="Text input with dropdown button"
+                        placeholder="Amount"
+                        id="fixedPrice"
+                        name="fixedPrice"
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <select id="nameofCoin">
+                      <option>FXG</option>
+                    </select>
+                  </div>
+                  <button
+                    id="makeOfferSubmit"
+                    className="btn contIcon"
+                    onClick={onSubmitForm}
+                  >
+                    Item for sale
+                  </button>
+                </form>
+              </div>
+            </div>
+          ) : null}
+
+          {type === AUCTION ? (
+            <div className="card mt-2" id="timedAuctionDetails">
+              <div className="card-body">
+                <div className="card-text">
+                  <form id="setAuction">
+                    <div className="input-group">
+                      <div
+                        style={{
+                          width: "80%",
+                        }}
+                      >
+                        <label htmlFor="inputAmount">Starting Price</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          aria-label="Text input with dropdown button"
+                          placeholder="Amount"
+                          id="auctionPrice"
+                          name="auctionPrice"
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <select id="nameofCoin">
+                        <option>FXG</option>
+                      </select>
+                    </div>
+                    <div className="input-group mt-3">
+                      <label
+                        htmlFor="inputAmount"
+                        onClick={() => setShowPicker(true)}
+                      >
+                        Duration
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        aria-label="Text input with dropdown button"
+                        placeholder="Duration"
+                        id="time"
+                        name="time"
+                        onChange={handleChange}
+                        onClick={() => setShowPicker(true)}
+                        readOnly
+                        value={
+                          values.time
+                            ? new Date(values.time).toLocaleString([], {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                hour12: false,
+                              })
+                            : ""
+                        }
+                      />
+                    </div>
+                    <button
+                      id="placeBidSubmit"
+                      className="btn contIcon"
+                      onClick={onSubmitForm}
+                    >
+                      Create auction
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          ) : null}
+        </CardBody>
+      </CardNftWrapper>
     </>
   );
 };
