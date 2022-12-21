@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { call, delay, put, takeLatest } from "redux-saga/effects";
+import { call, delay, put, select, takeLatest } from "redux-saga/effects";
 import * as api from "../api/collectionApi";
 import * as tokenApi from "../api/nftApi";
 import {
@@ -19,13 +19,12 @@ import {
 import {
   setIsLoading,
   setListedNfts,
-  setNftDetails,
 } from "../redux/nftReducer";
+import { selectToken } from "../redux/userReducer";
 import {
   IMPORT_COLLECTION,
   LOAD_MARKET_PLACE,
   LOAD_MOST_POPULAR_COLLECTION,
-  LOAD_NFT_DETAIL,
   LOAD_SEARCHABLE_COLLECTION,
   LOAD_ACCOUNT_NFTS,
   LOAD_ACCOUNT_COLLECTIONS,
@@ -37,8 +36,10 @@ function* importCollection(action) {
   try {
     yield put(setCollectionIsLoading(true));
     const { collectionAddress } = action.payload;
-    yield call(api.importCollectionCall, collectionAddress);
-    yield delay(1000);
+    const token = yield select(selectToken)
+    console.log("the token is", token)
+    yield call(api.importCollectionCall, collectionAddress, token);
+    yield delay(3000);
     action.onSuccess();
   } catch (error) {
     console.log("error ", error.response.status);
@@ -99,12 +100,13 @@ function* updateCollectionInformation(action) {
   
   try{
     const { collectionAddress,   image, banner, data } = action.payload;
+    const token = yield select(selectToken);
     
-    let response = yield call(api.updateCollection, collectionAddress, {
+    yield call(api.updateCollection, collectionAddress, {
       image,
       banner,
       collection: data,
-    });
+    }, token);
 
     yield delay(1000);
     toast.success("Collection updated successfully");
@@ -123,9 +125,8 @@ function* updateCollectionInformation(action) {
 
 function* runLoadMarketPlaceAll(action) {
   try {
-    const { page, numberElements } = action.payload;
     yield put(setIsLoading(true));
-
+    const { page, numberElements } = action.payload;
     // loading most popular collections
     let response = yield call(api.getCollectionsCall, action.payload);
     yield put(setMostPopularCollections(response.data));
