@@ -31,23 +31,24 @@ const MyNftDetails = () => {
   const { collectionAddress, tokenID } = useParams();
   const connectedWallet = getCurrentWalletConnected();
   const isLoading = useSelector(selectIsLoading);
-  const [isLoadingPage, setIsLoadingPage] = useState(true);
   const [nftDetails, setNftDetails] = useState();
   const [collectionDetails, setCollectionDetails] = useState();
   const dispatch = useDispatch();
 
 
   const loadNft = async () => {
-    setIsLoadingPage(true);
-    const nft = await getNftCall(collectionAddress, tokenID);
-    const collection = await getCollectionByAddress(collectionAddress);
-    setNftDetails(nft.data);
-    setCollectionDetails(collection.data);
-    setIsLoadingPage(false);
+    try {
+      dispatch(setIsLoading(true));
+      const nft = await getNftCall(collectionAddress, tokenID);
+      const collection = await getCollectionByAddress(collectionAddress);
+      setNftDetails(nft.data);
+      setCollectionDetails(collection.data);
+    } finally {
+      dispatch(setIsLoading(false));
+    }
   };
 
   useEffect(() => {
-    dispatch(setIsLoading(false));
     loadNft();
   }, []);
 
@@ -164,11 +165,14 @@ const MyNftDetails = () => {
   };
 
   const onAcceptOffer = () => {
+    const {royaltyAddress, royaltyPercent} = collectionDetails;
     dispatch({
       type: ACCEPT_OFFER,
       payload: {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
+        royaltyAddress : royaltyAddress ? royaltyAddress : null,
+        royaltyPercent : royaltyPercent ? royaltyPercent : 0
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -187,9 +191,7 @@ const MyNftDetails = () => {
     });
   };
 
-  console.log(nftDetails);
-
-  return isLoadingPage || isLoading ? (
+  return isLoading || !nftDetails ? (
     <Spinner />
   ) : (
     <div className="container my-5" id="nftPage">

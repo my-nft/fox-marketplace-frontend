@@ -28,7 +28,8 @@ export const AUTIONContractAddress = "0xB0BCED0883272Bda6fA4Ae45bB4a56624BC140e7
 export const LoaderContractAddress = "0x4e749ecaa475888eE8df3B749f69f92Ec42Cc514";
 
 
-export const OfferSystemAddress = "0xF8716Ff8aFB1390B51FfFfE50C8Ff87e536Cf7b3";
+//export const OfferSystemAddress = "0xF8716Ff8aFB1390B51FfFfE50C8Ff87e536Cf7b3";
+export const OfferSystemAddress = "0x2d6e99Accd37f6A267943fdf005e3122A96F6b9D";
 
 export const ethereum = window.ethereum;
 export const web3 = new Web3(ethereum);

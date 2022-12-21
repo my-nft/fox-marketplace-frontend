@@ -42,7 +42,7 @@ function* runBuyNft(action) {
 
     yield put(setIsLoading(true));
 
-    yield call(buyItem, {listingId, price, royaltyAddress, royaltyPercent});
+    yield call(buyItem, { listingId, price, royaltyAddress, royaltyPercent });
 
     yield call(nftApi.setNftToUnlisted, { collectionAddress, tokenID });
 
@@ -121,8 +121,8 @@ function* runDelistItem(action) {
 
 function* runAcceptOffer(action) {
   try {
-    const { collectionAddress, tokenID } = action.payload;
-
+    const { collectionAddress, tokenID, royaltyAddress, royaltyPercent } =
+      action.payload;
     yield put(setIsLoading(true));
 
     const listingId = yield call(
@@ -137,7 +137,13 @@ function* runAcceptOffer(action) {
     }
 
     // unlist from Blockchain
-    yield call(acceptOffer, collectionAddress, tokenID);
+    yield call(
+      acceptOffer,
+      collectionAddress,
+      tokenID,
+      royaltyAddress,
+      royaltyPercent
+    );
 
     // unlist from DB
     yield call(nftApi.acceptOffer, {

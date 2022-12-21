@@ -123,7 +123,6 @@ export const getAuctionInfos = async (auctionId) => {
   try {
     return await auctionContractReadOnly.methods.allAuctions(auctionId).call();
   } catch (error) {
-    console.warn(error);
   }
 };
 
@@ -354,7 +353,7 @@ export const makeOfferToOwner = async (collectionAddress, tokenID, price) => {
     });
 };
 
-export const acceptOffer = async (collectionAddress, tokenID) => {
+export const acceptOffer = async (collectionAddress, tokenID, royaltyAddress, royaltyPercent) => {
   const connectWallet = getCurrentWalletConnected();
 
   console.log("collectionAddress", collectionAddress);
@@ -379,14 +378,14 @@ export const acceptOffer = async (collectionAddress, tokenID) => {
   });
 
   const gasLimitAcceptOffer = await offerSystemContract.methods
-    .acceptBuyOffer(collectionAddress, tokenID)
+    .acceptBuyOffer(collectionAddress, tokenID, royaltyAddress, royaltyPercent)
     .estimateGas({
       from: connectWallet,
       to: OfferSystemAddress,
     });
 
   await offerSystemContract.methods
-    .acceptBuyOffer(collectionAddress, tokenID)
+    .acceptBuyOffer(collectionAddress, tokenID, royaltyAddress, royaltyPercent)
     .send({
       from: connectWallet,
       to: OfferSystemAddress,
