@@ -15,12 +15,14 @@ export const createNewCollection = async (data) => {
         upload
     } = data;
 
+    console.log("UPLOAD: " + JSON.stringify(upload))
+
     const outputDataMap = {
         name: collectionTokenName,
         description,
         artistName,
         ownerAddress: walletAddress,
-        image: upload
+        image: JSON.stringify(upload),
 
     }
    
@@ -33,7 +35,11 @@ export const createNewCollection = async (data) => {
 
 
     // call createCollectionService to create new collection
-    methods.post(`${apiUrl}collections/${collectionAddress}`, outputDataMap)
+    methods.post(`${apiUrl}collections/${collectionAddress}`, outputDataMap, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    })
     .then(res => {
         console.log("COLLECTION CREATE RESPONSE:",res);
     })
