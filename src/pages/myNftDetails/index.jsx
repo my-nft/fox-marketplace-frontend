@@ -6,7 +6,7 @@ import { getNftCall } from "../../api/nftApi";
 import {getCollectionByAddress} from '../../api/collectionApi';
 import NftMoreInfos from "../../components/nft/details/NftMoreInfos";
 import Spinner from "../../components/Spinner";
-import { selectIsLoading } from "../../redux/nftReducer";
+import { selectIsLoading, setIsLoading } from "../../redux/nftReducer";
 import {
   ACCEPT_OFFER,
   BUY_NFT,
@@ -47,6 +47,7 @@ const MyNftDetails = () => {
   };
 
   useEffect(() => {
+    dispatch(setIsLoading(false));
     loadNft();
   }, []);
 
@@ -80,24 +81,30 @@ const MyNftDetails = () => {
   };
 
   const handleClaimNFT = async () => {
+    const {royaltyAddress, royaltyPercent} = collectionDetails;
     dispatch({
       type: CLAIM_NFT,
       payload: {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId,
+        royaltyAddress : royaltyAddress ? royaltyAddress : null,
+        royaltyPercent : royaltyPercent ? royaltyPercent : 0
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
   const handleClaimToken = async () => {
+    const {royaltyAddress, royaltyPercent} = collectionDetails;
     dispatch({
       type: CLAIM_TOKEN,
       payload: {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId,
+        royaltyAddress : royaltyAddress ? royaltyAddress : null,
+        royaltyPercent : royaltyPercent ? royaltyPercent : 0
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -117,6 +124,7 @@ const MyNftDetails = () => {
   };
 
   const onBuyItem = async (price) => {
+    const {royaltyAddress, royaltyPercent} = collectionDetails;
     dispatch({
       type: BUY_NFT,
       payload: {
@@ -124,6 +132,8 @@ const MyNftDetails = () => {
         price: Number(price),
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
+        royaltyAddress : royaltyAddress ? royaltyAddress : null,
+        royaltyPercent : royaltyPercent ? royaltyPercent : 0
       },
       onSuccess: (nft) => setNftDetails(nft),
     });

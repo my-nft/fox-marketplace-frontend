@@ -31,11 +31,18 @@ import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 
 function* runBuyNft(action) {
   try {
-    const { listingId, price, tokenID, collectionAddress } = action.payload;
+    const {
+      listingId,
+      price,
+      tokenID,
+      collectionAddress,
+      royaltyAddress,
+      royaltyPercent,
+    } = action.payload;
 
     yield put(setIsLoading(true));
 
-    yield call(buyItem, listingId, price);
+    yield call(buyItem, {listingId, price, royaltyAddress, royaltyPercent});
 
     yield call(nftApi.setNftToUnlisted, { collectionAddress, tokenID });
 
@@ -274,12 +281,18 @@ function* runHandleRefund(action) {
 }
 
 function* runHandleClaimNFT(action) {
-  const { auctionId, collectionAddress, tokenID } = action.payload;
+  const {
+    auctionId,
+    collectionAddress,
+    tokenID,
+    royaltyAddress,
+    royaltyPercent,
+  } = action.payload;
 
   try {
     yield put(setIsLoading(true));
 
-    yield call(claimNFT, auctionId);
+    yield call(claimNFT, { auctionId, royaltyAddress, royaltyPercent });
 
     yield call(nftApi.setNftToUnlisted, {
       collectionAddress,
@@ -299,12 +312,18 @@ function* runHandleClaimNFT(action) {
 }
 
 function* runHandleClaimToken(action) {
-  const { auctionId, collectionAddress, tokenID } = action.payload;
+  const {
+    auctionId,
+    collectionAddress,
+    tokenID,
+    royaltyAddress,
+    royaltyPercent,
+  } = action.payload;
 
   try {
     yield put(setIsLoading(true));
 
-    yield call(claimToken, auctionId);
+    yield call(claimToken, { auctionId, royaltyAddress, royaltyPercent });
 
     yield call(nftApi.setNftToUnlisted, {
       collectionAddress,
