@@ -9,7 +9,7 @@ const AccordionProperties = ({ nftDetails }) => {
 
       nftDetails.attributes.map((item) => {
         data.push({
-          name: "-",
+          name: item.trait_type ? item.trait_type : "-",
           value: item.value,
         });
       });
