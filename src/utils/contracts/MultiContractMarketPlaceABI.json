@@ -1,22 +1,6 @@
 [
   {
-    "inputs": [
-      {
-        "internalType": "address payable",
-        "name": "_marketplaceWallet",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_marketplaceFee",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "_foxToken",
-        "type": "address"
-      }
-    ],
+    "inputs": [],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -341,6 +325,19 @@
   },
   {
     "inputs": [],
+    "name": "foxCollection",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "foxToken",
     "outputs": [
       {
@@ -522,6 +519,19 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "newFoxCollection",
+        "type": "address"
+      }
+    ],
+    "name": "setFoxCollection",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
         "name": "newMarketFee",
         "type": "uint256"
@@ -661,84 +671,19 @@
         "internalType": "uint256",
         "name": "listingId",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "royaltiesAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "royaltiesAmount",
+        "type": "uint256"
       }
     ],
     "name": "buyToken",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "minPrice",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "listingId",
-        "type": "uint256"
-      }
-    ],
-    "name": "makeSellOffer",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "listingId",
-        "type": "uint256"
-      }
-    ],
-    "name": "withdrawSellOffer",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "listingId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "offer",
-        "type": "uint256"
-      }
-    ],
-    "name": "makeBuyOffer",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "listingId",
-        "type": "uint256"
-      }
-    ],
-    "name": "withdrawBuyOffer",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "listingId",
-        "type": "uint256"
-      }
-    ],
-    "name": "acceptBuyOffer",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

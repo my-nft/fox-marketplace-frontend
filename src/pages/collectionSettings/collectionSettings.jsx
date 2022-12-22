@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import { ReactComponent as Clipboard } from "../../assets/icons/clipboard.svg";
-import { ReactComponent as WebIcon } from "../../assets/icons/web.svg";
-import { ReactComponent as MediumIcon } from "../../assets/icons/medium.svg";
-import { ReactComponent as TelegramIcon } from "../../assets/icons/telegram.svg";
 
-import uploadIcon from "../../assets/images/create_icon_3.png";
+
 import SettingsImages from "./settingsImages";
 import Socials from "./socials";
-import { useNavigate, useNavigation, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getCollectionByAddress } from "../../api/collectionApi";
 import Spinner from "../../components/Spinner";
 import { useDispatch } from 'react-redux';
@@ -53,7 +50,6 @@ const CollectionSettings = () => {
   const { collectionAddress } = useParams();
   const [isLoadingCollection, setIsLoadingCollection] = useState(true);
   const [collectionDetails, setCollectionDetails] = useState();
-  const [imageState, setImageState] = useState();
 
 
   const dispatch = useDispatch()
@@ -240,9 +236,16 @@ const CollectionSettings = () => {
                   })
                 }
                 options={[
-                  { value: "10%", label: "10%" },
-                  { value: "20%", label: "20%" },
-                  { value: "30%", label: "30%" },
+                  { value: "1", label: "1" },
+                  { value: "2", label: "2" },
+                  { value: "3", label: "3" },
+                  { value: "4", label: "4" },
+                  { value: "5", label: "5" },
+                  { value: "6", label: "6" },
+                  { value: "7", label: "7" },
+                  { value: "8", label: "8" },
+                  { value: "9", label: "9" },
+                  { value: "10", label: "10" },
                 ]}
                 styles={selectStyles}
               />

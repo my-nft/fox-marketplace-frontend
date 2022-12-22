@@ -1,6 +1,6 @@
 import { setIsLoading } from "../../redux/nftReducer";
 import * as nftApi from "../../api/nftApi";
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, select, takeLatest } from "redux-saga/effects";
 import { toast } from "react-toastify";
 import {
   buyItem,
@@ -28,16 +28,27 @@ import {
   REFUND_NFT,
 } from "./blockChainActions";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
+import { useSelector } from "react-redux";
+import { selectToken } from "../../redux/userReducer";
 
 function* runBuyNft(action) {
   try {
-    const { listingId, price, tokenID, collectionAddress } = action.payload;
+    const {
+      listingId,
+      price,
+      tokenID,
+      collectionAddress,
+      royaltyAddress,
+      royaltyPercent,
+    } = action.payload;
 
     yield put(setIsLoading(true));
 
-    yield call(buyItem, listingId, price);
+    const token = yield select(selectToken);
 
-    yield call(nftApi.setNftToUnlisted, { collectionAddress, tokenID });
+    yield call(buyItem, { listingId, price, royaltyAddress, royaltyPercent });
+
+    yield call(nftApi.setNftToUnlisted, { collectionAddress, tokenID }, token);
 
     const nftDetails = yield call(
       nftApi.getNftCall,
@@ -84,6 +95,7 @@ function* runMakeOffer(action) {
 function* runDelistItem(action) {
   try {
     const { listingId, collectionAddress, tokenID } = action.payload;
+    const token = yield select(selectToken);
 
     yield put(setIsLoading(true));
 
@@ -94,7 +106,7 @@ function* runDelistItem(action) {
     yield call(nftApi.setNftToUnlisted, {
       collectionAddress,
       tokenID,
-    });
+    }, token);
 
     const nftDetails = yield call(
       nftApi.getNftCall,
@@ -114,9 +126,10 @@ function* runDelistItem(action) {
 
 function* runAcceptOffer(action) {
   try {
-    const { collectionAddress, tokenID } = action.payload;
-
+    const { collectionAddress, tokenID, royaltyAddress, royaltyPercent } =
+      action.payload;
     yield put(setIsLoading(true));
+    const token = yield select(selectToken);
 
     const listingId = yield call(
       getListingIdByToken,
@@ -130,13 +143,19 @@ function* runAcceptOffer(action) {
     }
 
     // unlist from Blockchain
-    yield call(acceptOffer, collectionAddress, tokenID);
+    yield call(
+      acceptOffer,
+      collectionAddress,
+      tokenID,
+      royaltyAddress,
+      royaltyPercent
+    );
 
     // unlist from DB
     yield call(nftApi.acceptOffer, {
       collectionAddress,
       tokenID,
-    });
+    }, token);
 
     const response = yield call(nftApi.getNftCall, collectionAddress, tokenID);
 
@@ -176,6 +195,7 @@ function* runPlaceBid(action) {
 function* runListFixedPrice(action) {
   try {
     const { collectionAddress, tokenID, fixedPrice } = action.payload;
+    const token = yield select(selectToken);
 
     yield put(setIsLoading(true));
 
@@ -194,7 +214,7 @@ function* runListFixedPrice(action) {
       listingType: FIXED_PRICE,
       price: fixedPrice,
       listingId: Number(listingId),
-    });
+    }, token);
 
     const response = yield call(nftApi.getNftCall, collectionAddress, tokenID);
 
@@ -214,6 +234,8 @@ function* runListingAuction(action) {
     const { collectionAddress, tokenID, auctionPrice, endAuction } =
       action.payload;
 
+    const token = yield select(selectToken);
+
     yield put(setIsLoading(true));
 
     const auctionId = yield call(
@@ -230,7 +252,7 @@ function* runListingAuction(action) {
       auctionId,
       endAuction,
       listingType: AUCTION,
-    });
+    }, token);
 
     const nftDetails = yield call(
       nftApi.getNftCall,
@@ -250,6 +272,7 @@ function* runListingAuction(action) {
 
 function* runHandleRefund(action) {
   const { auctionId, collectionAddress, tokenID } = action.payload;
+  const token = yield select(selectToken);
 
   try {
     yield put(setIsLoading(true));
@@ -259,7 +282,7 @@ function* runHandleRefund(action) {
     yield call(nftApi.setNftToUnlisted, {
       collectionAddress,
       tokenID,
-    });
+    }, token);
     // get the nft details
     const response = yield call(nftApi.getNftCall, collectionAddress, tokenID);
 
@@ -274,17 +297,24 @@ function* runHandleRefund(action) {
 }
 
 function* runHandleClaimNFT(action) {
-  const { auctionId, collectionAddress, tokenID } = action.payload;
+  const {
+    auctionId,
+    collectionAddress,
+    tokenID,
+    royaltyAddress,
+    royaltyPercent,
+  } = action.payload;
 
   try {
     yield put(setIsLoading(true));
 
-    yield call(claimNFT, auctionId);
+    yield call(claimNFT, { auctionId, royaltyAddress, royaltyPercent });
+    const token = yield select(selectToken);
 
     yield call(nftApi.setNftToUnlisted, {
       collectionAddress,
       tokenID,
-    });
+    }, token);
     // get the nft details
     const response = yield call(nftApi.getNftCall, collectionAddress, tokenID);
     // putting the NFT details
@@ -299,17 +329,24 @@ function* runHandleClaimNFT(action) {
 }
 
 function* runHandleClaimToken(action) {
-  const { auctionId, collectionAddress, tokenID } = action.payload;
+  const {
+    auctionId,
+    collectionAddress,
+    tokenID,
+    royaltyAddress,
+    royaltyPercent,
+  } = action.payload;
 
   try {
     yield put(setIsLoading(true));
+    const token = yield select(selectToken);
 
-    yield call(claimToken, auctionId);
+    yield call(claimToken, { auctionId, royaltyAddress, royaltyPercent });
 
     yield call(nftApi.setNftToUnlisted, {
       collectionAddress,
       tokenID,
-    });
+    }, token);
     // get the nft details
     const response = yield call(nftApi.getNftCall, collectionAddress, tokenID);
 
