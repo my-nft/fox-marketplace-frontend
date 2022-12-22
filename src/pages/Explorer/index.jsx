@@ -66,6 +66,11 @@ const Explorer = () => {
   };
 
   useEffect(() => {
+    console.log("INITIAL RENDER");
+  }, []);
+
+  useEffect(() => {
+    console.log("MARKETPLACE LOAD CALL", pagination);
     loadMarketPlace();
   }, [pagination]);
 

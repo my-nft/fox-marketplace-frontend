@@ -10,7 +10,7 @@ import {
   selectIsLoadingAccount,
   selectNfts,
 } from "../../redux/accountReducer";
-import {selectIsLoading} from '../../redux/collectionReducer';
+import { selectIsLoading } from "../../redux/collectionReducer";
 import Spinner from "../../components/Spinner";
 import {
   LOAD_ACCOUNT_COLLECTIONS,
@@ -18,6 +18,7 @@ import {
 } from "../../saga/actions";
 import Pagination from "../../components/pagination/pagination";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
+import { selectConnectedUser } from "../../redux/userReducer";
 
 const AccountPage = () => {
   const [visible, setVisible] = useState(false);
@@ -26,7 +27,7 @@ const AccountPage = () => {
   const collections = useSelector(selectCollections);
   const nfts = useSelector(selectNfts);
 
-  const {content = [], totalElements} = nfts || {};
+  const { content = [], totalElements } = nfts || {};
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -53,9 +54,11 @@ const AccountPage = () => {
 
   const dispatch = useDispatch();
   const connectedWallet = getCurrentWalletConnected();
+  const user = useSelector(selectConnectedUser);
   const isLoading = useSelector(selectIsLoadingAccount);
-  const isLoadingCollection = useSelector(selectIsLoading)
-  const accountOwner = useSelector(selectAccountOwner);
+  const isLoadingCollection = useSelector(selectIsLoading);
+
+  console.log("USER:", user);
 
   const changePage = (page) => {
     if (page < 1 || page > pagination.maxPages) return;
@@ -126,7 +129,7 @@ const AccountPage = () => {
         <Spinner />
       ) : (
         <>
-          <AccountHeader user={accountOwner} />
+          <AccountHeader user={user} />
           <FilterInput
             onOpenClose={() => setVisible(!visible)}
             onChangeSelectedView={setViewType}

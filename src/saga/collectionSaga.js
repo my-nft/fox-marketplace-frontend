@@ -16,10 +16,7 @@ import {
   setIsLoading as setCollectionIsLoading,
   setCollectionDetails,
 } from "../redux/collectionReducer";
-import {
-  setIsLoading,
-  setListedNfts,
-} from "../redux/nftReducer";
+import { setIsLoading, setListedNfts } from "../redux/nftReducer";
 import { selectToken } from "../redux/userReducer";
 import {
   IMPORT_COLLECTION,
@@ -36,8 +33,8 @@ function* importCollection(action) {
   try {
     yield put(setCollectionIsLoading(true));
     const { collectionAddress } = action.payload;
-    const token = yield select(selectToken)
-    console.log("the token is", token)
+    const token = yield select(selectToken);
+    console.log("the token is", token);
     yield call(api.importCollectionCall, collectionAddress, token);
     yield delay(3000);
     action.onSuccess();
@@ -83,7 +80,7 @@ function* runLoadCollection(action) {
     yield put(setCollectionIsLoading(true));
     let response = yield call(api.getCollectionByAddress, collectionAddress);
     yield delay(1000);
-   
+
     yield put(setCollectionDetails(response.data));
     yield put(setCollectionIsLoading(false));
     action.onSuccess();
@@ -95,33 +92,31 @@ function* runLoadCollection(action) {
   }
 }
 
-
 function* updateCollectionInformation(action) {
-  
-  try{
-    const { collectionAddress,   image, banner, data } = action.payload;
+  try {
+    const { collectionAddress, image, banner, data } = action.payload;
     const token = yield select(selectToken);
-    
-    yield call(api.updateCollection, collectionAddress, {
-      image,
-      banner,
-      collection: data,
-    }, token);
+
+    yield call(
+      api.updateCollection,
+      collectionAddress,
+      {
+        image,
+        banner,
+        collection: data,
+      },
+      token
+    );
 
     yield delay(1000);
     toast.success("Collection updated successfully");
     action.onSuccess();
-
-
-  }
-  catch(error){
+  } catch (error) {
     console.log(error);
     toast.error("An unexpected error occurred.");
-    action.onError()
+    action.onError();
   }
- 
 }
-
 
 function* runLoadMarketPlaceAll(action) {
   try {
@@ -131,8 +126,6 @@ function* runLoadMarketPlaceAll(action) {
     let response = yield call(api.getCollectionsCall, action.payload);
     yield put(setMostPopularCollections(response.data));
 
-    // loading searchable collections
-    response = yield call(api.getCollectionsCall, action.payload);
     yield put(setSearcheableCollections(response.data));
 
     //loading listedNfts
@@ -152,7 +145,7 @@ function* loadAccountCollections(action) {
     yield put(setIsLoadingAccount(true));
     const { ownerAddress, page, numberElements, filter } = action.payload;
 
-    console.log("SAGA CALL",action.payload)
+    console.log("SAGA CALL", action.payload);
 
     const collectionsResponse = yield call(
       api.getAccountCollections,
@@ -237,7 +230,6 @@ function* loadCollection() {
   yield takeLatest(LOAD_COLLECTION, runLoadCollection);
 }
 
-
 export {
   loadPopularCollectionSaga,
   loadSearcheableCollectionSaga,
@@ -246,5 +238,5 @@ export {
   updateCollectionInformationSaga,
   loadMarketPlaceAll,
   importCollectionSaga,
-  loadCollection
+  loadCollection,
 };

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getNftCall } from "../../api/nftApi";
-import {getCollectionByAddress} from '../../api/collectionApi';
+import { getCollectionByAddress } from "../../api/collectionApi";
 import NftMoreInfos from "../../components/nft/details/NftMoreInfos";
 import Spinner from "../../components/Spinner";
 import { selectIsLoading, setIsLoading } from "../../redux/nftReducer";
@@ -35,6 +35,7 @@ const MyNftDetails = () => {
   const [collectionDetails, setCollectionDetails] = useState();
   const dispatch = useDispatch();
 
+  console.log(nftDetails);
 
   const loadNft = async () => {
     try {
@@ -47,6 +48,11 @@ const MyNftDetails = () => {
       dispatch(setIsLoading(false));
     }
   };
+
+  console.log({
+    nft: nftDetails,
+    collection: collectionDetails,
+  });
 
   useEffect(() => {
     loadNft();
@@ -62,11 +68,10 @@ const MyNftDetails = () => {
         collectionAddress: nftDetails.collectionAddress,
         tokenID: nftDetails.tokenID,
         auctionPrice: auctionPrice,
-        endAuction: Math.floor(endAuction) ,
+        endAuction: Math.floor(endAuction),
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
-    
   };
 
   const handleRefund = async () => {
@@ -82,30 +87,30 @@ const MyNftDetails = () => {
   };
 
   const handleClaimNFT = async () => {
-    const {royaltyAddress, royaltyPercent} = collectionDetails;
+    const { royaltyAddress, royaltyPercent } = collectionDetails;
     dispatch({
       type: CLAIM_NFT,
       payload: {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId,
-        royaltyAddress : royaltyAddress ? royaltyAddress : null,
-        royaltyPercent : royaltyPercent ? royaltyPercent : 0
+        royaltyAddress: royaltyAddress ? royaltyAddress : null,
+        royaltyPercent: royaltyPercent ? royaltyPercent : 0,
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
   const handleClaimToken = async () => {
-    const {royaltyAddress, royaltyPercent} = collectionDetails;
+    const { royaltyAddress, royaltyPercent } = collectionDetails;
     dispatch({
       type: CLAIM_TOKEN,
       payload: {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId,
-        royaltyAddress : royaltyAddress ? royaltyAddress : null,
-        royaltyPercent : royaltyPercent ? royaltyPercent : 0
+        royaltyAddress: royaltyAddress ? royaltyAddress : null,
+        royaltyPercent: royaltyPercent ? royaltyPercent : 0,
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -125,7 +130,7 @@ const MyNftDetails = () => {
   };
 
   const onBuyItem = async (price) => {
-    const {royaltyAddress, royaltyPercent} = collectionDetails;
+    const { royaltyAddress, royaltyPercent } = collectionDetails;
     dispatch({
       type: BUY_NFT,
       payload: {
@@ -133,8 +138,8 @@ const MyNftDetails = () => {
         price: Number(price),
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
-        royaltyAddress : royaltyAddress ? royaltyAddress : null,
-        royaltyPercent : royaltyPercent ? royaltyPercent : 0
+        royaltyAddress: royaltyAddress ? royaltyAddress : null,
+        royaltyPercent: royaltyPercent ? royaltyPercent : 0,
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -165,14 +170,14 @@ const MyNftDetails = () => {
   };
 
   const onAcceptOffer = () => {
-    const {royaltyAddress, royaltyPercent} = collectionDetails;
+    const { royaltyAddress, royaltyPercent } = collectionDetails;
     dispatch({
       type: ACCEPT_OFFER,
       payload: {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
-        royaltyAddress : royaltyAddress ? royaltyAddress : null,
-        royaltyPercent : royaltyPercent ? royaltyPercent : 0
+        royaltyAddress: royaltyAddress ? royaltyAddress : null,
+        royaltyPercent: royaltyPercent ? royaltyPercent : 0,
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -202,12 +207,20 @@ const MyNftDetails = () => {
           <div id="imgNft" className="imgForSale">
             <img src={nftDetails?.image} id="NFT" className="imgForSale" />
           </div>
-          <NftMoreInfos nftDetails={nftDetails} />
+          <NftMoreInfos
+            nftDetails={nftDetails}
+            collectionDetails={collectionDetails}
+          />
         </div>
         <div className="col-md-12  col-lg-7 order-1 order-lg-2 ">
           <header id="infoNFT" className="mb-3">
-            <h3>{`${nftDetails?.name}(${nftDetails?.tokenID})`}  </h3>
-            <h4>Owned by {sameAddress(connectedWallet, nftDetails.ownerAddress) ? 'You' : optimizeWalletAddress(nftDetails.ownerAddress)}</h4>
+            <h3>{`${nftDetails?.name}(${nftDetails?.tokenID})`} </h3>
+            <h4>
+              Owned by{" "}
+              {sameAddress(connectedWallet, nftDetails.ownerAddress)
+                ? "You"
+                : optimizeWalletAddress(nftDetails.ownerAddress)}
+            </h4>
           </header>
 
           {

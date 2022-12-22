@@ -1,4 +1,4 @@
-const AccordionAbout = () => {
+const AccordionAbout = ({ nftDetails }) => {
   return (
     <div id="accordionAbout">
       <div className="card">
@@ -26,7 +26,7 @@ const AccordionAbout = () => {
                   />
                 </svg>
                 <span className="pl-3">About</span>
-                <strong> NameNFT</strong>
+                <strong> {nftDetails.name}</strong>
               </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -49,12 +49,7 @@ const AccordionAbout = () => {
           data-parent="#accordionAbout"
         >
           <div className="card-body">
-            <span>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint,
-              maxime corrupti magnam odit deserunt cum quia aut quis non illo
-              harum amet itaque natus, suscipit doloribus ab optio recusandae
-              sed?
-            </span>
+            <span>{nftDetails.description}</span>
           </div>
         </div>
       </div>
