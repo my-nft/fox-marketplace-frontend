@@ -2,13 +2,12 @@ import { withFormik } from "formik";
 import * as Yup from "yup";
 import { UPDATE_PROFILE } from "../../saga/actions";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
-import Profile from './index';
+import Profile from "./index";
 import { connect } from "react-redux";
-
 
 const EMAIL_REGEX = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}$";
 
-const walletAddress = getCurrentWalletConnected()
+const walletAddress = getCurrentWalletConnected();
 
 const formikEnhancer = withFormik({
   validationSchema: Yup.object().shape({
@@ -17,9 +16,8 @@ const formikEnhancer = withFormik({
       .matches(EMAIL_REGEX, "Please add a correct email address")
       .nullable(),
   }),
-  isReinitializable: true,
-  mapPropsToValues: (props) => {
 
+  mapPropsToValues: (props) => {
     return {
       // ...props?.connectedUser,
       username: "",
@@ -28,7 +26,7 @@ const formikEnhancer = withFormik({
       linkWebsite: "",
       address: walletAddress,
       image: false,
-      banner: false
+      banner: false,
     };
   },
 
@@ -37,13 +35,13 @@ const formikEnhancer = withFormik({
     props.dispatch({
       type: UPDATE_PROFILE,
       payload: values,
-      onSuccess: (() => {
-        setSubmitting(false)
-      }),
+      onSuccess: () => {
+        setSubmitting(false);
+      },
       onError: () => {
-        setSubmitting(false)
-      }
-    })
+        setSubmitting(false);
+      },
+    });
   },
   displayName: "SITUATION_PERSONNELLE_FORM",
 });

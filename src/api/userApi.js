@@ -4,7 +4,7 @@ import methods from "../config/axiosConfig";
 const userEndpoint = apiUrl + "user/";
 
 export function getUserByAddress(address) {
-  console.log(process.env)
+  console.log(process.env);
   return methods.get(userEndpoint + address);
 }
 
@@ -51,19 +51,21 @@ export const updateUser = (userform) => {
 
 export const updateUserToDatabase = (data) => {
   const { address } = data;
-  return methods.put(userEndpoint + address,
+
+  return methods.put(
+    userEndpoint + address,
     {
       image: data.image,
       banner: data.banner,
-      user: data.formData
+      user: JSON.stringify(data.formData),
     },
     {
       headers: {
-        'Content-Type': 'multipart/form-data',
-        "Access-Control-Allow-Origin": "*"
-      }
+        "Content-Type": "multipart/form-data",
+        "Access-Control-Allow-Origin": "*",
+      },
     }
   );
-}
+};
 
 // collection => 0 *n NFT
