@@ -1,6 +1,21 @@
+import { useEffect, useState } from "react";
+import { web3 } from "../../../utils/blockchainInteractor";
 import { optimizeWalletAddress } from "../../../utils/walletUtils";
 
-const AccordionDetails = ({nftDetails}) => {
+const AccordionDetails = ({ nftDetails, collectionDetails }) => {
+  const [chainId, setChainId] = useState(false);
+
+  // get chain id and get name of the chain
+
+  useEffect(() => {
+    web3.eth.getChainId().then((res) => {
+      setChainId(res);
+    });
+  }, []);
+
+  useEffect(() => {
+    web3.eth.getProtocolVersion().then(console.log);
+  }, []);
 
   return (
     <div id="accordionDetails">
@@ -54,7 +69,9 @@ const AccordionDetails = ({nftDetails}) => {
             <ul>
               <li>
                 <span className="label">Contract Address</span>
-                <span className="value">{optimizeWalletAddress(nftDetails.collectionAddress)}</span>
+                <span className="value">
+                  {optimizeWalletAddress(nftDetails.collectionAddress)}
+                </span>
               </li>
               <li>
                 <span className="label">Token ID</span>
@@ -62,19 +79,32 @@ const AccordionDetails = ({nftDetails}) => {
               </li>
               <li>
                 <span className="label">Token Standard</span>
-                <span className="value">{nftDetails.tokenStandard}</span>
+                <span className="value">ERC 271</span>
               </li>
               <li>
-                <span className="label">Chain</span>
-                <span className="value">{nftDetails.chain}</span>
+                <span className="label">Chain ID</span>
+                <span className="value">{chainId}</span>
               </li>
               <li>
                 <span className="label">Last Updated</span>
-                <span className="value">{nftDetails.lastUpdate}</span>
+                <span className="value">
+                  {collectionDetails.modificationDate
+                    ? new Date(
+                        collectionDetails.modificationDate
+                      ).toLocaleString("en-US", {
+                        timeZone: "UTC",
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })
+                    : "-"}
+                </span>
               </li>
               <li>
                 <span className="label">Creator Earnings</span>
-                <span className="value">{nftDetails.creatorEarnings}%</span>
+                <span className="value">
+                  {collectionDetails.royaltyPercent}%
+                </span>
               </li>
             </ul>
           </div>
