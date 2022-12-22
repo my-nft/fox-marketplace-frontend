@@ -9,22 +9,24 @@ import {
 } from "../../interactors/blockchainInteractor";
 import { selectConnectedUser } from "../../redux/userReducer";
 import { LOAD_USER } from "../../saga/actions";
+import { web3 } from "../../utils/blockchainInteractor";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 import ScrollToTop from "../scrollToTop";
 import useOutsideClick from "./../../utils/useOutsideClick";
 import SearchBar from "./../searchBar/searchBar";
 
 const Header = () => {
-
   const clickRef = useOutsideClick(() => {
     document.querySelector(".navbar-collapse").classList.remove("show");
   });
 
-
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [connectedWallet, setConnectedWallet] = useState();
+  const [balance, setBalance] = useState({
+    fx: 0,
+    fxg: 0,
+  });
   const connectedUser = useSelector(selectConnectedUser);
   const [filters, setFilters] = useState({
     searchPrompt: "",
@@ -43,7 +45,7 @@ const Header = () => {
       });
     } else {
       connectWallet();
-      setConnectedWallet(getCurrentWalletConnected())
+      setConnectedWallet(getCurrentWalletConnected());
     }
   }, [connectedWallet]);
 
@@ -82,6 +84,70 @@ const Header = () => {
     console.log("USER SETTED", connectedUser);
   }, [connectedUser]);
 
+  console.log("WALLET: ", connectedWallet);
+
+  useEffect(() => {
+    if (connectedWallet) {
+      // create a smart contract to get FX and FXG token balance of connected wallet
+      const minAbi = [
+        {
+          constant: true,
+          inputs: [
+            {
+              name: "_owner",
+              type: "address",
+            },
+          ],
+          name: "balanceOf",
+          outputs: [
+            {
+              name: "balance",
+              type: "uint256",
+            },
+          ],
+          type: "function",
+        },
+      ];
+
+      const fxContract = new web3.eth.Contract(
+        minAbi,
+        "0x5Ee058aa7D8Fa214F92ECeCCCE9531F16A04C592"
+      );
+      const fxgContract = new web3.eth.Contract(
+        minAbi,
+        "0x4DC015a60045fB20a3651b2e85AF986354197Fe5"
+      );
+
+      web3.eth.getBalance(connectedWallet, (err, wei) => {
+        if (!err) {
+          const walletBalance = Number(
+            web3.utils.fromWei(wei, "ether")
+          ).toFixed(2);
+          setBalance({
+            ...balance,
+            fx: walletBalance,
+          });
+        }
+      });
+
+      // fxContract.methods
+      //   .balanceOf(connectedWallet)
+      //   .call()
+      //   .then((res) => {
+      //     console.log("FX Balance", web3.utils.fromWei(res));
+      //   });
+
+      // fxgContract.methods
+      //   .balanceOf(connectedWallet)
+      //   .call()
+      //   .then((res) => {
+      //     console.log("FXG Balance", res);
+      //   });
+    }
+  }, [connectedWallet]);
+
+  console.log(balance);
+
   return (
     <>
       <ScrollToTop />
@@ -112,7 +178,7 @@ const Header = () => {
           </button>
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav">
+            <ul className={`navbar-nav ${connectedWallet ? "" : "mr-3"}`}>
               <li className="nav-item active">
                 <Link className="nav-link" to="/explorer">
                   Explorer <span className="sr-only">(current)</span>
@@ -124,30 +190,41 @@ const Header = () => {
                 </Link>
               </li>
             </ul>
-            <ul id="buttonIcon">
-              {connectedWallet ? (
-                <>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/account">
-                      Account
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to={"/profile"}>
-                      <img src="/assets/icon-white-user.png" alt="" />
-                    </Link>
-                  </li>
-                </>
-              ) : null}
-              <li>
-                <Link to="#">
-                  <img src="/assets/icon-white-settings.png" alt="" />
-                </Link>
-              </li>
-              <li>
-                <img src="/assets/icon-white-wallet.png" alt="" />
-              </li>
-            </ul>
+
+            {connectedWallet ? (
+              <ul id="buttonIcon">
+                <li className="nav-item">
+                  <Link className="nav-link" to="/account">
+                    Account
+                  </Link>
+                </li>
+                <li>
+                  <Link to={"/profile"}>
+                    <img src="/assets/icon-white-user.png" alt="" />
+                  </Link>
+                </li>
+                <li>
+                  <Link to="#">
+                    <img src="/assets/icon-white-settings.png" alt="" />
+                  </Link>
+                </li>
+
+                <li className="walletIcon">
+                  <div className="walletInfo">
+                    <div>
+                      <h2>FX</h2>
+                      <p>{balance.fx}</p>
+                    </div>
+                    <div>
+                      <h2>FXG</h2>
+                      <p>0.00</p>
+                    </div>
+                  </div>
+                  <img src="/assets/icon-white-wallet.png" alt="" />
+                </li>
+              </ul>
+            ) : null}
+
             <button id="signUpButton" onClick={handleSignIn}>
               {connectedWallet
                 ? optimizeWalletAddress(connectedWallet)

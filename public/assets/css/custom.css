@@ -3459,3 +3459,56 @@ img {
 .listMostPopular .wrapText {
   padding-top: 40px;
 }
+
+.walletIcon {
+  cursor: pointer;
+  position: relative;
+  display: flex !important;
+}
+
+.walletIcon img {
+  object-fit: contain;
+}
+
+.walletInfo {
+  max-width: 0;
+  opacity: 0;
+  transition: 300ms ease-in-out;
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  gap: 12px;
+  margin-left: 8px;
+  margin-right: 0;
+}
+
+.walletInfo div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.walletInfo h2 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f58103;
+  margin: 0;
+}
+
+.walletInfo p {
+  font-size: 16px;
+  color: #fefefe;
+  opacity: 0.6;
+  margin: 0;
+}
+
+.walletIcon:hover .walletInfo {
+  max-width: 300px;
+  opacity: 1;
+  margin-right: 24px;
+}
+ul#buttonIcon {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
