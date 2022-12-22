@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { selectConnectedUser } from "../../redux/userReducer";
-import { getCurrentWalletConnected } from './../../utils/blockchainInteractor';
+import { getCurrentWalletConnected } from "./../../utils/blockchainInteractor";
 
 import uploadIcon from "../../assets/images/create_icon_3.png";
 import { useEffect, useState } from "react";
@@ -13,148 +13,137 @@ const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
 
   useEffect(() => {
     console.log(values);
-  }, [values])
+  }, [values]);
 
   const walletAddress = getCurrentWalletConnected();
-
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
 
     handleChange({ target: { name: e.target.name, value: file } });
-    
-  }
+  };
 
   useEffect(() => {
+    handleChange({ target: { name: "address", value: walletAddress } });
+  }, []);
 
-    const {banner, image} = values;
+  useEffect(() => {
+    const { banner, image } = values;
 
-  
-    if(image){
-      if(image.data) {
-        const base64 = Buffer.from(image.data.data).toString('base64')
+    if (image) {
+      if (image.data) {
+        const base64 = Buffer.from(image.data.data).toString("base64");
         setImageUrl(`data:image/png;base64,${base64}`);
-      }
-      else if(image.type){
+      } else if (image.type) {
         let url = URL.createObjectURL(image);
-        console.log(url)
+        console.log(url);
         setImageUrl(url);
-      }
-      else if(typeof image === "string"){
+      } else if (typeof image === "string") {
         setImageUrl(image);
       }
     }
 
-    if(banner){
-      if(banner.data) {
-        const base64 = Buffer.from(banner.data.data).toString('base64')
+    if (banner) {
+      if (banner.data) {
+        const base64 = Buffer.from(banner.data.data).toString("base64");
         setBannerUrl(`data:image/png;base64,${base64}`);
-      }
-      else if(banner.type){
+      } else if (banner.type) {
         let url = URL.createObjectURL(banner);
         setBannerUrl(url);
-      }
-      else if(typeof banner === "string"){
+      } else if (typeof banner === "string") {
         setBannerUrl(banner);
       }
     }
-
-
-  }, [values.image, values.banner])
-
-
-  const handleComplexSubmit = (e) => {
-    e.preventDefault();
-  }
-
+  }, [values.image, values.banner]);
 
   return (
     <>
-      {
-        isSubmitting
-        ? <Spinner />
-        :
+      {isSubmitting ? (
+        <Spinner />
+      ) : (
         <Form className="container-fluid" id="profile">
+          <div className="row">
+            <div className="col-md-2 navigation">
+              <h5>SETTINGS</h5>
+              <ul>
+                <li>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    className="bi bi-person-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                  </svg>{" "}
+                  <span>Profile</span>
+                </li>
+              </ul>
+            </div>
+            <div className="col-md-10 p-5 col-sm-12">
+              <h2>Profile Details</h2>
               <div className="row">
-                <div className="col-md-2 navigation">
-                  <h5>SETTINGS</h5>
-                  <ul>
-                    <li>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        className="bi bi-person-fill"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-                      </svg>{" "}
-                      <span>Profile</span>
-                    </li>
-                  </ul>
-                </div>
-                <div className="col-md-10 p-5 col-sm-12">
-                  <h2>Profile Details</h2>
-                  <div className="row">
-                    <div className="col-md-6 col-sm-12">
-                      <form>
-                        <div className="form-row">
-                          <div className="form-group col-md-12">
-                            <label htmlFor="username">Username</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="username"
-                              name="username"
-                              placeholder="Enter user name"
-                              onChange={handleChange}
-                              value={values.username}
-                            />
-                          </div>
-                          <div className="form-group col-md-12">
-                            <label htmlFor="bio">Bio</label>
-                            <textarea
-                              maxLength="140"
-                              placeholder="Tell the world your story!"
-                              id="bio"
-                              name="bio"
-                              onChange={handleChange}
-                              className="form-control"
-                              value={values.bio}
-                            ></textarea>
-                          </div>
-                          <div className="form-group col-md-12">
-                            <label htmlFor="emailAddress">Email Address</label>
-                            <input
-                              type="email"
-                              className="form-control"
-                              id="emailAddress"
-                              name='email'
-                              placeholder="Enter email"
-                              onChange={handleChange}
-                              value={values.email}
-                            />
-                          </div>
-                          <div className="form-group col-md-12">
-                            <label htmlFor="inputConfirmEmail">Confirm Email Address</label>
-                            <input
-                              type="email"
-                              className="form-control"
-                              id="inputConfirmEmail"
-                              name="emailConfirm"
-                              placeholder="Confirm email"
-                              // onChange={handleChange}
-                            />
-                          </div>
-                          <div id="socialConnection">
-                            <h3>Social Connections</h3>
-                            <h6>
-                              Help collectors verify your account by connecting social
-                              accounts
-                            </h6>
-                            <p>*** Coming Soon ***</p>
-                            {/* <ul>
+                <div className="col-md-6 col-sm-12">
+                  <form>
+                    <div className="form-row">
+                      <div className="form-group col-md-12">
+                        <label htmlFor="username">Username</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="username"
+                          name="username"
+                          placeholder="Enter user name"
+                          onChange={handleChange}
+                          value={values.username}
+                        />
+                      </div>
+                      <div className="form-group col-md-12">
+                        <label htmlFor="bio">Bio</label>
+                        <textarea
+                          maxLength="140"
+                          placeholder="Tell the world your story!"
+                          id="bio"
+                          name="bio"
+                          onChange={handleChange}
+                          className="form-control"
+                          value={values.bio}
+                        ></textarea>
+                      </div>
+                      <div className="form-group col-md-12">
+                        <label htmlFor="emailAddress">Email Address</label>
+                        <input
+                          type="email"
+                          className="form-control"
+                          id="emailAddress"
+                          name="email"
+                          placeholder="Enter email"
+                          onChange={handleChange}
+                          value={values.email}
+                        />
+                      </div>
+                      <div className="form-group col-md-12">
+                        <label htmlFor="inputConfirmEmail">
+                          Confirm Email Address
+                        </label>
+                        <input
+                          type="email"
+                          className="form-control"
+                          id="inputConfirmEmail"
+                          name="emailConfirm"
+                          placeholder="Confirm email"
+                          // onChange={handleChange}
+                        />
+                      </div>
+                      <div id="socialConnection">
+                        <h3>Social Connections</h3>
+                        <h6>
+                          Help collectors verify your account by connecting
+                          social accounts
+                        </h6>
+                        <p>*** Coming Soon ***</p>
+                        {/* <ul>
                               <li>
                                 <span>
                                   <svg
@@ -188,86 +177,83 @@ const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
                                 <button>Connect</button>
                               </li>
                             </ul> */}
-                          </div>
-                          <div className="form-group col-md-12">
-                            <label htmlFor="linkWeb">Links</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              name="linkWeb"
-                              id="linkWeb"
-                              placeholder="yoursite.io"
-                              onChange={handleChange}
-                            />
-                          </div>
-                          <div className="form-group col-md-12">
-                            <label htmlFor="inputArtName">Wallet Address</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="inputSiteweb"
-                              placeholder="yoursite.io"
-                              readOnly
-                              value={walletAddress}
-                            />
-                          </div>
-                          <button type='submit' className="confirmButton" onClick={handleSubmit}>Save</button>
-                        </div>
-                      </form>
-                    </div>
-                    <div className="col-md-6 col-sm-12 text-center imageChange" id="profileImg">
-                      <div className="imageUpload">
-                        <h4>Profile Image</h4>
-                        <label htmlFor="image" className="profileImageUpload">
-                          <img
-                            src={imageUrl}
-                        
-                            alt=""
-                          />
-                          <div className="changeOverlay">
-                            <img src={uploadIcon} />
-                            <p>Change image</p>
-                          </div>
-                          <input
-                            type="file"
-                            name="image"
-                            id="image"
-                            onChange={handleImageUpload}
-                          />
-                        </label>
                       </div>
-
-
-                      <div className="imageUpload">
-                        <h4 className="mt-5">Profile Banner</h4>
-                        <label htmlFor="banner" className="bannerImageUpload">
-                          <img
-                            src={bannerUrl}
-                            alt=""
-                          />
-                          <div className="changeOverlay">
-                            <img src={uploadIcon} />
-                            <p>Change image</p>
-                          </div>
-                          <input
-                            type="file"
-                            name="banner"
-                            id="banner"
-                            onChange={handleImageUpload}
-                    
-                          />
-
-                        </label>
+                      <div className="form-group col-md-12">
+                        <label htmlFor="linkWeb">Links</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="linkWeb"
+                          id="linkWeb"
+                          placeholder="yoursite.io"
+                          onChange={handleChange}
+                        />
                       </div>
+                      <div className="form-group col-md-12">
+                        <label htmlFor="inputArtName">Wallet Address</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="inputSiteweb"
+                          placeholder="yoursite.io"
+                          readOnly
+                          value={walletAddress}
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        className="confirmButton"
+                        onClick={handleSubmit}
+                      >
+                        Save
+                      </button>
                     </div>
+                  </form>
+                </div>
+                <div
+                  className="col-md-6 col-sm-12 text-center imageChange"
+                  id="profileImg"
+                >
+                  <div className="imageUpload">
+                    <h4>Profile Image</h4>
+                    <label htmlFor="image" className="profileImageUpload">
+                      <img src={imageUrl} alt="" />
+                      <div className="changeOverlay">
+                        <img src={uploadIcon} />
+                        <p>Change image</p>
+                      </div>
+                      <input
+                        type="file"
+                        name="image"
+                        id="image"
+                        onChange={handleImageUpload}
+                      />
+                    </label>
+                  </div>
+
+                  <div className="imageUpload">
+                    <h4 className="mt-5">Profile Banner</h4>
+                    <label htmlFor="banner" className="bannerImageUpload">
+                      <img src={bannerUrl} alt="" />
+                      <div className="changeOverlay">
+                        <img src={uploadIcon} />
+                        <p>Change image</p>
+                      </div>
+                      <input
+                        type="file"
+                        name="banner"
+                        id="banner"
+                        onChange={handleImageUpload}
+                      />
+                    </label>
                   </div>
                 </div>
               </div>
-            </Form>
-
-      }
+            </div>
+          </div>
+        </Form>
+      )}
     </>
-    
   );
 };
 

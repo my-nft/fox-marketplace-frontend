@@ -1,23 +1,63 @@
+import { useEffect, useState } from "react";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
+import { optimizeWalletAddress } from "../../utils/walletUtils";
 
 const AccountHeader = ({ user }) => {
+  const [profileImgUrl, setProfileImgUrl] = useState(false);
+  const [profileBannerUrl, setProfileBannerUrl] = useState(false);
 
-  console.log(user)
+  const readBufferToBase64String = (buffer) => {
+    let binary = "";
+    let bytes = [].slice.call(new Uint8Array(buffer));
+    bytes.forEach((b) => (binary += String.fromCharCode(b)));
+    return window.btoa(binary);
+  };
+
+  useEffect(() => {
+    if (user && user.image && user.image.data) {
+      setProfileImgUrl(
+        "data:image/png;base64," +
+          readBufferToBase64String(user.image.data.data)
+      );
+    }
+    if (user && user.banner && user.banner.data) {
+      setProfileBannerUrl(
+        "data:image/png;base64," +
+          readBufferToBase64String(user.banner.data.data)
+      );
+    }
+  }, [user]);
+
+  console.log("URL", profileImgUrl);
 
   return (
     <section id="headerAccount" className="container-fluid">
       <div className="row p-4" id="infoProfile">
         <img
-          src="/assets/images/account/img_account_default.jpg"
+          src={
+            user && user.image && user.image.data
+              ? profileImgUrl
+              : "/assets/images/account/img_account_default.jpg"
+          }
           id="iconProfile"
         />
-        <img src="" alt="" />
+        <img
+          src={user && user.banner && user.banner.data ? profileBannerUrl : ""}
+          alt=""
+        />
       </div>
       <div className="row p-4 mt-5" id="infoHeader">
         <div id="accountName">
-          <p>{user.username}</p>
-          <span id="accountWallet">Wallet Address {user.address}</span> -{" "}
-          <span className="dataLastVisit">Joined June 2022</span>
+          <p>{user.username ? user.username : "-"}</p>
+          <span id="accountWallet">
+            Wallet Address{" "}
+            {user.address ? (
+              optimizeWalletAddress(user.address)
+            ) : (
+              <i>Missing</i>
+            )}
+          </span>{" "}
+          - <span className="dataLastVisit">Joined June 2022</span>
         </div>
         {/* <div id="accountButton">
           <svg
