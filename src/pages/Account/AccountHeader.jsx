@@ -1,6 +1,9 @@
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 
 const AccountHeader = ({ user }) => {
+
+  console.log(user)
+
   return (
     <section id="headerAccount" className="container-fluid">
       <div className="row p-4" id="infoProfile">

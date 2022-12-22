@@ -57,6 +57,8 @@ const AccountPage = () => {
   const isLoadingCollection = useSelector(selectIsLoading)
   const accountOwner = useSelector(selectAccountOwner);
 
+  console.log(accountOwner)
+
   const changePage = (page) => {
     if (page < 1 || page > pagination.maxPages) return;
     setPagination({

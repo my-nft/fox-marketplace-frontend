@@ -7,7 +7,7 @@ import {
   setLoading,
   setToken,
 } from "../redux/userReducer";
-import { LOAD_USER } from "./actions";
+import { LOAD_USER, UPDATE_PROFILE } from "./actions";
 import { signIn, signUp } from "../interactors/authInteractor";
 import { toast } from "react-toastify";
 
@@ -80,8 +80,13 @@ function* updateUserProfile(action){
 
 // Starts fetchUser on each dispatched USER_FETCH_REQUESTED action
 // Allows concurrent fetches of user
+
+function* updateProfileForUser(){
+  yield takeLatest(UPDATE_PROFILE, updateUserProfile())
+}
+
 function* loadUser() {
   yield takeLatest(LOAD_USER, getConnectedUser);
 }
 
-export { loadUser };
+export { loadUser, updateProfileForUser };

@@ -11,7 +11,7 @@ import {
   updateCollectionInformationSaga,
 } from "./collectionSaga";
 import { loadListedNfts } from "./nftSaga";
-import { loadUser } from "./userSaga";
+import { loadUser, updateProfileForUser } from "./userSaga";
 
 function* watchAll() {
   yield all([
@@ -32,6 +32,7 @@ function* watchAll() {
     importCollectionSaga(),
     loadCollection(),
     updateCollectionInformationSaga(),
+    updateProfileForUser(),
     refund(),
     claimNFTSaga(),
     claimTokenSaga()
