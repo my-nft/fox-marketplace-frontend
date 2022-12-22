@@ -1,5 +1,6 @@
 import { withFormik } from "formik";
 import * as Yup from "yup";
+import { UPDATE_PROFILE } from "../../saga/actions";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import Profile from './index';
 
@@ -14,6 +15,7 @@ const formikEnhancer = withFormik({
       .matches(EMAIL_REGEX, "Please add a correct email address")
       .nullable(),
   }),
+  isReinitializable: true,
   mapPropsToValues: (props) => {
 
     return {
@@ -28,8 +30,20 @@ const formikEnhancer = withFormik({
     };
   },
 
-  handleSubmit: (values, { setSubmitting }) => {
-    setSubmitting(true);
+  handleSubmit: (values, { props, setSubmitting }) => {
+    // setSubmitting(true);
+    props.dispatch({
+      type: UPDATE_PROFILE,
+      payload: values,
+      onSuccess: (() => {
+        setSubmitting(false)
+      }),
+      onError: () => {
+        setSubmitting(false)
+      }
+    })
+    
+    
   },
   displayName: "SITUATION_PERSONNELLE_FORM",
 });

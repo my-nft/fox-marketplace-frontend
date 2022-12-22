@@ -49,4 +49,21 @@ export const updateUser = (userform) => {
   };
 };
 
+export const updateUserToDatabase = (data) => {
+  const { address } = data;
+  return methods.put(userEndpoint + address,
+    {
+      image: data.image,
+      banner: data.banner,
+      user: data.formData
+    },
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        "Access-Control-Allow-Origin": "*"
+      }
+    }
+  );
+}
+
 // collection => 0 *n NFT
