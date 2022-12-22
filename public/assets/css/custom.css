@@ -465,7 +465,7 @@ td span {
 
 .slick-slide:hover {
   scale: 1.1;
-  margin: 0 50px;
+  margin: 0 32px;
 }
 
 .slider .slick-list {
@@ -3348,15 +3348,15 @@ input:read-only {
   border-radius: 8px;
 }
 
-.confirmButton{
+.confirmButton {
   display: flex;
   justify-content: center;
   margin-top: 32px;
   padding: 12px 48px !important;
   border-radius: 12px;
   background: #f58103;
-  display:block;
-  outline : none;
+  display: block;
+  outline: none;
   border: none;
   font-weight: 600 !important;
 }
@@ -3369,12 +3369,12 @@ input:read-only {
   border: none !important;
 }
 
-.bannerChange label{
+.bannerChange label {
   min-height: 200px;
   border: 1px solid #f58103;
 }
 
-.settingsIcon{
+.settingsIcon {
   padding: 12px;
   border-radius: 10px;
   background: #15191d;
@@ -3382,32 +3382,30 @@ input:read-only {
   height: max-content;
   transition: 300ms ease-in-out;
 }
-.settingsIcon svg{
+.settingsIcon svg {
   margin-right: 0 !important;
 }
 
-.settingsIcon svg path{
+.settingsIcon svg path {
   fill: #faffff;
 }
 
-.settingsIcon:hover{
+.settingsIcon:hover {
   background: #f58103;
 }
 
-
-img{
-
+img {
   font-size: 0;
 }
 
-.imageUpload h4{
+.imageUpload h4 {
   font-size: 16px;
   font-weight: 600;
   color: #fefefe;
   margin-bottom: 16px;
 }
 
-.profileImageUpload{
+.profileImageUpload {
   width: 172px !important;
   height: 172px !important;
   object-fit: cover;
@@ -3418,9 +3416,7 @@ img{
   position: relative;
 }
 
-
-
-.profileImageUpload>img{
+.profileImageUpload > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -3429,12 +3425,12 @@ img{
   max-width: unset !important;
 }
 
-
-.profileImageUpload input, .bannerImageUpload input{
+.profileImageUpload input,
+.bannerImageUpload input {
   display: none;
 }
 
-.bannerImageUpload{
+.bannerImageUpload {
   width: 100%;
   height: 200px;
   object-fit: cover;
@@ -3443,4 +3439,23 @@ img{
   border: 1px solid #f58103;
   border-radius: 16px;
   position: relative;
+}
+
+.collectionImgLogo {
+  position: absolute;
+  left: 1vw;
+  bottom: -3vh;
+  border: 2px solid white;
+  border-radius: 15px;
+  max-width: 60px;
+  height: 60px !important;
+  display: block;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  background: rgb(0, 0, 0);
+}
+
+.listMostPopular .wrapText {
+  padding-top: 40px;
 }
