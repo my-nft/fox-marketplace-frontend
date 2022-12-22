@@ -2,13 +2,10 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 axios.interceptors.request.use((config)=>{
-    const token = localStorage.getItem( 'token' ) || '';
-    if(token) {
-        config.headers.Authorization =  `Bearer ${token}`;
-        // access control
-        config.headers.put['Access-Control-Allow-Origin'] = '*';
-    }
-    return config;
+    return {
+        ...config,
+        'Access-Control-Allow-Origin': '*'
+    };
 })
 
 

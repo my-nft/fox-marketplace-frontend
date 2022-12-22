@@ -56,9 +56,11 @@ export const getBestOffer = async (collectionAddress, tokenID) => {
 };
 
 export const getListingIdByToken = async (collectionAddress, tokenID) => {
-  const response = await fixedPriceContractReadOnly.methods.listingIdByToken(collectionAddress, tokenID).call();
+  const response = await fixedPriceContractReadOnly.methods
+    .listingIdByToken(collectionAddress, tokenID)
+    .call();
   return response;
-}
+};
 
 export const createAuction = async (
   collectionAddress,
@@ -69,8 +71,6 @@ export const createAuction = async (
   const connectWallet = getCurrentWalletConnected();
   const price = bigNumberPricing(initialPrice);
   const erc721Contract = loadERC721Contract(collectionAddress, false);
-
-  console.log("HERRRE");
 
   const gasLimitApprouve = await erc721Contract.methods
     .approve(AUTIONContractAddress, tokenID)
@@ -123,7 +123,6 @@ export const getAuctionInfos = async (auctionId) => {
   try {
     return await auctionContractReadOnly.methods.allAuctions(auctionId).call();
   } catch (error) {
-    console.warn(error);
   }
 };
 
@@ -173,34 +172,46 @@ export const refundNft = async (auctionId) => {
   });
 };
 
-export const claimNFT = async (auctionId) => {
+export const claimNFT = async ({
+  auctionId,
+  royaltyAddress,
+  royaltyPercent,
+}) => {
   const connectWallet = getCurrentWalletConnected();
   const gasLimit = await auctionContract.methods
-    .claimNFT(auctionId)
+    .claimNFT(auctionId, royaltyAddress, royaltyPercent)
     .estimateGas({
       from: connectWallet,
       to: AUTIONContractAddress,
     });
-  await auctionContract.methods.claimNFT(auctionId).send({
-    from: connectWallet,
-    to: AUTIONContractAddress,
-    gasLimit,
-  });
+  await auctionContract.methods
+    .claimNFT(auctionId, royaltyAddress, royaltyPercent)
+    .send({
+      from: connectWallet,
+      to: AUTIONContractAddress,
+      gasLimit,
+    });
 };
 
-export const claimToken = async (auctionId) => {
+export const claimToken = async ({
+  auctionId,
+  royaltyAddress,
+  royaltyPercent,
+}) => {
   const connectWallet = getCurrentWalletConnected();
   const gasLimit = await auctionContract.methods
-    .claimToken(auctionId)
+    .claimToken(auctionId, royaltyAddress, royaltyPercent)
     .estimateGas({
       from: connectWallet,
       to: AUTIONContractAddress,
     });
-  await auctionContract.methods.claimToken(auctionId).send({
-    from: connectWallet,
-    to: AUTIONContractAddress,
-    gasLimit,
-  });
+  await auctionContract.methods
+    .claimToken(auctionId, royaltyAddress, royaltyPercent)
+    .send({
+      from: connectWallet,
+      to: AUTIONContractAddress,
+      gasLimit,
+    });
 };
 
 export const createListing = async (collectionAddress, tokenID, priceInput) => {
@@ -248,7 +259,12 @@ export const createListing = async (collectionAddress, tokenID, priceInput) => {
   return tnx.events.ListingCreated.returnValues.id;
 };
 
-export const buyItem = async (listingId, price) => {
+export const buyItem = async ({
+  listingId,
+  price,
+  royaltyAddress,
+  royaltyPercent,
+}) => {
   const connectWallet = getCurrentWalletConnected();
   const listingPrice = bigNumberPricing(price);
 
@@ -266,17 +282,19 @@ export const buyItem = async (listingId, price) => {
   });
 
   const gasLimitBuy = await fixedPriceContract.methods
-    .buyToken(listingId)
+    .buyToken(listingId, royaltyAddress, royaltyPercent)
     .estimateGas({
       from: connectWallet,
       to: FIXEDContractAddress,
     });
 
-  await fixedPriceContract.methods.buyToken(listingId).send({
-    from: connectWallet,
-    to: FIXEDContractAddress,
-    gasLimit: gasLimitBuy,
-  });
+  await fixedPriceContract.methods
+    .buyToken(listingId, royaltyAddress, royaltyPercent)
+    .send({
+      from: connectWallet,
+      to: FIXEDContractAddress,
+      gasLimit: gasLimitBuy,
+    });
 };
 
 export const deListItem = async (listingId) => {
@@ -335,7 +353,7 @@ export const makeOfferToOwner = async (collectionAddress, tokenID, price) => {
     });
 };
 
-export const acceptOffer = async (collectionAddress, tokenID) => {
+export const acceptOffer = async (collectionAddress, tokenID, royaltyAddress, royaltyPercent) => {
   const connectWallet = getCurrentWalletConnected();
 
   console.log("collectionAddress", collectionAddress);
@@ -360,14 +378,14 @@ export const acceptOffer = async (collectionAddress, tokenID) => {
   });
 
   const gasLimitAcceptOffer = await offerSystemContract.methods
-    .acceptBuyOffer(collectionAddress, tokenID)
+    .acceptBuyOffer(collectionAddress, tokenID, royaltyAddress, royaltyPercent)
     .estimateGas({
       from: connectWallet,
       to: OfferSystemAddress,
     });
 
   await offerSystemContract.methods
-    .acceptBuyOffer(collectionAddress, tokenID)
+    .acceptBuyOffer(collectionAddress, tokenID, royaltyAddress, royaltyPercent)
     .send({
       from: connectWallet,
       to: OfferSystemAddress,

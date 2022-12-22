@@ -120,7 +120,7 @@ const CollectionDetails = () => {
       toast.loading("Import progressing...");
       const interval = setInterval(() => {
         updateProcessing(interval);
-      }, 1000);
+      }, 3000);
       return () => {
         toast.clearWaitingQueue();
         toast.dismiss();
