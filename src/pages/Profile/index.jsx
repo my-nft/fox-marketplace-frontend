@@ -74,7 +74,7 @@ const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
         isSubmitting
         ? <Spinner />
         :
-        <form onSubmit={(e) => handleComplexSubmit(e)} className="container-fluid" id="profile">
+        <Form className="container-fluid" id="profile">
               <div className="row">
                 <div className="col-md-2 navigation">
                   <h5>SETTINGS</h5>
@@ -211,7 +211,7 @@ const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
                               value={walletAddress}
                             />
                           </div>
-                          <button type='submit' className="confirmButton">Save</button>
+                          <button type='submit' className="confirmButton" onClick={handleSubmit}>Save</button>
                         </div>
                       </form>
                     </div>
@@ -263,7 +263,7 @@ const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
                   </div>
                 </div>
               </div>
-            </form>
+            </Form>
 
       }
     </>

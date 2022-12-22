@@ -65,10 +65,6 @@ function* updateUserProfile(action){
       action.onSuccess();
     }
 
-
-
-
-
   }
   catch{
     toast("There was an error processing this request!");
@@ -82,7 +78,7 @@ function* updateUserProfile(action){
 // Allows concurrent fetches of user
 
 function* updateProfileForUser(){
-  yield takeLatest(UPDATE_PROFILE, updateUserProfile())
+  yield takeLatest(UPDATE_PROFILE, updateUserProfile)
 }
 
 function* loadUser() {

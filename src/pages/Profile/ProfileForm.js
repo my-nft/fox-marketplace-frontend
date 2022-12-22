@@ -3,6 +3,8 @@ import * as Yup from "yup";
 import { UPDATE_PROFILE } from "../../saga/actions";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import Profile from './index';
+import { connect } from "react-redux";
+
 
 const EMAIL_REGEX = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}$";
 
@@ -42,10 +44,8 @@ const formikEnhancer = withFormik({
         setSubmitting(false)
       }
     })
-    
-    
   },
   displayName: "SITUATION_PERSONNELLE_FORM",
 });
 
-export default formikEnhancer(Profile);
+export default connect()(formikEnhancer(Profile));
