@@ -40,45 +40,38 @@ function* getConnectedUser(action) {
   }
 }
 
-
-function* updateUserProfile(action){
-  try{
-
-    const {username, bio, email, linkWebsite, address, image, banner } = action.payload;
-
-
+function* updateUserProfile(action) {
+  try {
+    const { username, bio, email, linkWebsite, address, image, banner } =
+      action.payload;
 
     const response = yield call(api.updateUserToDatabase, {
       address,
-      formData:{
+      formData: {
         username,
         bio,
         email,
         linkWebsite,
-        image,
-        banner
-      }
-    })
+      },
+      image,
+      banner,
+    });
 
-    if(response){
+    if (response) {
       toast("Your profile has been updated successfully!");
       action.onSuccess();
     }
-
-  }
-  catch{
+  } catch {
     toast("There was an error processing this request!");
-    action.onError()
+    action.onError();
   }
 }
-
-
 
 // Starts fetchUser on each dispatched USER_FETCH_REQUESTED action
 // Allows concurrent fetches of user
 
-function* updateProfileForUser(){
-  yield takeLatest(UPDATE_PROFILE, updateUserProfile)
+function* updateProfileForUser() {
+  yield takeLatest(UPDATE_PROFILE, updateUserProfile);
 }
 
 function* loadUser() {
