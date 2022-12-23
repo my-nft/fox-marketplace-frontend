@@ -19,14 +19,7 @@ const formikEnhancer = withFormik({
 
   mapPropsToValues: (props) => {
     return {
-      // ...props?.connectedUser,
-      username: "",
-      bio: "",
-      email: "",
-      linkWebsite: "",
-      address: walletAddress,
-      image: false,
-      banner: false,
+      ...props?.connectedUser,
     };
   },
 

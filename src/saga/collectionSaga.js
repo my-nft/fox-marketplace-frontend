@@ -20,7 +20,6 @@ import { setIsLoading, setListedNfts } from "../redux/nftReducer";
 import { selectToken } from "../redux/userReducer";
 import {
   IMPORT_COLLECTION,
-  LOAD_MARKET_PLACE,
   LOAD_MOST_POPULAR_COLLECTION,
   LOAD_SEARCHABLE_COLLECTION,
   LOAD_ACCOUNT_NFTS,
@@ -118,27 +117,6 @@ function* updateCollectionInformation(action) {
   }
 }
 
-function* runLoadMarketPlaceAll(action) {
-  try {
-    yield put(setIsLoading(true));
-    const { page, numberElements } = action.payload;
-    // loading most popular collections
-    let response = yield call(api.getCollectionsCall, action.payload);
-    yield put(setMostPopularCollections(response.data));
-
-    yield put(setSearcheableCollections(response.data));
-
-    //loading listedNfts
-    response = yield call(tokenApi.getListedNfts, page, numberElements);
-    yield put(setListedNfts(response.data));
-  } catch (error) {
-    console.log(error);
-    toast.error("An unexpected error occurred.");
-  } finally {
-    yield put(setIsLoading(false));
-  }
-}
-
 function* loadAccountCollections(action) {
   console.log("LOAD ACCOUNT COLLECTIONS");
   try {
@@ -222,10 +200,6 @@ function* updateCollectionInformationSaga() {
   yield takeLatest(UPDATE_COLLECTION, updateCollectionInformation);
 }
 
-function* loadMarketPlaceAll() {
-  yield takeLatest(LOAD_MARKET_PLACE, runLoadMarketPlaceAll);
-}
-
 function* loadCollection() {
   yield takeLatest(LOAD_COLLECTION, runLoadCollection);
 }
@@ -236,7 +210,6 @@ export {
   loadAccountNtsSaga,
   loadAccountCollectionsSaga,
   updateCollectionInformationSaga,
-  loadMarketPlaceAll,
   importCollectionSaga,
   loadCollection,
 };

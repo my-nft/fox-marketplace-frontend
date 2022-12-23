@@ -14,15 +14,16 @@ import { toast } from "react-toastify";
 // Worker saga will be fired on USER_FETCH_REQUESTED actions
 function* getConnectedUser(action) {
   const address = action.payload;
-  const connectedUser = yield select(selectConnectedUser);
   const actualToken = yield select(selectToken);
-  if (!connectedUser || !actualToken) {
     try {
       yield put(setLoading(true));
       const response = yield call(api.getUserByAddress, address);
       yield put(setCurrentUser(response.data));
-      const { token } = yield call(signIn, address);
-      yield put(setToken(token));
+      if(!actualToken) {
+        const { token } = yield call(signIn, address);
+        yield put(setToken(token));
+      }
+    
     } catch (error) {
       console.log("error ", error.response.status);
       // userNotFound => Nothing to do here
@@ -37,7 +38,7 @@ function* getConnectedUser(action) {
     } finally {
       yield put(setLoading(false));
     }
-  }
+  
 }
 
 function* updateUserProfile(action) {

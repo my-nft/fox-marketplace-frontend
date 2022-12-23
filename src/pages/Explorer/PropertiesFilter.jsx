@@ -68,9 +68,10 @@ const AccordionPropertiesFilter = ({ availableProperties, propertiesFilter, filt
                 >
                     <div className="card-body">
                         {
-                            availableProperties.map(property => {
+                            availableProperties.map((property, index) => {
                                 return (
                                     <SliderToggle
+                                        key={index}
                                         title={property}
                                         active={propertiesFilter.find(p => p === property)}
                                         action={(boolean) => handleFilterChange(property, boolean)}

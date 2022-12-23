@@ -1,6 +1,5 @@
-import { useSelector } from "react-redux";
-import { selectConnectedUser } from "../../redux/userReducer";
 import { getCurrentWalletConnected } from "./../../utils/blockchainInteractor";
+import { Buffer } from "buffer";
 
 import uploadIcon from "../../assets/images/create_icon_3.png";
 import { useEffect, useState } from "react";

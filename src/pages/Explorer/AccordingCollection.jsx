@@ -40,8 +40,9 @@ const AccordingCollection = ({
         >
           <div className="card-body">
             {listSearcheableCollections &&
-              listSearcheableCollections.map((collection) => (
+              listSearcheableCollections.map((collection, index) => (
                 <SearchItemCollection
+                  key={index}
                   collection={collection}
                   collectionActive={filters.collection}
                   handleChangeCollection={(val) => {
