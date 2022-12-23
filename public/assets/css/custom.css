@@ -3529,6 +3529,8 @@ ul#buttonIcon {
   transform: translateY(-50%);
   z-index: 20;
   transition: 300ms ease-in-out;
+  visibility: hidden;
+  opacity: 0;
 }
 
 .slickArrow:hover {
@@ -3541,6 +3543,11 @@ ul#buttonIcon {
 
 .slickArrowPrev {
   left: 0;
+}
+
+.slickArrowShow {
+  visibility: visible;
+  opacity: 1;
 }
 
 .slickArrowNext {
