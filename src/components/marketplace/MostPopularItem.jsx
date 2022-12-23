@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LOAD_NFT_DETAIL } from "../../saga/actions";
 import { getAuctionInfos, getPriceByListing } from "../../services/listingNft";
+import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 
 const MostPopularItem = ({ viewType, item }) => {
@@ -39,6 +40,8 @@ const MostPopularItem = ({ viewType, item }) => {
   const [dateTime, setDateTime] = useState(new Date());
   const navigate = useNavigate();
   const [price, setPrice] = useState(0);
+
+  const walletAddress = getCurrentWalletConnected();
 
   const init = async () => {
     const infos = await getAuctionInfos(item.auctionId);
@@ -124,7 +127,9 @@ const MostPopularItem = ({ viewType, item }) => {
   return (
     <div
       className={
-        !viewType ? "listMostPopular col-md-4 col-lg-3" : "listMostPopular"
+        !viewType
+          ? "listMostPopular col-md-4 col-lg-3 nft"
+          : "listMostPopular nft"
       }
       onClick={() => onSelectNfts(item.tokenID)}
       style={styleList}
@@ -140,6 +145,9 @@ const MostPopularItem = ({ viewType, item }) => {
             className="bigImage"
             alt=""
           />
+          {item.ownerAddress === walletAddress && (
+            <p className="ownedItem">Owned</p>
+          )}
         </div>
         <div className="wrappedAllText" style={styleWrappedText}>
           <div className="wrapText bg">
