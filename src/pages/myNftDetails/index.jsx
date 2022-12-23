@@ -19,7 +19,7 @@ import {
   PLACE_BID,
   REFUND_NFT,
 } from "../../saga/blockchain.js/blockChainActions";
-import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
+import { getCurrentWalletConnected, ZERO_ADDRESS } from "../../utils/blockchainInteractor";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 import { optimizeWalletAddress, sameAddress } from "../../utils/walletUtils";
 import ListedAuctionNft from "./listedAuctionNft";
@@ -94,7 +94,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId,
-        royaltyAddress: royaltyAddress ? royaltyAddress : null,
+        royaltyAddress: royaltyAddress ? royaltyAddress : ZERO_ADDRESS,
         royaltyPercent: royaltyPercent ? royaltyPercent : 0,
       },
       onSuccess: (nft) => setNftDetails(nft),
@@ -109,7 +109,7 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId,
-        royaltyAddress: royaltyAddress ? royaltyAddress : null,
+        royaltyAddress: royaltyAddress ? royaltyAddress : ZERO_ADDRESS,
         royaltyPercent: royaltyPercent ? royaltyPercent : 0,
       },
       onSuccess: (nft) => setNftDetails(nft),
@@ -138,7 +138,7 @@ const MyNftDetails = () => {
         price: Number(price),
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
-        royaltyAddress: royaltyAddress ? royaltyAddress : null,
+        royaltyAddress: royaltyAddress ? royaltyAddress : ZERO_ADDRESS,
         royaltyPercent: royaltyPercent ? royaltyPercent : 0,
       },
       onSuccess: (nft) => setNftDetails(nft),
@@ -176,7 +176,7 @@ const MyNftDetails = () => {
       payload: {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
-        royaltyAddress: royaltyAddress ? royaltyAddress : null,
+        royaltyAddress: royaltyAddress ? royaltyAddress : ZERO_ADDRESS,
         royaltyPercent: royaltyPercent ? royaltyPercent : 0,
       },
       onSuccess: (nft) => setNftDetails(nft),
