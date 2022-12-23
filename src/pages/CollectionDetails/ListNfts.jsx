@@ -6,31 +6,44 @@ import MostPopularItem from "../../components/marketplace/MostPopularItem";
 import ListActivities from "./ListActivities";
 import AccordionPropertiesFilter from "../Explorer/PropertiesFilter";
 
-const ListNfts = ({ nfts, isVisible , viewType, handleSelectNfts, filters, changeFilterValue}) => {
-  
+const ListNfts = ({
+  nfts,
+  isVisible,
+  viewType,
+  handleSelectNfts,
+  filters,
+  changeFilterValue,
+}) => {
   return (
     <section id="tabsNft" className="container-fluid accountListed">
-      <div className={`row collectionFilters ${!isVisible ? "filtersHide" : null}`} style={{ display: "flex" }}>
+      <div
+        className={`row collectionFilters ${!isVisible ? "filtersHide" : null}`}
+        style={{ display: "flex" }}
+      >
         <div
           className="col filtersCollapsible"
           id="filter"
-          style={{display: 'block'}}
+          style={{ display: "block" }}
         >
           <div className="col pl-0">
-            <AccordingStatus filters={filters} changeFilterValue={changeFilterValue} />
-            <AccordionPrice filters={filters} changeFilterValue={changeFilterValue} />
-            <AccordingCollection filters={filters} changeFilterValue={changeFilterValue} />
-            <AccordionCategory filters={filters} changeFilterValue={changeFilterValue} />
-            <AccordionPropertiesFilter 
-                filters={filters}
-                changeFilterValue={changeFilterValue}
-                propertiesFilter={filters.properties}
-                availableProperties={[
-                  "Image",
-                  "Music",
-                  "Art"
-                ]}
-
+            <AccordingStatus
+              filters={filters}
+              changeFilterValue={changeFilterValue}
+            />
+            <AccordionPrice
+              filters={filters}
+              changeFilterValue={changeFilterValue}
+            />
+            {/* <AccordingCollection filters={filters} changeFilterValue={changeFilterValue} /> */}
+            <AccordionCategory
+              filters={filters}
+              changeFilterValue={changeFilterValue}
+            />
+            <AccordionPropertiesFilter
+              filters={filters}
+              changeFilterValue={changeFilterValue}
+              propertiesFilter={filters.properties}
+              availableProperties={["Image", "Music", "Art"]}
             />
           </div>
         </div>
@@ -44,11 +57,14 @@ const ListNfts = ({ nfts, isVisible , viewType, handleSelectNfts, filters, chang
               aria-labelledby="pills-Items"
             >
               <div className="wrapperMostPopular row">
-                {
-                
-                nfts.map((item, index) => <MostPopularItem key={index} item={item} viewType={viewType} onSelectNfts={handleSelectNfts}/>)
-                
-                }
+                {nfts.map((item, index) => (
+                  <MostPopularItem
+                    key={index}
+                    item={item}
+                    viewType={viewType}
+                    onSelectNfts={handleSelectNfts}
+                  />
+                ))}
               </div>
             </div>
             <ListActivities />

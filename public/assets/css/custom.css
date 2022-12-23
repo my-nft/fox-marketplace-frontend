@@ -2480,7 +2480,8 @@ s #accordionListing table tr,
 }
 
 .filtersContainer {
-  max-height: 1980px;
+  /* max-height: 1980px; */
+  max-width: 620px;
   transition: 300ms ease-in-out;
 }
 
@@ -2512,7 +2513,7 @@ input[type="number"]:focus-within {
 }
 
 .collectionFilters .filtersCollapsible {
-  max-width: 380px !important;
+  max-width: 460px !important;
 }
 
 .filtersContainer #command .checkBox {

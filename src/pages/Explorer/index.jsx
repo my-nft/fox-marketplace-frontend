@@ -44,6 +44,7 @@ const Explorer = () => {
     status: "ALL",
     showRaritiy: false,
     sortBy: "RECENTLY_LISTED",
+    collection: "",
     properties: [],
   });
 
@@ -106,6 +107,8 @@ const Explorer = () => {
               />
 
               <AccordingCollection
+                filters={filters}
+                changeFilterValue={setFilters}
                 listSearcheableCollections={searcheableCollections}
               />
               <AccordionPropertiesFilter
