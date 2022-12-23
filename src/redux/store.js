@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./rootReducer";
 import createSagaMiddleware from "redux-saga";
-import storage from "redux-persist/lib/storage";
+import localforage from 'localforage';
 import { persistStore, persistReducer } from "redux-persist";
 import watchAll from "../saga/sagas";
 
@@ -11,7 +11,7 @@ const sagaMiddleware = createSagaMiddleware();
 const makeStore = () => {
   const persistConfig = {
     key: "root",
-    storage
+    storage: localforage
   };
 
   const persistedReducer = persistReducer(persistConfig, rootReducer);

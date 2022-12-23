@@ -26,8 +26,6 @@ const CollectionDetails = () => {
     numberElements: 20,
   });
 
-  console.log(collectionDetails)
-
   const [filters, setFilters] = useState({
     searchPrompt: "",
     buyNow: false,
@@ -47,10 +45,6 @@ const CollectionDetails = () => {
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
   const [viewType, setViewType] = useState("CHANGE_FOR_MIN");
-
-  useEffect(() => {
-    console.log(filters);
-  }, [filters]);
 
   useEffect(() => {
     initLoadCollection();

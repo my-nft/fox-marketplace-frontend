@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 import { ReactComponent as Clipboard } from "../../assets/icons/clipboard.svg";
 
-
 import SettingsImages from "./settingsImages";
 import Socials from "./socials";
 import { useNavigate, useParams } from "react-router-dom";
 import { getCollectionByAddress } from "../../api/collectionApi";
 import Spinner from "../../components/Spinner";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { UPDATE_COLLECTION } from "../../saga/actions";
 
 const selectStyles = {
@@ -51,8 +50,7 @@ const CollectionSettings = () => {
   const [isLoadingCollection, setIsLoadingCollection] = useState(true);
   const [collectionDetails, setCollectionDetails] = useState();
 
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const init = async () => {
@@ -92,19 +90,17 @@ const CollectionSettings = () => {
           symbol: collectionDetails.symbol,
           tags: collectionDetails.tags,
           totalSupply: collectionDetails.totalSupply,
-        }
+        },
       },
-      
+
       onSuccess: () => {
         setIsLoadingCollection(false);
-        navigate(`/collection/${collectionAddress}`)
+        navigate(`/collection/${collectionAddress}`);
       },
-      onError(){
+      onError() {
         setIsLoadingCollection(false);
-      }
-    })
-
-
+      },
+    });
 
     // navigate("/")
   };
@@ -112,8 +108,6 @@ const CollectionSettings = () => {
   const clipboardCopy = (value) => {
     navigator.clipboard.writeText(value);
   };
-  console.log(collectionDetails)
-
 
   return isLoadingCollection ? (
     <Spinner />
@@ -146,7 +140,9 @@ const CollectionSettings = () => {
                     })
                   }
                 />
-                <Clipboard onClick={() => clipboardCopy(collectionDetails.url)} />
+                <Clipboard
+                  onClick={() => clipboardCopy(collectionDetails.url)}
+                />
               </div>
             </div>
             <div className="settingGroup settingsWidthFull">
@@ -210,12 +206,21 @@ const CollectionSettings = () => {
                   id="royaltyAddress"
                   placeholder="Royalty Address"
                   value={collectionDetails.royaltyAddress}
-                  onChange={(e) =>
-                    setCollectionDetails({
-                      ...collectionDetails,
-                      royaltyAddress: e.target.value,
-                    })
-                  }
+                  onChange={(e) => {
+                    if(!e.target.value) {
+                      setCollectionDetails({
+                        ...collectionDetails,
+                        royaltyPercent: "0",
+                        royaltyAddress: e.target.value,
+                      })
+                    } else {
+                      setCollectionDetails({
+                        ...collectionDetails,
+                        royaltyAddress: e.target.value,
+                      })
+                    }
+                   
+                  }}
                 />
               </div>
             </div>
@@ -227,7 +232,7 @@ const CollectionSettings = () => {
                 id="royaltyPercent"
                 value={{
                   value: collectionDetails.royaltyPercent,
-                  label: collectionDetails.royaltyPercent
+                  label: collectionDetails.royaltyPercent,
                 }}
                 onChange={(e) =>
                   setCollectionDetails({
@@ -236,6 +241,7 @@ const CollectionSettings = () => {
                   })
                 }
                 options={[
+                  { value: "0", label: "0" },
                   { value: "1", label: "1" },
                   { value: "2", label: "2" },
                   { value: "3", label: "3" },

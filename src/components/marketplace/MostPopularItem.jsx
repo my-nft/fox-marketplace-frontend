@@ -5,6 +5,7 @@ import { LOAD_NFT_DETAIL } from "../../saga/actions";
 import { getAuctionInfos, getPriceByListing } from "../../services/listingNft";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
+import { sameAddress } from "../../utils/walletUtils";
 
 const MostPopularItem = ({ viewType, item }) => {
   let styleList = {};
@@ -145,7 +146,7 @@ const MostPopularItem = ({ viewType, item }) => {
             className="bigImage"
             alt=""
           />
-          {item.ownerAddress === walletAddress && (
+          {sameAddress(item.ownerAddress,walletAddress) && (
             <p className="ownedItem">Owned</p>
           )}
         </div>

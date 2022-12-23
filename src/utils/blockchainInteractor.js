@@ -31,6 +31,9 @@ export const LoaderContractAddress = "0x4e749ecaa475888eE8df3B749f69f92Ec42Cc514
 //export const OfferSystemAddress = "0xF8716Ff8aFB1390B51FfFfE50C8Ff87e536Cf7b3";
 export const OfferSystemAddress = "0x2d6e99Accd37f6A267943fdf005e3122A96F6b9D";
 
+
+export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
+
 export const ethereum = window.ethereum;
 export const web3 = new Web3(ethereum);
 

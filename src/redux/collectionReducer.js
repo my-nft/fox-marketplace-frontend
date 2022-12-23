@@ -44,7 +44,7 @@ export const selectMostPopularCollections = createSelector(
 
 export const selectIsLoadingMspl = createSelector(
   [selectSelf],
-  (collection) => collection.loading
+  (collection) => collection.isLoadingMspl
 );
 
 export const selectSearcheableCollection = createSelector(

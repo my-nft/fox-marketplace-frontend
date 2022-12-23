@@ -48,17 +48,12 @@ const AccountPage = () => {
     sortBy: "RECENTLY_LISTED",
   });
 
-  useEffect(() => {
-    console.log(filters);
-  }, [filters]);
-
   const dispatch = useDispatch();
   const connectedWallet = getCurrentWalletConnected();
   const user = useSelector(selectConnectedUser);
   const isLoading = useSelector(selectIsLoadingAccount);
   const isLoadingCollection = useSelector(selectIsLoading);
 
-  console.log("USER:", user);
 
   const changePage = (page) => {
     if (page < 1 || page > pagination.maxPages) return;

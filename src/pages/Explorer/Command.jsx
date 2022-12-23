@@ -4,7 +4,8 @@ const Command = ({ filters, changeFilterValue, toggleFilters }) => {
   return (
     <div id="command">
       <OpenCloseButton clickAction={toggleFilters} />
-      <div className="checkBox">
+      {/*
+<div className="checkBox">
         <span>show Rarity</span>
         <label className={filters.showRarity ? "onoffbtn active" : "onoffbtn"}>
           <input
@@ -19,6 +20,8 @@ const Command = ({ filters, changeFilterValue, toggleFilters }) => {
           />
         </label>
       </div>
+
+        */}
     </div>
   );
 };
