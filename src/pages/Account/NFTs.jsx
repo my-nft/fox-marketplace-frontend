@@ -52,7 +52,7 @@ const ListNfts = ({
               role="tabpanel"
               aria-labelledby="pills-Items"
             >
-              <div className="wrapperMostPopular row">
+              <div className="wrapperMostPopular row gap-5">
                 {activeSection === "COLLECTIONS"
                   ? collections.map((item, index) => {
                       return (

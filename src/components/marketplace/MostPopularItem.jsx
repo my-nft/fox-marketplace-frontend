@@ -129,8 +129,8 @@ const MostPopularItem = ({ viewType, item }) => {
     <div
       className={
         !viewType
-          ? "listMostPopular col-md-4 col-lg-3 nft"
-          : "listMostPopular nft"
+          ? "listMostPopular col-3 col-md-4 col-lg-3 nft"
+          : "listMostPopular  nft"
       }
       onClick={() => onSelectNfts(item.tokenID)}
       style={styleList}
@@ -146,7 +146,7 @@ const MostPopularItem = ({ viewType, item }) => {
             className="bigImage"
             alt=""
           />
-          {sameAddress(item.ownerAddress,walletAddress) && (
+          {sameAddress(item.ownerAddress, walletAddress) && (
             <p className="ownedItem">Owned</p>
           )}
         </div>

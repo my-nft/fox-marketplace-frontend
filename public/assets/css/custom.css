@@ -879,6 +879,7 @@ footer a:hover {
 .wrapperMostPopular {
   background-color: #080808;
   padding: 10px;
+  row-gap: 12px;
 }
 
 .wrapImg {
@@ -3588,4 +3589,14 @@ ul#buttonIcon {
   );
   font-weight: 600;
   margin: 0 !important;
+}
+
+.nft.listMostPopular {
+  min-width: unset !important;
+  width: 100% !important;
+}
+
+.wrapperMostPopular {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
