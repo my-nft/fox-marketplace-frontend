@@ -9,7 +9,7 @@ import {
 } from "../../interactors/blockchainInteractor";
 import { selectConnectedUser } from "../../redux/userReducer";
 import { LOAD_USER } from "../../saga/actions";
-import { web3 } from "../../utils/blockchainInteractor";
+import { loadERC20Contract, web3 } from "../../utils/blockchainInteractor";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 import ScrollToTop from "../scrollToTop";
 import useOutsideClick from "./../../utils/useOutsideClick";
@@ -80,43 +80,14 @@ const Header = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log("USER SETTED", connectedUser);
-  }, [connectedUser]);
 
   console.log("WALLET: ", connectedWallet);
 
-  useEffect(() => {
+  const initWalletData = async () => {
     if (connectedWallet) {
-      // create a smart contract to get FX and FXG token balance of connected wallet
-      const minAbi = [
-        {
-          constant: true,
-          inputs: [
-            {
-              name: "_owner",
-              type: "address",
-            },
-          ],
-          name: "balanceOf",
-          outputs: [
-            {
-              name: "balance",
-              type: "uint256",
-            },
-          ],
-          type: "function",
-        },
-      ];
 
-      const fxContract = new web3.eth.Contract(
-        minAbi,
-        "0x5Ee058aa7D8Fa214F92ECeCCCE9531F16A04C592"
-      );
-      const fxgContract = new web3.eth.Contract(
-        minAbi,
-        "0x4DC015a60045fB20a3651b2e85AF986354197Fe5"
-      );
+      const fxg = await loadERC20Contract().methods.balanceOf(connectedWallet).call();
+
 
       web3.eth.getBalance(connectedWallet, (err, wei) => {
         if (!err) {
@@ -126,27 +97,16 @@ const Header = () => {
           setBalance({
             ...balance,
             fx: walletBalance,
+            fxg : fxg / 10**18
           });
         }
       });
-
-      // fxContract.methods
-      //   .balanceOf(connectedWallet)
-      //   .call()
-      //   .then((res) => {
-      //     console.log("FX Balance", web3.utils.fromWei(res));
-      //   });
-
-      // fxgContract.methods
-      //   .balanceOf(connectedWallet)
-      //   .call()
-      //   .then((res) => {
-      //     console.log("FXG Balance", res);
-      //   });
     }
-  }, [connectedWallet]);
+  }
 
-  console.log(balance);
+  useEffect(() => {
+    initWalletData();
+  }, [connectedWallet]);
 
   return (
     <>
@@ -217,7 +177,7 @@ const Header = () => {
                     </div>
                     <div>
                       <h2>FXG</h2>
-                      <p>0.00</p>
+                      <p>{balance.fxg}</p>
                     </div>
                   </div>
                   <img src="/assets/icon-white-wallet.png" alt="" />

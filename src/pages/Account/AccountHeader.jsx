@@ -28,8 +28,6 @@ const AccountHeader = ({ user }) => {
     }
   }, [user]);
 
-  console.log("URL", profileImgUrl);
-
   return (
     <section id="headerAccount" className="container-fluid">
       <div className="row p-4" id="infoProfile">
@@ -48,10 +46,10 @@ const AccountHeader = ({ user }) => {
       </div>
       <div className="row p-4 mt-5" id="infoHeader">
         <div id="accountName">
-          <p>{user.username ? user.username : "-"}</p>
+          <p>{user?.username ? user.username : "-"}</p>
           <span id="accountWallet">
             Wallet Address{" "}
-            {user.address ? (
+            {user?.address ? (
               optimizeWalletAddress(user.address)
             ) : (
               <i>Missing</i>

@@ -31,9 +31,6 @@ export const nftLoader = async (collectionAddress) => {
     .getTokens(connectWallet, 1, 100, collectionAddress)
     .call();
 
-  console.log(connectWallet, collectionAddress);
-
-  console.log(" ", tx);
 };
 
 export const ownerOf = async (collectionAddress, tokenID) => {
