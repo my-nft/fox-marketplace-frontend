@@ -2480,7 +2480,8 @@ s #accordionListing table tr,
 }
 
 .filtersContainer {
-  max-height: 1980px;
+  /* max-height: 1980px; */
+  max-width: 620px;
   transition: 300ms ease-in-out;
 }
 
@@ -2512,7 +2513,7 @@ input[type="number"]:focus-within {
 }
 
 .collectionFilters .filtersCollapsible {
-  max-width: 380px !important;
+  max-width: 460px !important;
 }
 
 .filtersContainer #command .checkBox {
@@ -3511,4 +3512,46 @@ ul#buttonIcon {
   display: flex;
   gap: 12px;
   align-items: center;
+}
+
+.slickArrowsContainer {
+  position: relative;
+}
+
+.slickArrow {
+  padding: 14px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(245, 129, 3, 0.7);
+  position: absolute;
+  cursor: pointer;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  transition: 300ms ease-in-out;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.slickArrow:hover {
+  background: #f58103;
+}
+
+.slickArrow:hover svg path {
+  fill: #fefefe;
+}
+
+.slickArrowPrev {
+  left: 0;
+}
+
+.slickArrowShow {
+  visibility: visible;
+  opacity: 1;
+}
+
+.slickArrowNext {
+  right: 0;
+  transform: translateY(-50%) rotate(180deg);
 }

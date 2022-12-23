@@ -48,10 +48,6 @@ const AccountPage = () => {
     sortBy: "RECENTLY_LISTED",
   });
 
-  useEffect(() => {
-    console.log(filters);
-  }, [filters]);
-
   const dispatch = useDispatch();
   const connectedWallet = getCurrentWalletConnected();
   const user = useSelector(selectConnectedUser);

@@ -1,6 +1,10 @@
 import SearchItemCollection from "../../components/marketplace/ListItemCollection";
 
-const AccordingCollection = ({ listSearcheableCollections = [] }) => {
+const AccordingCollection = ({
+  listSearcheableCollections = [],
+  filters,
+  changeFilterValue,
+}) => {
   return (
     <div id="accordionCollection">
       <div className="card">
@@ -36,8 +40,18 @@ const AccordingCollection = ({ listSearcheableCollections = [] }) => {
         >
           <div className="card-body">
             {listSearcheableCollections &&
-              listSearcheableCollections.map((collection) => (
-                <SearchItemCollection collection={collection} />
+              listSearcheableCollections.map((collection, index) => (
+                <SearchItemCollection
+                  key={index}
+                  collection={collection}
+                  collectionActive={filters.collection}
+                  handleChangeCollection={(val) => {
+                    changeFilterValue({
+                      ...filters,
+                      collection: val,
+                    });
+                  }}
+                />
               ))}
           </div>
         </div>

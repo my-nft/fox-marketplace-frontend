@@ -3,8 +3,8 @@ import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 
 const AccountHeader = ({ user }) => {
-  const [profileImgUrl, setProfileImgUrl] = useState(false);
-  const [profileBannerUrl, setProfileBannerUrl] = useState(false);
+  const [profileImgUrl, setProfileImgUrl] = useState();
+  const [profileBannerUrl, setProfileBannerUrl] = useState();
 
   const readBufferToBase64String = (buffer) => {
     let binary = "";

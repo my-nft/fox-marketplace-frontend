@@ -80,15 +80,11 @@ const Header = () => {
     }
   }, []);
 
-
-  console.log("WALLET: ", connectedWallet);
-
   const initWalletData = async () => {
     if (connectedWallet) {
-
-      const fxg = await loadERC20Contract().methods.balanceOf(connectedWallet).call();
-
-
+      const fxg = await loadERC20Contract()
+        .methods.balanceOf(connectedWallet)
+        .call();
       web3.eth.getBalance(connectedWallet, (err, wei) => {
         if (!err) {
           const walletBalance = Number(
@@ -97,12 +93,12 @@ const Header = () => {
           setBalance({
             ...balance,
             fx: walletBalance,
-            fxg : fxg / 10**18
+            fxg: fxg / 10 ** 18,
           });
         }
       });
     }
-  }
+  };
 
   useEffect(() => {
     initWalletData();
