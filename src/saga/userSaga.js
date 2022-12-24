@@ -43,8 +43,11 @@ function* getConnectedUser(action) {
 
 function* updateUserProfile(action) {
   try {
-    const { username, bio, email, linkWebsite, address, image, banner } =
+
+
+    const { username, bio, email, linkWebsite, address, bannerFile, imageFile } =
       action.payload;
+      
 
     const response = yield call(api.updateUserToDatabase, {
       address,
@@ -54,8 +57,8 @@ function* updateUserProfile(action) {
         email,
         linkWebsite,
       },
-      image,
-      banner,
+      image : bannerFile,
+      banner : imageFile,
     });
 
     if (response) {

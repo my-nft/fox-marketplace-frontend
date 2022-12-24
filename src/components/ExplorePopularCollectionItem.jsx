@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Buffer } from "buffer";
 
+import placeholderBanner from "../assets/images/Popluar.jpg";
+import placeholderImage from "../assets/images/nft_test.jpg";
+
 const ExplorePopularCollectionItem = ({ itemData }) => {
   const navigate = useNavigate();
   const [imageUrl, setImageUrl] = useState();
@@ -23,11 +26,16 @@ const ExplorePopularCollectionItem = ({ itemData }) => {
         setImageUrl(url);
       } else if (typeof image === "string") {
         setImageUrl(image);
+      } else {
+        setImageUrl(placeholderImage);
       }
+    } else {
+      setImageUrl(placeholderImage);
     }
 
     if (itemData && itemData.banner) {
       const banner = itemData.banner;
+      console.log(banner);
       if (banner.data) {
         const base64 = Buffer.from(banner.data.data).toString("base64");
         setBannerUrl(`data:image/png;base64,${base64}`);
@@ -36,7 +44,11 @@ const ExplorePopularCollectionItem = ({ itemData }) => {
         setBannerUrl(url);
       } else if (typeof banner === "string") {
         setBannerUrl(banner);
+      } else {
+        setBannerUrl(placeholderBanner);
       }
+    } else {
+      setBannerUrl(placeholderBanner);
     }
   }, []);
 

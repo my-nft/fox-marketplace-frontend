@@ -1,12 +1,28 @@
 import Command from "../../pages/Explorer/Command";
 
-const HeaderInput = ({filters, changeFilterValue,  setFiltersVisible=()=>{}, filtersVisible}) => {
+const HeaderInput = ({
+  filters,
+  changeFilterValue,
+  setFiltersVisible = () => {},
+  filtersVisible,
+}) => {
   return (
     <section id="headerInput">
- 
-      <Command filters={filters} changeFilterValue={changeFilterValue} toggleFilters={() => setFiltersVisible(!filtersVisible)} />
+      <Command
+        filters={filters}
+        changeFilterValue={changeFilterValue}
+        toggleFilters={() => setFiltersVisible(!filtersVisible)}
+      />
 
-      <select value={filters.sortBy} onChange={(e) => changeFilterValue({...filters, sortBy: e.target.value})} >
+      <select
+        value={filters.sortBy}
+        onChange={(e) =>
+          changeFilterValue({ ...filters, sortBy: e.target.value })
+        }
+        style={{
+          margin: "0",
+        }}
+      >
         <option value="RECENTLY_LISTED">Recently Listed</option>
         <option value="PRICE_ASC">Price Asc</option>
         <option value="PRICE_DESC">Price Desc</option>

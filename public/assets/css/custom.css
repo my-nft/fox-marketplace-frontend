@@ -879,6 +879,7 @@ footer a:hover {
 .wrapperMostPopular {
   background-color: #080808;
   padding: 10px;
+  row-gap: 12px;
 }
 
 .wrapImg {
@@ -906,6 +907,7 @@ footer a:hover {
   padding: 10px 5px;
   margin-bottom: 10px;
   transition: 300ms ease-in-out;
+  height: 100%;
 }
 
 .wrapContent:hover {
@@ -3554,4 +3556,47 @@ ul#buttonIcon {
 .slickArrowNext {
   right: 0;
   transform: translateY(-50%) rotate(180deg);
+}
+
+.wrapImg {
+  position: relative;
+}
+
+.nft .wrapContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.nft .wrapText {
+  padding-top: 16px;
+}
+
+.nft .wrappedAllText {
+  flex-grow: 2;
+}
+
+.ownedItem {
+  bottom: 0;
+  width: 100%;
+  position: absolute;
+  padding: 32px 16px 12px;
+  color: #f58103;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 20%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  font-weight: 600;
+  margin: 0 !important;
+}
+
+.nft.listMostPopular {
+  min-width: unset !important;
+  width: 100% !important;
+}
+
+.wrapperMostPopular {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }

@@ -6,6 +6,7 @@ import AUCTION from "./contracts/AUCTION.json";
 import LOADER from './contracts/LOADER.json';
 import FIXED_PRICE from './contracts/MultiContractMarketPlaceABI.json'
 import OFFER_SYSTEM from './contracts/OFFERSYSTEM.json';
+import FOX_MASTER from './contracts/FOX_MASTER.json';
 
 let infura = "https://testnet-fx-json-web3.functionx.io:8545"
 let web3Infura = new Web3(infura);
@@ -16,20 +17,17 @@ export const marketplaceContractAddress = "";
 export const ERC721ContractAddress = "";
 
 
-//export const FIXEDContractAddress = "0xD4efCc65F493f9DD9A343Ef91B10706a5226E1a1";
 export const FIXEDContractAddress = "0x50f29e8dcf778Cb25405Bb74218A10eB3460B622";
-
 
 export const ERC20ContractAddress = "0x7A060167b9d9508896c04a506a0BFf4e6A1C37e7";
 
-//export const AUTIONContractAddress = "0x8b428414eE3c481d6062d0e9314D6b7e4B140445";
 export const AUTIONContractAddress = "0xB0BCED0883272Bda6fA4Ae45bB4a56624BC140e7"
 
 export const LoaderContractAddress = "0x4e749ecaa475888eE8df3B749f69f92Ec42Cc514";
 
-
-//export const OfferSystemAddress = "0xF8716Ff8aFB1390B51FfFfE50C8Ff87e536Cf7b3";
 export const OfferSystemAddress = "0x2d6e99Accd37f6A267943fdf005e3122A96F6b9D";
+
+export const foxMasterCollectionAddress = "0x2C9952D9CE9494cF63E16e398EcE65522651C41c";
 
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -71,6 +69,10 @@ export function loaderContract() {
 
 export function loadOfferSystemContract() {
   return new web3.eth.Contract(OFFER_SYSTEM, OfferSystemAddress)
+}
+
+export function loadFoxMasterCollectionContract() {
+  return new web3.eth.Contract(FOX_MASTER, foxMasterCollectionAddress)
 }
 
 export function connectWallet() {

@@ -11,25 +11,34 @@ const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
   const [bannerUrl, setBannerUrl] = useState(null);
 
   useEffect(() => {
-    console.log(values);
-  }, [values]);
+    setImageUrl(values.image);
+    setBannerUrl(values.banner);
+  }, [])
 
   const walletAddress = getCurrentWalletConnected();
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
+    let url = URL.createObjectURL(file);
+    setImageUrl(url);
+    handleChange({ target: { name: "imageFile", value: file } });
+  };
 
-    handleChange({ target: { name: e.target.name, value: file } });
+  const handleBannerUpload = (e) => {
+    const file = e.target.files[0];
+    let url = URL.createObjectURL(file);
+    setBannerUrl(url);
+    handleChange({ target: { name: "bannerFile", value: file } });
   };
 
   useEffect(() => {
     handleChange({ target: { name: "address", value: walletAddress } });
   }, []);
 
-  useEffect(() => {
-    const { banner, image } = values;
 
-    if (image) {
+  /*
+
+if (image) {
       if (image.data) {
         const base64 = Buffer.from(image.data.data).toString("base64");
         setImageUrl(`data:image/png;base64,${base64}`);
@@ -53,7 +62,9 @@ const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
         setBannerUrl(banner);
       }
     }
-  }, [values.image, values.banner]);
+
+  */
+
 
   return (
     <>
@@ -242,7 +253,7 @@ const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
                         type="file"
                         name="banner"
                         id="banner"
-                        onChange={handleImageUpload}
+                        onChange={handleBannerUpload}
                       />
                     </label>
                   </div>

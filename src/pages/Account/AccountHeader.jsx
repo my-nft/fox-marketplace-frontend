@@ -1,46 +1,16 @@
-import { useEffect, useState } from "react";
-import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 
 const AccountHeader = ({ user }) => {
-  const [profileImgUrl, setProfileImgUrl] = useState();
-  const [profileBannerUrl, setProfileBannerUrl] = useState();
-
-  const readBufferToBase64String = (buffer) => {
-    let binary = "";
-    let bytes = [].slice.call(new Uint8Array(buffer));
-    bytes.forEach((b) => (binary += String.fromCharCode(b)));
-    return window.btoa(binary);
-  };
-
-  useEffect(() => {
-    if (user && user.image && user.image.data) {
-      setProfileImgUrl(
-        "data:image/png;base64," +
-          readBufferToBase64String(user.image.data.data)
-      );
-    }
-    if (user && user.banner && user.banner.data) {
-      setProfileBannerUrl(
-        "data:image/png;base64," +
-          readBufferToBase64String(user.banner.data.data)
-      );
-    }
-  }, [user]);
 
   return (
     <section id="headerAccount" className="container-fluid">
       <div className="row p-4" id="infoProfile">
         <img
-          src={
-            user && user.image && user.image.data
-              ? profileImgUrl
-              : "/assets/images/account/img_account_default.jpg"
-          }
+          src={user?.image}
           id="iconProfile"
         />
         <img
-          src={user && user.banner && user.banner.data ? profileBannerUrl : ""}
+          src={user?.banner}
           alt=""
         />
       </div>
