@@ -14,6 +14,7 @@ import Spinner from "../../components/Spinner";
 import {
   LOAD_ACCOUNT_COLLECTIONS,
   LOAD_ACCOUNT_NFTS,
+  LOAD_USER,
 } from "../../saga/actions";
 import Pagination from "../../components/pagination/pagination";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
@@ -51,7 +52,6 @@ const AccountPage = () => {
   const connectedWallet = getCurrentWalletConnected();
   const user = useSelector(selectConnectedUser);
   const isLoading = useSelector(selectIsLoadingAccount);
-  const isLoadingCollection = useSelector(selectIsLoading);
 
 
   const changePage = (page) => {
@@ -117,9 +117,16 @@ const AccountPage = () => {
     runInit();
   }, [activeSection]);
 
+  useEffect(() => {
+    dispatch({
+      type: LOAD_USER,
+      payload: connectedWallet,
+    });
+  }, [])
+
   return (
     <div>
-      {isLoading || isLoadingCollection ? (
+      {isLoading ? (
         <Spinner />
       ) : (
         <>

@@ -54,8 +54,8 @@ function* updateUserProfile(action) {
         email,
         linkWebsite,
       },
-      image: bannerFile,
-      banner: imageFile,
+      image: imageFile,
+      banner: bannerFile,
     });
 
     if (response) {
