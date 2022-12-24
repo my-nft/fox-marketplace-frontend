@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LOAD_NFT_DETAIL } from "../../saga/actions";
 import { getAuctionInfos, getPriceByListing } from "../../services/listingNft";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
@@ -71,7 +71,9 @@ const MostPopularItem = ({ viewType, item }) => {
   }, []);
 
   const onSelectNfts = () => {
-    navigate(`/collection/${item.collectionAddress}/${item.tokenID}`);
+    navigate(`/collection/${item.collectionAddress}/${item.tokenID}`, {
+      target: "_blank",
+    });
   };
 
   const calculateTimeLeftBeforeExpiration = (expirationDate, dateNow) => {
@@ -126,13 +128,13 @@ const MostPopularItem = ({ viewType, item }) => {
   );
 
   return (
-    <div
+    <Link
+      to={`/collection/${item.collectionAddress}/${item.tokenID}`}
       className={
         !viewType
           ? "listMostPopular col-3 col-md-4 col-lg-3 nft"
           : "listMostPopular  nft"
       }
-      onClick={() => onSelectNfts(item.tokenID)}
       style={styleList}
     >
       <div className="wrapContent">
@@ -187,7 +189,7 @@ const MostPopularItem = ({ viewType, item }) => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
