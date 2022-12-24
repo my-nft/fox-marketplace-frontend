@@ -12,7 +12,7 @@ export function importCollectionCall(collectionAddress, token) {
 }
 
 export function getCollectionByAddress(collectionAddress) {
-  return methods.get(`${collectionEndpoint}/${collectionAddress}`);
+  return methods.get(`${collectionEndpoint}${collectionAddress}`);
 }
 
 export function getCollectionsCall(body) {

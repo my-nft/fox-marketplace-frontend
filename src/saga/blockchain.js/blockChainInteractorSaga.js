@@ -124,6 +124,7 @@ function* runDelistItem(action) {
   }
 }
 
+
 function* runAcceptOffer(action) {
   try {
     const { collectionAddress, tokenID, royaltyAddress, royaltyPercent } =

@@ -32,7 +32,6 @@ const MostPopularCollection = ({ collections }) => {
     }
 
     function handleResize() {
-      console.log("resize call");
       const width = getWindowDimensions().width;
 
       if (width < 1440 && width > 1024) {

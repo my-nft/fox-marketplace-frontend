@@ -146,8 +146,8 @@ const MostPopularItem = ({ viewType, item }) => {
             className="bigImage"
             alt=""
           />
-          {sameAddress(item.ownerAddress, walletAddress) && (
-            <p className="ownedItem">Owned</p>
+          {sameAddress(item.ownerAddress,walletAddress) && (
+            <p className="ownedItem">Owned by you</p>
           )}
         </div>
         <div className="wrappedAllText" style={styleWrappedText}>
