@@ -46,17 +46,39 @@ const selectStyles = {
 };
 
 const CollectionSettings = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { collectionAddress } = useParams();
   const [isLoadingCollection, setIsLoadingCollection] = useState(true);
   const [collectionDetails, setCollectionDetails] = useState();
+  const [image, setImage] = useState(collectionDetails?.image);
+  const [banner, setBanner] = useState(collectionDetails?.banner);
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [imageFile, setImageFile] = useState();
+  const [bannerFile, setBannerFile] = useState();
+
+
+  useEffect(() => {
+    if(imageFile) {
+      let url = URL.createObjectURL(imageFile);
+      setImage(url);
+    }
+  }, [imageFile])
+
+  useEffect(() => {
+    if(bannerFile) {
+      let url = URL.createObjectURL(bannerFile);
+      setBanner(url);
+    }
+  }, [bannerFile])
 
   const init = async () => {
     setIsLoadingCollection(true);
     const collection = await getCollectionByAddress(collectionAddress);
-    setCollectionDetails(collection.data);
+    const {data} = collection;
+    setCollectionDetails(data);
+    setImage(data.image);
+    setBanner(data.banner);
     setIsLoadingCollection(false);
   };
 
@@ -71,8 +93,8 @@ const CollectionSettings = () => {
       type: UPDATE_COLLECTION,
       payload: {
         collectionAddress,
-        image: collectionDetails.image,
-        banner: collectionDetails.banner,
+        image: imageFile,
+        banner: bannerFile,
         data: {
           category: collectionDetails.category,
           collectionAddress: collectionDetails.collectionAddress,
@@ -116,10 +138,10 @@ const CollectionSettings = () => {
       <h2 className="collectionSettingsTitle">Collection Settings</h2>
       <div className="collectionUpdateSettings">
         <SettingsImages
-          collectionDetails={collectionDetails}
-          setCollectionDetails={setCollectionDetails}
-          image={collectionDetails.image}
-          banner={collectionDetails.banner}
+          setCollectionImage={setImageFile}
+          setCollectionBanner={setBannerFile}
+          image={image}
+          banner={banner}
         />
         <form onSubmit={handleSubmitData} className="collectionSettingsData">
           <div className="settingsGroup">
