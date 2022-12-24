@@ -14,40 +14,37 @@ import { toast } from "react-toastify";
 // Worker saga will be fired on USER_FETCH_REQUESTED actions
 function* getConnectedUser(action) {
   const address = action.payload;
-  const actualToken = yield select(selectToken);
-    try {
-      yield put(setLoading(true));
-      const response = yield call(api.getUserByAddress, address);
-      yield put(setCurrentUser(response.data));
-      if(!actualToken) {
-        const { token } = yield call(signIn, address);
-        yield put(setToken(token));
-      }
-    
-    } catch (error) {
-      console.log("error ", error.response.status);
-      // userNotFound => Nothing to do here
-      if (error.response.status === 404) {
-        console.log("registration of a new user");
-        // signUp an new user
-        const response = yield call(signUp, address);
-        const { user, token } = response;
-        yield put(setCurrentUser(user));
-        yield put(setToken(token));
-      }
-    } finally {
-      yield put(setLoading(false));
+  try {
+    yield put(setLoading(true));
+    const response = yield call(api.getUserByAddress, address);
+    yield put(setCurrentUser(response.data));
+  } catch (error) {
+    console.log("error ", error.response.status);
+    // userNotFound => Nothing to do here
+    if (error.response.status === 404) {
+      console.log("registration of a new user");
+      // signUp an new user
+      const response = yield call(signUp, address);
+      const { user, token } = response;
+      yield put(setCurrentUser(user));
+      yield put(setToken(token));
     }
-  
+  } finally {
+    yield put(setLoading(false));
+  }
 }
 
 function* updateUserProfile(action) {
   try {
-
-
-    const { username, bio, email, linkWebsite, address, bannerFile, imageFile } =
-      action.payload;
-      
+    const {
+      username,
+      bio,
+      email,
+      linkWebsite,
+      address,
+      bannerFile,
+      imageFile,
+    } = action.payload;
 
     const response = yield call(api.updateUserToDatabase, {
       address,
@@ -57,8 +54,8 @@ function* updateUserProfile(action) {
         email,
         linkWebsite,
       },
-      image : bannerFile,
-      banner : imageFile,
+      image: bannerFile,
+      banner: imageFile,
     });
 
     if (response) {
@@ -71,6 +68,22 @@ function* updateUserProfile(action) {
   }
 }
 
+export function* signWallet() {
+    const connectedUser = yield select(selectConnectedUser);
+    const actualToken = yield select(selectToken);
+    if(!actualToken) {
+      const { token } = yield call(signIn, connectedUser.address);
+      console.log("######", token);
+      yield put(setToken(token));
+      return token;
+    } else {
+      console.log("######", actualToken);
+
+      return actualToken;
+    }
+
+}
+
 // Starts fetchUser on each dispatched USER_FETCH_REQUESTED action
 // Allows concurrent fetches of user
 
@@ -81,5 +94,6 @@ function* updateProfileForUser() {
 function* loadUser() {
   yield takeLatest(LOAD_USER, getConnectedUser);
 }
+
 
 export { loadUser, updateProfileForUser };

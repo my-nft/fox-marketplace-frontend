@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { call, delay, put, select, takeLatest } from "redux-saga/effects";
+import { call, delay, put, takeLatest } from "redux-saga/effects";
 import * as api from "../api/collectionApi";
 import * as tokenApi from "../api/nftApi";
 import {
@@ -16,8 +16,6 @@ import {
   setIsLoading as setCollectionIsLoading,
   setCollectionDetails,
 } from "../redux/collectionReducer";
-import { setIsLoading, setListedNfts } from "../redux/nftReducer";
-import { selectToken } from "../redux/userReducer";
 import {
   IMPORT_COLLECTION,
   LOAD_MOST_POPULAR_COLLECTION,
@@ -27,12 +25,13 @@ import {
   LOAD_COLLECTION,
   UPDATE_COLLECTION,
 } from "./actions";
+import { signWallet } from "./userSaga";
 
 function* importCollection(action) {
   try {
     yield put(setCollectionIsLoading(true));
     const { collectionAddress } = action.payload;
-    const token = yield select(selectToken);
+    const token = yield call(signWallet);
     console.log("the token is", token);
     yield call(api.importCollectionCall, collectionAddress, token);
     yield delay(3000);
@@ -94,7 +93,7 @@ function* runLoadCollection(action) {
 function* updateCollectionInformation(action) {
   try {
     const { collectionAddress, image, banner, data } = action.payload;
-    const token = yield select(selectToken);
+    const token = yield call(signWallet);
 
     yield call(
       api.updateCollection,
