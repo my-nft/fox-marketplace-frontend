@@ -275,7 +275,7 @@ const CreateSingleNft = () => {
                 </div>
                 <div className="form-row mb-4">
                   <div className="form-group col-md-6">
-                    <label htmlFor="inputState">Rights Level</label>
+                    <label htmlFor="inputState">Collection Address</label>
                     <select
                       id="inputState"
                       className="form-control"

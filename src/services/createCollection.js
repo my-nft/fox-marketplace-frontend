@@ -8,13 +8,14 @@ import {
   loadFactoryContract,
 } from "../utils/blockchainInteractor";
 
+const ipfsUri = process.env.REACT_APP_IPFS_URI;
+
+
 const factoryContract = loadFactoryContract();
 const erc20Contract = loadERC20Contract();
 
 export const mintCollection = async ({ name, symbol }) => {
   const connectedWallet = getCurrentWalletConnected();
-
-  const ipfsUri = process.env.REACT_APP_IPFS_URI;
 
   const deploymentFee = await factoryContract.methods.deploymentFee().call();
 
@@ -39,15 +40,17 @@ export const mintCollection = async ({ name, symbol }) => {
       });
   }
 
+  console.log("HERE")
+
   const gasLimit = await factoryContract.methods
-    .createNFT(name, symbol, ipfsUri)
+    .CreateNFT(name, symbol, ipfsUri)
     .estimateGas({
       from: connectedWallet,
       to: factoryCollectionAddress,
     });
 
   const tsx = await factoryContract.methods
-    .createNFT(name, symbol, ipfsUri)
+    .CreateNFT(name, symbol, ipfsUri)
     .send({
       from: connectedWallet,
       to: factoryCollectionAddress,
