@@ -81,7 +81,7 @@ export const createNewCollection = async (data) => {
     description,
     artistName,
     ownerAddress: walletAddress,
-    image: JSON.stringify(upload),
+    image: upload,
   };
 
   console.log("*******************************************");

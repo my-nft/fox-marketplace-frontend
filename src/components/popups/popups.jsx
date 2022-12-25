@@ -54,8 +54,12 @@ export const CreateNFTPopup = ({
   nftData,
 }) => {
   const handleAddItem = (newObject) => {
-    console.log(newObject);
-    handleAddToArray(popupTitle, newObject);
+    let objectToAdd = {
+      trait_type: newObject.name,
+      value: newObject.value,
+      name: newObject.name,
+    };
+    handleAddToArray(popupTitle, objectToAdd);
   };
 
   return (

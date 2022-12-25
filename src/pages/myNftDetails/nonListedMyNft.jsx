@@ -80,8 +80,8 @@ const NonListedMyNft = ({
                   id="fixedPrice"
                   className={
                     type === FIXED_PRICE
-                      ? "btn orangeBg active"
-                      : "btn orangeBg deactive"
+                      ? "btn orangeBg m-2 active"
+                      : "btn orangeBg m-2 deactive"
                   }
                   onClick={() => setType(FIXED_PRICE)}
                 >
@@ -91,8 +91,8 @@ const NonListedMyNft = ({
                   id="timedAuction"
                   className={
                     type === AUCTION
-                      ? "btn orangeBg active"
-                      : "btn orangeBg deactive"
+                      ? "btn orangeBg m-2 active"
+                      : "btn orangeBg m-2 deactive"
                   }
                   onClick={() => setType(AUCTION)}
                 >
