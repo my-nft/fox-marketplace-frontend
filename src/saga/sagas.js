@@ -5,6 +5,7 @@ import {
   loadAccountCollectionsSaga,
   loadAccountNtsSaga,
   loadCollection,
+  loadMintCollection,
   loadPopularCollectionSaga,
   loadSearcheableCollectionSaga,
   updateCollectionInformationSaga,
@@ -34,7 +35,8 @@ function* watchAll() {
     refund(),
     claimNFTSaga(),
     claimTokenSaga(),
-    mintNftSaga()
+    mintNftSaga(),
+    loadMintCollection()
   ]);
 }
 
