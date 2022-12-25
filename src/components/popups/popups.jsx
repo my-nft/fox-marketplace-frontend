@@ -59,6 +59,7 @@ export const CreateNFTPopup = ({
       value: newObject.value,
       name: newObject.name,
     };
+    console.log(objectToAdd);
     handleAddToArray(popupTitle, objectToAdd);
   };
 
