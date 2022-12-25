@@ -63,7 +63,9 @@ function* loadSearcheableCollection(action) {
 
     const response = yield call(api.getCollectionsCall, action.payload);
 
-    yield put(setSearcheableCollections(response.data));
+    const {data} = response;
+
+    yield put(setSearcheableCollections(data.content));
   } catch (error) {
     console.log("error ", error.response.status);
     toast.error("An unexpected error occurred.");

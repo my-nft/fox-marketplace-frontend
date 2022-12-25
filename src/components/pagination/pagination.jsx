@@ -1,7 +1,7 @@
 const Pagination = ({ pages, currentPage, setCurrentPage }) => {
   return (
     <>
-      {pages !== 1 && (
+      {pages > 1 ? (
         <div className="paginationWrapper">
           <p
             onClick={() => setCurrentPage(currentPage - 1)}
@@ -108,7 +108,7 @@ const Pagination = ({ pages, currentPage, setCurrentPage }) => {
             Next
           </p>
         </div>
-      )}
+      ) : null}
     </>
   );
 };

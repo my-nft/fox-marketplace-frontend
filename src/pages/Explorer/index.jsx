@@ -54,7 +54,8 @@ const Explorer = () => {
       numberElements: pagination.numberElements,
       page: pagination.page,
     });
-    setMostPopularCollections(mostPopular.data);
+    const {data} = mostPopular;
+    setMostPopularCollections(data.content);
     setIsLoadingMspl(false);
   };
   
@@ -71,7 +72,9 @@ const Explorer = () => {
       numberElements: pagination.numberElements,
       page: pagination.page,
     });
-    setSearcheableCollections(searchableCollections.data);
+
+    const {data} = searchableCollections;
+    setSearcheableCollections(data?.content);
     setIsLoadingSearcheableState(false);
   }
 
