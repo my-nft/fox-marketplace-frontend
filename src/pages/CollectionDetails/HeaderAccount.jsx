@@ -5,8 +5,7 @@ import { ReactComponent as SettingsIcon } from "../../assets/icons/settings.svg"
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 
 const HeaderAccount = ({ collectionData }) => {
-
-  const {image, banner} = collectionData;
+  const { image, banner } = collectionData;
 
   const blocExplorerUri = process.env.REACT_APP_BLOCEXPLORER;
 
@@ -17,16 +16,8 @@ const HeaderAccount = ({ collectionData }) => {
   return (
     <section id="headerAccount" className="container-fluid">
       <div className="row p-4" id="infoProfile">
-        <img
-          src={image}
-          id="iconProfile"
-          alt=""
-        />
-        <img
-          src={banner}
-          id="bannerProfile"
-          alt="profile banner"
-        />
+        <img src={image} id="iconProfile" alt="" />
+        <img src={banner} id="bannerProfile" alt="profile banner" />
       </div>
       <div className="row p-4 mt-5" id="infoHeader">
         <div
@@ -107,18 +98,22 @@ const HeaderAccount = ({ collectionData }) => {
             </li>
           </ul>
         </div>
-
-        {sameAddress(
-          collectionData.ownerAddress,
-          getCurrentWalletConnected()
-        ) ? (
-          <Link
-            to={`/collection/${collectionData.collectionAddress}/settings`}
-            className="settingsIcon"
-          >
-            <SettingsIcon />
+        <div className="row align-items-start">
+          <Link to="#" className="addNFTLink">
+            Add NFT to collection
           </Link>
-        ) : null}
+          {sameAddress(
+            collectionData.ownerAddress,
+            getCurrentWalletConnected()
+          ) ? (
+            <Link
+              to={`/collection/${collectionData.collectionAddress}/settings`}
+              className="settingsIcon"
+            >
+              <SettingsIcon />
+            </Link>
+          ) : null}
+        </div>
 
         {/* <div id="accountButton">
           <svg
