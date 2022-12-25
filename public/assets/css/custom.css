@@ -2045,6 +2045,7 @@ input.form-control::placeholder {
   text-align: center;
   padding: 15px;
   font-family: "gothamMedium";
+  margin: 10px;
   border: none;
 }
 

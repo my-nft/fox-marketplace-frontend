@@ -16,6 +16,7 @@ import {
   setIsLoading as setCollectionIsLoading,
   setCollectionDetails,
 } from "../redux/collectionReducer";
+import { mintCollection } from "../services/createCollection";
 import {
   IMPORT_COLLECTION,
   LOAD_MOST_POPULAR_COLLECTION,
@@ -24,6 +25,7 @@ import {
   LOAD_ACCOUNT_COLLECTIONS,
   LOAD_COLLECTION,
   UPDATE_COLLECTION,
+  MINT_COLLECTION,
 } from "./actions";
 import { signWallet } from "./userSaga";
 
@@ -84,6 +86,32 @@ function* runLoadCollection(action) {
     yield put(setCollectionDetails(response.data));
     yield put(setCollectionIsLoading(false));
     action.onSuccess();
+  } catch (error) {
+    console.log(error);
+    toast.error("An unexpected error occurred.");
+  } finally {
+    yield put(setCollectionIsLoading(false));
+  }
+}
+
+function* runMintCollection(action) {
+  try {
+    yield put(setCollectionIsLoading(true));
+
+    const token = yield call(signWallet);
+
+    const { name, symbol } = action.payload;
+    let collectionAddress = yield call(mintCollection, {
+      name,
+      symbol
+    });
+
+    yield call(api.importCollectionCall, collectionAddress, token);
+
+    yield call(delay, 1000); 
+
+    action.onSuccess();
+    
   } catch (error) {
     console.log(error);
     toast.error("An unexpected error occurred.");
@@ -205,6 +233,10 @@ function* loadCollection() {
   yield takeLatest(LOAD_COLLECTION, runLoadCollection);
 }
 
+function* loadMintCollection() {
+  yield takeLatest(MINT_COLLECTION, runMintCollection);
+}
+
 export {
   loadPopularCollectionSaga,
   loadSearcheableCollectionSaga,
@@ -213,4 +245,5 @@ export {
   updateCollectionInformationSaga,
   importCollectionSaga,
   loadCollection,
+  loadMintCollection
 };

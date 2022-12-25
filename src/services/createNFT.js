@@ -1,4 +1,4 @@
-import { importCollectionCall, updateImportCollectionCall } from "../api/collectionApi";
+import { updateImportCollectionCall } from "../api/collectionApi";
 import { addNftToIpfs } from "../api/nftApi";
 import {
   foxMasterCollectionAddress,
@@ -9,16 +9,17 @@ import {
 
 const erc20Contract = loadERC20Contract();
 
-export const mintNft = async ({collectionAddress =  foxMasterCollectionAddress, nft, image, token}) => {
-
+export const mintNft = async ({
+  collectionAddress = foxMasterCollectionAddress,
+  nft,
+  image,
+  token,
+}) => {
   const foxMastercontract = loadFoxMasterCollectionContract(collectionAddress);
-
 
   const connectedWallet = getCurrentWalletConnected();
 
   const mintFee = await foxMastercontract.methods.mintFee().call();
-
-  console.log("MintFEE ---- ", mintFee);
 
   const gasLimit = await erc20Contract.methods
     .approve(collectionAddress, mintFee)
@@ -26,8 +27,6 @@ export const mintNft = async ({collectionAddress =  foxMasterCollectionAddress, 
       from: connectedWallet,
       to: collectionAddress,
     });
-
-  console.log("GasLimit ---- ", gasLimit);
 
   await erc20Contract.methods.approve(collectionAddress, mintFee).send({
     from: connectedWallet,
@@ -48,7 +47,6 @@ export const mintNft = async ({collectionAddress =  foxMasterCollectionAddress, 
     to: collectionAddress,
   });
 
-      // import token and collection ?
+  // import token and collection ?
   await updateImportCollectionCall(collectionAddress, token);
-
 };

@@ -7,6 +7,7 @@ import LOADER from './contracts/LOADER.json';
 import FIXED_PRICE from './contracts/MultiContractMarketPlaceABI.json'
 import OFFER_SYSTEM from './contracts/OFFERSYSTEM.json';
 import FOX_MASTER from './contracts/FOX_MASTER.json';
+import FACTORY from './contracts/FACTORY.json';
 
 let infura = "https://testnet-fx-json-web3.functionx.io:8545"
 let web3Infura = new Web3(infura);
@@ -28,6 +29,8 @@ export const LoaderContractAddress = "0x4e749ecaa475888eE8df3B749f69f92Ec42Cc514
 export const OfferSystemAddress = "0x2d6e99Accd37f6A267943fdf005e3122A96F6b9D";
 
 export const foxMasterCollectionAddress = "0x2C9952D9CE9494cF63E16e398EcE65522651C41c";
+
+export const factoryCollectionAddress = "0xcc63AccC3d63e8e2f0075cfcd994197f7923233F";
 
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -64,15 +67,20 @@ export function loadAFixedPriceContract(readOnly = false) {
 }
 
 export function loaderContract() {
-  return new web3.eth.Contract(LOADER, LoaderContractAddress)
+  return new web3.eth.Contract(LOADER, LoaderContractAddress);
 }
 
 export function loadOfferSystemContract() {
-  return new web3.eth.Contract(OFFER_SYSTEM, OfferSystemAddress)
+  return new web3.eth.Contract(OFFER_SYSTEM, OfferSystemAddress);
 }
 
 export function loadFoxMasterCollectionContract(collectionAddress) {
-  return new web3.eth.Contract(FOX_MASTER, collectionAddress)
+  return new web3.eth.Contract(FOX_MASTER, collectionAddress);
+}
+
+export function loadFactoryContract() {
+  return new web3.eth.Contract(FACTORY, factoryCollectionAddress)
+  
 }
 
 export function connectWallet() {

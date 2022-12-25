@@ -1,6 +1,6 @@
 import { setIsLoading } from "../../redux/nftReducer";
 import * as nftApi from "../../api/nftApi";
-import { call, put, select, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest } from "redux-saga/effects";
 import { toast } from "react-toastify";
 import {
   buyItem,
