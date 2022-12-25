@@ -18,9 +18,6 @@ const CreateSingleNft = () => {
     description: "",
     artistName: "",
     upload: null,
-    email: "",
-    rightsDuration: "10 years",
-    rightsLevel: "level 1",
     attributes: [],
     levels: [],
     stats: [],
@@ -95,9 +92,6 @@ const CreateSingleNft = () => {
           description: "",
           artistName: "",
           upload: null,
-          email: "",
-          rightsDuration: "10 years",
-          rightsLevel: "level 1",
           attributes: [],
           levels: [],
           stats: [],
@@ -113,9 +107,6 @@ const CreateSingleNft = () => {
           description: "",
           artistName: "",
           upload: null,
-          email: "",
-          rightsDuration: "10 years",
-          rightsLevel: "level 1",
           attributes: [],
           levels: [],
           stats: [],
@@ -245,18 +236,6 @@ const CreateSingleNft = () => {
                       onChange={(e) => handleChange(e)}
                     />
                   </div>
-                  <div className="form-group col-md-6">
-                    <label htmlFor="inputEmail">Email</label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="inputEmail"
-                      placeholder="sna@gmail.com"
-                      name="email"
-                      onChange={(e) => handleChange(e)}
-                      required
-                    />
-                  </div>
                 </div>
 
                 <h3 className="mt-4">Description</h3>
@@ -271,38 +250,6 @@ const CreateSingleNft = () => {
                       onChange={(e) => handleChange(e)}
                       required
                     ></textarea>
-                  </div>
-                </div>
-                <div className="form-row mb-4">
-                  <div className="form-group col-md-6">
-                    <label htmlFor="inputState">Collection Address</label>
-                    <select
-                      id="inputState"
-                      className="form-control"
-                      defaultValue="Level1"
-                      name="rightsLevel"
-                      onChange={(e) => handleChange(e)}
-                      required
-                    >
-                      <option value="Level1" selected>
-                        Level1
-                      </option>
-                    </select>
-                  </div>
-                  <div className="form-group col-md-6">
-                    <label htmlFor="inputState">Rights Duration</label>
-                    <select
-                      id="inputState"
-                      className="form-control"
-                      defaultValue="10 Years"
-                      name="rightsDurations"
-                      onChange={(e) => handleChange(e)}
-                      required
-                    >
-                      <option value="10 Years" selected>
-                        10 Years
-                      </option>
-                    </select>
                   </div>
                 </div>
                 <h3 className="mt-12 mb-1">Attributes</h3>
