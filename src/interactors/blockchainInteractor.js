@@ -2,10 +2,13 @@ export const ethereum = window.ethereum;
 
 
 
-const connectWallet = () => {
-  ethereum && ethereum.request({
-    method: "eth_requestAccounts",
-  });
+const connectWallet = async () => {
+  if(ethereum) {
+    const connected = await ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    return connected;
+  }
 }
 
 const getCurrentWalletConnected = () => {

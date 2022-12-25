@@ -27,13 +27,12 @@ const Header = () => {
     fx: 0,
     fxg: 0,
   });
-  const connectedUser = useSelector(selectConnectedUser);
   const [filters, setFilters] = useState({
     searchPrompt: "",
   });
 
   const handleSignIn = async () => {
-    connectWallet();
+    await connectWallet();
     setConnectedWallet(getCurrentWalletConnected());
   };
 
@@ -103,6 +102,10 @@ const Header = () => {
   useEffect(() => {
     initWalletData();
   }, [connectedWallet]);
+
+  useEffect(() => {
+    handleSignIn();
+  }, [])
 
   return (
     <>

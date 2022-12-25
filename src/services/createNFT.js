@@ -1,27 +1,54 @@
-import { foxMasterCollectionAddress, getCurrentWalletConnected, loadERC20Contract, loadFoxMasterCollectionContract } from "../utils/blockchainInteractor";
+import { importCollectionCall, updateImportCollectionCall } from "../api/collectionApi";
+import { addNftToIpfs } from "../api/nftApi";
+import {
+  foxMasterCollectionAddress,
+  getCurrentWalletConnected,
+  loadERC20Contract,
+  loadFoxMasterCollectionContract,
+} from "../utils/blockchainInteractor";
 
-const foxMastercontract = loadFoxMasterCollectionContract();
 const erc20Contract = loadERC20Contract();
 
-export const mintNft = (NftDetails) => {
+export const mintNft = async ({collectionAddress =  foxMasterCollectionAddress, nft, image, token}) => {
+
+  const foxMastercontract = loadFoxMasterCollectionContract(collectionAddress);
+
 
   const connectedWallet = getCurrentWalletConnected();
-  
-  const mintFee = foxMastercontract.methods.mintFee().call();
 
+  const mintFee = await foxMastercontract.methods.mintFee().call();
 
-  const gasLimit = erc20Contract.methods.approve(foxMasterCollectionAddress, mintFee).estimateGas({
+  console.log("MintFEE ---- ", mintFee);
+
+  const gasLimit = await erc20Contract.methods
+    .approve(collectionAddress, mintFee)
+    .estimateGas({
+      from: connectedWallet,
+      to: collectionAddress,
+    });
+
+  console.log("GasLimit ---- ", gasLimit);
+
+  await erc20Contract.methods.approve(collectionAddress, mintFee).send({
     from: connectedWallet,
-    to: foxMasterCollectionAddress,
+    to: collectionAddress,
+    gasLimit,
   });
 
-  erc20Contract.methods.approve(foxMasterCollectionAddress, mintFee).send({
-    from: connectedWallet,
-    to: foxMasterCollectionAddress,
-    gasLimit
+  // API ADD NFT TO IPFS
+  const response = await addNftToIpfs({
+    collectionAddress: collectionAddress,
+    nft,
+    image,
+    token,
   });
 
-  //foxMastercontract.mint(receiver, ipfsId)
+  await foxMastercontract.methods.mint(connectedWallet, response.data).send({
+    from: connectedWallet,
+    to: collectionAddress,
+  });
 
+      // import token and collection ?
+  await importCollectionCall(collectionAddress, token);
 
-}
+};

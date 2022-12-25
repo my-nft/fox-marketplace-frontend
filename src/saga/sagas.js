@@ -9,7 +9,7 @@ import {
   loadSearcheableCollectionSaga,
   updateCollectionInformationSaga,
 } from "./collectionSaga";
-import { loadListedNfts } from "./nftSaga";
+import { loadListedNfts, mintNft, mintNftSaga } from "./nftSaga";
 import { loadUser, updateProfileForUser } from "./userSaga";
 
 function* watchAll() {
@@ -33,7 +33,8 @@ function* watchAll() {
     updateProfileForUser(),
     refund(),
     claimNFTSaga(),
-    claimTokenSaga()
+    claimTokenSaga(),
+    mintNftSaga()
   ]);
 }
 

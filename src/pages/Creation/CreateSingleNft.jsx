@@ -1,28 +1,29 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Spinner from "../../components/Spinner";
-import { createNftDB } from "../../services/createNFT";
-import { useSelector } from "react-redux";
-import { selectConnectedWallet, selectToken } from "../../redux/userReducer";
-import PopupContainerWrapper, {
+import  {
   CreateNFTPopup,
 } from "../../components/popups/popups";
+import { useDispatch, useSelector } from "react-redux";
+import { selectIsLoading } from "../../redux/nftReducer";
+import { MINT_NFT } from "../../saga/actions";
 
 const CreateSingleNft = () => {
   const [imageUpload, setImageUpload] = useState(null);
   const [imageData, setImageData] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const isLoading = useSelector(selectIsLoading);
   const [popupStatus, setPopupStatus] = useState(null);
+  const dispatch = useDispatch();
 
   const [nftData, setNftData] = useState({
-    artworkName: "",
+    name: "",
     description: "",
     artistName: "",
     upload: null,
     email: "",
     rightsDuration: "10 years",
     rightsLevel: "level 1",
-    properties: [],
+    attributes: [],
     levels: [],
     stats: [],
   });
@@ -32,7 +33,7 @@ const CreateSingleNft = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImageUpload(URL.createObjectURL(e.target.files[0]));
-        setImageData(reader.result);
+        setImageData(e.target.files[0]);
       };
       reader.readAsDataURL(e.target.files[0]);
     } else {
@@ -72,10 +73,16 @@ const CreateSingleNft = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     console.log(nftData);
 
-    setLoading(false);
+    dispatch({
+      type: MINT_NFT,
+      payload : {
+        ...nftData,
+        image: imageData
+      }
+    });
+
 
     /*
     // convert form inputs to data
@@ -131,7 +138,7 @@ const CreateSingleNft = () => {
       <img src="/assets/images/Background.jpg" id="layer" alt="" />
       <h3 className="text-center mb-5">Mint Your NFT</h3>
       <div className="container pt-3 ">
-        {loading ? (
+        {isLoading ? (
           <div className="processing processingMargin">
             <Spinner />
             <h2>Processing</h2>
@@ -182,7 +189,7 @@ const CreateSingleNft = () => {
                       className="form-control"
                       id="inputArtName"
                       placeholder="cats"
-                      name="artworkName"
+                      name="name"
                       onChange={(e) => handleChange(e)}
                       required
                     />
@@ -265,10 +272,10 @@ const CreateSingleNft = () => {
                 </p>
                 <div className="form-row mb-4 mt-4 mb-5">
                   <div className="properties-row">
-                    {nftData.properties.map((property, index) => {
+                    {nftData.attributes.map((property, index) => {
                       return (
                         <div className="property" key={index}>
-                          <p className="property_name">{property.name}</p>
+                          <p className="property_name">{property.trait_type}</p>
                           <p className="property_value">{property.value}</p>
                         </div>
                       );
@@ -276,7 +283,7 @@ const CreateSingleNft = () => {
 
                     <div
                       className="property propertyAdd"
-                      onClick={() => setPopupStatus("properties")}
+                      onClick={() => setPopupStatus("attributes")}
                     >
                       <p>+</p>
                     </div>
