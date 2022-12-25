@@ -49,6 +49,6 @@ export const mintNft = async ({collectionAddress =  foxMasterCollectionAddress, 
   });
 
       // import token and collection ?
-  await importCollectionCall(collectionAddress, token);
+  await updateImportCollectionCall(collectionAddress, token);
 
 };

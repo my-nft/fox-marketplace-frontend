@@ -11,6 +11,14 @@ export function importCollectionCall(collectionAddress, token) {
   });
 }
 
+export function updateImportCollectionCall(collectionAddress, token) {
+  return methods.put(`${collectionEndpoint}/${collectionAddress}/import`, {} ,{
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
+}
+
 export function getCollectionByAddress(collectionAddress) {
   return methods.get(`${collectionEndpoint}${collectionAddress}`);
 }
