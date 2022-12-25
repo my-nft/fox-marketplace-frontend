@@ -71,8 +71,8 @@ export function loadOfferSystemContract() {
   return new web3.eth.Contract(OFFER_SYSTEM, OfferSystemAddress)
 }
 
-export function loadFoxMasterCollectionContract() {
-  return new web3.eth.Contract(FOX_MASTER, foxMasterCollectionAddress)
+export function loadFoxMasterCollectionContract(collectionAddress) {
+  return new web3.eth.Contract(FOX_MASTER, collectionAddress)
 }
 
 export function connectWallet() {

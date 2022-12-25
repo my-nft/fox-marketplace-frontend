@@ -49,10 +49,6 @@ const MyNftDetails = () => {
     }
   };
 
-  console.log({
-    nft: nftDetails,
-    collection: collectionDetails,
-  });
 
   useEffect(() => {
     loadNft();

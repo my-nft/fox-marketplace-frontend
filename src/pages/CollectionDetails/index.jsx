@@ -53,7 +53,6 @@ const CollectionDetails = () => {
   const initLoadCollection = async () => {
     setIsLoadingCollection(true);
     const collection = await getCollectionByAddress(collectionAddress);
-    console.log(collection.data)
     setCollectionDetails(collection.data);
     setIsLoadingCollection(false);
   };
