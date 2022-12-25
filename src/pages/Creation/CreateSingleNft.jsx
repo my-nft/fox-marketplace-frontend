@@ -243,7 +243,6 @@ const CreateSingleNft = () => {
                       placeholder="Zak"
                       name="artistName"
                       onChange={(e) => handleChange(e)}
-                      required
                     />
                   </div>
                   <div className="form-group col-md-6">
@@ -306,7 +305,7 @@ const CreateSingleNft = () => {
                     </select>
                   </div>
                 </div>
-                <h3 className="mt-12 mb-1">Properties</h3>
+                <h3 className="mt-12 mb-1">Attributes</h3>
                 <p className="text-white mb-3 ">
                   Textual traits that show up as rectangles
                 </p>

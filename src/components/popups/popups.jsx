@@ -24,7 +24,7 @@ const EntryField = ({ type, submitAction }) => {
         {type === "attributes" ? (
           <div className="entry-field">
             <label htmlFor="value">Value</label>
-            <input required type="number" id="value" name="value" />
+            <input required type="text" id="value" name="value" />
           </div>
         ) : (
           <div className="grouped-fields">
@@ -59,6 +59,7 @@ export const CreateNFTPopup = ({
       value: newObject.value,
       name: newObject.name,
     };
+    console.log(objectToAdd);
     handleAddToArray(popupTitle, objectToAdd);
   };
 
