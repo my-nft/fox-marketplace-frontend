@@ -65,35 +65,3 @@ export const getAccountCollections = (
     },
   });
 };
-
-export const getCollectionNfts = (page, numberPerPage, sort) => {
-  /**
-   * sort => recently listed, price desc, price asc, recently created, recently sold
-   */
-
-  return {
-    page: "",
-    totalElements: "",
-    nfts: [
-      {
-        id: "",
-        name: "",
-        description: "",
-        owner: "",
-        image: "",
-        createDate: "",
-        soldDate: "12/15/2022",
-        attributes: [
-          {
-            propertyName: "",
-            propertyValue: "",
-          },
-        ],
-      },
-    ],
-  };
-};
-
-// remove collections fiter from collection page
-
-//---------------------------------Home page
