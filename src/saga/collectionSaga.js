@@ -100,7 +100,7 @@ function* runMintCollection(action) {
 
     const token = yield call(signWallet);
 
-    const { name, symbol } = action.payload;
+    const { name, symbol, data, image } = action.payload;
     let collectionAddress = yield call(mintCollection, {
       name,
       symbol
@@ -109,6 +109,16 @@ function* runMintCollection(action) {
     yield call(api.importCollectionCall, collectionAddress, token);
 
     yield call(delay, 1000); 
+
+    yield call(
+      api.updateCollection,
+      collectionAddress,
+      {
+        image,
+        collection: data,
+      },
+      token
+    );
 
     action.onSuccess();
     
