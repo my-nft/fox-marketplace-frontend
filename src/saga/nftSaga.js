@@ -7,21 +7,27 @@ import { signWallet } from "./userSaga";
 import { mintNft } from "../services/createNFT";
 import { updateImportCollectionCall } from "../api/collectionApi";
 
-
-
 function* runMintNft(action) {
-
   try {
+    console.log("Minting NFT");
     yield put(setIsLoading(true));
+    console.log("Signing wallet");
     const token = yield call(signWallet);
+    console.log("After wallet");
+    console.log("Calling API");
     const { collectionAddress, image, ...rest } = action.payload;
     // ipfs + minting
-    yield call(mintNft, {
-      collectionAddress, nft: rest, image, token
+    const response = yield call(mintNft, {
+      collectionAddress,
+      nft: rest,
+      image,
+      token,
     });
-    
+
+    console.log("After API", response);
+    action.onSuccess();
   } catch (error) {
- 
+    action?.onError(error);
   } finally {
     yield put(setIsLoading(false));
   }
@@ -45,10 +51,8 @@ function* loadListedNfts() {
   yield takeLatest(LOAD_LISTED_NFTS, loadListedNftsCall);
 }
 
-
 function* mintNftSaga() {
   yield takeLatest(MINT_NFT, runMintNft);
 }
-
 
 export { loadListedNfts, mintNftSaga };
