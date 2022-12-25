@@ -5,7 +5,6 @@ import { call, put, takeLatest } from "redux-saga/effects";
 import { toast } from "react-toastify";
 import { signWallet } from "./userSaga";
 import { mintNft } from "../services/createNFT";
-import { updateImportCollectionCall } from "../api/collectionApi";
 
 function* runMintNft(action) {
   try {

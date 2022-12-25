@@ -4,13 +4,15 @@ import Spinner from "./../../components/Spinner";
 import { v4 } from "uuid";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { MINT_COLLECTION } from "../../saga/actions";
 import { toast } from "react-toastify";
 
 const CreateCollection = () => {
   const [imageUpload, setImageUpload] = useState(null);
   const [imageData, setImageData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const walletAddress = getCurrentWalletConnected();
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -34,14 +36,6 @@ const CreateCollection = () => {
     // convert form inputs to data
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    data["upload"] = imageData;
-    data["walletAddress"] = walletAddress;
-
-    if (!imageData) {
-      setLoading(false);
-      toast.error("Please upload an image");
-      return;
-    }
 
     if (data) {
       let dataValid = true;
@@ -51,21 +45,25 @@ const CreateCollection = () => {
         }
       });
       if (dataValid) {
-        data["collectionAddress"] = v4().replace("-", "");
-        // create new collection
-
         console.log(data);
-        await createNewCollection(data)
-          .then((res) => {
-            setLoading(res);
-            navigate("/collection/" + data["collectionAddress"]);
-          })
-          .catch((err) => {
-            setLoading(false);
-            console.log(err);
-          });
       }
     }
+  };
+
+  const handleMintCollection = async () => {
+    dispatch({
+      type: MINT_COLLECTION,
+      payload: {
+        data: {},
+        image: imageData,
+      },
+      onSuccess: (collectionAddress) => {
+        toast.success(
+          "Congratulations, your Collection has been created successfully"
+        );
+        navigate(`/collection/${collectionAddress}`);
+      },
+    });
   };
 
   return (
@@ -129,7 +127,7 @@ const CreateCollection = () => {
                       className="form-control"
                       id="inputTokName"
                       placeholder="cats"
-                      name="collectionTokenName"
+                      name="name"
                       required
                     />
                   </div>
@@ -151,11 +149,12 @@ const CreateCollection = () => {
                       className="form-control"
                       id="inputTokSym"
                       placeholder="cat"
-                      name="collectionTokenSymbol"
+                      name="symbol"
                       required
                     />
                   </div>
-                  <div className="form-group col-md-6">
+                  {/*
+                    <div className="form-group col-md-6">
                     <label htmlFor="inputEmail">Email</label>
                     <input
                       type="email"
@@ -166,6 +165,7 @@ const CreateCollection = () => {
                       required
                     />
                   </div>
+                    */}
                 </div>
 
                 <h4 className="mt-4">Description</h4>
@@ -188,22 +188,31 @@ const CreateCollection = () => {
                     <input
                       type="text"
                       className="form-control"
-                      id="rightsLevel"
-                      placeholder="Level 1"
-                      name="rightsLevel"
+                      defaultValue="val"
+                      name="royaltyAddress"
                       required
                     />
                   </div>
                   <div className="form-group col-md-6">
-                    <label htmlFor="inputState">Rights Duration</label>
+                    <label htmlFor="inputState">Rights Percent (%)</label>
                     <select
                       id="inputState"
                       className="form-control"
                       defaultValue="val"
-                      name="rightsDuration"
+                      name="royaltyPercent"
                       required
                     >
-                      <option value="10 Years">10 Years</option>
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
                     </select>
                   </div>
                 </div>
