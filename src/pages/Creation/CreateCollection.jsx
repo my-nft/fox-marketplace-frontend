@@ -141,7 +141,6 @@ const CreateCollection = () => {
                       id="inputArtName"
                       placeholder="Zak"
                       name="artistName"
-                      required
                     />
                   </div>
 
