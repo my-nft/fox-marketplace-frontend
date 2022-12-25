@@ -87,7 +87,8 @@ const CreateSingleNft = () => {
         ...nftData,
         image: imageData,
       },
-      onError: () => {
+      onError: (err) => {
+        console.log(err);
         toast.error("Error creating NFT");
         setNftData({
           name: "",
@@ -101,6 +102,26 @@ const CreateSingleNft = () => {
           levels: [],
           stats: [],
         });
+        setImageData(null);
+        setImageUpload(null);
+      },
+      onSuccess: () => {
+        console.log("Success");
+        toast.success("NFT created successfully");
+        setNftData({
+          name: "",
+          description: "",
+          artistName: "",
+          upload: null,
+          email: "",
+          rightsDuration: "10 years",
+          rightsLevel: "level 1",
+          attributes: [],
+          levels: [],
+          stats: [],
+        });
+        setImageData(null);
+        setImageUpload(null);
       },
     });
 

@@ -25,8 +25,9 @@ function* runMintNft(action) {
     });
 
     console.log("After API", response);
+    action.onSuccess();
   } catch (error) {
-    action?.onError();
+    action?.onError(error);
   } finally {
     yield put(setIsLoading(false));
   }
