@@ -1769,6 +1769,7 @@ img.withGlow.active {
   z-index: 15;
   -webkit-box-shadow: -2px 7px 15px 0px #000000;
   box-shadow: -2px 7px 15px 0px #000000;
+  aspect-ratio: 1;
 }
 
 #infoHeader {

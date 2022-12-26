@@ -4,6 +4,9 @@ import { optimizeWalletAddress, sameAddress } from "../../utils/walletUtils";
 import { ReactComponent as SettingsIcon } from "../../assets/icons/settings.svg";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 
+import collectionBannerPlaceholder from "../../assets/images/Popluar.jpg";
+import collectionImagePlaceholder from "../../assets/images/nft_test.jpg";
+
 const HeaderAccount = ({ collectionData }) => {
   const { image, banner } = collectionData;
 
@@ -16,8 +19,16 @@ const HeaderAccount = ({ collectionData }) => {
   return (
     <section id="headerAccount" className="container-fluid">
       <div className="row p-4" id="infoProfile">
-        <img src={image} id="iconProfile" alt="" />
-        <img src={banner} id="bannerProfile" alt="profile banner" />
+        <img
+          src={image ? image : collectionImagePlaceholder}
+          id="iconProfile"
+          alt=""
+        />
+        <img
+          src={banner ? banner : collectionBannerPlaceholder}
+          id="bannerProfile"
+          alt="profile banner"
+        />
       </div>
       <div className="row p-4 mt-5" id="infoHeader">
         <div
