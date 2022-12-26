@@ -86,7 +86,9 @@
   .settingsForm {
     margin: 32px auto 16px;
   }
-
+  #accountName {
+    max-width: unset;
+  }
   #chooseLayout {
     display: none;
   }
