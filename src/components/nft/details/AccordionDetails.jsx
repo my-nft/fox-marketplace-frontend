@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { web3 } from "../../../utils/blockchainInteractor";
 import { optimizeWalletAddress } from "../../../utils/walletUtils";
 
@@ -6,6 +7,7 @@ const AccordionDetails = ({ nftDetails, collectionDetails }) => {
   const [chainId, setChainId] = useState(false);
 
   // get chain id and get name of the chain
+  const navigate = useNavigate();
 
   useEffect(() => {
     web3.eth.getChainId().then((res) => {
@@ -16,6 +18,10 @@ const AccordionDetails = ({ nftDetails, collectionDetails }) => {
   useEffect(() => {
     web3.eth.getProtocolVersion().then(console.log);
   }, []);
+
+  const goToCollection = () => {
+    navigate(`/collection/${collectionDetails.collectionAddress}`);
+  };
 
   return (
     <div id="accordionDetails">
@@ -69,7 +75,12 @@ const AccordionDetails = ({ nftDetails, collectionDetails }) => {
             <ul>
               <li>
                 <span className="label">Contract Address</span>
-                <span className="value">
+                <span
+                  className="value collectionLink"
+                  onClick={() => {
+                    goToCollection();
+                  }}
+                >
                   {optimizeWalletAddress(nftDetails.collectionAddress)}
                 </span>
               </li>

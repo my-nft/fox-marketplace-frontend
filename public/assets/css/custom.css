@@ -3637,3 +3637,13 @@ ul#buttonIcon {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
 }
+
+.collectionLink {
+  transition: 300ms ease-in-out;
+  cursor: pointer;
+  color: rgba(255, 154, 27, 0.4);
+}
+
+.collectionLink:hover {
+  color: #f58103;
+}
