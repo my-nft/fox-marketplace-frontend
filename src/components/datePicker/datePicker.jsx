@@ -91,7 +91,7 @@ const CustomDatePicker = ({
               <label htmlFor="time" className="timeEntry">
                 <input
                   type="text"
-                  inputmode="numeric"
+                  inputMode="numeric"
                   name="hour"
                   id="hour"
                   min={0}
@@ -106,7 +106,7 @@ const CustomDatePicker = ({
               <label htmlFor="time" className="timeEntry">
                 <input
                   type="text"
-                  inputmode="numeric"
+                  inputMode="numeric"
                   name="minute"
                   id="minute"
                   min="0"

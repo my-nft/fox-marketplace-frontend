@@ -13,7 +13,6 @@ import {
   web3,
 } from "../utils/blockchainInteractor";
 
-import { toast } from "react-toastify";
 import { sameAddress } from "../utils/walletUtils";
 
 const auctionContract = loadAuctionContract(false);
@@ -321,7 +320,7 @@ export const buyItem = async ({
 };
 
 export const deListItem = async (listingId) => {
-  try {
+  
     const connectWallet = getCurrentWalletConnected();
 
     const gasLimitBuy = await fixedPriceContract.methods
@@ -336,10 +335,6 @@ export const deListItem = async (listingId) => {
       to: FIXEDContractAddress,
       gasLimit: gasLimitBuy,
     });
-  } catch (error) {
-    console.log(error);
-    toast.error(error.message);
-  }
 };
 
 export const makeOfferToOwner = async (collectionAddress, tokenID, price) => {
