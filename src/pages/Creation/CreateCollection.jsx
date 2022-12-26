@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Spinner from "./../../components/Spinner";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { MINT_COLLECTION } from "../../saga/actions";
 import { toast } from "react-toastify";
-import { selectIsLoading } from "../../redux/collectionReducer";
+import { selectIsLoading, setIsLoading } from "../../redux/collectionReducer";
 import CustomSelect from "../../components/Select";
 
 const CreateCollection = () => {
@@ -14,6 +14,10 @@ const CreateCollection = () => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(setIsLoading(false));
+  }, [])
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -28,6 +32,7 @@ const CreateCollection = () => {
       reader.readAsDataURL(file);
     }
   };
+
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
