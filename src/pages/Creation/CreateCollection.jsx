@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { MINT_COLLECTION } from "../../saga/actions";
 import { toast } from "react-toastify";
 import { selectIsLoading } from "../../redux/collectionReducer";
-import Select from "react-select";
 import CustomSelect from "../../components/Select";
 
 const CreateCollection = () => {

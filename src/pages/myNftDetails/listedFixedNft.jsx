@@ -55,6 +55,7 @@ const ListedFixedNft = ({
             <button
               id="buyItem"
               className="btn"
+              disabled={!currentPrice}
               onClick={() => onBuyItem(currentPrice)}
             >
               Buy item
