@@ -5,6 +5,7 @@ import {
   loadERC20Contract,
   loadFoxMasterCollectionContract,
 } from "../utils/blockchainInteractor";
+import { sameAddress } from "../utils/walletUtils";
 
 const erc20Contract = loadERC20Contract();
 
@@ -14,24 +15,33 @@ export const mintNft = async ({
   image,
   token,
 }) => {
+
+  if(!collectionAddress) {
+    collectionAddress = foxMasterCollectionAddress
+  }
+  
+  console.log("=====> input collection address ", collectionAddress);
+
   const foxMastercontract = loadFoxMasterCollectionContract(collectionAddress);
 
   const connectedWallet = getCurrentWalletConnected();
 
-  const mintFee = await foxMastercontract.methods.mintFee().call();
+  if (sameAddress(collectionAddress, foxMasterCollectionAddress)) {
+    const mintFee = await foxMastercontract.methods.mintFee().call();
 
-  const gasLimit = await erc20Contract.methods
-    .approve(collectionAddress, mintFee)
-    .estimateGas({
+    const gasLimit = await erc20Contract.methods
+      .approve(collectionAddress, mintFee)
+      .estimateGas({
+        from: connectedWallet,
+        to: collectionAddress,
+      });
+
+    await erc20Contract.methods.approve(collectionAddress, mintFee).send({
       from: connectedWallet,
       to: collectionAddress,
+      gasLimit,
     });
-
-  await erc20Contract.methods.approve(collectionAddress, mintFee).send({
-    from: connectedWallet,
-    to: collectionAddress,
-    gasLimit,
-  });
+  }
 
   // API ADD NFT TO IPFS
   const response = await addNftToIpfs({
@@ -41,16 +51,20 @@ export const mintNft = async ({
     token,
   });
 
-  const tsx = await foxMastercontract.methods.mint(connectedWallet, response.data).send({
-    from: connectedWallet,
-    to: collectionAddress,
-  });
+  const tsx = await foxMastercontract.methods
+    .mint(connectedWallet, response.data)
+    .send({
+      from: connectedWallet,
+      to: collectionAddress,
+    });
 
   const tokenID = tsx?.events?.Transfer?.returnValues?.tokenId;
 
+  console.log("=====> TOKENID ", tokenID);
+  console.log("=====> collectionAddress ", collectionAddress);
+
   return {
     tokenID,
-    collectionAddress
+    collectionAddress,
   };
-
 };

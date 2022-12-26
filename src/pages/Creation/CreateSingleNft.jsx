@@ -5,7 +5,7 @@ import { CreateNFTPopup } from "../../components/popups/popups";
 import { useDispatch, useSelector } from "react-redux";
 import { selectIsLoading } from "../../redux/nftReducer";
 import { MINT_NFT } from "../../saga/actions";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const CreateSingleNft = () => {
   const [imageUpload, setImageUpload] = useState(null);
@@ -14,7 +14,9 @@ const CreateSingleNft = () => {
   const [popupStatus, setPopupStatus] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let { collectionAddress } = useParams();
+  const [searchParams, setSearchParams]= useSearchParams();
+  const collectionAddress = searchParams.get("collectionAddress");
+  
 
   console.log("COLLECTION ADDRESS ", collectionAddress);
 
@@ -83,10 +85,13 @@ const CreateSingleNft = () => {
       return;
     }
 
+    const {upload, ...rest} = nftData;
+
+
     dispatch({
       type: MINT_NFT,
       payload: {
-        ...nftData,
+        ...rest,
         collectionAddress,
         image: imageData,
       },
