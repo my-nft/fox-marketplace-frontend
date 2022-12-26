@@ -1,17 +1,15 @@
-import { useRef, useState } from "react";
-import { createNewCollection } from "./../../services/createCollection";
+import { useState } from "react";
 import Spinner from "./../../components/Spinner";
-import { v4 } from "uuid";
-import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { MINT_COLLECTION } from "../../saga/actions";
 import { toast } from "react-toastify";
+import { selectIsLoading } from "../../redux/collectionReducer";
 
 const CreateCollection = () => {
   const [imageUpload, setImageUpload] = useState(null);
   const [imageData, setImageData] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const loading = useSelector(selectIsLoading);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -32,7 +30,6 @@ const CreateCollection = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     // convert form inputs to data
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
@@ -40,21 +37,29 @@ const CreateCollection = () => {
     if (data) {
       let dataValid = true;
       Object.keys(data).forEach((key) => {
+        console.log(data)
         if (data[key] === "") {
           dataValid = false;
         }
       });
       if (dataValid) {
-        console.log(data);
+        handleMintCollection(data);
       }
     }
   };
 
-  const handleMintCollection = async () => {
+  const handleMintCollection = async (data) => {
     dispatch({
       type: MINT_COLLECTION,
       payload: {
-        data: {},
+        data: {
+          artistName: data.artistName,
+          description: data.description,
+          name: data.name,
+          royaltyAddress: data.royaltyAddress,
+          royaltyPercent: data.royaltyPercent,
+          symbol: data.symbol,
+        },
         image: imageData,
       },
       onSuccess: (collectionAddress) => {
@@ -113,12 +118,6 @@ const CreateCollection = () => {
             <div className="col-md-8 col-sm-12 mb-5 text-left px-5">
               <h3>Collection Info</h3>
               <div>
-                {/* <input
-                  type="file"
-                  id="file"
-                  ref={inputFile}
-                  style={{ display: "none" }}
-                /> */}
                 <div className="form-row">
                   <div className="form-group col-md-6">
                     <label htmlFor="inputTokName">Collection Token Name</label>
@@ -153,19 +152,6 @@ const CreateCollection = () => {
                       required
                     />
                   </div>
-                  {/*
-                    <div className="form-group col-md-6">
-                    <label htmlFor="inputEmail">Email</label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="inputEmail"
-                      placeholder="sna@gmail.com"
-                      name="email"
-                      required
-                    />
-                  </div>
-                    */}
                 </div>
 
                 <h4 className="mt-4">Description</h4>
@@ -183,24 +169,21 @@ const CreateCollection = () => {
                 </div>
                 <div className="form-row">
                   <div className="form-group col-md-6">
-                    <label htmlFor="inputState">Rights Level</label>
+                    <label htmlFor="inputState">Royalty Address</label>
 
                     <input
                       type="text"
                       className="form-control"
-                      defaultValue="val"
                       name="royaltyAddress"
-                      required
                     />
                   </div>
                   <div className="form-group col-md-6">
-                    <label htmlFor="inputState">Rights Percent (%)</label>
+                    <label htmlFor="inputState">Royalty Percent (%)</label>
                     <select
                       id="inputState"
                       className="form-control"
-                      defaultValue="val"
+                      defaultValue="0"
                       name="royaltyPercent"
-                      required
                     >
                       <option value="0">0</option>
                       <option value="1">1</option>

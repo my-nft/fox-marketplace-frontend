@@ -1,4 +1,3 @@
-import { updateImportCollectionCall } from "../api/collectionApi";
 import { addNftToIpfs } from "../api/nftApi";
 import {
   foxMasterCollectionAddress,
@@ -42,11 +41,16 @@ export const mintNft = async ({
     token,
   });
 
-  await foxMastercontract.methods.mint(connectedWallet, response.data).send({
+  const tsx = await foxMastercontract.methods.mint(connectedWallet, response.data).send({
     from: connectedWallet,
     to: collectionAddress,
   });
 
-  // import token and collection ?
-  await updateImportCollectionCall(collectionAddress, token);
+  const tokenID = tsx?.events?.Transfer?.returnValues?.tokenId;
+
+  return {
+    tokenID,
+    collectionAddress
+  };
+
 };

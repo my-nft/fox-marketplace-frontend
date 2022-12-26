@@ -99,19 +99,21 @@ const HeaderAccount = ({ collectionData }) => {
           </ul>
         </div>
         <div className="row align-items-start">
-          <Link to="#" className="addNFTLink">
-            Add NFT to collection
-          </Link>
           {sameAddress(
             collectionData.ownerAddress,
             getCurrentWalletConnected()
           ) ? (
-            <Link
-              to={`/collection/${collectionData.collectionAddress}/settings`}
-              className="settingsIcon"
-            >
-              <SettingsIcon />
-            </Link>
+            <>
+              <Link to={`/single-nft?collectionAddress=${collectionData.collectionAddress}`} className="addNFTLink">
+                Add NFT to collection
+              </Link>
+              <Link
+                to={`/collection/${collectionData.collectionAddress}/settings`}
+                className="settingsIcon"
+              >
+                <SettingsIcon />
+              </Link>
+            </>
           ) : null}
         </div>
 

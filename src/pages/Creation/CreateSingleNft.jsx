@@ -5,6 +5,7 @@ import { CreateNFTPopup } from "../../components/popups/popups";
 import { useDispatch, useSelector } from "react-redux";
 import { selectIsLoading } from "../../redux/nftReducer";
 import { MINT_NFT } from "../../saga/actions";
+import { useNavigate, useParams } from "react-router-dom";
 
 const CreateSingleNft = () => {
   const [imageUpload, setImageUpload] = useState(null);
@@ -12,6 +13,10 @@ const CreateSingleNft = () => {
   const isLoading = useSelector(selectIsLoading);
   const [popupStatus, setPopupStatus] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  let { collectionAddress } = useParams();
+
+  console.log("COLLECTION ADDRESS ", collectionAddress);
 
   const [nftData, setNftData] = useState({
     name: "",
@@ -82,6 +87,7 @@ const CreateSingleNft = () => {
       type: MINT_NFT,
       payload: {
         ...nftData,
+        collectionAddress,
         image: imageData,
       },
       onError: (err) => {
@@ -99,61 +105,15 @@ const CreateSingleNft = () => {
         setImageData(null);
         setImageUpload(null);
       },
-      onSuccess: () => {
+      onSuccess: (collectionAddress, tokenID) => {
         console.log("Success");
         toast.success("NFT created successfully");
-        setNftData({
-          name: "",
-          description: "",
-          artistName: "",
-          upload: null,
-          attributes: [],
-          levels: [],
-          stats: [],
-        });
-        setImageData(null);
-        setImageUpload(null);
+        navigate(`/collection/${collectionAddress}/${tokenID}`);
       },
     });
-
-    /*
-    // convert form inputs to data
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
-    data["walletAddress"] = walletAddress;
-    data["upload"] = imageData;
-
-    
-    if(data){
-      let dataValid = true;
-      Object.keys(data).forEach((key) => {
-        if(data[key] === ""){
-          dataValid = false;
-        }
-      })
-      if(dataValid){
-        // create new NFT
-        const createNFTResponse = await createNewNFT(data, token, "MARKET_PLACE_DEFAULT_VALUE");
-      }
-    }
-    */
   };
 
-  // const handleImageUpload = (e) => {
-  //   const file = e.target.files[0];
 
-  //   if (file) {
-  //     const url = URL.createObjectURL(file);
-  //     let reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setImageUpload(url);
-  //       setImageData(reader.result);
-  //     }
-  //     reader.readAsDataURL(file);
-
-  //   }
-
-  // }
 
   return (
     <section id="createCollection" className="my-2">

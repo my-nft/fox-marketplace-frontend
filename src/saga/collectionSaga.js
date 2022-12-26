@@ -108,8 +108,6 @@ function* runMintCollection(action) {
 
     yield call(api.importCollectionCall, collectionAddress, token);
 
-    yield call(delay, 1000); 
-
     yield call(
       api.updateCollection,
       collectionAddress,
@@ -119,8 +117,12 @@ function* runMintCollection(action) {
       },
       token
     );
+    yield delay(1500); 
 
-    action.onSuccess();
+    yield put(setCollectionIsLoading(false));
+
+    action.onSuccess(collectionAddress);
+
     
   } catch (error) {
     console.log(error);

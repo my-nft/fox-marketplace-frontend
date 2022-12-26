@@ -5,6 +5,9 @@ import { call, put, takeLatest } from "redux-saga/effects";
 import { toast } from "react-toastify";
 import { signWallet } from "./userSaga";
 import { mintNft } from "../services/createNFT";
+import {
+  importCollectionToken,
+} from "../api/collectionApi";
 
 function* runMintNft(action) {
   try {
@@ -16,15 +19,19 @@ function* runMintNft(action) {
     console.log("Calling API");
     const { collectionAddress, image, ...rest } = action.payload;
     // ipfs + minting
-    const response = yield call(mintNft, {
+    const { tokenID, collectionAddress: calculAddress } = yield call(mintNft, {
       collectionAddress,
       nft: rest,
       image,
       token,
     });
 
-    console.log("After API", response);
-    action.onSuccess();
+    // import the specific token
+    yield call(importCollectionToken, calculAddress, tokenID, token);
+
+    yield put(setIsLoading(false));
+
+    action.onSuccess(calculAddress, tokenID);
   } catch (error) {
     action?.onError(error);
   } finally {
