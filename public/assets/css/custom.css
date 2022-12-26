@@ -1714,6 +1714,15 @@ img.withGlow.active {
 
 /*Account*/
 
+#accountWallet {
+  cursor: pointer;
+  transition: 300ms ease-in-out;
+}
+
+#accountWallet:hover {
+  color: #f58103;
+}
+
 #headerAccount {
   color: white;
 }
@@ -1769,6 +1778,7 @@ img.withGlow.active {
   z-index: 15;
   -webkit-box-shadow: -2px 7px 15px 0px #000000;
   box-shadow: -2px 7px 15px 0px #000000;
+  aspect-ratio: 1;
 }
 
 #infoHeader {
@@ -2124,6 +2134,7 @@ s #accordionListing table tr,
 
 #propTags span {
   font-size: 11px !important;
+  color: rgba(255, 255, 255, 0.45);
 }
 
 .grafico.bar-chart {
@@ -2407,6 +2418,9 @@ s #accordionListing table tr,
 #totalItemsInfo li {
   margin-right: 35px;
   padding-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 #totalItemsPrice p,

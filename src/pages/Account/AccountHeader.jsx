@@ -1,18 +1,13 @@
 import { optimizeWalletAddress } from "../../utils/walletUtils";
+import placeholderBanner from "../../assets/images/account/profile_img_banner.jpg";
+import placeholderImage from "../../assets/images/account/img_account_default.jpg";
 
 const AccountHeader = ({ user }) => {
-
   return (
     <section id="headerAccount" className="container-fluid">
       <div className="row p-4" id="infoProfile">
-        <img
-          src={user?.image}
-          id="iconProfile"
-        />
-        <img
-          src={user?.banner}
-          alt=""
-        />
+        <img src={false ? user.image : placeholderImage} id="iconProfile" />
+        <img src={false ? user.banner : placeholderBanner} alt="" />
       </div>
       <div className="row p-4 mt-5" id="infoHeader">
         <div id="accountName">
