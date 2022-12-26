@@ -9,29 +9,30 @@ import {
 } from "../../interactors/blockchainInteractor";
 import { selectConnectedUser } from "../../redux/userReducer";
 import { LOAD_USER } from "../../saga/actions";
+import { loadERC20Contract, web3 } from "../../utils/blockchainInteractor";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 import ScrollToTop from "../scrollToTop";
 import useOutsideClick from "./../../utils/useOutsideClick";
 import SearchBar from "./../searchBar/searchBar";
 
 const Header = () => {
-
   const clickRef = useOutsideClick(() => {
     document.querySelector(".navbar-collapse").classList.remove("show");
   });
 
-
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [connectedWallet, setConnectedWallet] = useState();
-  const connectedUser = useSelector(selectConnectedUser);
+  const [balance, setBalance] = useState({
+    fx: 0,
+    fxg: 0,
+  });
   const [filters, setFilters] = useState({
     searchPrompt: "",
   });
 
   const handleSignIn = async () => {
-    connectWallet();
+    await connectWallet();
     setConnectedWallet(getCurrentWalletConnected());
   };
 
@@ -43,7 +44,7 @@ const Header = () => {
       });
     } else {
       connectWallet();
-      setConnectedWallet(getCurrentWalletConnected())
+      setConnectedWallet(getCurrentWalletConnected());
     }
   }, [connectedWallet]);
 
@@ -78,9 +79,33 @@ const Header = () => {
     }
   }, []);
 
+  const initWalletData = async () => {
+    if (connectedWallet) {
+      const fxg = await loadERC20Contract()
+        .methods.balanceOf(connectedWallet)
+        .call();
+      web3.eth.getBalance(connectedWallet, (err, wei) => {
+        if (!err) {
+          const walletBalance = Number(
+            web3.utils.fromWei(wei, "ether")
+          ).toFixed(2);
+          setBalance({
+            ...balance,
+            fx: walletBalance,
+            fxg: fxg / 10 ** 18,
+          });
+        }
+      });
+    }
+  };
+
   useEffect(() => {
-    console.log("USER SETTED", connectedUser);
-  }, [connectedUser]);
+    initWalletData();
+  }, [connectedWallet]);
+
+  useEffect(() => {
+    handleSignIn();
+  }, [])
 
   return (
     <>
@@ -112,7 +137,7 @@ const Header = () => {
           </button>
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav">
+            <ul className={`navbar-nav ${connectedWallet ? "" : "mr-3"}`}>
               <li className="nav-item active">
                 <Link className="nav-link" to="/explorer">
                   Explorer <span className="sr-only">(current)</span>
@@ -124,30 +149,41 @@ const Header = () => {
                 </Link>
               </li>
             </ul>
-            <ul id="buttonIcon">
-              {connectedWallet ? (
-                <>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/account">
-                      Account
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to={"/profile"}>
-                      <img src="/assets/icon-white-user.png" alt="" />
-                    </Link>
-                  </li>
-                </>
-              ) : null}
-              <li>
-                <Link to="#">
-                  <img src="/assets/icon-white-settings.png" alt="" />
-                </Link>
-              </li>
-              <li>
-                <img src="/assets/icon-white-wallet.png" alt="" />
-              </li>
-            </ul>
+
+            {connectedWallet ? (
+              <ul id="buttonIcon">
+                <li className="nav-item">
+                  <Link className="nav-link" to="/account">
+                    Account
+                  </Link>
+                </li>
+                <li>
+                  <Link to={"/profile"}>
+                    <img src="/assets/icon-white-user.png" alt="" />
+                  </Link>
+                </li>
+                <li>
+                  <Link to="#">
+                    <img src="/assets/icon-white-settings.png" alt="" />
+                  </Link>
+                </li>
+
+                <li className="walletIcon">
+                  <div className="walletInfo">
+                    <div>
+                      <h2>FX</h2>
+                      <p>{balance.fx}</p>
+                    </div>
+                    <div>
+                      <h2>FXG</h2>
+                      <p>{balance.fxg}</p>
+                    </div>
+                  </div>
+                  <img src="/assets/icon-white-wallet.png" alt="" />
+                </li>
+              </ul>
+            ) : null}
+
             <button id="signUpButton" onClick={handleSignIn}>
               {connectedWallet
                 ? optimizeWalletAddress(connectedWallet)

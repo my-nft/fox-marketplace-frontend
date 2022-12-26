@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { call, delay, put, select, takeLatest } from "redux-saga/effects";
+import { call, delay, put, takeLatest } from "redux-saga/effects";
 import * as api from "../api/collectionApi";
 import * as tokenApi from "../api/nftApi";
 import {
@@ -16,28 +16,25 @@ import {
   setIsLoading as setCollectionIsLoading,
   setCollectionDetails,
 } from "../redux/collectionReducer";
-import {
-  setIsLoading,
-  setListedNfts,
-} from "../redux/nftReducer";
-import { selectToken } from "../redux/userReducer";
+import { mintCollection } from "../services/createCollection";
 import {
   IMPORT_COLLECTION,
-  LOAD_MARKET_PLACE,
   LOAD_MOST_POPULAR_COLLECTION,
   LOAD_SEARCHABLE_COLLECTION,
   LOAD_ACCOUNT_NFTS,
   LOAD_ACCOUNT_COLLECTIONS,
   LOAD_COLLECTION,
   UPDATE_COLLECTION,
+  MINT_COLLECTION,
 } from "./actions";
+import { signWallet } from "./userSaga";
 
 function* importCollection(action) {
   try {
     yield put(setCollectionIsLoading(true));
     const { collectionAddress } = action.payload;
-    const token = yield select(selectToken)
-    console.log("the token is", token)
+    const token = yield call(signWallet);
+    console.log("the token is", token);
     yield call(api.importCollectionCall, collectionAddress, token);
     yield delay(3000);
     action.onSuccess();
@@ -68,7 +65,9 @@ function* loadSearcheableCollection(action) {
 
     const response = yield call(api.getCollectionsCall, action.payload);
 
-    yield put(setSearcheableCollections(response.data));
+    const {data} = response;
+
+    yield put(setSearcheableCollections(data.content));
   } catch (error) {
     console.log("error ", error.response.status);
     toast.error("An unexpected error occurred.");
@@ -83,7 +82,7 @@ function* runLoadCollection(action) {
     yield put(setCollectionIsLoading(true));
     let response = yield call(api.getCollectionByAddress, collectionAddress);
     yield delay(1000);
-   
+
     yield put(setCollectionDetails(response.data));
     yield put(setCollectionIsLoading(false));
     action.onSuccess();
@@ -95,54 +94,67 @@ function* runLoadCollection(action) {
   }
 }
 
-
-function* updateCollectionInformation(action) {
-  
-  try{
-    const { collectionAddress,   image, banner, data } = action.payload;
-    const token = yield select(selectToken);
-    
-    yield call(api.updateCollection, collectionAddress, {
-      image,
-      banner,
-      collection: data,
-    }, token);
-
-    yield delay(1000);
-    toast.success("Collection updated successfully");
-    action.onSuccess();
-
-
-  }
-  catch(error){
-    console.log(error);
-    toast.error("An unexpected error occurred.");
-    action.onError()
-  }
- 
-}
-
-
-function* runLoadMarketPlaceAll(action) {
+function* runMintCollection(action) {
   try {
-    yield put(setIsLoading(true));
-    const { page, numberElements } = action.payload;
-    // loading most popular collections
-    let response = yield call(api.getCollectionsCall, action.payload);
-    yield put(setMostPopularCollections(response.data));
+    yield put(setCollectionIsLoading(true));
 
-    // loading searchable collections
-    response = yield call(api.getCollectionsCall, action.payload);
-    yield put(setSearcheableCollections(response.data));
+    const token = yield call(signWallet);
 
-    //loading listedNfts
-    response = yield call(tokenApi.getListedNfts, page, numberElements);
-    yield put(setListedNfts(response.data));
+    const { data, image } = action.payload;
+    let collectionAddress = yield call(mintCollection, {
+      name : data.name,
+      symbol: data.symbol
+    });
+
+    yield call(api.importCollectionCall, collectionAddress, token);
+
+    yield call(
+      api.updateCollection,
+      collectionAddress,
+      {
+        image,
+        collection: data,
+      },
+      token
+    );
+    yield delay(1500); 
+
+    yield put(setCollectionIsLoading(false));
+
+    action.onSuccess(collectionAddress);
+
+    
   } catch (error) {
     console.log(error);
     toast.error("An unexpected error occurred.");
   } finally {
-    yield put(setIsLoading(false));
+    yield put(setCollectionIsLoading(false));
+  }
+}
+
+function* updateCollectionInformation(action) {
+  try {
+    const { collectionAddress, image, banner, data } = action.payload;
+    const token = yield call(signWallet);
+
+    yield call(
+      api.updateCollection,
+      collectionAddress,
+      {
+        image,
+        banner,
+        collection: data,
+      },
+      token
+    );
+
+    yield delay(1000);
+    toast.success("Collection updated successfully");
+    action.onSuccess();
+  } catch (error) {
+    console.log(error);
+    toast.error("An unexpected error occurred.");
+    action.onError();
   }
 }
 
@@ -152,7 +164,7 @@ function* loadAccountCollections(action) {
     yield put(setIsLoadingAccount(true));
     const { ownerAddress, page, numberElements, filter } = action.payload;
 
-    console.log("SAGA CALL",action.payload)
+    console.log("SAGA CALL", action.payload);
 
     const collectionsResponse = yield call(
       api.getAccountCollections,
@@ -229,14 +241,13 @@ function* updateCollectionInformationSaga() {
   yield takeLatest(UPDATE_COLLECTION, updateCollectionInformation);
 }
 
-function* loadMarketPlaceAll() {
-  yield takeLatest(LOAD_MARKET_PLACE, runLoadMarketPlaceAll);
-}
-
 function* loadCollection() {
   yield takeLatest(LOAD_COLLECTION, runLoadCollection);
 }
 
+function* loadMintCollection() {
+  yield takeLatest(MINT_COLLECTION, runMintCollection);
+}
 
 export {
   loadPopularCollectionSaga,
@@ -244,7 +255,7 @@ export {
   loadAccountNtsSaga,
   loadAccountCollectionsSaga,
   updateCollectionInformationSaga,
-  loadMarketPlaceAll,
   importCollectionSaga,
-  loadCollection
+  loadCollection,
+  loadMintCollection
 };

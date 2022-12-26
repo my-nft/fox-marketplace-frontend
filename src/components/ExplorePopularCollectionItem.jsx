@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {Buffer} from 'buffer';
+import { Buffer } from "buffer";
+
+import placeholderBanner from "../assets/images/Popluar.jpg";
+import placeholderImage from "../assets/images/nft_test.jpg";
 
 const ExplorePopularCollectionItem = ({ itemData }) => {
   const navigate = useNavigate();
@@ -8,63 +11,58 @@ const ExplorePopularCollectionItem = ({ itemData }) => {
   const [bannerUrl, setBannerUrl] = useState();
 
   const handleShowCollection = () => {
-    navigate(`/collection/${itemData.collectionAddress}`)
+    navigate(`/collection/${itemData.collectionAddress}`);
   };
 
   useEffect(() => {
-
-    if(itemData && itemData.image){
+    if (itemData && itemData.image) {
       const image = itemData.image;
-      if(image.data) {
-        const base64 = Buffer.from(image.data.data).toString('base64')
+      if (image.data) {
+        const base64 = Buffer.from(image.data.data).toString("base64");
         setImageUrl(`data:image/png;base64,${base64}`);
-      }
-      else if(image.type){
+      } else if (image.type) {
         let url = URL.createObjectURL(image);
-        console.log(url)
+        console.log(url);
         setImageUrl(url);
-      }
-      else if(typeof image === "string"){
+      } else if (typeof image === "string") {
         setImageUrl(image);
+      } else {
+        setImageUrl(placeholderImage);
       }
+    } else {
+      setImageUrl(placeholderImage);
     }
 
-    if(itemData && itemData.banner){
+    if (itemData && itemData.banner) {
       const banner = itemData.banner;
-      if(banner.data) {
-        const base64 = Buffer.from(banner.data.data).toString('base64')
+      console.log(banner);
+      if (banner.data) {
+        const base64 = Buffer.from(banner.data.data).toString("base64");
         setBannerUrl(`data:image/png;base64,${base64}`);
-      }
-      else if(banner.type){
+      } else if (banner.type) {
         let url = URL.createObjectURL(banner);
         setBannerUrl(url);
-      }
-      else if(typeof banner === "string"){
+      } else if (typeof banner === "string") {
         setBannerUrl(banner);
+      } else {
+        setBannerUrl(placeholderBanner);
       }
+    } else {
+      setBannerUrl(placeholderBanner);
     }
-
-  }, [])
+  }, []);
 
   return (
     <div className="listMostPopular" onClick={handleShowCollection}>
       <div className="wrapContent">
         <div className="wrapImg">
-          <img
-            src={bannerUrl}
-            className="bigImage"
-            alt=""
-          />
-          <img
-            src={imageUrl}
-            className="iconLogo"
-            alt=""
-          />
+          <img src={bannerUrl} className="bigImage" alt="" />
+          <img src={imageUrl} className="collectionImgLogo" alt="" />
         </div>
         <div className="wrapText">
           <p>
-            <label>{itemData.name}</label>
-            <span>{itemData.tags}</span>
+            <label>{itemData.name ? itemData.name : "-"}</label>
+            <span>{itemData.tags ? itemData.tags : "-"}</span>
           </p>
           <p className="text-right">
             <label>Total Volume</label>

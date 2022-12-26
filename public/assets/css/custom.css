@@ -465,7 +465,7 @@ td span {
 
 .slick-slide:hover {
   scale: 1.1;
-  margin: 0 50px;
+  margin: 0 32px;
 }
 
 .slider .slick-list {
@@ -879,6 +879,7 @@ footer a:hover {
 .wrapperMostPopular {
   background-color: #080808;
   padding: 10px;
+  row-gap: 12px;
 }
 
 .wrapImg {
@@ -906,6 +907,7 @@ footer a:hover {
   padding: 10px 5px;
   margin-bottom: 10px;
   transition: 300ms ease-in-out;
+  height: 100%;
 }
 
 .wrapContent:hover {
@@ -1712,6 +1714,15 @@ img.withGlow.active {
 
 /*Account*/
 
+#accountWallet {
+  cursor: pointer;
+  transition: 300ms ease-in-out;
+}
+
+#accountWallet:hover {
+  color: #f58103;
+}
+
 #headerAccount {
   color: white;
 }
@@ -1767,6 +1778,7 @@ img.withGlow.active {
   z-index: 15;
   -webkit-box-shadow: -2px 7px 15px 0px #000000;
   box-shadow: -2px 7px 15px 0px #000000;
+  aspect-ratio: 1;
 }
 
 #infoHeader {
@@ -2043,6 +2055,7 @@ input.form-control::placeholder {
   text-align: center;
   padding: 15px;
   font-family: "gothamMedium";
+  margin: 10px;
   border: none;
 }
 
@@ -2121,6 +2134,7 @@ s #accordionListing table tr,
 
 #propTags span {
   font-size: 11px !important;
+  color: rgba(255, 255, 255, 0.45);
 }
 
 .grafico.bar-chart {
@@ -2404,6 +2418,9 @@ s #accordionListing table tr,
 #totalItemsInfo li {
   margin-right: 35px;
   padding-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 #totalItemsPrice p,
@@ -2480,7 +2497,8 @@ s #accordionListing table tr,
 }
 
 .filtersContainer {
-  max-height: 1980px;
+  /* max-height: 1980px; */
+  max-width: 620px;
   transition: 300ms ease-in-out;
 }
 
@@ -2512,7 +2530,7 @@ input[type="number"]:focus-within {
 }
 
 .collectionFilters .filtersCollapsible {
-  max-width: 380px !important;
+  max-width: 460px !important;
 }
 
 .filtersContainer #command .checkBox {
@@ -3058,6 +3076,7 @@ input[type="number"]:focus-within {
 .settingGroup input:focus,
 .settingGroup textarea:focus {
   outline: none;
+  color: #fff;
 }
 
 .transferOwnership {
@@ -3348,15 +3367,15 @@ input:read-only {
   border-radius: 8px;
 }
 
-.confirmButton{
+.confirmButton {
   display: flex;
   justify-content: center;
   margin-top: 32px;
   padding: 12px 48px !important;
   border-radius: 12px;
   background: #f58103;
-  display:block;
-  outline : none;
+  display: block;
+  outline: none;
   border: none;
   font-weight: 600 !important;
 }
@@ -3369,45 +3388,65 @@ input:read-only {
   border: none !important;
 }
 
-.bannerChange label{
+.bannerChange label {
   min-height: 200px;
   border: 1px solid #f58103;
 }
 
-.settingsIcon{
+.settingsIcon {
   padding: 12px;
   border-radius: 10px;
   background: #15191d;
   cursor: pointer;
-  height: max-content;
+  height: 56px;
+  width: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 16px;
   transition: 300ms ease-in-out;
 }
-.settingsIcon svg{
-  margin-right: 0 !important;
+
+.addNFTLink {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 300ms ease-in-out;
+  background: transparent;
+  padding: 16px 32px;
+  border-radius: 12px;
 }
 
-.settingsIcon svg path{
-  fill: #faffff;
-}
-
-.settingsIcon:hover{
+.addNFTLink:hover {
+  color: #fff;
   background: #f58103;
 }
 
+.settingsIcon svg {
+  margin-right: 0 !important;
+}
 
-img{
+.settingsIcon svg path {
+  fill: #faffff;
+}
 
+.settingsIcon:hover {
+  background: #f58103;
+}
+
+img {
   font-size: 0;
 }
 
-.imageUpload h4{
+.imageUpload h4 {
   font-size: 16px;
   font-weight: 600;
   color: #fefefe;
   margin-bottom: 16px;
 }
 
-.profileImageUpload{
+.profileImageUpload {
   width: 172px !important;
   height: 172px !important;
   object-fit: cover;
@@ -3418,9 +3457,7 @@ img{
   position: relative;
 }
 
-
-
-.profileImageUpload>img{
+.profileImageUpload > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -3429,12 +3466,12 @@ img{
   max-width: unset !important;
 }
 
-
-.profileImageUpload input, .bannerImageUpload input{
+.profileImageUpload input,
+.bannerImageUpload input {
   display: none;
 }
 
-.bannerImageUpload{
+.bannerImageUpload {
   width: 100%;
   height: 200px;
   object-fit: cover;
@@ -3443,4 +3480,175 @@ img{
   border: 1px solid #f58103;
   border-radius: 16px;
   position: relative;
+}
+
+.collectionImgLogo {
+  position: absolute;
+  left: 1vw;
+  bottom: -3vh;
+  border: 2px solid white;
+  border-radius: 15px;
+  max-width: 60px;
+  height: 60px !important;
+  display: block;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  background: rgb(0, 0, 0);
+}
+
+.listMostPopular .wrapText {
+  padding-top: 40px;
+}
+
+.walletIcon {
+  cursor: pointer;
+  position: relative;
+  display: flex !important;
+}
+
+.walletIcon img {
+  object-fit: contain;
+}
+
+.walletInfo {
+  max-width: 0;
+  opacity: 0;
+  transition: 300ms ease-in-out;
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  gap: 12px;
+  margin-left: 8px;
+  margin-right: 0;
+}
+
+.walletInfo div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.walletInfo h2 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f58103;
+  margin: 0;
+}
+
+.walletInfo p {
+  font-size: 16px;
+  color: #fefefe;
+  opacity: 0.6;
+  margin: 0;
+}
+
+.walletIcon:hover .walletInfo {
+  max-width: 300px;
+  opacity: 1;
+  margin-right: 24px;
+}
+ul#buttonIcon {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.slickArrowsContainer {
+  position: relative;
+}
+
+.slickArrow {
+  padding: 14px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(245, 129, 3, 0.7);
+  position: absolute;
+  cursor: pointer;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  transition: 300ms ease-in-out;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.slickArrow:hover {
+  background: #f58103;
+}
+
+.slickArrow:hover svg path {
+  fill: #fefefe;
+}
+
+.slickArrowPrev {
+  left: 0;
+}
+
+.slickArrowShow {
+  visibility: visible;
+  opacity: 1;
+}
+
+.slickArrowNext {
+  right: 0;
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.wrapImg {
+  position: relative;
+}
+
+.nft .wrapContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.nft .wrapText {
+  padding-top: 16px;
+}
+
+.nft .wrappedAllText {
+  flex-grow: 2;
+}
+
+.ownedItem {
+  bottom: 0;
+  width: 100%;
+  position: absolute;
+  padding: 32px 16px 12px;
+  color: #f58103;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 20%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  font-weight: 600;
+  margin: 0 !important;
+}
+
+.nft.listMostPopular {
+  min-width: unset !important;
+  width: 100% !important;
+}
+
+.wrapperMostPopular {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.collectionLink {
+  transition: 300ms ease-in-out;
+  cursor: pointer;
+  color: rgba(255, 154, 27, 0.4);
+}
+
+.collectionLink:hover {
+  color: #f58103;
+}
+
+#createCollection input[name="royaltyAddress"] {
+  height: 54px;
 }

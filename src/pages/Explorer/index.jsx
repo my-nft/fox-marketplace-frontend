@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { getCollectionsCall } from "../../api/collectionApi";
+import { getListedNfts } from "../../api/nftApi";
 import HeaderInput from "../../components/marketplace/HeaderInput";
 import Pagination from "../../components/pagination/pagination";
 import Spinner from "../../components/Spinner";
-import {
-  selectMostPopularCollections,
-  selectSearcheableCollection,
-} from "../../redux/collectionReducer";
-
-import { selectIsLoading, selectListedNfts } from "../../redux/nftReducer";
 
 import { LOAD_MARKET_PLACE } from "../../saga/actions";
 import AccordingCollection from "./AccordingCollection";
@@ -21,21 +17,24 @@ import AccordionPropertiesFilter from "./PropertiesFilter";
 const Explorer = () => {
   const dispatch = useDispatch();
 
-  const mostPopularCollections = useSelector(selectMostPopularCollections);
-  const searcheableCollections = useSelector(selectSearcheableCollection);
-  const marketPlaceNfts = useSelector(selectListedNfts);
 
-  const { totalElements, content } = marketPlaceNfts || {};
+  const [isLoadingState, setIsLoadingState] = useState(true);
+  const [isLoadingMspl, setIsLoadingMspl] = useState(true);
+  const [isLoadingSearcheableState, setIsLoadingSearcheableState] = useState(true);
 
-  const isLoadingApi = useSelector(selectIsLoading);
+  const [searcheableCollections, setSearcheableCollections] = useState([]);
+  const [mostPopularCollections, setMostPopularCollections] = useState([]);
+  const [nfts, setNfts] = useState({});
+
+  const { totalElements, content } = nfts || {};
 
   const [filtersVisible, setFiltersVisible] = useState(false);
 
-  const [isLoading, setIsLoading] = useState(true);
   const [pagination, setPagination] = useState({
     numberElements: 20,
     page: 1,
   });
+
 
   const [filters, setFilters] = useState({
     minPrice: 0,
@@ -44,29 +43,47 @@ const Explorer = () => {
     status: "ALL",
     showRaritiy: false,
     sortBy: "RECENTLY_LISTED",
+    collection: "",
     properties: [],
   });
 
-  useEffect(() => {
-    console.log(filters);
-  }, [filters]);
 
-  useEffect(() => {
-    setIsLoading(isLoadingApi);
-  }, [isLoadingApi]);
-
-  const loadMarketPlace = () => {
-    dispatch({
-      type: LOAD_MARKET_PLACE,
-      payload: {
-        numberElements: pagination.numberElements,
-        page: pagination.page,
-      },
+  const loadMostPopular = async () => {
+    setIsLoadingMspl(true);
+    const mostPopular = await getCollectionsCall({
+      numberElements: pagination.numberElements,
+      page: pagination.page,
     });
+    const {data} = mostPopular;
+    setMostPopularCollections(data.content);
+    setIsLoadingMspl(false);
   };
+  
+  const loadListedNfts = async () => {
+    setIsLoadingState(true);
+    const listedNfts = await getListedNfts(pagination.page, pagination.numberElements)
+    setNfts(listedNfts.data);
+    setIsLoadingState(false);
+  }
+
+  const loadSearchable = async () => {
+    setIsLoadingSearcheableState(true);
+    const searchableCollections = await getCollectionsCall({
+      numberElements: pagination.numberElements,
+      page: pagination.page,
+    });
+
+    const {data} = searchableCollections;
+    setSearcheableCollections(data?.content);
+    setIsLoadingSearcheableState(false);
+  }
+
+
 
   useEffect(() => {
-    loadMarketPlace();
+    loadMostPopular();
+    loadListedNfts();
+    loadSearchable();
   }, [pagination]);
 
   const changePage = (page) => {
@@ -77,11 +94,14 @@ const Explorer = () => {
     });
   };
 
-  return isLoading ? (
-    <Spinner />
-  ) : (
+  return (
     <>
-      <MostPopularCollection collections={mostPopularCollections} />
+      {isLoadingMspl ? (
+        <Spinner />
+      ) : (
+        <MostPopularCollection collections={mostPopularCollections} />
+      )}
+
       <section id="marketplace" className="container-fluid mb-5">
         <div className="row flex-nowrap md-flex-row flex-col">
           <div
@@ -100,9 +120,16 @@ const Explorer = () => {
                 changeFilterValue={setFilters}
               />
 
-              <AccordingCollection
-                listSearcheableCollections={searcheableCollections}
-              />
+              {isLoadingSearcheableState ? (
+                <Spinner />
+              ) : (
+                <AccordingCollection
+                  listSearcheableCollections={searcheableCollections}
+                  filters={filters}
+                  changeFilterValue={setFilters}
+                />
+              )}
+
               <AccordionPropertiesFilter
                 availableProperties={["Lmao", "Test"]}
                 filters={filters}
@@ -118,11 +145,16 @@ const Explorer = () => {
               filtersVisible={filtersVisible}
               setFiltersVisible={setFiltersVisible}
             />
-            <MostPopular
-              nfts={content}
-              pagination={pagination}
-              changePage={changePage}
-            />
+
+            {isLoadingState ? (
+              <Spinner />
+            ) : (
+              <MostPopular
+                nfts={content}
+                pagination={pagination}
+                changePage={changePage}
+              />
+            )}
 
             {totalElements && parseInt(totalElements / 20) > 0 ? (
               <Pagination

@@ -1,4 +1,23 @@
-const AccordionProperties = () => {
+import { useEffect, useState } from "react";
+
+const AccordionProperties = ({ nftDetails }) => {
+  const [properties, setProperties] = useState([]);
+
+  useEffect(() => {
+    if (nftDetails) {
+      let data = [];
+
+      nftDetails.attributes.map((item) => {
+        data.push({
+          name: item.trait_type ? item.trait_type : "-",
+          value: item.value,
+        });
+      });
+
+      setProperties(data);
+    }
+  }, [nftDetails]);
+
   return (
     <div id="accordionProperties">
       <div className="card">
@@ -48,26 +67,15 @@ const AccordionProperties = () => {
         >
           <div className="card-body">
             <div id="propTags">
-              <div className="tags">
-                <h6>Air Intake</h6>
-                <p>Horizontal</p>
-                <span>61% have this trait</span>
-              </div>
-              <div className="tags">
-                <h6>Air Intake</h6>
-                <p>Horizontal</p>
-                <span>61% have this trait</span>
-              </div>
-              <div className="tags">
-                <h6>Air Intake</h6>
-                <p>Horizontal</p>
-                <span>61% have this trait</span>
-              </div>
-              <div className="tags">
-                <h6>Air Intake</h6>
-                <p>Horizontal</p>
-                <span>61% have this trait</span>
-              </div>
+              {properties.map((item, index) => {
+                return (
+                  <div className="tags" key={index}>
+                    <h6>{item.name ? item.name : "-"}</h6>
+                    <p>{item.value ? item.value : "-"}</p>
+                    <span>61% have this trait</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

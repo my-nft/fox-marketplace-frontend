@@ -5,13 +5,13 @@ import {
   loadAccountCollectionsSaga,
   loadAccountNtsSaga,
   loadCollection,
-  loadMarketPlaceAll,
+  loadMintCollection,
   loadPopularCollectionSaga,
   loadSearcheableCollectionSaga,
   updateCollectionInformationSaga,
 } from "./collectionSaga";
-import { loadListedNfts } from "./nftSaga";
-import { loadUser } from "./userSaga";
+import { loadListedNfts, mintNft, mintNftSaga } from "./nftSaga";
+import { loadUser, updateProfileForUser } from "./userSaga";
 
 function* watchAll() {
   yield all([
@@ -28,13 +28,15 @@ function* watchAll() {
     placeBidSaga(),
     listFixedPrice(),
     listingAuction(),
-    loadMarketPlaceAll(),
     importCollectionSaga(),
     loadCollection(),
     updateCollectionInformationSaga(),
+    updateProfileForUser(),
     refund(),
     claimNFTSaga(),
-    claimTokenSaga()
+    claimTokenSaga(),
+    mintNftSaga(),
+    loadMintCollection()
   ]);
 }
 

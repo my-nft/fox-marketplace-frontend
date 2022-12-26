@@ -20,25 +20,31 @@ export function rankAnimation(ref) {
 }
 
 export function topAnimation(ref) {
+  return gsap.context(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    var scrollFunctionA = {
+      trigger: ".listElements",
+      toggleActions: "restart none none none",
+    };
 
-    return gsap.context(() => {
+    gsap.from(".listElements", {
+      scrollTrigger: scrollFunctionA,
+      scale: 0,
+      rotation: 45,
+      ease: "power4",
+      opacity: 0.8,
+      stagger: 0.05,
+      x: "x-=10",
+    });
 
-        gsap.registerPlugin(ScrollTrigger);
-          var scrollFunctionA = {
-              trigger: ".listElements",
-              toggleActions: "restart none none none",
-          };
-  
-          gsap.from(".listElements", {
-              scrollTrigger: scrollFunctionA,
-              scale: 0, rotation: 45, ease: "power4", opacity: 0.8, stagger: 0.05, x: "x-=10"
-          });
-
-          gsap.from("#foxLogo", {
-            scale: 0, rotation: 45, ease: "power4", opacity: 0.8, duration: 1
-        })
-        
-      }, ref);
+    gsap.from("#foxLogo", {
+      scale: 0,
+      rotation: 45,
+      ease: "power4",
+      opacity: 0.8,
+      duration: 1,
+    });
+  }, ref);
 }
 
 export function popularAnimation(ref) {
@@ -60,10 +66,9 @@ export function popularAnimation(ref) {
   }, ref);
 }
 
-
 export const settings = {
   slidesToShow: 6,
-  arrows: true,
+  arrows: false,
   dots: false,
   speed: 500,
   infinite: false,
@@ -100,20 +105,17 @@ export const settings = {
         slidesToShow: 1,
       },
     },
-  ]
+  ],
 };
 
-
 export const putSliderIcons = () => {
-  
   const prev = document.getElementsByClassName("slick-prev")[0];
   const next = document.getElementsByClassName("slick-next")[0];
-  if(prev) {
+  if (prev) {
     prev.innerHTML = "<";
   }
 
-  if(next) {
+  if (next) {
     next.innerHTML = ">";
   }
-
-}
+};

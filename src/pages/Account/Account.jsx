@@ -5,19 +5,19 @@ import AccountHeader from "./AccountHeader";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectAccountOwner,
   selectCollections,
   selectIsLoadingAccount,
   selectNfts,
 } from "../../redux/accountReducer";
-import {selectIsLoading} from '../../redux/collectionReducer';
 import Spinner from "../../components/Spinner";
 import {
   LOAD_ACCOUNT_COLLECTIONS,
   LOAD_ACCOUNT_NFTS,
+  LOAD_USER,
 } from "../../saga/actions";
 import Pagination from "../../components/pagination/pagination";
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
+import { selectConnectedUser } from "../../redux/userReducer";
 
 const AccountPage = () => {
   const [visible, setVisible] = useState(false);
@@ -26,7 +26,16 @@ const AccountPage = () => {
   const collections = useSelector(selectCollections);
   const nfts = useSelector(selectNfts);
 
-  const {content = [], totalElements} = nfts || {};
+  let content = [];
+  let totalElements = 0;
+
+  if(activeSection === 'COLLECTIONS') {
+    content = collections?.content || [];
+    totalElements = collections?.totalElements || 0;
+  } else {
+    content = nfts?.content || [];
+    totalElements = nfts?.totalElements || 0;
+  }
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -47,15 +56,10 @@ const AccountPage = () => {
     sortBy: "RECENTLY_LISTED",
   });
 
-  useEffect(() => {
-    console.log(filters);
-  }, [filters]);
-
   const dispatch = useDispatch();
   const connectedWallet = getCurrentWalletConnected();
+  const user = useSelector(selectConnectedUser);
   const isLoading = useSelector(selectIsLoadingAccount);
-  const isLoadingCollection = useSelector(selectIsLoading)
-  const accountOwner = useSelector(selectAccountOwner);
 
   const changePage = (page) => {
     if (page < 1 || page > pagination.maxPages) return;
@@ -120,13 +124,20 @@ const AccountPage = () => {
     runInit();
   }, [activeSection]);
 
+  useEffect(() => {
+    dispatch({
+      type: LOAD_USER,
+      payload: connectedWallet,
+    });
+  }, []);
+
   return (
     <div>
-      {isLoading || isLoadingCollection ? (
+      {isLoading ? (
         <Spinner />
       ) : (
         <>
-          <AccountHeader user={accountOwner} />
+          <AccountHeader user={user} />
           <FilterInput
             onOpenClose={() => setVisible(!visible)}
             onChangeSelectedView={setViewType}
@@ -140,15 +151,15 @@ const AccountPage = () => {
             isVisible={visible}
             viewType={viewType}
             nfts={content}
-            collections={collections}
+            collections={content}
             filters={filters}
             changeFilterValue={setFilters}
           />
-          <Pagination
-            currentPage={pagination.page}
-            setCurrentPage={changePage}
-            pages={totalElements ? parseInt(totalElements / 20) : 1}
-          />
+            <Pagination
+              currentPage={pagination.page}
+              setCurrentPage={changePage}
+              pages={totalElements ? Math.ceil(totalElements / 20) : 1}
+            />
         </>
       )}
       <span className="d-block mt-4 mb-5"></span>

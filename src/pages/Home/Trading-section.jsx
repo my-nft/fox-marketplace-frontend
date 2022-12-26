@@ -1,26 +1,87 @@
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 import Slide from "../../components/Slide";
 import { putSliderIcons, settings } from "./Utils";
 
+import { ReactComponent as Arrow } from "../../assets/icons/arrow.svg";
+
 const TradingSection = () => {
-  useEffect(() => {
-    putSliderIcons();
-  }, []);
+  const sliderRef = useRef(null);
+
+  const [slidesToShow, setSlidesToShow] = useState(6);
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useLayoutEffect(() => {
+    function getWindowDimensions() {
+      const { innerWidth: width, innerHeight: height } = window;
+      return {
+        width,
+        height,
+      };
+    }
+
+    function handleResize() {
+      const width = getWindowDimensions().width;
+
+      if (width < 1440 && width > 1024) {
+        setSlidesToShow(5);
+      } else if (width < 1024 && width > 900) {
+        setSlidesToShow(4);
+      } else if (width < 900 && width > 500) {
+        setSlidesToShow(2);
+      } else if (width < 500) {
+        setSlidesToShow(1);
+      }
+    }
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  });
+
+  console.table({
+    slidesToShow,
+    activeSlide,
+  });
 
   return (
     <section id="tradingNow" className="container-fluid">
       <h3 className="mb-2">Trending Now</h3>
-      <Slider {...settings}>
-        <Slide imgSuffix={"1"}/>
-        <Slide imgSuffix={"2"}/>
-        <Slide imgSuffix={"3"}/>
-        <Slide imgSuffix={"4"}/>
-        <Slide imgSuffix={"2"}/>
-        <Slide imgSuffix={"1"}/>
-        <Slide imgSuffix={"3"}/>
 
-      </Slider>
+      <div className="slickArrowsContainer">
+        <Arrow
+          className={`slickArrow slickArrowPrev ${
+            activeSlide > 1 ? "slickArrowShow" : ""
+          }`}
+          onClick={() => {
+            sliderRef?.current.slickPrev();
+          }}
+        />
+        <Slider
+          ref={sliderRef}
+          {...settings}
+          afterChange={(slide) => {
+            setActiveSlide(slide + 1);
+          }}
+        >
+          <Slide imgSuffix={"1"} />
+          <Slide imgSuffix={"2"} />
+          <Slide imgSuffix={"3"} />
+          <Slide imgSuffix={"4"} />
+          <Slide imgSuffix={"2"} />
+          <Slide imgSuffix={"1"} />
+          <Slide imgSuffix={"3"} />
+        </Slider>
+        <Arrow
+          className={`slickArrow slickArrowNext ${
+            activeSlide < 7 - slidesToShow ? "slickArrowShow" : ""
+          }`}
+          onClick={() => {
+            sliderRef?.current.slickNext();
+          }}
+        />
+      </div>
     </section>
   );
 };

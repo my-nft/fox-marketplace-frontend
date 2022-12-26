@@ -33,6 +33,9 @@
   .settingsSplitGrouping {
     grid-template-columns: 1fr;
   }
+  .wrapperMostPopular {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 @media screen and (max-width: 1200px) {
@@ -76,7 +79,9 @@
     display: flex;
     flex-direction: column;
   }
-
+  .filtersContainer {
+    max-width: unset;
+  }
   .settingsForm,
   .settingsForm {
     margin: 32px auto 16px;
@@ -112,6 +117,12 @@
   #marketplace #headerInput > button {
     grid-column-start: 2;
     grid-column-end: 3;
+  }
+}
+
+@media screen and (max-width: 860px) {
+  .wrapperMostPopular {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -232,6 +243,9 @@
 }
 
 @media (max-width: 575px) {
+  .wrapperMostPopular {
+    grid-template-columns: repeat(2, 1fr);
+  }
   .settingsButtons {
     display: flex;
     flex-direction: column;
@@ -271,5 +285,11 @@
     margin-top: 50px;
     padding: 0;
     max-width: initial;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .wrapperMostPopular {
+    grid-template-columns: repeat(1, 1fr);
   }
 }

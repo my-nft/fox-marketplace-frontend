@@ -1,64 +1,48 @@
 import { useEffect, useState } from "react";
-import Select from "react-select";
 import { ReactComponent as Clipboard } from "../../assets/icons/clipboard.svg";
-
 
 import SettingsImages from "./settingsImages";
 import Socials from "./socials";
 import { useNavigate, useParams } from "react-router-dom";
 import { getCollectionByAddress } from "../../api/collectionApi";
 import Spinner from "../../components/Spinner";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { UPDATE_COLLECTION } from "../../saga/actions";
-
-const selectStyles = {
-  control: (styles) => ({
-    ...styles,
-    backgroundColor: "transparent",
-    border: "none",
-    borderBottom: "1px solid rgba(254, 254, 254, 0.8)",
-    borderRadius: "0",
-    boxShadow: "none",
-  }),
-  menu: (styles) => ({
-    ...styles,
-    backgroundColor: "#000000",
-    border: "1px solid #f58103",
-    borderRadius: "8px",
-    boxShadow: "0px 4px 4px #f5800373",
-    boxShadow: "none",
-  }),
-  option: (styles, { isFocused }) => ({
-    ...styles,
-    backgroundColor: "transparent",
-    color: "#FFFFFF",
-    cursor: "pointer",
-    ":hover": {
-      backgroundColor: "#f58103",
-      color: "#fff",
-    },
-  }),
-  singleValue: (styles) => ({
-    ...styles,
-    color: "#FFFFFF",
-    padding: "8px 8px",
-    height: "46px",
-  }),
-};
+import CustomSelect from "../../components/Select";
 
 const CollectionSettings = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { collectionAddress } = useParams();
   const [isLoadingCollection, setIsLoadingCollection] = useState(true);
   const [collectionDetails, setCollectionDetails] = useState();
+  const [image, setImage] = useState(collectionDetails?.image);
+  const [banner, setBanner] = useState(collectionDetails?.banner);
 
+  const [imageFile, setImageFile] = useState();
+  const [bannerFile, setBannerFile] = useState();
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (imageFile) {
+      let url = URL.createObjectURL(imageFile);
+      setImage(url);
+    }
+  }, [imageFile]);
+
+  useEffect(() => {
+    if (bannerFile) {
+      let url = URL.createObjectURL(bannerFile);
+      setBanner(url);
+    }
+  }, [bannerFile]);
 
   const init = async () => {
     setIsLoadingCollection(true);
     const collection = await getCollectionByAddress(collectionAddress);
-    setCollectionDetails(collection.data);
+    const { data } = collection;
+    setCollectionDetails(data);
+    setImage(data.image);
+    setBanner(data.banner);
     setIsLoadingCollection(false);
   };
 
@@ -73,8 +57,8 @@ const CollectionSettings = () => {
       type: UPDATE_COLLECTION,
       payload: {
         collectionAddress,
-        image: collectionDetails.image,
-        banner: collectionDetails.banner,
+        image: imageFile,
+        banner: bannerFile,
         data: {
           category: collectionDetails.category,
           collectionAddress: collectionDetails.collectionAddress,
@@ -92,19 +76,17 @@ const CollectionSettings = () => {
           symbol: collectionDetails.symbol,
           tags: collectionDetails.tags,
           totalSupply: collectionDetails.totalSupply,
-        }
+        },
       },
-      
+
       onSuccess: () => {
         setIsLoadingCollection(false);
-        navigate(`/collection/${collectionAddress}`)
+        navigate(`/collection/${collectionAddress}`);
       },
-      onError(){
+      onError() {
         setIsLoadingCollection(false);
-      }
-    })
-
-
+      },
+    });
 
     // navigate("/")
   };
@@ -112,8 +94,6 @@ const CollectionSettings = () => {
   const clipboardCopy = (value) => {
     navigator.clipboard.writeText(value);
   };
-  console.log(collectionDetails)
-
 
   return isLoadingCollection ? (
     <Spinner />
@@ -122,10 +102,10 @@ const CollectionSettings = () => {
       <h2 className="collectionSettingsTitle">Collection Settings</h2>
       <div className="collectionUpdateSettings">
         <SettingsImages
-          collectionDetails={collectionDetails}
-          setCollectionDetails={setCollectionDetails}
-          image={collectionDetails.image}
-          banner={collectionDetails.banner}
+          setCollectionImage={setImageFile}
+          setCollectionBanner={setBannerFile}
+          image={image}
+          banner={banner}
         />
         <form onSubmit={handleSubmitData} className="collectionSettingsData">
           <div className="settingsGroup">
@@ -146,7 +126,9 @@ const CollectionSettings = () => {
                     })
                   }
                 />
-                <Clipboard onClick={() => clipboardCopy(collectionDetails.url)} />
+                <Clipboard
+                  onClick={() => clipboardCopy(collectionDetails.url)}
+                />
               </div>
             </div>
             <div className="settingGroup settingsWidthFull">
@@ -169,7 +151,7 @@ const CollectionSettings = () => {
             <div className="settingGroup settingsWidthHalf">
               <label htmlFor="name">Category</label>
 
-              <Select
+              <CustomSelect
                 className="settingsWidthFull"
                 name="category"
                 id="category"
@@ -192,7 +174,6 @@ const CollectionSettings = () => {
                   { value: "Trading Cards NFTs", label: "Trading Cards NFTs" },
                   { value: "Utility NFTs", label: "Utility NFTs" },
                 ]}
-                styles={selectStyles}
               />
             </div>
           </div>
@@ -210,24 +191,33 @@ const CollectionSettings = () => {
                   id="royaltyAddress"
                   placeholder="Royalty Address"
                   value={collectionDetails.royaltyAddress}
-                  onChange={(e) =>
-                    setCollectionDetails({
-                      ...collectionDetails,
-                      royaltyAddress: e.target.value,
-                    })
-                  }
+                  onChange={(e) => {
+                    if (!e.target.value) {
+                      setCollectionDetails({
+                        ...collectionDetails,
+                        royaltyPercent: "0",
+                        royaltyAddress: e.target.value,
+                      });
+                    } else {
+                      setCollectionDetails({
+                        ...collectionDetails,
+                        royaltyAddress: e.target.value,
+                      });
+                    }
+                  }}
                 />
               </div>
             </div>
             <div className="settingGroup">
               <label htmlFor="royaltyPercent">Rights Amount</label>
-              <Select
+
+              <CustomSelect
                 className="settingsWidthFull"
                 name="royaltyPercent"
                 id="royaltyPercent"
                 value={{
                   value: collectionDetails.royaltyPercent,
-                  label: collectionDetails.royaltyPercent
+                  label: collectionDetails.royaltyPercent,
                 }}
                 onChange={(e) =>
                   setCollectionDetails({
@@ -236,6 +226,7 @@ const CollectionSettings = () => {
                   })
                 }
                 options={[
+                  { value: "0", label: "0" },
                   { value: "1", label: "1" },
                   { value: "2", label: "2" },
                   { value: "3", label: "3" },
@@ -247,7 +238,6 @@ const CollectionSettings = () => {
                   { value: "9", label: "9" },
                   { value: "10", label: "10" },
                 ]}
-                styles={selectStyles}
               />
             </div>
           </div>

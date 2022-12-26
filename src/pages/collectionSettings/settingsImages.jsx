@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import uploadIcon from "../../assets/images/create_icon_3.png";
 import {Buffer} from 'buffer';
 
-const SettingsImages = ({ banner, image, collectionDetails, setCollectionDetails }) => {
+const SettingsImages = ({ banner, image, setCollectionImage, setCollectionBanner }) => {
 
-  const [imageUrl, setImageUrl] = useState();
-  const [bannerUrl, setBannerUrl] = useState();
+  console.log(image);
 
+  /*
   useEffect(() => {
 
     if(image){
@@ -39,26 +39,23 @@ const SettingsImages = ({ banner, image, collectionDetails, setCollectionDetails
     }
 
   }, [image, banner])
-
+*/
 
   const handleImageChange = (e, type) => {
     if (e.target.files && e.target.files[0]) {
 
       if(type === "profile") {
-        setCollectionDetails({
-          ...collectionDetails,
-          image: e.target.files[0],
-        })
+        setCollectionImage(e.target.files[0])
       }
       else{
-        setCollectionDetails({
-          ...collectionDetails,
-          banner: e.target.files[0],
-        })
+        setCollectionBanner(e.target.files[0])
       }
     }
   };
 
+
+
+  
 
   return (
     <form className="collectionSettingsImages">
@@ -66,11 +63,7 @@ const SettingsImages = ({ banner, image, collectionDetails, setCollectionDetails
         <h2>Profile Image</h2>
         <label htmlFor="profileChange">
           <img
-            src={
-              image
-                ? imageUrl
-                : null
-            }
+            src={image}
             alt="profile"
           />
           <div className="changeOverlay">
@@ -91,7 +84,7 @@ const SettingsImages = ({ banner, image, collectionDetails, setCollectionDetails
           <img
             src={
               banner
-                ? bannerUrl
+                ? banner
                 : null
             }
             alt="banner"

@@ -4,7 +4,16 @@ import methods from "../config/axiosConfig";
 const collectionEndpoint = apiUrl + "collections/";
 
 export function importCollectionCall(collectionAddress, token) {
-  return methods.post(`${collectionEndpoint}/${collectionAddress}/import`, {} ,{
+  return methods.post(`${collectionEndpoint}${collectionAddress}/import`, {} ,{
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
+}
+
+
+export function importCollectionToken(collectionAddress, tokenID, token) {
+  return methods.post(`${collectionEndpoint}${collectionAddress}/${tokenID}/import`, {} ,{
     headers: {
       Authorization: "Bearer " + token,
     },
@@ -12,7 +21,7 @@ export function importCollectionCall(collectionAddress, token) {
 }
 
 export function getCollectionByAddress(collectionAddress) {
-  return methods.get(`${collectionEndpoint}/${collectionAddress}`);
+  return methods.get(`${collectionEndpoint}${collectionAddress}`);
 }
 
 export function getCollectionsCall(body) {
@@ -57,35 +66,3 @@ export const getAccountCollections = (
     },
   });
 };
-
-export const getCollectionNfts = (page, numberPerPage, sort) => {
-  /**
-   * sort => recently listed, price desc, price asc, recently created, recently sold
-   */
-
-  return {
-    page: "",
-    totalElements: "",
-    nfts: [
-      {
-        id: "",
-        name: "",
-        description: "",
-        owner: "",
-        image: "",
-        createDate: "",
-        soldDate: "12/15/2022",
-        attributes: [
-          {
-            propertyName: "",
-            propertyValue: "",
-          },
-        ],
-      },
-    ],
-  };
-};
-
-// remove collections fiter from collection page
-
-//---------------------------------Home page

@@ -21,10 +21,10 @@ const EntryField = ({ type, submitAction }) => {
           <input type="text" id="name" name="name" required />
         </div>
 
-        {type === "properties" ? (
+        {type === "attributes" ? (
           <div className="entry-field">
             <label htmlFor="value">Value</label>
-            <input required type="number" id="value" name="value" />
+            <input required type="text" id="value" name="value" />
           </div>
         ) : (
           <div className="grouped-fields">
@@ -54,8 +54,13 @@ export const CreateNFTPopup = ({
   nftData,
 }) => {
   const handleAddItem = (newObject) => {
-    console.log(newObject);
-    handleAddToArray(popupTitle, newObject);
+    let objectToAdd = {
+      trait_type: newObject.name,
+      value: newObject.value,
+      name: newObject.name,
+    };
+    console.log(objectToAdd);
+    handleAddToArray(popupTitle, objectToAdd);
   };
 
   return (
@@ -66,9 +71,9 @@ export const CreateNFTPopup = ({
       <div className="popup-wrapper">
         <div className="popupHeader">
           <div className="popup-header-text">
-            <h3>{popupTitle === "properties" ? "Properties" : null}</h3>
+            <h3>{popupTitle === "attributes" ? "Attributes" : null}</h3>
             <p>
-              {popupTitle === "properties"
+              {popupTitle === "attributes"
                 ? "Textual traits that show up as rectangles"
                 : null}
             </p>
@@ -82,10 +87,10 @@ export const CreateNFTPopup = ({
             nftData[popupTitle].map((item, index) => {
               return (
                 <div key={index} className="popup-existing-value">
-                  <p>{item.name}</p>
+                  <p>{item.trait_type}</p>
                   {
                     <div>
-                      {popupTitle === "properties" ? (
+                      {popupTitle === "attributes" ? (
                         <p>{item.value}</p>
                       ) : popupTitle === "levels" ? (
                         <>

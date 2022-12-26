@@ -26,8 +26,6 @@ const CollectionDetails = () => {
     numberElements: 20,
   });
 
-  console.log(collectionDetails)
-
   const [filters, setFilters] = useState({
     searchPrompt: "",
     buyNow: false,
@@ -49,17 +47,12 @@ const CollectionDetails = () => {
   const [viewType, setViewType] = useState("CHANGE_FOR_MIN");
 
   useEffect(() => {
-    console.log(filters);
-  }, [filters]);
-
-  useEffect(() => {
     initLoadCollection();
   }, []);
 
   const initLoadCollection = async () => {
     setIsLoadingCollection(true);
     const collection = await getCollectionByAddress(collectionAddress);
-    console.log(collection.data)
     setCollectionDetails(collection.data);
     setIsLoadingCollection(false);
   };

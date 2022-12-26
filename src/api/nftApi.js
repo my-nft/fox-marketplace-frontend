@@ -73,6 +73,29 @@ export const acceptOffer = (body, token) => {
 };
 
 
+export function addNftToIpfs({
+  collectionAddress, nft, image, token
+}) {
+
+  console.log("COLLECTION ADDRESS", collectionAddress);
+  let formData = new FormData();
+  formData.append("image", image);
+
+  formData.append("nft", JSON.stringify({
+    ...nft,
+    collectionAddress
+  }));
+
+  return methods.put(`${nftEndpoint}load-ipfs`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: "Bearer " + token
+    },
+  });
+}
+
+
 export const getListedNfts = (page, numberElements) => {
   return methods.get(nftEndpoint + "listed", {
     params: {

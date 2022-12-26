@@ -1,99 +1,70 @@
-import Web3 from "web3";
-import apiUrl from "../config/api";
-import methods from "../config/axiosConfig";
+import { addNftToIpfs } from "../api/nftApi";
 import {
+  foxMasterCollectionAddress,
+  getCurrentWalletConnected,
   loadERC20Contract,
-  loadMarketplaceContract,
-  marketplaceContractAddress,
-  ERC20ContractAddress,
-  ethereum,
+  loadFoxMasterCollectionContract,
 } from "../utils/blockchainInteractor";
+import { sameAddress } from "../utils/walletUtils";
 
 const erc20Contract = loadERC20Contract();
-const marketplaceContract = loadMarketplaceContract(false);
-const marketplaceContractReader = loadMarketplaceContract(true);
 
+export const mintNft = async ({
+  collectionAddress = foxMasterCollectionAddress,
+  nft,
+  image,
+  token,
+}) => {
 
+  if(!collectionAddress) {
+    collectionAddress = foxMasterCollectionAddress
+  }
+  
+  console.log("=====> input collection address ", collectionAddress);
 
-export async function getMintFees() {
-  return await marketplaceContractReader.methods.mintFee().call();
-}
+  const foxMastercontract = loadFoxMasterCollectionContract(collectionAddress);
 
-export const mintNft = (collectionAddress, data) => {
-  // getting mint fees  
-  const mintFees = getMintFees();
-  // approving the minting transaction
-  approveSpenderERC20(collectionAddress, mintFees);
-  // executing minting
-  const tokenID = executeMinting();
-  // creating new NFT
-  createNftDB(data, tokenID, collectionAddress);
-};
+  const connectedWallet = getCurrentWalletConnected();
 
-export const approveSpenderERC20 = async (
-  collectionAddress = marketplaceContractAddress,
-  mintFee
-) => {
-  let arg = {
-    from: ethereum.selectedAddress,
-    to: ERC20ContractAddress,
-  };
+  if (sameAddress(collectionAddress, foxMasterCollectionAddress)) {
+    const mintFee = await foxMastercontract.methods.mintFee().call();
 
-  const gasLimit = await erc20Contract.methods
-    .approve(collectionAddress, mintFee)
-    .estimateGas(arg);
+    const gasLimit = await erc20Contract.methods
+      .approve(collectionAddress, mintFee)
+      .estimateGas({
+        from: connectedWallet,
+        to: collectionAddress,
+      });
 
-  await erc20Contract.methods.approve(collectionAddress, mintFee).send({
-    ...arg,
-    gasLimit,
-  });
-};
+    await erc20Contract.methods.approve(collectionAddress, mintFee).send({
+      from: connectedWallet,
+      to: collectionAddress,
+      gasLimit,
+    });
+  }
 
-export const executeMinting = async () => {
-  const arg = {
-    from: ethereum.selectedAddress,
-    to: marketplaceContractAddress,
-  };
-  const gasLimit = await marketplaceContract.methods.mint().estimateGas(arg);
-
-  const tnx = await marketplaceContract.methods.mint().send({
-    ...arg,
-    gasLimit,
+  // API ADD NFT TO IPFS
+  const response = await addNftToIpfs({
+    collectionAddress: collectionAddress,
+    nft,
+    image,
+    token,
   });
 
-  return getTokenIdFromTxn(tnx);
-};
+  const tsx = await foxMastercontract.methods
+    .mint(connectedWallet, response.data)
+    .send({
+      from: connectedWallet,
+      to: collectionAddress,
+    });
 
-export function getTokenIdFromTxn(txn) {
-  return Web3.utils.hexToNumber(txn.events[0].raw.topics[3]);
-}
+  const tokenID = tsx?.events?.Transfer?.returnValues?.tokenId;
 
-export const createNftDB = async (data, token, collectionAddress) => {
-  const {
-    artworkName,
-    artistName,
-    description,
-    walletAddress,
-  } = data;
+  console.log("=====> TOKENID ", tokenID);
+  console.log("=====> collectionAddress ", collectionAddress);
 
-  const outputDataMap = {
-    name: artworkName,
-    artistName,
-    description,
-    image: "http://external_image.com",
-    ownerAddress: walletAddress,
-    isListed: false
+  return {
+    tokenID,
+    collectionAddress,
   };
-
-  console.log("*******************************************");
-  console.log("CREATING NEW NFT");
-  console.log("OUTPUT DATA MAP: " + JSON.stringify(outputDataMap));
-  console.log("TOKEN: " + token);
-  console.log("COLLECTION ADDRESS: " + collectionAddress);
-
-  //call createNFTService to create new NFT
-  await methods.post(
-    `${apiUrl}collections/${collectionAddress}/nfts/${token}`,
-    outputDataMap
-  );
 };

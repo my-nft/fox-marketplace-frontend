@@ -1,28 +1,31 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Spinner from "../../components/Spinner";
-import { createNftDB } from "../../services/createNFT";
-import { useSelector } from "react-redux";
-import { selectConnectedWallet, selectToken } from "../../redux/userReducer";
-import PopupContainerWrapper, {
-  CreateNFTPopup,
-} from "../../components/popups/popups";
+import { CreateNFTPopup } from "../../components/popups/popups";
+import { useDispatch, useSelector } from "react-redux";
+import { selectIsLoading } from "../../redux/nftReducer";
+import { MINT_NFT } from "../../saga/actions";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const CreateSingleNft = () => {
   const [imageUpload, setImageUpload] = useState(null);
   const [imageData, setImageData] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const isLoading = useSelector(selectIsLoading);
   const [popupStatus, setPopupStatus] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams]= useSearchParams();
+  const collectionAddress = searchParams.get("collectionAddress");
+  
+
+  console.log("COLLECTION ADDRESS ", collectionAddress);
 
   const [nftData, setNftData] = useState({
-    artworkName: "",
+    name: "",
     description: "",
     artistName: "",
     upload: null,
-    email: "",
-    rightsDuration: "10 years",
-    rightsLevel: "level 1",
-    properties: [],
+    attributes: [],
     levels: [],
     stats: [],
   });
@@ -32,7 +35,11 @@ const CreateSingleNft = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImageUpload(URL.createObjectURL(e.target.files[0]));
-        setImageData(reader.result);
+        setImageData(e.target.files[0]);
+        setNftData({
+          ...nftData,
+          upload: e.target.files[0],
+        });
       };
       reader.readAsDataURL(e.target.files[0]);
     } else {
@@ -72,49 +79,46 @@ const CreateSingleNft = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     console.log(nftData);
-
-    setLoading(false);
-
-    /*
-    // convert form inputs to data
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
-    data["walletAddress"] = walletAddress;
-    data["upload"] = imageData;
-
-    
-    if(data){
-      let dataValid = true;
-      Object.keys(data).forEach((key) => {
-        if(data[key] === ""){
-          dataValid = false;
-        }
-      })
-      if(dataValid){
-        // create new NFT
-        const createNFTResponse = await createNewNFT(data, token, "MARKET_PLACE_DEFAULT_VALUE");
-      }
+    if (nftData.upload === null) {
+      toast.error("Please upload an image");
+      return;
     }
-    */
+
+    const {upload, ...rest} = nftData;
+
+
+    dispatch({
+      type: MINT_NFT,
+      payload: {
+        ...rest,
+        collectionAddress,
+        image: imageData,
+      },
+      onError: (err) => {
+        console.log(err);
+        toast.error("Error creating NFT");
+        setNftData({
+          name: "",
+          description: "",
+          artistName: "",
+          upload: null,
+          attributes: [],
+          levels: [],
+          stats: [],
+        });
+        setImageData(null);
+        setImageUpload(null);
+      },
+      onSuccess: (collectionAddress, tokenID) => {
+        console.log("Success");
+        toast.success("NFT created successfully");
+        navigate(`/collection/${collectionAddress}/${tokenID}`);
+      },
+    });
   };
 
-  // const handleImageUpload = (e) => {
-  //   const file = e.target.files[0];
 
-  //   if (file) {
-  //     const url = URL.createObjectURL(file);
-  //     let reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setImageUpload(url);
-  //       setImageData(reader.result);
-  //     }
-  //     reader.readAsDataURL(file);
-
-  //   }
-
-  // }
 
   return (
     <section id="createCollection" className="my-2">
@@ -131,7 +135,7 @@ const CreateSingleNft = () => {
       <img src="/assets/images/Background.jpg" id="layer" alt="" />
       <h3 className="text-center mb-5">Mint Your NFT</h3>
       <div className="container pt-3 ">
-        {loading ? (
+        {isLoading ? (
           <div className="processing processingMargin">
             <Spinner />
             <h2>Processing</h2>
@@ -160,7 +164,6 @@ const CreateSingleNft = () => {
                     <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z" />
                   </svg>
                   <input
-                    required
                     type="file"
                     name="upload"
                     id="uploadImage"
@@ -182,7 +185,7 @@ const CreateSingleNft = () => {
                       className="form-control"
                       id="inputArtName"
                       placeholder="cats"
-                      name="artworkName"
+                      name="name"
                       onChange={(e) => handleChange(e)}
                       required
                     />
@@ -196,19 +199,6 @@ const CreateSingleNft = () => {
                       placeholder="Zak"
                       name="artistName"
                       onChange={(e) => handleChange(e)}
-                      required
-                    />
-                  </div>
-                  <div className="form-group col-md-6">
-                    <label htmlFor="inputEmail">Email</label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="inputEmail"
-                      placeholder="sna@gmail.com"
-                      name="email"
-                      onChange={(e) => handleChange(e)}
-                      required
                     />
                   </div>
                 </div>
@@ -227,48 +217,16 @@ const CreateSingleNft = () => {
                     ></textarea>
                   </div>
                 </div>
-                <div className="form-row mb-4">
-                  <div className="form-group col-md-6">
-                    <label htmlFor="inputState">Rights Level</label>
-                    <select
-                      id="inputState"
-                      className="form-control"
-                      defaultValue="Level1"
-                      name="rightsLevel"
-                      onChange={(e) => handleChange(e)}
-                      required
-                    >
-                      <option value="Level1" selected>
-                        Level1
-                      </option>
-                    </select>
-                  </div>
-                  <div className="form-group col-md-6">
-                    <label htmlFor="inputState">Rights Duration</label>
-                    <select
-                      id="inputState"
-                      className="form-control"
-                      defaultValue="10 Years"
-                      name="rightsDurations"
-                      onChange={(e) => handleChange(e)}
-                      required
-                    >
-                      <option value="10 Years" selected>
-                        10 Years
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <h3 className="mt-12 mb-1">Properties</h3>
+                <h3 className="mt-12 mb-1">Attributes</h3>
                 <p className="text-white mb-3 ">
                   Textual traits that show up as rectangles
                 </p>
                 <div className="form-row mb-4 mt-4 mb-5">
                   <div className="properties-row">
-                    {nftData.properties.map((property, index) => {
+                    {nftData.attributes.map((property, index) => {
                       return (
                         <div className="property" key={index}>
-                          <p className="property_name">{property.name}</p>
+                          <p className="property_name">{property.trait_type}</p>
                           <p className="property_value">{property.value}</p>
                         </div>
                       );
@@ -276,7 +234,7 @@ const CreateSingleNft = () => {
 
                     <div
                       className="property propertyAdd"
-                      onClick={() => setPopupStatus("properties")}
+                      onClick={() => setPopupStatus("attributes")}
                     >
                       <p>+</p>
                     </div>
