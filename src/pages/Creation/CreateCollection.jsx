@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Spinner from "./../../components/Spinner";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { MINT_COLLECTION } from "../../saga/actions";
 import { toast } from "react-toastify";
-import { selectIsLoading } from "../../redux/collectionReducer";
-import Select from "react-select";
+import { selectIsLoading, setIsLoading } from "../../redux/collectionReducer";
 import CustomSelect from "../../components/Select";
 
 const CreateCollection = () => {
@@ -15,6 +14,10 @@ const CreateCollection = () => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(setIsLoading(false));
+  }, [])
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -30,17 +33,23 @@ const CreateCollection = () => {
     }
   };
 
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     // convert form inputs to data
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
 
+    if (!imageData) {
+      toast.error("Please upload an image");
+      return;
+    }
+
     if (data) {
       let dataValid = true;
       Object.keys(data).forEach((key) => {
         console.log(data);
-        if (data[key] === "" && key !== 'royaltyAddress') {
+        if (data[key] === "" && key !== "royaltyAddress") {
           dataValid = false;
         }
       });

@@ -10,6 +10,7 @@ import {
 import { LOAD_USER, UPDATE_PROFILE } from "./actions";
 import { signIn, signUp } from "../interactors/authInteractor";
 import { toast } from "react-toastify";
+import { getCurrentWalletConnected } from "../utils/blockchainInteractor";
 
 // Worker saga will be fired on USER_FETCH_REQUESTED actions
 function* getConnectedUser(action) {
@@ -69,7 +70,7 @@ function* updateUserProfile(action) {
 }
 
 export function* signWallet() {
-    const connectedUser = yield select(selectConnectedUser);
+    const connectedUser = getCurrentWalletConnected();
     const actualToken = yield select(selectToken);
     if(!actualToken) {
       const { token } = yield call(signIn, connectedUser.address);
