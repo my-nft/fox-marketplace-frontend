@@ -70,10 +70,10 @@ function* updateUserProfile(action) {
 }
 
 export function* signWallet() {
-    const connectedUser = getCurrentWalletConnected();
+    const connectedWallet = getCurrentWalletConnected();
     const actualToken = yield select(selectToken);
     if(!actualToken) {
-      const { token } = yield call(signIn, connectedUser.address);
+      const { token } = yield call(signIn, connectedWallet);
       console.log("######", token);
       yield put(setToken(token));
       return token;

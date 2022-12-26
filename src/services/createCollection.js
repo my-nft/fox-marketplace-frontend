@@ -15,6 +15,8 @@ const erc20Contract = loadERC20Contract();
 export const mintCollection = async ({ name, symbol }) => {
   const connectedWallet = getCurrentWalletConnected();
 
+  console.log("######################", connectedWallet)
+
   const deploymentFee = await factoryContract.methods.deploymentFee().call();
 
   const allowance = await erc20Contract.methods
