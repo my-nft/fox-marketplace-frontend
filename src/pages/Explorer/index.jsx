@@ -87,7 +87,7 @@ const Explorer = () => {
   }, [pagination]);
 
   const changePage = (page) => {
-    if (page < 1 || page > parseInt(totalElements / 20)) return;
+    if (page < 1 || page > Math.ceil(totalElements / 20)) return;
     setPagination({
       ...pagination,
       page,
@@ -156,13 +156,11 @@ const Explorer = () => {
               />
             )}
 
-            {totalElements && parseInt(totalElements / 20) > 0 ? (
               <Pagination
-                pages={totalElements ? parseInt(totalElements / 20) : 1}
+                pages={totalElements ? Math.ceil(totalElements / 20) : 1}
                 currentPage={pagination.page}
                 setCurrentPage={changePage}
               />
-            ) : null}
           </div>
         </div>
       </section>
