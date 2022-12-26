@@ -2443,6 +2443,10 @@ s #accordionListing table tr,
   font-size: 18px;
 }
 
+#accountName {
+  max-width: 70%;
+}
+
 #accountName .description {
   font-size: 16px;
   margin-top: 15px;
