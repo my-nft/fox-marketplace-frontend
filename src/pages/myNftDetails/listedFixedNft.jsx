@@ -38,7 +38,7 @@ const ListedFixedNft = ({
 
   useEffect(() => {
     init();
-  }, []);
+  }, [itemDetails]);
 
   return (
     <CardNftWrapper>
