@@ -40,7 +40,7 @@ const CreateCollection = () => {
       let dataValid = true;
       Object.keys(data).forEach((key) => {
         console.log(data);
-        if (data[key] === "") {
+        if (data[key] === "" && key !== 'royaltyAddress') {
           dataValid = false;
         }
       });
