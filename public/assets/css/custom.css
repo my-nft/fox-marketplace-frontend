@@ -3076,6 +3076,7 @@ input[type="number"]:focus-within {
 .settingGroup input:focus,
 .settingGroup textarea:focus {
   outline: none;
+  color: #fff;
 }
 
 .transferOwnership {
@@ -3646,4 +3647,8 @@ ul#buttonIcon {
 
 .collectionLink:hover {
   color: #f58103;
+}
+
+#createCollection input[name="royaltyAddress"] {
+  height: 54px;
 }

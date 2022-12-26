@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Select from "react-select";
 import { ReactComponent as Clipboard } from "../../assets/icons/clipboard.svg";
 
 import SettingsImages from "./settingsImages";
@@ -9,41 +8,7 @@ import { getCollectionByAddress } from "../../api/collectionApi";
 import Spinner from "../../components/Spinner";
 import { useDispatch } from "react-redux";
 import { UPDATE_COLLECTION } from "../../saga/actions";
-
-const selectStyles = {
-  control: (styles) => ({
-    ...styles,
-    backgroundColor: "transparent",
-    border: "none",
-    borderBottom: "1px solid rgba(254, 254, 254, 0.8)",
-    borderRadius: "0",
-    boxShadow: "none",
-  }),
-  menu: (styles) => ({
-    ...styles,
-    backgroundColor: "#000000",
-    border: "1px solid #f58103",
-    borderRadius: "8px",
-    boxShadow: "0px 4px 4px #f5800373",
-    boxShadow: "none",
-  }),
-  option: (styles, { isFocused }) => ({
-    ...styles,
-    backgroundColor: "transparent",
-    color: "#FFFFFF",
-    cursor: "pointer",
-    ":hover": {
-      backgroundColor: "#f58103",
-      color: "#fff",
-    },
-  }),
-  singleValue: (styles) => ({
-    ...styles,
-    color: "#FFFFFF",
-    padding: "8px 8px",
-    height: "46px",
-  }),
-};
+import CustomSelect from "../../components/Select";
 
 const CollectionSettings = () => {
   const dispatch = useDispatch();
@@ -57,25 +22,24 @@ const CollectionSettings = () => {
   const [imageFile, setImageFile] = useState();
   const [bannerFile, setBannerFile] = useState();
 
-
   useEffect(() => {
-    if(imageFile) {
+    if (imageFile) {
       let url = URL.createObjectURL(imageFile);
       setImage(url);
     }
-  }, [imageFile])
+  }, [imageFile]);
 
   useEffect(() => {
-    if(bannerFile) {
+    if (bannerFile) {
       let url = URL.createObjectURL(bannerFile);
       setBanner(url);
     }
-  }, [bannerFile])
+  }, [bannerFile]);
 
   const init = async () => {
     setIsLoadingCollection(true);
     const collection = await getCollectionByAddress(collectionAddress);
-    const {data} = collection;
+    const { data } = collection;
     setCollectionDetails(data);
     setImage(data.image);
     setBanner(data.banner);
@@ -187,7 +151,7 @@ const CollectionSettings = () => {
             <div className="settingGroup settingsWidthHalf">
               <label htmlFor="name">Category</label>
 
-              <Select
+              <CustomSelect
                 className="settingsWidthFull"
                 name="category"
                 id="category"
@@ -210,7 +174,6 @@ const CollectionSettings = () => {
                   { value: "Trading Cards NFTs", label: "Trading Cards NFTs" },
                   { value: "Utility NFTs", label: "Utility NFTs" },
                 ]}
-                styles={selectStyles}
               />
             </div>
           </div>
@@ -229,26 +192,26 @@ const CollectionSettings = () => {
                   placeholder="Royalty Address"
                   value={collectionDetails.royaltyAddress}
                   onChange={(e) => {
-                    if(!e.target.value) {
+                    if (!e.target.value) {
                       setCollectionDetails({
                         ...collectionDetails,
                         royaltyPercent: "0",
                         royaltyAddress: e.target.value,
-                      })
+                      });
                     } else {
                       setCollectionDetails({
                         ...collectionDetails,
                         royaltyAddress: e.target.value,
-                      })
+                      });
                     }
-                   
                   }}
                 />
               </div>
             </div>
             <div className="settingGroup">
               <label htmlFor="royaltyPercent">Rights Amount</label>
-              <Select
+
+              <CustomSelect
                 className="settingsWidthFull"
                 name="royaltyPercent"
                 id="royaltyPercent"
@@ -275,7 +238,6 @@ const CollectionSettings = () => {
                   { value: "9", label: "9" },
                   { value: "10", label: "10" },
                 ]}
-                styles={selectStyles}
               />
             </div>
           </div>

@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { MINT_COLLECTION } from "../../saga/actions";
 import { toast } from "react-toastify";
 import { selectIsLoading } from "../../redux/collectionReducer";
+import Select from "react-select";
+import CustomSelect from "../../components/Select";
 
 const CreateCollection = () => {
   const [imageUpload, setImageUpload] = useState(null);
@@ -37,7 +39,7 @@ const CreateCollection = () => {
     if (data) {
       let dataValid = true;
       Object.keys(data).forEach((key) => {
-        console.log(data)
+        console.log(data);
         if (data[key] === "") {
           dataValid = false;
         }
@@ -179,24 +181,23 @@ const CreateCollection = () => {
                   </div>
                   <div className="form-group col-md-6">
                     <label htmlFor="inputState">Royalty Percent (%)</label>
-                    <select
-                      id="inputState"
-                      className="form-control"
-                      defaultValue="0"
+                    <CustomSelect
                       name="royaltyPercent"
-                    >
-                      <option value="0">0</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                    </select>
+                      defaultValue={{ value: "0", label: "0" }}
+                      options={[
+                        { value: "0", label: "0" },
+                        { value: "1", label: "1" },
+                        { value: "2", label: "2" },
+                        { value: "3", label: "3" },
+                        { value: "4", label: "4" },
+                        { value: "5", label: "5" },
+                        { value: "6", label: "6" },
+                        { value: "7", label: "7" },
+                        { value: "8", label: "8" },
+                        { value: "9", label: "9" },
+                        { value: "10", label: "10" },
+                      ]}
+                    />
                   </div>
                 </div>
 
