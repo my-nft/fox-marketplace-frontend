@@ -36,11 +36,16 @@ const CreateCollection = () => {
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
 
+    if (!imageData) {
+      toast.error("Please upload an image");
+      return;
+    }
+
     if (data) {
       let dataValid = true;
       Object.keys(data).forEach((key) => {
         console.log(data);
-        if (data[key] === "" && key !== 'royaltyAddress') {
+        if (data[key] === "" && key !== "royaltyAddress") {
           dataValid = false;
         }
       });

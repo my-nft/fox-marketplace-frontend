@@ -1391,7 +1391,6 @@ input[type="radio"] {
 }
 
 #tabsNft .listMostPopular {
-  width: calc(100% / 6);
   min-width: 230px;
 }
 
