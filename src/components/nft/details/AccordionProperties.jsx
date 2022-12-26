@@ -70,8 +70,8 @@ const AccordionProperties = ({ nftDetails }) => {
               {properties.map((item, index) => {
                 return (
                   <div className="tags" key={index}>
-                    <h6>{item.name}</h6>
-                    <p>{item.value}</p>
+                    <h6>{item.name ? item.name : "-"}</h6>
+                    <p>{item.value ? item.value : "-"}</p>
                     <span>61% have this trait</span>
                   </div>
                 );
