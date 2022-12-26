@@ -1714,6 +1714,15 @@ img.withGlow.active {
 
 /*Account*/
 
+#accountWallet {
+  cursor: pointer;
+  transition: 300ms ease-in-out;
+}
+
+#accountWallet:hover {
+  color: #f58103;
+}
+
 #headerAccount {
   color: white;
 }
@@ -2409,6 +2418,9 @@ s #accordionListing table tr,
 #totalItemsInfo li {
   margin-right: 35px;
   padding-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 #totalItemsPrice p,

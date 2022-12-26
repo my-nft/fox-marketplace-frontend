@@ -16,6 +16,11 @@ const HeaderAccount = ({ collectionData }) => {
     window.location.href = `${blocExplorerUri}${collectionData.collectionAddress}`;
   };
 
+  const displayValue = (value) => {
+    if (value) return value;
+    return "-";
+  };
+
   return (
     <section id="headerAccount" className="container-fluid">
       <div className="row p-4" id="infoProfile">
@@ -31,14 +36,14 @@ const HeaderAccount = ({ collectionData }) => {
         />
       </div>
       <div className="row p-4 mt-5" id="infoHeader">
-        <div
-          id="accountName"
-          onClick={() => {
-            onClickExternal();
-          }}
-        >
+        <div id="accountName">
           <p>{collectionData.name}</p>
-          <span id="accountWallet">
+          <span
+            id="accountWallet"
+            onClick={() => {
+              onClickExternal();
+            }}
+          >
             {optimizeWalletAddress(collectionData.collectionAddress)}
           </span>
           <span className="dataLastVisit">
@@ -53,7 +58,7 @@ const HeaderAccount = ({ collectionData }) => {
           <ul id="totalItemsInfo">
             <li>
               <span>Items</span>
-              <p>{collectionData.items}</p>
+              <p>{displayValue(collectionData.items)}</p>
             </li>
             <li>
               <span>Created</span>
@@ -69,11 +74,11 @@ const HeaderAccount = ({ collectionData }) => {
             </li>
             <li>
               <span>Creator fee</span>
-              <p>{collectionData.royaltyPercent}</p>
+              <p>{displayValue(collectionData.royaltyPercent)}%</p>
             </li>
             <li>
               <span>Chain</span>
-              <p>{collectionData.chain}</p>
+              <p>{displayValue(collectionData.chain)}</p>
             </li>
           </ul>
           <ul id="totalItemsPrice">
@@ -84,28 +89,28 @@ const HeaderAccount = ({ collectionData }) => {
               <span>total Volume</span>
             </li>
             <li>
+              <span>floor price</span>
               <p>
                 {collectionData.floorPrice} {collectionData.chain}
               </p>
-              <span>floor price</span>
             </li>
             <li>
+              <span>best offer</span>
               <p>
                 {collectionData.bestOffer} {collectionData.chain}
               </p>
-              <span>best offer</span>
             </li>
             <li>
-              <p>{collectionData.listed}</p>
               <span>Listed</span>
+              <p>{displayValue(collectionData.listed)}</p>
             </li>
             <li>
-              <p>{collectionData.owners}</p>
               <span>owners</span>
+              <p>{displayValue(collectionData.owners)}</p>
             </li>
             <li>
-              <p>{collectionData.uniqueOwner}</p>
               <span>unique owners</span>
+              <p>{displayValue(collectionData.uniqueOwner)}</p>
             </li>
           </ul>
         </div>
