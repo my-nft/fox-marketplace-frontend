@@ -1,13 +1,23 @@
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 import placeholderBanner from "../../assets/images/account/profile_img_banner.jpg";
 import placeholderImage from "../../assets/images/account/img_account_default.jpg";
+import { useState } from "react";
 
 const AccountHeader = ({ user }) => {
+
+  const [image, setImage] = useState(placeholderImage);
+  const [banner, setBanner] = useState(placeholderBanner);
+
+  useState(() => {
+    setImage(user?.image ? user.image : placeholderImage);
+    setBanner(user?.banner ? user.banner : placeholderBanner);
+  }, []);
+
   return (
     <section id="headerAccount" className="container-fluid">
       <div className="row p-4" id="infoProfile">
-        <img src={false ? user.image : placeholderImage} id="iconProfile" />
-        <img src={false ? user.banner : placeholderBanner} alt="" />
+        <img src={image} id="iconProfile" />
+        <img src={banner} alt="" />
       </div>
       <div className="row p-4 mt-5" id="infoHeader">
         <div id="accountName">
