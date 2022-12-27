@@ -64,12 +64,14 @@ const CollectionDetails = () => {
       category.properties.map((property) => {
         if (property.active) {
           propertiesFiltered.push({
-            name: category.name,
+            trait_type: category.name,
             value: property.title,
           });
         }
       });
     });
+
+    console.log(propertiesFiltered);
 
     setIsLoadingNfts(true);
     const nftsElements = await getCollectionNftsCall(
