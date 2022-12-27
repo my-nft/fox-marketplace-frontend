@@ -44,11 +44,11 @@ const AccordingCollection = ({
                 <SearchItemCollection
                   key={index}
                   collection={collection}
-                  collectionActive={filters.collection}
+                  collectionActive={filters.collectionAddress}
                   handleChangeCollection={(val) => {
                     changeFilterValue({
                       ...filters,
-                      collection: val,
+                      collectionAddress: val,
                     });
                   }}
                 />

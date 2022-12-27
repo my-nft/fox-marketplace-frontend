@@ -14,13 +14,18 @@ import MostPopular from "./MostPopular";
 import MostPopularCollection from "./MostPopularCollection";
 import AccordionPropertiesFilter from "./PropertiesFilter";
 
-const Explorer = () => {
-  const dispatch = useDispatch();
 
+const INIT_PAGINATION = {
+  numberElements: 20,
+  page: 1,
+}
+
+const Explorer = () => {
 
   const [isLoadingState, setIsLoadingState] = useState(true);
   const [isLoadingMspl, setIsLoadingMspl] = useState(true);
-  const [isLoadingSearcheableState, setIsLoadingSearcheableState] = useState(true);
+  const [isLoadingSearcheableState, setIsLoadingSearcheableState] =
+    useState(true);
 
   const [searcheableCollections, setSearcheableCollections] = useState([]);
   const [mostPopularCollections, setMostPopularCollections] = useState([]);
@@ -30,23 +35,15 @@ const Explorer = () => {
 
   const [filtersVisible, setFiltersVisible] = useState(false);
 
-  const [pagination, setPagination] = useState({
-    numberElements: 20,
-    page: 1,
-  });
 
+  const [pagination, setPagination] = useState(INIT_PAGINATION);
 
   const [filters, setFilters] = useState({
-    minPrice: 0,
-    maxPrice: 0,
-    buyToken: "ETH",
-    status: "ALL",
-    showRaritiy: false,
     sortBy: "RECENTLY_LISTED",
-    collection: "",
+    collectionAddress: undefined,
     properties: [],
+    status: [],
   });
-
 
   const loadMostPopular = async () => {
     setIsLoadingMspl(true);
@@ -54,17 +51,22 @@ const Explorer = () => {
       numberElements: pagination.numberElements,
       page: pagination.page,
     });
-    const {data} = mostPopular;
+    const { data } = mostPopular;
     setMostPopularCollections(data.content);
     setIsLoadingMspl(false);
   };
-  
+
   const loadListedNfts = async () => {
     setIsLoadingState(true);
-    const listedNfts = await getListedNfts(pagination.page, pagination.numberElements)
+    const listedNfts = await getListedNfts(
+      pagination.page,
+      pagination.numberElements,
+      filters.status,
+      filters.collectionAddress
+    );
     setNfts(listedNfts.data);
     setIsLoadingState(false);
-  }
+  };
 
   const loadSearchable = async () => {
     setIsLoadingSearcheableState(true);
@@ -73,17 +75,19 @@ const Explorer = () => {
       page: pagination.page,
     });
 
-    const {data} = searchableCollections;
+    const { data } = searchableCollections;
     setSearcheableCollections(data?.content);
     setIsLoadingSearcheableState(false);
-  }
-
-
+  };
 
   useEffect(() => {
     loadMostPopular();
     loadListedNfts();
     loadSearchable();
+  }, [])
+
+  useEffect(() => {
+    loadListedNfts();
   }, [pagination]);
 
   const changePage = (page) => {
@@ -93,6 +97,15 @@ const Explorer = () => {
       page,
     });
   };
+
+  useEffect(() => {
+    if(pagination === INIT_PAGINATION) {
+      loadListedNfts();
+    } else {
+      setPagination(INIT_PAGINATION);
+    }
+    
+  }, [filters])
 
   return (
     <>
@@ -156,11 +169,11 @@ const Explorer = () => {
               />
             )}
 
-              <Pagination
-                pages={totalElements ? Math.ceil(totalElements / 20) : 1}
-                currentPage={pagination.page}
-                setCurrentPage={changePage}
-              />
+            <Pagination
+              pages={totalElements ? Math.ceil(totalElements / 20) : 1}
+              currentPage={pagination.page}
+              setCurrentPage={changePage}
+            />
           </div>
         </div>
       </section>

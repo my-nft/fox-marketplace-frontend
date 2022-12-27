@@ -96,11 +96,13 @@ export function addNftToIpfs({
 }
 
 
-export const getListedNfts = (page, numberElements) => {
+export const getListedNfts = (page, numberElements, status, collectionAddress) => {
   return methods.get(nftEndpoint + "listed", {
     params: {
       page,
       numberElements,
+      status,
+      collectionAddress
     },
   });
 };
