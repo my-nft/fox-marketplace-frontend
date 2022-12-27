@@ -15,9 +15,12 @@ import MostPopularCollection from "./MostPopularCollection";
 import AccordionPropertiesFilter from "./PropertiesFilter";
 import { availableProperties } from "./properties";
 
-const Explorer = () => {
-  const dispatch = useDispatch();
+const INIT_PAGINATION = {
+  numberElements: 20,
+  page: 1,
+};
 
+const Explorer = () => {
   const [isLoadingState, setIsLoadingState] = useState(true);
   const [isLoadingMspl, setIsLoadingMspl] = useState(true);
   const [isLoadingSearcheableState, setIsLoadingSearcheableState] =
@@ -31,20 +34,17 @@ const Explorer = () => {
 
   const [filtersVisible, setFiltersVisible] = useState(false);
 
-  const [pagination, setPagination] = useState({
-    numberElements: 20,
-    page: 1,
-  });
+  const [pagination, setPagination] = useState(INIT_PAGINATION);
 
   const [filters, setFilters] = useState({
-    minPrice: 0,
-    maxPrice: 0,
-    buyToken: "ETH",
-    status: "ALL",
-    showRaritiy: false,
     sortBy: "RECENTLY_LISTED",
     collection: "",
     properties: availableProperties,
+    collectionAddress: undefined,
+    status: [],
+    minPrice: 0,
+    maxPrice: 0,
+    buyToken: "ETH",
   });
 
   const loadMostPopular = async () => {
@@ -62,7 +62,9 @@ const Explorer = () => {
     setIsLoadingState(true);
     const listedNfts = await getListedNfts(
       pagination.page,
-      pagination.numberElements
+      pagination.numberElements,
+      filters.status,
+      filters.collectionAddress
     );
     setNfts(listedNfts.data);
     setIsLoadingState(false);
@@ -81,22 +83,30 @@ const Explorer = () => {
   };
 
   useEffect(() => {
-    console.log("PROPS FILTER: ", filters.properties);
-  }, [filters]);
-
-  useEffect(() => {
     loadMostPopular();
     loadListedNfts();
     loadSearchable();
+  }, []);
+
+  useEffect(() => {
+    loadListedNfts();
   }, [pagination]);
 
   const changePage = (page) => {
-    if (page < 1 || page > parseInt(totalElements / 20)) return;
+    if (page < 1 || page > Math.ceil(totalElements / 20)) return;
     setPagination({
       ...pagination,
       page,
     });
   };
+
+  useEffect(() => {
+    if (pagination === INIT_PAGINATION) {
+      loadListedNfts();
+    } else {
+      setPagination(INIT_PAGINATION);
+    }
+  }, [filters]);
 
   return (
     <>
@@ -160,14 +170,11 @@ const Explorer = () => {
               />
             )}
 
-            {totalElements && parseInt(totalElements / 20) > 0 ? (
-              <Pagination
-                pages={totalElements ? parseInt(totalElements / 20) : 1}
-                currentPage={pagination.page}
-                setCurrentPage={changePage}
-              />
-            ) : null}
-            <Pagination pages={20} currentPage={2} setCurrentPage={() => {}} />
+            <Pagination
+              pages={totalElements ? Math.ceil(totalElements / 20) : 1}
+              currentPage={pagination.page}
+              setCurrentPage={changePage}
+            />
           </div>
         </div>
       </section>

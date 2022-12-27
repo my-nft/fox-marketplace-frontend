@@ -1267,6 +1267,17 @@ footer a:hover {
 #wrapperNumber > div {
   width: 100%;
   margin-top: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  background-color: #15191d;
+}
+
+#wrapperNumber > div > div {
+  border-bottom: none !important;
+}
+
+#wrapperNumber > div > div > div:first-of-type > div {
+  height: unset;
 }
 
 #wrapperNumber input {
@@ -2544,7 +2555,7 @@ input[type="number"]:focus-within {
 .filtersExplorer {
   width: 100%;
   min-width: 400px;
-  max-width: 480px;
+  max-width: 400px;
 }
 
 .filtersHide.filtersExplorer {

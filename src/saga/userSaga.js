@@ -70,19 +70,11 @@ function* updateUserProfile(action) {
 }
 
 export function* signWallet() {
-    const connectedUser = getCurrentWalletConnected();
-    const actualToken = yield select(selectToken);
-    if(!actualToken) {
-      const { token } = yield call(signIn, connectedUser.address);
-      console.log("######", token);
-      yield put(setToken(token));
-      return token;
-    } else {
-      console.log("######", actualToken);
-
-      return actualToken;
-    }
-
+  const connectedWallet = getCurrentWalletConnected();
+  const { token } = yield call(signIn, connectedWallet);
+  console.log("######", token);
+  yield put(setToken(token));
+  return token;
 }
 
 // Starts fetchUser on each dispatched USER_FETCH_REQUESTED action
@@ -95,6 +87,5 @@ function* updateProfileForUser() {
 function* loadUser() {
   yield takeLatest(LOAD_USER, getConnectedUser);
 }
-
 
 export { loadUser, updateProfileForUser };
