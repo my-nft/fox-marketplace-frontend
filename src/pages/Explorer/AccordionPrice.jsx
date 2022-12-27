@@ -44,8 +44,6 @@ const AccordionPrice = ({filters, changeFilterValue}) => {
       ...filters,
       "minPrice": prices.minPrice,
       "maxPrice": prices.maxPrice,
-      "buyToken": token
-
     })
 
   }
