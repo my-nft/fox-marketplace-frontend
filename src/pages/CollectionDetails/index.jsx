@@ -11,6 +11,7 @@ import {
   getCollectionByAddress,
   getCollectionNftsCall,
 } from "../../api/collectionApi";
+import { availableProperties } from "../Explorer/properties";
 
 const CollectionDetails = () => {
   let { collectionAddress } = useParams();
@@ -38,7 +39,7 @@ const CollectionDetails = () => {
     buyToken: "ETH",
     sortBy: "RECENTLY_LISTED",
     categories: [],
-    properties: []
+    properties: [...availableProperties],
   });
 
   const dispatch = useDispatch();
@@ -57,6 +58,37 @@ const CollectionDetails = () => {
     setIsLoadingCollection(false);
   };
 
+  const loadNFTs = async () => {
+    const propertiesFiltered = [];
+    filters.properties.map((category) => {
+      category.properties.map((property) => {
+        if (property.active) {
+          propertiesFiltered.push({
+            name: category.name,
+            value: property.title,
+          });
+        }
+      });
+    });
+
+    setIsLoadingNfts(true);
+    const nftsElements = await getCollectionNftsCall(
+      collectionDetails.collectionAddress,
+      {
+        page: pagination.page,
+        numberElements: 20,
+        properties: propertiesFiltered,
+      }
+    );
+
+    setNfts(nftsElements.data);
+    setIsLoadingNfts(false);
+  };
+
+  useEffect(() => {
+    loadNFTs();
+  }, [filters.properties]);
+
   const initLoadNfts = async () => {
     setIsLoadingNfts(true);
     const nftsElements = await getCollectionNftsCall(
@@ -66,7 +98,7 @@ const CollectionDetails = () => {
         numberElements: 20,
       }
     );
-   
+
     setNfts(nftsElements.data);
     setIsLoadingNfts(false);
   };
