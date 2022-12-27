@@ -13,15 +13,14 @@ import AccordionPrice from "./AccordionPrice";
 import MostPopular from "./MostPopular";
 import MostPopularCollection from "./MostPopularCollection";
 import AccordionPropertiesFilter from "./PropertiesFilter";
-
+import { availableProperties } from "./properties";
 
 const INIT_PAGINATION = {
   numberElements: 20,
   page: 1,
-}
+};
 
 const Explorer = () => {
-
   const [isLoadingState, setIsLoadingState] = useState(true);
   const [isLoadingMspl, setIsLoadingMspl] = useState(true);
   const [isLoadingSearcheableState, setIsLoadingSearcheableState] =
@@ -35,14 +34,17 @@ const Explorer = () => {
 
   const [filtersVisible, setFiltersVisible] = useState(false);
 
-
   const [pagination, setPagination] = useState(INIT_PAGINATION);
 
   const [filters, setFilters] = useState({
     sortBy: "RECENTLY_LISTED",
+    collection: "",
+    properties: availableProperties,
     collectionAddress: undefined,
-    properties: [],
     status: [],
+    minPrice: undefined,
+    maxPrice: undefined,
+    buyToken: "ETH",
   });
 
   const loadMostPopular = async () => {
@@ -62,7 +64,9 @@ const Explorer = () => {
       pagination.page,
       pagination.numberElements,
       filters.status,
-      filters.collectionAddress
+      filters.collectionAddress,
+      filters.minPrice,
+      filters.maxPrice
     );
     setNfts(listedNfts.data);
     setIsLoadingState(false);
@@ -84,7 +88,7 @@ const Explorer = () => {
     loadMostPopular();
     loadListedNfts();
     loadSearchable();
-  }, [])
+  }, []);
 
   useEffect(() => {
     loadListedNfts();
@@ -99,13 +103,13 @@ const Explorer = () => {
   };
 
   useEffect(() => {
-    if(pagination === INIT_PAGINATION) {
+    console.log(filters);
+    if (pagination === INIT_PAGINATION) {
       loadListedNfts();
     } else {
       setPagination(INIT_PAGINATION);
     }
-    
-  }, [filters])
+  }, [filters]);
 
   return (
     <>
@@ -142,13 +146,6 @@ const Explorer = () => {
                   changeFilterValue={setFilters}
                 />
               )}
-
-              <AccordionPropertiesFilter
-                availableProperties={["Lmao", "Test"]}
-                filters={filters}
-                propertiesFilter={filters.properties}
-                changeFilterValue={setFilters}
-              />
             </div>
           </div>
           <div id="dx" className={`explorerItems ml-4`}>

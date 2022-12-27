@@ -46,9 +46,11 @@ const AccordingCollection = ({
                   collection={collection}
                   collectionActive={filters.collectionAddress}
                   handleChangeCollection={(val) => {
+                    console.log(val, filters.collectionAddress);
                     changeFilterValue({
                       ...filters,
-                      collectionAddress: val,
+                      collectionAddress:
+                        filters.collectionAddress === val ? null : val,
                     });
                   }}
                 />

@@ -1,34 +1,31 @@
 import { useEffect, useState } from "react";
+import PropertyCategory from "../../components/PropertyCategory";
 import SliderToggle from "../Account/SliderToggle";
+import { availableProperties } from "./properties";
 
 const AccordionPropertiesFilter = ({
-  availableProperties,
-  propertiesFilter,
+  properties = [],
   filters,
   changeFilterValue,
 }) => {
-  const handleFilterChange = (property, boolean) => {
-    console.log(property, boolean);
+  const handlePropertyFilterChange = (property, category, boolean) => {
+    const propertiesFilter = [...properties];
 
-    if (boolean) {
-      let propertiesNew = [...filters.properties, property];
+    const propertyCategoryTarget = propertiesFilter.find((prop) => {
+      return prop.name === category;
+    });
 
-      let unique = propertiesNew.filter((value, index, self) => {
-        return self.indexOf(value) === index;
-      });
+    propertyCategoryTarget.properties.map((prop) => {
+      if (prop.title === property.title) {
+        prop.active = boolean;
+      }
+    });
 
-      changeFilterValue({
-        ...filters,
-        properties: unique,
-      });
-    } else {
-      let propertiesNew = filters.properties.filter((p) => p !== property);
-      console.log(propertiesNew);
-      //   changeFilterValue({
-      //     ...filters,
-      //     properties: propertiesNew
-      //     })
-    }
+    console.log(propertiesFilter);
+    changeFilterValue({
+      ...filters,
+      properties: propertiesFilter,
+    });
   };
 
   return (
@@ -64,13 +61,20 @@ const AccordionPropertiesFilter = ({
           data-parent="#accordionProperties"
         >
           <div className="card-body">
-            {availableProperties.map((property, index) => {
+            {properties.map((property, index) => {
               return (
-                <SliderToggle
+                <PropertyCategory
+                  propertyTitle={property.name}
+                  properties={property.properties}
                   key={index}
-                  title={property}
-                  active={propertiesFilter.find((p) => p === property)}
-                  action={(boolean) => handleFilterChange(property, boolean)}
+                  handleFilterChange={(propertyVal, boolean) => {
+                    console.log(propertyVal, boolean);
+                    handlePropertyFilterChange(
+                      propertyVal,
+                      property.name,
+                      boolean
+                    );
+                  }}
                 />
               );
             })}
