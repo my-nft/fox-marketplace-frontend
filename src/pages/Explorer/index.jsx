@@ -13,14 +13,15 @@ import AccordionPrice from "./AccordionPrice";
 import MostPopular from "./MostPopular";
 import MostPopularCollection from "./MostPopularCollection";
 import AccordionPropertiesFilter from "./PropertiesFilter";
+import { availableProperties } from "./properties";
 
 const Explorer = () => {
   const dispatch = useDispatch();
 
-
   const [isLoadingState, setIsLoadingState] = useState(true);
   const [isLoadingMspl, setIsLoadingMspl] = useState(true);
-  const [isLoadingSearcheableState, setIsLoadingSearcheableState] = useState(true);
+  const [isLoadingSearcheableState, setIsLoadingSearcheableState] =
+    useState(true);
 
   const [searcheableCollections, setSearcheableCollections] = useState([]);
   const [mostPopularCollections, setMostPopularCollections] = useState([]);
@@ -35,7 +36,6 @@ const Explorer = () => {
     page: 1,
   });
 
-
   const [filters, setFilters] = useState({
     minPrice: 0,
     maxPrice: 0,
@@ -44,9 +44,8 @@ const Explorer = () => {
     showRaritiy: false,
     sortBy: "RECENTLY_LISTED",
     collection: "",
-    properties: [],
+    properties: availableProperties,
   });
-
 
   const loadMostPopular = async () => {
     setIsLoadingMspl(true);
@@ -54,17 +53,20 @@ const Explorer = () => {
       numberElements: pagination.numberElements,
       page: pagination.page,
     });
-    const {data} = mostPopular;
+    const { data } = mostPopular;
     setMostPopularCollections(data.content);
     setIsLoadingMspl(false);
   };
-  
+
   const loadListedNfts = async () => {
     setIsLoadingState(true);
-    const listedNfts = await getListedNfts(pagination.page, pagination.numberElements)
+    const listedNfts = await getListedNfts(
+      pagination.page,
+      pagination.numberElements
+    );
     setNfts(listedNfts.data);
     setIsLoadingState(false);
-  }
+  };
 
   const loadSearchable = async () => {
     setIsLoadingSearcheableState(true);
@@ -73,12 +75,14 @@ const Explorer = () => {
       page: pagination.page,
     });
 
-    const {data} = searchableCollections;
+    const { data } = searchableCollections;
     setSearcheableCollections(data?.content);
     setIsLoadingSearcheableState(false);
-  }
+  };
 
-
+  useEffect(() => {
+    console.log("PROPS FILTER: ", filters.properties);
+  }, [filters]);
 
   useEffect(() => {
     loadMostPopular();
@@ -131,7 +135,7 @@ const Explorer = () => {
               )}
 
               <AccordionPropertiesFilter
-                availableProperties={["Lmao", "Test"]}
+                properties={filters.properties}
                 filters={filters}
                 propertiesFilter={filters.properties}
                 changeFilterValue={setFilters}
