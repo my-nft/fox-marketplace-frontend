@@ -41,11 +41,12 @@ const AccordionPrice = ({ filters, changeFilterValue }) => {
     e.preventDefault();
     changeFilterValue({
       ...filters,
-      minPrice: prices.minPrice,
-      maxPrice: prices.maxPrice,
-      buyToken: token,
-    });
-  };
+      "minPrice": prices.minPrice,
+      "maxPrice": prices.maxPrice,
+    })
+
+  }
+
 
   return (
     <div id="accordionPrice">
