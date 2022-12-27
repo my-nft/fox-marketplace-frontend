@@ -18,16 +18,13 @@ const ListedAuctionNft = ({
   const [itemInfos, setItemInfos] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
-
   console.log(itemInfos);
 
-
-  console.log("****************************", itemInfos?.endAuction)
-
+  console.log("****************************", itemInfos?.endAuction);
 
   const isTokenExpired = (endAuction) => {
     if (endAuction && !isNaN(endAuction)) {
-      const end = endAuction*1000;
+      const end = endAuction * 1000;
       const now = new Date().getTime();
       return end - now < 0;
     }

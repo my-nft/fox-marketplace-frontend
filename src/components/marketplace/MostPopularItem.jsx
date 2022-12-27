@@ -47,7 +47,9 @@ const MostPopularItem = ({ viewType, item }) => {
   const init = async () => {
     const infos = await getAuctionInfos(item.auctionId);
     setItemInfos(infos);
+  };
 
+  const loadInfoPricing = async () => {
     if (item.listingType === AUCTION) {
       setPrice(
         itemInfos?.currentBidPrice ? itemInfos.currentBidPrice / 10 ** 18 : null
@@ -57,6 +59,10 @@ const MostPopularItem = ({ viewType, item }) => {
       setPrice(priceSmt);
     }
   };
+
+  useEffect(() => {
+    loadInfoPricing();
+  }, [itemInfos]);
 
   useEffect(() => {
     init();
@@ -69,12 +75,6 @@ const MostPopularItem = ({ viewType, item }) => {
       clearInterval(id);
     };
   }, []);
-
-  const onSelectNfts = () => {
-    navigate(`/collection/${item.collectionAddress}/${item.tokenID}`, {
-      target: "_blank",
-    });
-  };
 
   const calculateTimeLeftBeforeExpiration = (expirationDate, dateNow) => {
     const futurDate = new Date(Number(expirationDate * 1000));
@@ -148,7 +148,7 @@ const MostPopularItem = ({ viewType, item }) => {
             className="bigImage"
             alt=""
           />
-          {sameAddress(item.ownerAddress,walletAddress) && (
+          {sameAddress(item.ownerAddress, walletAddress) && (
             <p className="ownedItem">Owned by you</p>
           )}
         </div>
@@ -178,7 +178,8 @@ const MostPopularItem = ({ viewType, item }) => {
                 </span>
               </p>
             ) : null}
-
+          </div>
+          <div className="wrapText">
             <p>
               {item.listingType === AUCTION && (
                 <span>

@@ -42,8 +42,8 @@ const Explorer = () => {
     properties: availableProperties,
     collectionAddress: undefined,
     status: [],
-    minPrice: 0,
-    maxPrice: 0,
+    minPrice: undefined,
+    maxPrice: undefined,
     buyToken: "ETH",
   });
 
@@ -64,7 +64,9 @@ const Explorer = () => {
       pagination.page,
       pagination.numberElements,
       filters.status,
-      filters.collectionAddress
+      filters.collectionAddress,
+      filters.minPrice,
+      filters.maxPrice
     );
     setNfts(listedNfts.data);
     setIsLoadingState(false);
@@ -101,6 +103,7 @@ const Explorer = () => {
   };
 
   useEffect(() => {
+    console.log(filters);
     if (pagination === INIT_PAGINATION) {
       loadListedNfts();
     } else {
@@ -143,13 +146,6 @@ const Explorer = () => {
                   changeFilterValue={setFilters}
                 />
               )}
-
-              <AccordionPropertiesFilter
-                properties={filters.properties}
-                filters={filters}
-                propertiesFilter={filters.properties}
-                changeFilterValue={setFilters}
-              />
             </div>
           </div>
           <div id="dx" className={`explorerItems ml-4`}>

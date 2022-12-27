@@ -10,30 +10,9 @@ const AccordionPrice = ({ filters, changeFilterValue }) => {
 
   const processNumberInput = (key, e) => {
     const value = e.target.value;
-
-    if (key === "minPrice" && value > prices.maxPrice) {
-      console.log("Min price is greater than max price");
-      return;
-    } else if (key === "maxPrice" && value < prices.minPrice) {
-      console.log("Max price is less than min price");
-      return;
-    }
-
-    if (value === "") {
-      console.log("Is empty");
-      setPrices({
-        ...prices,
-        [key]: Number(value),
-      });
-      return;
-    }
-    if (isNaN(value)) {
-      console.log("is NAN");
-      return;
-    }
     setPrices({
       ...prices,
-      [key]: Number(value),
+      [key]: parseInt(value),
     });
   };
 

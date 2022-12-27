@@ -4,7 +4,7 @@ import SliderToggle from "../Account/SliderToggle";
 import { availableProperties } from "./properties";
 
 const AccordionPropertiesFilter = ({
-  properties,
+  properties = [],
   filters,
   changeFilterValue,
 }) => {
