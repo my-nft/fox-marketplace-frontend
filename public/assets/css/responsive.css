@@ -1,3 +1,9 @@
+@media screen and (max-width: 1440px) {
+  .wrapperMostPopular {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
 @media screen and (max-width: 1280px) {
   .collectionSettingsWrapper {
     gap: 48px;

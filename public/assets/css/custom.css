@@ -1260,23 +1260,23 @@ footer a:hover {
 #wrapperNumber {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   flex-wrap: wrap;
 }
 
-#wrapperNumber span {
-  padding: 0px 15px;
+#wrapperNumber > div {
+  width: 100%;
+  margin-top: 12px;
 }
 
 #wrapperNumber input {
   overflow: visible;
-  max-width: 30%;
+  max-width: 40%;
   padding: 12px;
   border-radius: 10px;
   border: none;
   background-color: #15191d;
   color: white;
-  margin-right: 5px;
 }
 
 #wrapperNumber select,
@@ -2467,7 +2467,7 @@ s #accordionListing table tr,
 .paginationWrapper .paginationAction {
   cursor: pointer;
   transition: 300ms ease-in-out;
-  color: #212529;
+  color: rgba(255, 255, 255, 0.3);
 }
 
 .paginationWrapper .paginationAction:hover {
@@ -2487,6 +2487,7 @@ s #accordionListing table tr,
   margin: 0 8px;
   cursor: pointer;
   transition: 300ms ease-in-out;
+  color: rgba(255, 255, 255, 0.25);
 }
 
 .paginationPage:hover {
@@ -2543,6 +2544,7 @@ input[type="number"]:focus-within {
 .filtersExplorer {
   width: 100%;
   min-width: 400px;
+  max-width: 480px;
 }
 
 .filtersHide.filtersExplorer {

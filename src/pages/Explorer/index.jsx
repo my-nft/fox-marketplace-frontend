@@ -167,6 +167,7 @@ const Explorer = () => {
                 setCurrentPage={changePage}
               />
             ) : null}
+            <Pagination pages={20} currentPage={2} setCurrentPage={() => {}} />
           </div>
         </div>
       </section>
