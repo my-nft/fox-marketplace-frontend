@@ -11,6 +11,7 @@ import {
   loaderContract,
   loadOfferSystemContract,
   OfferSystemAddress,
+  web3Infura,
 } from "../utils/blockchainInteractor";
 
 import { sameAddress } from "../utils/walletUtils";
@@ -438,7 +439,7 @@ export const acceptOffer = async (
 
 const bigNumberPricing = async (price) => {
 
-  const web3 = await authProviderInstance.getInjectedWeb3();
+  const web3 = web3Infura;
 
   let listingPrice = web3.utils.toWei(price.toString(), "ether");
 

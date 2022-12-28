@@ -55,9 +55,12 @@ export async function loadERC721Contract(collectionAddress, readOnly = false) {
   }
   return new web3Instance.eth.Contract(ERC721, collectionAddress);
 }
-export async function loadERC20Contract() {
-  const web3 = await authProviderInstance.getInjectedWeb3();
-  return new web3.eth.Contract(ERC20, ERC20ContractAddress);
+export async function loadERC20Contract(readOnly = false) {
+  let web3Instance = web3Infura;
+  if (!readOnly) {
+    web3Instance = await authProviderInstance.getInjectedWeb3();
+  }
+  return new web3Instance.eth.Contract(ERC20, ERC20ContractAddress);
 }
 
 export async function loadCollectionContract(collectionAddress) {

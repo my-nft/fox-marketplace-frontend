@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   authProviderInstance,
   loadERC20Contract,
-  web3,
+  web3Infura,
 } from "../../utils/blockchainInteractor";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 import ScrollToTop from "../scrollToTop";
@@ -30,17 +30,19 @@ const Header = () => {
   }, [userAddress]);
 
   const connect = async () => {
-    const connectedWallet = await authProviderInstance.login();
-    authProviderInstance.addListners({
-      clearSession: () =>
-        dispatch({
-          type: "DESTROY_SESSION",
-        }),
-    });
-    dispatch({
-      type: LOAD_USER,
-      payload: connectedWallet,
-    });
+    if (!connectedWallet) {
+      const connectedWallet = await authProviderInstance.login();
+      authProviderInstance.addListners({
+        clearSession: () =>
+          dispatch({
+            type: "DESTROY_SESSION",
+          }),
+      });
+      dispatch({
+        type: LOAD_USER,
+        payload: connectedWallet,
+      });
+    }
   };
 
   const [balance, setBalance] = useState({
@@ -52,9 +54,9 @@ const Header = () => {
   });
 
   const initWalletData = async () => {
-    const web3 = await authProviderInstance.getInjectedWeb3();
+    const web3 = web3Infura;
     if (connectedWallet && web3) {
-      const contract = await loadERC20Contract();
+      const contract = await loadERC20Contract(true);
       const fxg = await contract.methods.balanceOf(connectedWallet).call();
       web3.eth.getBalance(connectedWallet, (err, wei) => {
         if (!err) {
@@ -155,7 +157,7 @@ const Header = () => {
 
             <button id="signUpButton" onClick={connect}>
               {connectedWallet
-                ? optimizeWalletAddress(connectedWallet)
+                ? optimizeWalletAddress(connectedWallet) + "/ Disconnect"
                 : "Connect Wallect"}{" "}
             </button>
           </div>
