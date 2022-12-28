@@ -25,6 +25,7 @@ import AccountPage from "./pages/Account/Account";
 import ConfirmationPopup from "./components/confirmationPopup/confirmationPopup";
 import DatePicker from "./components/datePicker/datePicker";
 import CollectionSettings from "./pages/collectionSettings/collectionSettings";
+import PageStatistics from "./components/Statistics";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -143,6 +144,7 @@ const router = createBrowserRouter(
 function App() {
   return (
     <Provider store={store}>
+      <PageStatistics />
       {/*
       <ConfirmationPopup
         title="Test"
