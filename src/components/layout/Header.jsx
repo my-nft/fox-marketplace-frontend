@@ -3,26 +3,95 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  connectWallet,
-  getCurrentWalletConnected,
-} from "../../interactors/blockchainInteractor";
-import { selectConnectedUser } from "../../redux/userReducer";
-import { LOAD_USER } from "../../saga/actions";
 import { loadERC20Contract, web3 } from "../../utils/blockchainInteractor";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 import ScrollToTop from "../scrollToTop";
 import useOutsideClick from "./../../utils/useOutsideClick";
 import SearchBar from "./../searchBar/searchBar";
 
+import { providers } from "ethers";
+import Web3Modal from "web3modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import { selectCurrentWallet, setCurrentWallet } from "../../redux/userReducer";
+
 const Header = () => {
   const clickRef = useOutsideClick(() => {
     document.querySelector(".navbar-collapse").classList.remove("show");
   });
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [web3Modal, setWeb3Modal] = useState(null);
   const [connectedWallet, setConnectedWallet] = useState();
+  const userAddress = useSelector(selectCurrentWallet);
+
+  useEffect(() => {
+    setConnectedWallet(userAddress);
+  }, [userAddress]);
+
+  useEffect(() => {
+    // initiate web3modal
+    const providerOptions = {
+      walletconnect: {
+        package: WalletConnectProvider,
+        options: {
+          infuraId: "9c7e70b4bf234955945ff87b8149926e",
+        },
+      },
+    };
+
+    const newWeb3Modal = new Web3Modal({
+      cacheProvider: false, // very important
+      providerOptions,
+    });
+
+    setWeb3Modal(newWeb3Modal);
+  }, []);
+
+  useEffect(() => {
+    // connect automatically and without a popup if user is already connected
+    console.log("BEFORE");
+    if (web3Modal && web3Modal.cachedProvider) {
+      reloadWallet();
+    }
+  }, [web3Modal]);
+
+  const reloadWallet = async () => {
+    await connectWallet();
+  };
+
+  const addListeners = async (web3ModalProvider) => {
+    console.log(web3ModalProvider);
+    web3ModalProvider.on("accountsChanged", (accounts) => {
+      console.log("accountsChanged");
+      cleanSession();
+    });
+
+    // Subscribe to chainId change
+    web3ModalProvider.on("chainChanged", (chainId) => {
+      console.log("chainChanged");
+
+      if (parseInt(chainId, 16) !== 90001) {
+        alert("Not connected to the chainId");
+        cleanSession();
+      }
+    });
+
+    web3ModalProvider.on("disconnect", () => {
+      console.log("disconnect");
+      cleanSession();
+    });
+  };
+
+  async function connectWallet() {
+    if(!connectedWallet) {
+      console.log("CONNECT_WALLET");
+      const provider = await web3Modal.connect();
+      addListeners(provider);
+      const ethersProvider = new providers.Web3Provider(provider);
+      dispatch(setCurrentWallet(await ethersProvider.getSigner().getAddress()));
+    }
+  }
+
+  const dispatch = useDispatch();
   const [balance, setBalance] = useState({
     fx: 0,
     fxg: 0,
@@ -31,56 +100,18 @@ const Header = () => {
     searchPrompt: "",
   });
 
-  const handleSignIn = async () => {
-    await connectWallet();
-    setConnectedWallet(getCurrentWalletConnected());
-  };
+  const cleanSession = async () => {
+    await web3Modal.clearCachedProvider();
 
-  useEffect(() => {
-    if (connectedWallet) {
-      dispatch({
-        type: LOAD_USER,
-        payload: connectedWallet,
-      });
-    } else {
-      connectWallet();
-      setConnectedWallet(getCurrentWalletConnected());
+    if (web3 && web3.currentProvider && web3.currentProvider.close) {
+      await web3.currentProvider.close();
     }
-  }, [connectedWallet]);
 
-  const cleanSession = () => {
     dispatch({ type: "DESTROY_SESSION" });
-    navigate("/");
   };
-
-  const addWalletListener = () => {
-    window.ethereum.on("accountsChanged", async (accounts) => {
-      cleanSession();
-      handleSignIn();
-    });
-
-    window.ethereum.on("disconnect", async (accounts) => {
-      cleanSession();
-    });
-
-    window.ethereum.on("chainChanged", async (chainId) => {
-      if (parseInt(chainId, 16) !== 90001) {
-        alert("Not connected to the chainId");
-        cleanSession();
-      }
-    });
-  };
-
-  useEffect(() => {
-    // only if metamask is installed
-    if (window.ethereum) {
-      addWalletListener();
-      setConnectedWallet(getCurrentWalletConnected());
-    }
-  }, []);
 
   const initWalletData = async () => {
-    if (connectedWallet) {
+    if (connectedWallet && web3) {
       const fxg = await loadERC20Contract()
         .methods.balanceOf(connectedWallet)
         .call();
@@ -100,17 +131,14 @@ const Header = () => {
   };
 
   useEffect(() => {
-    initWalletData();
+    if (connectedWallet) {
+      initWalletData();
+    }
   }, [connectedWallet]);
-
-  useEffect(() => {
-    handleSignIn();
-  }, [])
 
   return (
     <>
       <ScrollToTop />
-
       <header className="container-fluid">
         <nav className="navbar navbar-expand-xl" ref={clickRef}>
           <Link className="navbar-brand" to="/">
@@ -184,7 +212,7 @@ const Header = () => {
               </ul>
             ) : null}
 
-            <button id="signUpButton" onClick={handleSignIn}>
+            <button id="signUpButton" onClick={connectWallet}>
               {connectedWallet
                 ? optimizeWalletAddress(connectedWallet)
                 : "Connect Wallect"}{" "}

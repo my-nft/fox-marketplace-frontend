@@ -202,6 +202,9 @@ function* runPlaceBid(action) {
 function* runListFixedPrice(action) {
   try {
     const { collectionAddress, tokenID, fixedPrice } = action.payload;
+
+
+    console.log("##################################################")
     const token = yield call(signWallet);
 
     yield put(setIsLoading(true));

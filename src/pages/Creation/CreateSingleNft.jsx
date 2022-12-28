@@ -14,9 +14,8 @@ const CreateSingleNft = () => {
   const [popupStatus, setPopupStatus] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [searchParams, setSearchParams]= useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const collectionAddress = searchParams.get("collectionAddress");
-  
 
   console.log("COLLECTION ADDRESS ", collectionAddress);
 
@@ -85,8 +84,7 @@ const CreateSingleNft = () => {
       return;
     }
 
-    const {upload, ...rest} = nftData;
-
+    const { upload, ...rest } = nftData;
 
     dispatch({
       type: MINT_NFT,
@@ -104,8 +102,8 @@ const CreateSingleNft = () => {
           artistName: "",
           upload: null,
           attributes: [],
-          levels: [],
-          stats: [],
+          //levels: [],
+          //stats: [],
         });
         setImageData(null);
         setImageUpload(null);
@@ -117,8 +115,6 @@ const CreateSingleNft = () => {
       },
     });
   };
-
-
 
   return (
     <section id="createCollection" className="my-2">
@@ -240,7 +236,7 @@ const CreateSingleNft = () => {
                     </div>
                   </div>
                 </div>
-                <h3 className="mt-12 mb-1">Levels</h3>
+                {/* <h3 className="mt-12 mb-1">Levels</h3>
                 <p className="text-white mb-3 ">
                   Numerical traits that show as a progress bar
                 </p>
@@ -268,8 +264,8 @@ const CreateSingleNft = () => {
                   >
                     <p>+</p>
                   </div>
-                </div>
-                <h3 className="mt-12 mb-1">Stats</h3>
+                </div> */}
+                {/* <h3 className="mt-12 mb-1">Stats</h3>
                 <p className="text-white mb-3 ">
                   Numerical traits that just show as numbers
                 </p>
@@ -290,7 +286,11 @@ const CreateSingleNft = () => {
                   >
                     <p>+</p>
                   </div>
-                </div>
+                </div> */}
+
+                  */
+                }
+                
 
                 <button type="submit" className="btn">
                   Create NFT

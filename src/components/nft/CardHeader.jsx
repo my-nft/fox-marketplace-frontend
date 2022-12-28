@@ -83,7 +83,7 @@ const CardHeader = ({ endDate }) => {
               minimumIntegerDigits: 2,
             })}
           </div>
-          <span class>Days</span>
+          <span>Days</span>
         </div>
 
         <div className="countdown__hours">
@@ -92,7 +92,7 @@ const CardHeader = ({ endDate }) => {
               minimumIntegerDigits: 2,
             })}
           </div>
-          <span class>Hours</span>
+          <span>Hours</span>
         </div>
 
         <div className="countdown__minutes">
@@ -101,7 +101,7 @@ const CardHeader = ({ endDate }) => {
               minimumIntegerDigits: 2,
             })}
           </div>
-          <span class>Minutes</span>
+          <span>Minutes</span>
         </div>
 
         <div className="countdown__seconds">
@@ -110,7 +110,7 @@ const CardHeader = ({ endDate }) => {
               minimumIntegerDigits: 2,
             })}
           </div>
-          <span class>Seconds</span>
+          <span>Seconds</span>
         </div>
       </div>
     </div>

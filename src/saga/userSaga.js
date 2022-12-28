@@ -1,7 +1,7 @@
 import { call, put, select, takeLatest } from "redux-saga/effects";
 import * as api from "../api/userApi";
 import {
-  selectConnectedUser,
+  selectCurrentWallet,
   selectToken,
   setCurrentUser,
   setLoading,
@@ -10,7 +10,6 @@ import {
 import { LOAD_USER, UPDATE_PROFILE } from "./actions";
 import { signIn, signUp } from "../interactors/authInteractor";
 import { toast } from "react-toastify";
-import { getCurrentWalletConnected } from "../utils/blockchainInteractor";
 
 // Worker saga will be fired on USER_FETCH_REQUESTED actions
 function* getConnectedUser(action) {
@@ -70,7 +69,9 @@ function* updateUserProfile(action) {
 }
 
 export function* signWallet() {
-  const connectedWallet = getCurrentWalletConnected();
+  const connectedWallet = yield select(selectCurrentWallet);
+
+  console.log("connectedWallet ======", connectedWallet)
   const { token } = yield call(signIn, connectedWallet);
   console.log("######", token);
   yield put(setToken(token));

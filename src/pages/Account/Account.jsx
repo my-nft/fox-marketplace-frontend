@@ -16,8 +16,7 @@ import {
   LOAD_USER,
 } from "../../saga/actions";
 import Pagination from "../../components/pagination/pagination";
-import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
-import { selectConnectedUser } from "../../redux/userReducer";
+import { selectConnectedUser, selectCurrentWallet } from "../../redux/userReducer";
 
 const AccountPage = () => {
   const [visible, setVisible] = useState(false);
@@ -57,7 +56,7 @@ const AccountPage = () => {
   });
 
   const dispatch = useDispatch();
-  const connectedWallet = getCurrentWalletConnected();
+  const connectedWallet = useSelector(selectCurrentWallet);
   const user = useSelector(selectConnectedUser);
   const isLoading = useSelector(selectIsLoadingAccount);
 
@@ -125,10 +124,12 @@ const AccountPage = () => {
   }, [activeSection]);
 
   useEffect(() => {
-    dispatch({
-      type: LOAD_USER,
-      payload: connectedWallet,
-    });
+    if(connectedWallet) {
+      dispatch({
+        type: LOAD_USER,
+        payload: connectedWallet,
+      });
+    }
   }, []);
 
   return (

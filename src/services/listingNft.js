@@ -1,3 +1,4 @@
+import Web3 from "web3";
 import {
   AUTIONContractAddress,
   ERC20ContractAddress,
@@ -10,22 +11,18 @@ import {
   loaderContract,
   loadOfferSystemContract,
   OfferSystemAddress,
-  web3,
 } from "../utils/blockchainInteractor";
 
 import { sameAddress } from "../utils/walletUtils";
 
-const auctionContract = loadAuctionContract(false);
 const auctionContractReadOnly = loadAuctionContract(true);
 
-const erc20Contract = loadERC20Contract();
-const fixedPriceContract = loadAFixedPriceContract(false);
 const fixedPriceContractReadOnly = loadAFixedPriceContract(true);
-const offerSystemContract = loadOfferSystemContract();
+const offerSystemContractReadOnly = loadOfferSystemContract(true);
 
 export const nftLoader = async (collectionAddress) => {
   const contract = loaderContract();
-  const connectWallet = getCurrentWalletConnected();
+  const connectWallet = await getCurrentWalletConnected();
 
   const tx = await contract.methods
     .getTokens(connectWallet, 1, 100, collectionAddress)
@@ -45,7 +42,7 @@ export const getPriceByListing = async (listingId) => {
 };
 
 export const getBestOffer = async (collectionAddress, tokenID) => {
-  const response = await offerSystemContract.methods
+  const response = await offerSystemContractReadOnly.methods
     .activeBuyOffers(collectionAddress, tokenID)
     .call();
   return Number(response.price) / 10 ** 18;
@@ -78,9 +75,11 @@ export const createAuction = async (
   initialPrice,
   endAuction
 ) => {
-  const connectWallet = getCurrentWalletConnected();
+  const connectWallet = await getCurrentWalletConnected();
   const price = bigNumberPricing(initialPrice);
   const erc721Contract = loadERC721Contract(collectionAddress, false);
+  const auctionContract = loadAuctionContract();
+
 
   const isApproved = await erc721Contract.methods.getApproved(tokenID).call();
 
@@ -140,8 +139,11 @@ export const getAuctionInfos = async (auctionId) => {
 };
 
 export const placeBid = async (auctionId, bidValue) => {
-  const connectWallet = getCurrentWalletConnected();
+  const erc20Contract = loadERC20Contract();
+  const connectWallet = await getCurrentWalletConnected();
   const bidValueTrans = bigNumberPricing(bidValue);
+  const auctionContract = loadAuctionContract();
+
 
   const gasLimitApprouve = await erc20Contract.methods
     .approve(AUTIONContractAddress, bidValueTrans)
@@ -173,7 +175,8 @@ export const placeBid = async (auctionId, bidValue) => {
 };
 
 export const refundNft = async (auctionId) => {
-  const connectWallet = getCurrentWalletConnected();
+  const auctionContract = loadAuctionContract();
+  const connectWallet = await getCurrentWalletConnected();
   const gasLimit = await auctionContract.methods.refund(auctionId).estimateGas({
     from: connectWallet,
     to: AUTIONContractAddress,
@@ -190,7 +193,9 @@ export const claimNFT = async ({
   royaltyAddress,
   royaltyPercent,
 }) => {
-  const connectWallet = getCurrentWalletConnected();
+  const connectWallet = await getCurrentWalletConnected();
+  const auctionContract = loadAuctionContract();
+
   const gasLimit = await auctionContract.methods
     .claimNFT(auctionId, royaltyAddress, royaltyPercent)
     .estimateGas({
@@ -211,7 +216,8 @@ export const claimToken = async ({
   royaltyAddress,
   royaltyPercent,
 }) => {
-  const connectWallet = getCurrentWalletConnected();
+  const auctionContract = loadAuctionContract();
+  const connectWallet = await getCurrentWalletConnected();
   const gasLimit = await auctionContract.methods
     .claimToken(auctionId, royaltyAddress, royaltyPercent)
     .estimateGas({
@@ -228,9 +234,10 @@ export const claimToken = async ({
 };
 
 export const createListing = async (collectionAddress, tokenID, priceInput) => {
-  const connectWallet = getCurrentWalletConnected();
+  const connectWallet = await getCurrentWalletConnected();
   const price = bigNumberPricing(priceInput);
   const collectionContract = loadERC721Contract(collectionAddress, false);
+  const fixedPriceContract = loadAFixedPriceContract();
 
   // verify if is approved
   const isApproved = await collectionContract.methods.isApprovedForAll(
@@ -279,8 +286,11 @@ export const buyItem = async ({
   royaltyAddress,
   royaltyPercent,
 }) => {
-  const connectWallet = getCurrentWalletConnected();
+  const erc20Contract = loadERC20Contract();
+  const connectWallet = await getCurrentWalletConnected();
   const listingPrice = bigNumberPricing(price);
+  const fixedPriceContract = loadAFixedPriceContract();
+
 
   const allowance = await erc20Contract.methods
     .allowance(connectWallet, FIXEDContractAddress)
@@ -321,7 +331,8 @@ export const buyItem = async ({
 
 export const deListItem = async (listingId) => {
   
-    const connectWallet = getCurrentWalletConnected();
+    const connectWallet = await getCurrentWalletConnected();
+    const fixedPriceContract = loadAFixedPriceContract();
 
     const gasLimitBuy = await fixedPriceContract.methods
       .deactivateListing(listingId)
@@ -338,7 +349,9 @@ export const deListItem = async (listingId) => {
 };
 
 export const makeOfferToOwner = async (collectionAddress, tokenID, price) => {
-  const connectWallet = getCurrentWalletConnected();
+  const connectWallet = await getCurrentWalletConnected();
+  const erc20Contract = loadERC20Contract();
+  const offerSystemContract = loadOfferSystemContract();
 
   const offerPrice = bigNumberPricing(price);
 
@@ -377,8 +390,8 @@ export const acceptOffer = async (
   royaltyAddress,
   royaltyPercent
 ) => {
-  const connectWallet = getCurrentWalletConnected();
-
+  const connectWallet = await getCurrentWalletConnected();
+  const offerSystemContract = loadOfferSystemContract();
   const collectionContract = loadERC721Contract(collectionAddress, false);
 
   const isApproved = await collectionContract.methods
@@ -419,6 +432,9 @@ export const acceptOffer = async (
 };
 
 const bigNumberPricing = (price) => {
+
+  const web3 = new Web3(Web3.givenProvider)
+
   let listingPrice = web3.utils.toWei(price.toString(), "ether");
 
   listingPrice = web3.utils.toBN(listingPrice);

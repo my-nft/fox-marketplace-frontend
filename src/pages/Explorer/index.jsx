@@ -14,6 +14,7 @@ import MostPopular from "./MostPopular";
 import MostPopularCollection from "./MostPopularCollection";
 import AccordionPropertiesFilter from "./PropertiesFilter";
 import { availableProperties } from "./properties";
+import { scrollTop } from "../../components/scrollToTop";
 
 const INIT_PAGINATION = {
   numberElements: 20,
@@ -100,6 +101,7 @@ const Explorer = () => {
       ...pagination,
       page,
     });
+    scrollTop();
   };
 
   useEffect(() => {

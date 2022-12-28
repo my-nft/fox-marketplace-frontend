@@ -11,7 +11,7 @@ import FACTORY from './contracts/FACTORY.json';
 
 let infura = "https://testnet-fx-json-web3.functionx.io:8545"
 let web3Infura = new Web3(infura);
-
+export const web3 = new Web3(Web3.givenProvider);
 
 
 export const marketplaceContractAddress = "";
@@ -35,59 +35,79 @@ export const factoryCollectionAddress = "0xcc63AccC3d63e8e2f0075cfcd994197f79232
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
-export const ethereum = window.ethereum;
-export const web3 = new Web3(ethereum);
+
+
 
 export function loadMarketplaceContract(readOnly = false) {
+  const web3 = new Web3(Web3.givenProvider)
+
   const web3Instance = readOnly ? web3Infura : web3;
   return  new web3Instance.eth.Contract(MarketPlace, marketplaceContractAddress);
 }
 
 export function loadERC721Contract(collectionAddress, readOnly = false) {
+  const web3 = new Web3(Web3.givenProvider)
+
   const web3Instance = readOnly ? web3Infura : web3;
   return new web3Instance.eth.Contract(ERC721, collectionAddress);
 }
 export function loadERC20Contract() {
+  const web3 = new Web3(Web3.givenProvider)
   return new web3.eth.Contract(ERC20, ERC20ContractAddress);
 }
 
 export function loadCollectionContract(collectionAddress) {
+  const web3 = new Web3(Web3.givenProvider)
+
   return new web3.eth.Contract(ERC721ContractAddress, collectionAddress);
 }
 
 export function loadAuctionContract(readOnly = false) {
+  const web3 = new Web3(Web3.givenProvider)
+
   const web3Instance = readOnly ? web3Infura : web3;
   return new web3Instance.eth.Contract(AUCTION, AUTIONContractAddress);
 }
 
 
 export function loadAFixedPriceContract(readOnly = false) {
+  const web3 = new Web3(Web3.givenProvider)
+
   const web3Instance = readOnly ? web3Infura : web3;
   return new web3Instance.eth.Contract(FIXED_PRICE, FIXEDContractAddress);
 }
 
 export function loaderContract() {
+  const web3 = new Web3(Web3.givenProvider)
+
   return new web3.eth.Contract(LOADER, LoaderContractAddress);
 }
 
-export function loadOfferSystemContract() {
-  return new web3.eth.Contract(OFFER_SYSTEM, OfferSystemAddress);
+export function loadOfferSystemContract(readOnly = false) {
+  const web3 = new Web3(Web3.givenProvider)
+
+  const web3Instance = readOnly ? web3Infura : web3;
+  return new web3Instance.eth.Contract(OFFER_SYSTEM, OfferSystemAddress);
 }
 
 export function loadFoxMasterCollectionContract(collectionAddress) {
+  const web3 = new Web3(Web3.givenProvider)
+
   return new web3.eth.Contract(FOX_MASTER, collectionAddress);
 }
 
 export function loadFactoryContract() {
+  const web3 = new Web3(Web3.givenProvider)
+
   return new web3.eth.Contract(FACTORY, factoryCollectionAddress)
   
 }
 
-export function connectWallet() {
-  ethereum.request({
-    method: "eth_requestAccounts",
-  });
+
+export const getCurrentWalletConnected = async () => {
+  console.log("HEEERE");
+  const webprovider = new Web3(Web3.givenProvider);
+  const accounts = await webprovider.eth.getAccounts();
+  return accounts[0];
 }
-export function getCurrentWalletConnected() {
-  return window.ethereum ? window.ethereum.selectedAddress : "";
-}
+

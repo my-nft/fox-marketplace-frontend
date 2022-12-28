@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { LOAD_NFT_DETAIL } from "../../saga/actions";
+import { selectCurrentWallet } from "../../redux/userReducer";
 import { getAuctionInfos, getPriceByListing } from "../../services/listingNft";
-import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 import { sameAddress } from "../../utils/walletUtils";
 
 const MostPopularItem = ({ viewType, item }) => {
+
+  const walletAddress = useSelector(selectCurrentWallet);
+
+
   let styleList = {};
   let styleWrappedText = {};
 
@@ -42,7 +45,6 @@ const MostPopularItem = ({ viewType, item }) => {
   const navigate = useNavigate();
   const [price, setPrice] = useState(0);
 
-  const walletAddress = getCurrentWalletConnected();
 
   const init = async () => {
     const infos = await getAuctionInfos(item.auctionId);

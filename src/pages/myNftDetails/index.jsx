@@ -19,23 +19,22 @@ import {
   PLACE_BID,
   REFUND_NFT,
 } from "../../saga/blockchain.js/blockChainActions";
-import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 import { optimizeWalletAddress, sameAddress } from "../../utils/walletUtils";
 import ListedAuctionNft from "./listedAuctionNft";
 import ListedFixedNft from "./listedFixedNft";
 import NonListedMyNft from "./nonListedMyNft";
 import NonListedNft from "./nonListedNft";
+import { selectCurrentWallet } from "../../redux/userReducer";
 
 const MyNftDetails = () => {
   const { collectionAddress, tokenID } = useParams();
-  const connectedWallet = getCurrentWalletConnected();
+  
+  const connectedWallet = useSelector(selectCurrentWallet);
   const isLoading = useSelector(selectIsLoading);
   const [nftDetails, setNftDetails] = useState();
   const [collectionDetails, setCollectionDetails] = useState();
   const dispatch = useDispatch();
-
-  console.log(nftDetails);
 
   const loadNft = async () => {
     try {

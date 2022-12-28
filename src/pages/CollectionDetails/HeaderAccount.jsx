@@ -2,13 +2,16 @@ import { Link } from "react-router-dom";
 import { optimizeWalletAddress, sameAddress } from "../../utils/walletUtils";
 
 import { ReactComponent as SettingsIcon } from "../../assets/icons/settings.svg";
-import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 
 import collectionBannerPlaceholder from "../../assets/images/Popluar.jpg";
 import collectionImagePlaceholder from "../../assets/images/nft_test.jpg";
+import { selectCurrentWallet } from "../../redux/userReducer";
+import { useSelector } from "react-redux";
 
 const HeaderAccount = ({ collectionData }) => {
   const { image, banner } = collectionData;
+  const currentWallet = useSelector(selectCurrentWallet);
+
 
   const blocExplorerUri = process.env.REACT_APP_BLOCEXPLORER;
 
@@ -117,10 +120,13 @@ const HeaderAccount = ({ collectionData }) => {
         <div className="row align-items-start">
           {sameAddress(
             collectionData.ownerAddress,
-            getCurrentWalletConnected()
+            currentWallet
           ) ? (
             <>
-              <Link to={`/single-nft?collectionAddress=${collectionData.collectionAddress}`} className="addNFTLink">
+              <Link
+                to={`/single-nft?collectionAddress=${collectionData.collectionAddress}`}
+                className="addNFTLink"
+              >
                 Add NFT to collection
               </Link>
               <Link

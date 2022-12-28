@@ -42,8 +42,7 @@ const ListNfts = ({
             <AccordionPropertiesFilter
               filters={filters}
               changeFilterValue={changeFilterValue}
-              propertiesFilter={filters.properties}
-              availableProperties={["Image", "Music", "Art"]}
+              properties={filters.properties}
             />
           </div>
         </div>
