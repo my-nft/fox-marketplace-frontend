@@ -118,9 +118,12 @@ const HeaderAccount = ({ collectionData }) => {
           {sameAddress(
             collectionData.ownerAddress,
             getCurrentWalletConnected()
-          ) ? (
+          ) || true ? (
             <>
-              <Link to={`/single-nft?collectionAddress=${collectionData.collectionAddress}`} className="addNFTLink">
+              <Link
+                to={`/single-nft?collectionAddress=${collectionData.collectionAddress}`}
+                className="addNFTLink"
+              >
                 Add NFT to collection
               </Link>
               <Link

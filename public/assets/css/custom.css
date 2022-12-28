@@ -1679,6 +1679,10 @@ img.withGlow.active {
   display: none;
 }
 
+#createCollection {
+  position: relative;
+}
+
 #createCollection input.form-control,
 #createCollection textarea,
 #createCollection select {
@@ -3284,6 +3288,7 @@ input:read-only {
   max-width: 1140px;
   width: 100%;
   margin: 0 auto 96px;
+  position: relative;
 }
 
 .collectionSettingsTitle {
@@ -3831,4 +3836,39 @@ ul#buttonIcon {
 
 .pageStatistics:hover .statsText * {
   opacity: 1;
+}
+
+.returnLink {
+  position: absolute;
+  top: 20px;
+  left: 20%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.3);
+  transition: 500ms ease-in-out;
+}
+
+.returnLink:hover {
+  color: #f58103;
+}
+
+.returnLink svg {
+  width: 20px;
+  height: 20px;
+  opacity: 0.3;
+  transition: 500ms ease-in-out;
+}
+
+.returnLink svg path {
+  fill: #fff;
+  transition: 500ms ease-in-out;
+}
+
+.returnLink:hover svg {
+  opacity: 1;
+}
+
+.returnLink:hover svg path {
+  fill: #f58103;
 }
