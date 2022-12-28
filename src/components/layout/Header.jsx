@@ -50,8 +50,6 @@ const Header = () => {
     // connect automatically and without a popup if user is already connected
     console.log("BEFORE");
     if (web3Modal && web3Modal.cachedProvider) {
-      console.log("AFTER");
-
       reloadWallet();
     }
   }, [web3Modal]);
@@ -84,11 +82,13 @@ const Header = () => {
   };
 
   async function connectWallet() {
-    console.log("CONNECT_WALLET");
-    const provider = await web3Modal.connect();
-    addListeners(provider);
-    const ethersProvider = new providers.Web3Provider(provider);
-    dispatch(setCurrentWallet(await ethersProvider.getSigner().getAddress()));
+    if(!connectedWallet) {
+      console.log("CONNECT_WALLET");
+      const provider = await web3Modal.connect();
+      addListeners(provider);
+      const ethersProvider = new providers.Web3Provider(provider);
+      dispatch(setCurrentWallet(await ethersProvider.getSigner().getAddress()));
+    }
   }
 
   const dispatch = useDispatch();
@@ -102,6 +102,11 @@ const Header = () => {
 
   const cleanSession = async () => {
     await web3Modal.clearCachedProvider();
+
+    if (web3 && web3.currentProvider && web3.currentProvider.close) {
+      await web3.currentProvider.close();
+    }
+
     dispatch({ type: "DESTROY_SESSION" });
   };
 
