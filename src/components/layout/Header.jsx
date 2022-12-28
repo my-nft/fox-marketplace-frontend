@@ -9,13 +9,10 @@ import ScrollToTop from "../scrollToTop";
 import useOutsideClick from "./../../utils/useOutsideClick";
 import SearchBar from "./../searchBar/searchBar";
 
-
 import { providers } from "ethers";
-import Web3Modal from 'web3modal'
-import WalletConnectProvider from '@walletconnect/web3-provider'
+import Web3Modal from "web3modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
 import { selectCurrentWallet, setCurrentWallet } from "../../redux/userReducer";
-import Web3 from "web3";
-
 
 const Header = () => {
   const clickRef = useOutsideClick(() => {
@@ -23,8 +20,12 @@ const Header = () => {
   });
 
   const [web3Modal, setWeb3Modal] = useState(null);
+  const [connectedWallet, setConnectedWallet] = useState();
   const userAddress = useSelector(selectCurrentWallet);
 
+  useEffect(() => {
+    setConnectedWallet(userAddress);
+  }, [userAddress]);
 
   useEffect(() => {
     // initiate web3modal
@@ -32,8 +33,8 @@ const Header = () => {
       walletconnect: {
         package: WalletConnectProvider,
         options: {
-          infuraId: '9c7e70b4bf234955945ff87b8149926e',
-        }
+          infuraId: "9c7e70b4bf234955945ff87b8149926e",
+        },
       },
     };
 
@@ -42,47 +43,55 @@ const Header = () => {
       providerOptions,
     });
 
-    setWeb3Modal(newWeb3Modal)
+    setWeb3Modal(newWeb3Modal);
   }, []);
-
 
   useEffect(() => {
     // connect automatically and without a popup if user is already connected
-    if(web3Modal && web3Modal.cachedProvider){
-      reloadWallet()
+    console.log("BEFORE");
+    if (web3Modal && web3Modal.cachedProvider) {
+      reloadWallet();
     }
   }, [web3Modal]);
 
   const reloadWallet = async () => {
     await connectWallet();
-  }
+  };
 
   const addListeners = async (web3ModalProvider) => {
-
+    console.log(web3ModalProvider);
     web3ModalProvider.on("accountsChanged", (accounts) => {
+      console.log("accountsChanged");
       cleanSession();
     });
-    
+
     // Subscribe to chainId change
     web3ModalProvider.on("chainChanged", (chainId) => {
+      console.log("chainChanged");
+
       if (parseInt(chainId, 16) !== 90001) {
         alert("Not connected to the chainId");
         cleanSession();
       }
     });
-  }
+
+    web3ModalProvider.on("disconnect", () => {
+      console.log("disconnect");
+      cleanSession();
+    });
+  };
 
   async function connectWallet() {
-    console.log("##########connecting wallet#################");
-    await web3Modal.clearCachedProvider();
-    const provider = await web3Modal.connect();
-    addListeners(provider);
-    const ethersProvider = new providers.Web3Provider(provider);
-    dispatch(setCurrentWallet(await ethersProvider.getSigner().getAddress()));
+    if(!connectedWallet) {
+      console.log("CONNECT_WALLET");
+      const provider = await web3Modal.connect();
+      addListeners(provider);
+      const ethersProvider = new providers.Web3Provider(provider);
+      dispatch(setCurrentWallet(await ethersProvider.getSigner().getAddress()));
+    }
   }
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [balance, setBalance] = useState({
     fx: 0,
     fxg: 0,
@@ -91,17 +100,22 @@ const Header = () => {
     searchPrompt: "",
   });
 
-  const cleanSession = () => {
+  const cleanSession = async () => {
+    await web3Modal.clearCachedProvider();
+
+    if (web3 && web3.currentProvider && web3.currentProvider.close) {
+      await web3.currentProvider.close();
+    }
+
     dispatch({ type: "DESTROY_SESSION" });
   };
 
-
   const initWalletData = async () => {
-    if (userAddress && web3) {
+    if (connectedWallet && web3) {
       const fxg = await loadERC20Contract()
-        .methods.balanceOf(userAddress)
+        .methods.balanceOf(connectedWallet)
         .call();
-      web3.eth.getBalance(userAddress, (err, wei) => {
+      web3.eth.getBalance(connectedWallet, (err, wei) => {
         if (!err) {
           const walletBalance = Number(
             web3.utils.fromWei(wei, "ether")
@@ -117,17 +131,14 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if(userAddress) {
+    if (connectedWallet) {
       initWalletData();
     }
-  }, [userAddress])
-
-
+  }, [connectedWallet]);
 
   return (
     <>
       <ScrollToTop />
-
       <header className="container-fluid">
         <nav className="navbar navbar-expand-xl" ref={clickRef}>
           <Link className="navbar-brand" to="/">
@@ -154,7 +165,7 @@ const Header = () => {
           </button>
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className={`navbar-nav ${userAddress ? "" : "mr-3"}`}>
+            <ul className={`navbar-nav ${connectedWallet ? "" : "mr-3"}`}>
               <li className="nav-item active">
                 <Link className="nav-link" to="/explorer">
                   Explorer <span className="sr-only">(current)</span>
@@ -167,7 +178,7 @@ const Header = () => {
               </li>
             </ul>
 
-            {userAddress ? (
+            {connectedWallet ? (
               <ul id="buttonIcon">
                 <li className="nav-item">
                   <Link className="nav-link" to="/account">
@@ -202,8 +213,8 @@ const Header = () => {
             ) : null}
 
             <button id="signUpButton" onClick={connectWallet}>
-              {userAddress
-                ? optimizeWalletAddress(userAddress)
+              {connectedWallet
+                ? optimizeWalletAddress(connectedWallet)
                 : "Connect Wallect"}{" "}
             </button>
           </div>

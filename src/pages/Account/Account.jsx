@@ -124,10 +124,12 @@ const AccountPage = () => {
   }, [activeSection]);
 
   useEffect(() => {
-    dispatch({
-      type: LOAD_USER,
-      payload: connectedWallet,
-    });
+    if(connectedWallet) {
+      dispatch({
+        type: LOAD_USER,
+        payload: connectedWallet,
+      });
+    }
   }, []);
 
   return (
