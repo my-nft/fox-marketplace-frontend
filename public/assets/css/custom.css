@@ -925,6 +925,7 @@ footer a:hover {
 
 .wrapText label {
   display: block;
+  margin-bottom: 0.3rem;
 }
 
 .wrapText span {
@@ -3624,7 +3625,7 @@ ul#buttonIcon {
 }
 
 .nft .wrapText {
-  padding-top: 16px;
+  padding: 8px;
 }
 
 .nft .wrappedAllText {
