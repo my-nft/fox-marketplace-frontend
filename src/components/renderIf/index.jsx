@@ -1,15 +1,11 @@
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor"
-import { useAccount } from 'wagmi'
 import { useEffect, useState } from "react"
 
 export const RenderIfOwner = async ({addressOwner, children}) => {
-
     const [connectedWallet, setConnectedUser] = useState();
-
     const init = async () => {
         setConnectedUser(await getCurrentWalletConnected())
     }
-
     useEffect(() => {
         init();
     }, [])
@@ -23,15 +19,12 @@ export const RenderIfOwner = async ({addressOwner, children}) => {
 
 export const RenderIfNotOwner = async ({addressOwner, children}) => {
     const [connectedWallet, setConnectedUser] = useState();
-
     const init = async () => {
         setConnectedUser(await getCurrentWalletConnected())
     }
-
     useEffect(() => {
         init();
     }, [])
-    
     return (
         connectedWallet !== addressOwner ? {children} : null
     )

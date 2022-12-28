@@ -11,8 +11,8 @@ const ipfsUri = process.env.REACT_APP_IPFS_URI;
 
 export const mintCollection = async ({ name, symbol }) => {
   const connectedWallet = await getCurrentWalletConnected();
-  const factoryContract = loadFactoryContract();
-  const erc20Contract = loadERC20Contract();
+  const factoryContract = await loadFactoryContract();
+  const erc20Contract = await loadERC20Contract();
 
   console.log("######################", connectedWallet)
 

@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { authProviderInstance, loadERC20Contract, web3 } from "../../utils/blockchainInteractor";
+import {
+  authProviderInstance,
+  loadERC20Contract,
+  web3,
+} from "../../utils/blockchainInteractor";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 import ScrollToTop from "../scrollToTop";
 import useOutsideClick from "./../../utils/useOutsideClick";
@@ -11,9 +15,6 @@ import SearchBar from "./../searchBar/searchBar";
 
 import { selectCurrentWallet } from "../../redux/userReducer";
 import { LOAD_USER } from "../../saga/actions";
-
-
-
 
 const Header = () => {
   const clickRef = useOutsideClick(() => {
@@ -27,22 +28,21 @@ const Header = () => {
     setConnectedWallet(userAddress);
   }, [userAddress]);
 
-
   const dispatch = useDispatch();
 
   const connect = async () => {
     const connectedWallet = await authProviderInstance.login();
     authProviderInstance.addListners({
-      clearSession: () => dispatch({
-        type: "DESTROY_SESSION"
-      }),
-
+      clearSession: () =>
+        dispatch({
+          type: "DESTROY_SESSION",
+        }),
     });
     dispatch({
-      type : LOAD_USER,
-      payload: connectedWallet
-    })
-  }
+      type: LOAD_USER,
+      payload: connectedWallet,
+    });
+  };
 
   const [balance, setBalance] = useState({
     fx: 0,
@@ -56,8 +56,7 @@ const Header = () => {
     const web3 = await authProviderInstance.getInjectedWeb3();
     if (connectedWallet && web3) {
       const contract = await loadERC20Contract();
-      const fxg = await contract.methods.balanceOf(connectedWallet)
-        .call();
+      const fxg = await contract.methods.balanceOf(connectedWallet).call();
       web3.eth.getBalance(connectedWallet, (err, wei) => {
         if (!err) {
           const walletBalance = Number(

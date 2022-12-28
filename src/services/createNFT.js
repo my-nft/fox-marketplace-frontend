@@ -14,15 +14,13 @@ export const mintNft = async ({
   image,
   token,
 }) => {
-  const erc20Contract = loadERC20Contract();
+  const erc20Contract = await loadERC20Contract();
 
   if(!collectionAddress) {
     collectionAddress = foxMasterCollectionAddress
   }
   
-  console.log("=====> input collection address ", collectionAddress);
-
-  const foxMastercontract = loadFoxMasterCollectionContract(collectionAddress);
+  const foxMastercontract = await loadFoxMasterCollectionContract(collectionAddress);
 
   const connectedWallet = await getCurrentWalletConnected();
 
