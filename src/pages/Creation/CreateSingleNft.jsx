@@ -288,10 +288,6 @@ const CreateSingleNft = () => {
                   </div>
                 </div> */}
 
-                  */
-                }
-                
-
                 <button type="submit" className="btn">
                   Create NFT
                 </button>

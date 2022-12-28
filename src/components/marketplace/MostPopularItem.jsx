@@ -182,14 +182,14 @@ const MostPopularItem = ({ viewType, item }) => {
               <p>
                 <label>Price</label>
                 <span className="orange">
-                  <b>FX</b> {price}
+                  <b>FXG</b> {price}
                 </span>
               </p>
             ) : (
               <p>
                 <label>Price</label>
                 <span className="orange">
-                  <b>FX</b> -
+                  <b>FXG</b> -
                 </span>
               </p>
             )}
