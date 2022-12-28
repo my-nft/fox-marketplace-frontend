@@ -8,6 +8,7 @@ const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider,
     options: {
+      rpc: { 90001: "https://testnet-fx-json-web3.functionx.io:8545" },
       infuraId: "9c7e70b4bf234955945ff87b8149926e",
     },
   },
@@ -18,7 +19,6 @@ const web3Modal = new Web3Modal({
   providerOptions,
 });
 
-
 export const authProvider = () => {
   return {
     login: async () => {
@@ -26,7 +26,7 @@ export const authProvider = () => {
       const web3 = new Web3(provider);
       const accounts = await web3.eth.getAccounts();
       return Promise.resolve({
-        address: accounts[0]
+        address: accounts[0],
       });
     },
 
@@ -46,17 +46,20 @@ export const authProvider = () => {
       return new Web3(provider);
     },
 
-    addListners : ({clearSession = () => {}}) => {
+    addListners: ({ clearSession = () => {} }) => {
       provider.on("accountsChanged", (accounts) => {
+        console.log("########accountsChanged##########");
         clearSession();
-        window.location.reload()
+        window.location.reload();
       });
-      
+
       // Subscribe to chainId change
       provider.on("chainChanged", (chainId) => {
+        console.log("########chainChanged##########");
+
         clearSession();
-        window.location.reload()
+        window.location.reload();
       });
-    }
+    },
   };
 };

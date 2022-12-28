@@ -19,6 +19,8 @@ export const mintNft = async ({
   if(!collectionAddress) {
     collectionAddress = foxMasterCollectionAddress
   }
+
+  console.log("#####################");
   
   const foxMastercontract = await loadFoxMasterCollectionContract(collectionAddress);
 
