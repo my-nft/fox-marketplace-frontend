@@ -50,15 +50,17 @@ export const authProvider = () => {
       provider.on("accountsChanged", (accounts) => {
         console.log("########accountsChanged##########");
         clearSession();
-        window.location.reload();
       });
 
       // Subscribe to chainId change
       provider.on("chainChanged", (chainId) => {
         console.log("########chainChanged##########");
-
         clearSession();
-        window.location.reload();
+      });
+
+      provider.on("disconnect", (chainId) => {
+        console.log("########disconnect##########");
+        clearSession();
       });
     },
   };

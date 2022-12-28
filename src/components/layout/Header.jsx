@@ -23,12 +23,11 @@ const Header = () => {
 
   const [connectedWallet, setConnectedWallet] = useState();
   const userAddress = useSelector(selectCurrentWallet);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setConnectedWallet(userAddress);
   }, [userAddress]);
-
-  const dispatch = useDispatch();
 
   const connect = async () => {
     const connectedWallet = await authProviderInstance.login();
