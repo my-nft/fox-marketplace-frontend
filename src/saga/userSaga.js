@@ -4,6 +4,7 @@ import {
   selectCurrentWallet,
   selectToken,
   setCurrentUser,
+  setCurrentWallet,
   setLoading,
   setToken,
 } from "../redux/userReducer";
@@ -13,11 +14,12 @@ import { toast } from "react-toastify";
 
 // Worker saga will be fired on USER_FETCH_REQUESTED actions
 function* getConnectedUser(action) {
-  const address = action.payload;
+  const {address} = action.payload;
   try {
     yield put(setLoading(true));
     const response = yield call(api.getUserByAddress, address);
     yield put(setCurrentUser(response.data));
+    yield put(setCurrentWallet(address));
   } catch (error) {
     console.log("error ", error.response.status);
     // userNotFound => Nothing to do here
