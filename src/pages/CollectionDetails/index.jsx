@@ -59,7 +59,9 @@ const CollectionDetails = () => {
   };
 
   const loadNFTs = async () => {
-    const propertiesFiltered = [];
+    if(collectionDetails) {
+
+      const propertiesFiltered = [];
     filters.properties.map((category) => {
       category.properties.map((property) => {
         if (property.active) {
@@ -85,11 +87,13 @@ const CollectionDetails = () => {
 
     setNfts(nftsElements.data);
     setIsLoadingNfts(false);
+
+    }
   };
 
   useEffect(() => {
     loadNFTs();
-  }, [filters.properties]);
+  }, [collectionDetails]);
 
   const initLoadNfts = async () => {
     setIsLoadingNfts(true);

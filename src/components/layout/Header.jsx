@@ -14,7 +14,6 @@ import { providers } from "ethers";
 import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import { selectCurrentWallet, setCurrentWallet } from "../../redux/userReducer";
-import Web3 from "web3";
 
 
 const Header = () => {
@@ -38,7 +37,7 @@ const Header = () => {
     };
 
     const newWeb3Modal = new Web3Modal({
-      cacheProvider: false, // very important
+      cacheProvider: true, // very important
       providerOptions,
     });
 
@@ -73,16 +72,16 @@ const Header = () => {
   }
 
   async function connectWallet() {
-    console.log("##########connecting wallet#################");
-    await web3Modal.clearCachedProvider();
-    const provider = await web3Modal.connect();
-    addListeners(provider);
-    const ethersProvider = new providers.Web3Provider(provider);
-    dispatch(setCurrentWallet(await ethersProvider.getSigner().getAddress()));
+    console.log("CONNECT_WALLET")
+    if(!userAddress) {
+      const provider = await web3Modal.connect();
+      addListeners(provider);
+      const ethersProvider = new providers.Web3Provider(provider);
+      dispatch(setCurrentWallet(await ethersProvider.getSigner().getAddress()));
+    }
   }
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [balance, setBalance] = useState({
     fx: 0,
     fxg: 0,
@@ -91,8 +90,9 @@ const Header = () => {
     searchPrompt: "",
   });
 
-  const cleanSession = () => {
+  const cleanSession = async () => {
     dispatch({ type: "DESTROY_SESSION" });
+    await web3Modal.clearCachedProvider();
   };
 
 
@@ -119,6 +119,9 @@ const Header = () => {
   useEffect(() => {
     if(userAddress) {
       initWalletData();
+    }
+    if(!userAddress) {
+
     }
   }, [userAddress])
 

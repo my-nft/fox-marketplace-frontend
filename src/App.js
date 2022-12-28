@@ -25,8 +25,6 @@ import AccountPage from "./pages/Account/Account";
 import CollectionSettings from "./pages/collectionSettings/collectionSettings";
 import PageStatistics from "./components/Statistics";
 
-
-
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Header />}>
@@ -52,10 +50,10 @@ const router = createBrowserRouter(
       <Route
         path="/account"
         element={
-          <>
+          <AuthWrapper>
             <AccountPage />
             <Footer />
-          </>
+          </AuthWrapper>
         }
       />
       <Route
@@ -140,11 +138,6 @@ const router = createBrowserRouter(
     </Route>
   )
 );
-
-
-
-
-
 
 function App() {
   return (
