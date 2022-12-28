@@ -3,26 +3,86 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  connectWallet,
-  getCurrentWalletConnected,
-} from "../../interactors/blockchainInteractor";
-import { selectConnectedUser } from "../../redux/userReducer";
-import { LOAD_USER } from "../../saga/actions";
 import { loadERC20Contract, web3 } from "../../utils/blockchainInteractor";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 import ScrollToTop from "../scrollToTop";
 import useOutsideClick from "./../../utils/useOutsideClick";
 import SearchBar from "./../searchBar/searchBar";
 
+
+import { providers } from "ethers";
+import Web3Modal from 'web3modal'
+import WalletConnectProvider from '@walletconnect/web3-provider'
+import { selectCurrentWallet, setCurrentWallet } from "../../redux/userReducer";
+import Web3 from "web3";
+
+
 const Header = () => {
   const clickRef = useOutsideClick(() => {
     document.querySelector(".navbar-collapse").classList.remove("show");
   });
 
+  const [web3Modal, setWeb3Modal] = useState(null);
+  const userAddress = useSelector(selectCurrentWallet);
+
+
+  useEffect(() => {
+    // initiate web3modal
+    const providerOptions = {
+      walletconnect: {
+        package: WalletConnectProvider,
+        options: {
+          infuraId: '9c7e70b4bf234955945ff87b8149926e',
+        }
+      },
+    };
+
+    const newWeb3Modal = new Web3Modal({
+      cacheProvider: false, // very important
+      providerOptions,
+    });
+
+    setWeb3Modal(newWeb3Modal)
+  }, []);
+
+
+  useEffect(() => {
+    // connect automatically and without a popup if user is already connected
+    if(web3Modal && web3Modal.cachedProvider){
+      reloadWallet()
+    }
+  }, [web3Modal]);
+
+  const reloadWallet = async () => {
+    await connectWallet();
+  }
+
+  const addListeners = async (web3ModalProvider) => {
+
+    web3ModalProvider.on("accountsChanged", (accounts) => {
+      cleanSession();
+    });
+    
+    // Subscribe to chainId change
+    web3ModalProvider.on("chainChanged", (chainId) => {
+      if (parseInt(chainId, 16) !== 90001) {
+        alert("Not connected to the chainId");
+        cleanSession();
+      }
+    });
+  }
+
+  async function connectWallet() {
+    console.log("##########connecting wallet#################");
+    await web3Modal.clearCachedProvider();
+    const provider = await web3Modal.connect();
+    addListeners(provider);
+    const ethersProvider = new providers.Web3Provider(provider);
+    dispatch(setCurrentWallet(await ethersProvider.getSigner().getAddress()));
+  }
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [connectedWallet, setConnectedWallet] = useState();
   const [balance, setBalance] = useState({
     fx: 0,
     fxg: 0,
@@ -31,60 +91,17 @@ const Header = () => {
     searchPrompt: "",
   });
 
-  const handleSignIn = async () => {
-    await connectWallet();
-    setConnectedWallet(getCurrentWalletConnected());
-  };
-
-  useEffect(() => {
-    if (connectedWallet) {
-      dispatch({
-        type: LOAD_USER,
-        payload: connectedWallet,
-      });
-    } else {
-      connectWallet();
-      setConnectedWallet(getCurrentWalletConnected());
-    }
-  }, [connectedWallet]);
-
   const cleanSession = () => {
     dispatch({ type: "DESTROY_SESSION" });
-    navigate("/");
   };
 
-  const addWalletListener = () => {
-    window.ethereum.on("accountsChanged", async (accounts) => {
-      cleanSession();
-      handleSignIn();
-    });
-
-    window.ethereum.on("disconnect", async (accounts) => {
-      cleanSession();
-    });
-
-    window.ethereum.on("chainChanged", async (chainId) => {
-      if (parseInt(chainId, 16) !== 90001) {
-        alert("Not connected to the chainId");
-        cleanSession();
-      }
-    });
-  };
-
-  useEffect(() => {
-    // only if metamask is installed
-    if (window.ethereum) {
-      addWalletListener();
-      setConnectedWallet(getCurrentWalletConnected());
-    }
-  }, []);
 
   const initWalletData = async () => {
-    if (connectedWallet) {
+    if (userAddress && web3) {
       const fxg = await loadERC20Contract()
-        .methods.balanceOf(connectedWallet)
+        .methods.balanceOf(userAddress)
         .call();
-      web3.eth.getBalance(connectedWallet, (err, wei) => {
+      web3.eth.getBalance(userAddress, (err, wei) => {
         if (!err) {
           const walletBalance = Number(
             web3.utils.fromWei(wei, "ether")
@@ -100,12 +117,12 @@ const Header = () => {
   };
 
   useEffect(() => {
-    initWalletData();
-  }, [connectedWallet]);
+    if(userAddress) {
+      initWalletData();
+    }
+  }, [userAddress])
 
-  useEffect(() => {
-    handleSignIn();
-  }, [])
+
 
   return (
     <>
@@ -137,7 +154,7 @@ const Header = () => {
           </button>
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className={`navbar-nav ${connectedWallet ? "" : "mr-3"}`}>
+            <ul className={`navbar-nav ${userAddress ? "" : "mr-3"}`}>
               <li className="nav-item active">
                 <Link className="nav-link" to="/explorer">
                   Explorer <span className="sr-only">(current)</span>
@@ -150,7 +167,7 @@ const Header = () => {
               </li>
             </ul>
 
-            {connectedWallet ? (
+            {userAddress ? (
               <ul id="buttonIcon">
                 <li className="nav-item">
                   <Link className="nav-link" to="/account">
@@ -184,9 +201,9 @@ const Header = () => {
               </ul>
             ) : null}
 
-            <button id="signUpButton" onClick={handleSignIn}>
-              {connectedWallet
-                ? optimizeWalletAddress(connectedWallet)
+            <button id="signUpButton" onClick={connectWallet}>
+              {userAddress
+                ? optimizeWalletAddress(userAddress)
                 : "Connect Wallect"}{" "}
             </button>
           </div>

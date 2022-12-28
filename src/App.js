@@ -22,9 +22,9 @@ import AuthWrapper from "./components/authWrapper";
 import ProfileWrapper from "./pages/Profile/ProfileWrapper";
 import MyNftDetails from "./pages/myNftDetails";
 import AccountPage from "./pages/Account/Account";
-import ConfirmationPopup from "./components/confirmationPopup/confirmationPopup";
-import DatePicker from "./components/datePicker/datePicker";
 import CollectionSettings from "./pages/collectionSettings/collectionSettings";
+
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -139,6 +139,11 @@ const router = createBrowserRouter(
     </Route>
   )
 );
+
+
+
+
+
 
 function App() {
   return (

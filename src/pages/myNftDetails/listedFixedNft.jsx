@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import CardBody from "../../components/nft/CardBody";
 import CardNftWrapper from "../../components/nft/CardNftWrapper";
+import { selectCurrentWallet } from "../../redux/userReducer";
 import {
   getBestOffer,
   getPriceByListing,
 } from "../../services/listingNft";
-import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { sameAddress } from "../../utils/walletUtils";
 
 const ListedFixedNft = ({
@@ -16,7 +17,8 @@ const ListedFixedNft = ({
   onDelist,
   onAcceptOffer,
 }) => {
-  const currentWallet = getCurrentWalletConnected();
+  const currentWallet = useSelector(selectCurrentWallet);
+
   const [currentPrice, setCurrentPrice] = useState();
   const [currentOffer, setCurrentOffer] = useState(0);
   const [bestOffer, setBestOffer] = useState(undefined);

@@ -1,10 +1,10 @@
-import { getCurrentWalletConnected } from "./../../utils/blockchainInteractor";
-import { Buffer } from "buffer";
 
 import uploadIcon from "../../assets/images/create_icon_3.png";
 import { useEffect, useState } from "react";
 import Spinner from "../../components/Spinner";
 import { Form } from "formik";
+import { useSelector } from "react-redux";
+import { selectCurrentWallet } from "../../redux/userReducer";
 
 const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
   const [imageUrl, setImageUrl] = useState(null);
@@ -15,7 +15,7 @@ const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
     setBannerUrl(values.banner);
   }, [])
 
-  const walletAddress = getCurrentWalletConnected();
+  const walletAddress = useSelector(selectCurrentWallet);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];

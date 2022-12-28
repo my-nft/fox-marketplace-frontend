@@ -104,8 +104,8 @@ const CreateSingleNft = () => {
           artistName: "",
           upload: null,
           attributes: [],
-          levels: [],
-          stats: [],
+          //levels: [],
+          //stats: [],
         });
         setImageData(null);
         setImageUpload(null);
@@ -240,6 +240,9 @@ const CreateSingleNft = () => {
                     </div>
                   </div>
                 </div>
+                {
+                  /*
+
                 <h3 className="mt-12 mb-1">Levels</h3>
                 <p className="text-white mb-3 ">
                   Numerical traits that show as a progress bar
@@ -291,6 +294,10 @@ const CreateSingleNft = () => {
                     <p>+</p>
                   </div>
                 </div>
+
+                  */
+                }
+                
 
                 <button type="submit" className="btn">
                   Create NFT

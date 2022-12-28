@@ -1,7 +1,7 @@
 import { getCurrentWalletConnected } from "../../utils/blockchainInteractor"
 
-export const RenderIfOwner = ({addressOwner, children}) => {
-    const connectedWallet = getCurrentWalletConnected();
+export const RenderIfOwner = async ({addressOwner, children}) => {
+    const connectedWallet = await getCurrentWalletConnected();
     return (
         connectedWallet === addressOwner ? {children} : null
     )
@@ -9,8 +9,8 @@ export const RenderIfOwner = ({addressOwner, children}) => {
 
 
 
-export const RenderIfNotOwner = ({addressOwner, children}) => {
-    const connectedWallet = getCurrentWalletConnected();
+export const RenderIfNotOwner = async ({addressOwner, children}) => {
+    const connectedWallet = await getCurrentWalletConnected();
     return (
         connectedWallet !== addressOwner ? {children} : null
     )

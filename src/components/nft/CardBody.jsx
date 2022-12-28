@@ -1,9 +1,10 @@
-import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
+import { useSelector } from "react-redux";
+import { selectCurrentWallet } from "../../redux/userReducer";
 import { sameAddress } from "../../utils/walletUtils";
 
 const CardBody = ({ title, price, ownerAddress, priceDollar, bestOffer, onAcceptOffer = () => {}, children }) => {
   
-  const currentWallet = getCurrentWalletConnected();
+  const currentWallet = useSelector(selectCurrentWallet);
   
   return (
     <div className="card-body">
