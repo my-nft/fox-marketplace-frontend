@@ -23,6 +23,7 @@ const Header = () => {
 
   const [web3Modal, setWeb3Modal] = useState(null);
   const userAddress = useSelector(selectCurrentWallet);
+  
 
 
   useEffect(() => {
@@ -47,7 +48,10 @@ const Header = () => {
 
   useEffect(() => {
     // connect automatically and without a popup if user is already connected
+    console.log("BEFORE")
     if(web3Modal && web3Modal.cachedProvider){
+      console.log("AFTER")
+
       reloadWallet()
     }
   }, [web3Modal]);
@@ -99,8 +103,8 @@ const Header = () => {
   });
 
   const cleanSession = async () => {
-    dispatch({ type: "DESTROY_SESSION" });
     await web3Modal.clearCachedProvider();
+    dispatch({ type: "DESTROY_SESSION" });
   };
 
 
@@ -128,9 +132,6 @@ const Header = () => {
     if(userAddress) {
       initWalletData();
     }
-    if(!userAddress) {
-
-    }
   }, [userAddress])
 
 
@@ -138,7 +139,6 @@ const Header = () => {
   return (
     <>
       <ScrollToTop />
-
       <header className="container-fluid">
         <nav className="navbar navbar-expand-xl" ref={clickRef}>
           <Link className="navbar-brand" to="/">

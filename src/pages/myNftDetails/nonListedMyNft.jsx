@@ -45,7 +45,7 @@ const NonListedMyNft = ({
 
   useEffect(() => {
     init();
-  }, []);
+  }, [nftDetails]);
 
   useEffect(() => {
     if (type === AUCTION) {
