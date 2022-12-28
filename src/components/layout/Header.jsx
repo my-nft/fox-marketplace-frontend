@@ -37,7 +37,7 @@ const Header = () => {
     };
 
     const newWeb3Modal = new Web3Modal({
-      cacheProvider: true, // very important
+      cacheProvider: false, // very important
       providerOptions,
     });
 
@@ -59,15 +59,23 @@ const Header = () => {
   const addListeners = async (web3ModalProvider) => {
 
     web3ModalProvider.on("accountsChanged", (accounts) => {
+      console.log("accountsChanged")
       cleanSession();
     });
     
     // Subscribe to chainId change
     web3ModalProvider.on("chainChanged", (chainId) => {
+      console.log("chainChanged")
+
       if (parseInt(chainId, 16) !== 90001) {
         alert("Not connected to the chainId");
         cleanSession();
       }
+    });
+
+    web3ModalProvider.on("disconnect", () => {
+      console.log("disconnect");
+      cleanSession();
     });
   }
 
