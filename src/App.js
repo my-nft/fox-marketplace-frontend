@@ -23,6 +23,7 @@ import ProfileWrapper from "./pages/Profile/ProfileWrapper";
 import MyNftDetails from "./pages/myNftDetails";
 import AccountPage from "./pages/Account/Account";
 import CollectionSettings from "./pages/collectionSettings/collectionSettings";
+import PageStatistics from "./components/Statistics";
 
 
 
@@ -148,6 +149,7 @@ const router = createBrowserRouter(
 function App() {
   return (
     <Provider store={store}>
+      <PageStatistics />
       {/*
       <ConfirmationPopup
         title="Test"

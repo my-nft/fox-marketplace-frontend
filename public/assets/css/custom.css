@@ -1679,6 +1679,10 @@ img.withGlow.active {
   display: none;
 }
 
+#createCollection {
+  position: relative;
+}
+
 #createCollection input.form-control,
 #createCollection textarea,
 #createCollection select {
@@ -3284,6 +3288,7 @@ input:read-only {
   max-width: 1140px;
   width: 100%;
   margin: 0 auto 96px;
+  position: relative;
 }
 
 .collectionSettingsTitle {
@@ -3736,4 +3741,134 @@ ul#buttonIcon {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.pageStatistics {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  z-index: 2000;
+}
+
+.statsIcon {
+  padding: 12px;
+  height: 48px;
+  width: 48px;
+  background: #15191d;
+  border: 2px solid #f58103;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.statsIcon svg {
+  transform: translateY(-3px);
+}
+
+.statsIcon svg path {
+  fill: #f58103;
+  transition: 300ms ease-in-out;
+}
+
+.statsIcon svg line {
+  opacity: 0;
+  transition: 300ms ease-in-out;
+  stroke: #f58103;
+}
+
+/* .statsIcon:hover svg path:first-of-type {
+  transform: translateY(-72px);
+}
+
+.statsIcon:hover svg path:last-of-type {
+  transform: translateX(72px);
+}
+
+.statsIcon:hover svg line {
+  opacity: 1;
+} */
+
+.statsText p {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.statsText {
+  width: 240px;
+  border: 2px solid #f58103;
+  border-radius: 8px;
+  background: #131313;
+  color: #fff;
+  white-space: nowrap;
+
+  transition: 400ms ease-in-out;
+  transition-delay: 100ms;
+  max-width: 0;
+  max-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+.statsText p span {
+  color: #f58103;
+}
+
+.statsText h4 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  padding: 0 0 12px;
+  border-bottom: 1px solid #f58103;
+}
+
+.pageStatistics:hover .statsText {
+  max-width: 240px;
+  max-height: 560px;
+  visibility: visible;
+  margin-top: 12px;
+  padding: 12px 24px;
+}
+
+.pageStatistics .statsText * {
+  opacity: 0;
+  transition: 300ms ease-in-out;
+}
+
+.pageStatistics:hover .statsText * {
+  opacity: 1;
+}
+
+.returnLink {
+  position: absolute;
+  top: 20px;
+  left: 20%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.3);
+  transition: 500ms ease-in-out;
+}
+
+.returnLink:hover {
+  color: #f58103;
+}
+
+.returnLink svg {
+  width: 20px;
+  height: 20px;
+  opacity: 0.3;
+  transition: 500ms ease-in-out;
+}
+
+.returnLink svg path {
+  fill: #fff;
+  transition: 500ms ease-in-out;
+}
+
+.returnLink:hover svg {
+  opacity: 1;
+}
+
+.returnLink:hover svg path {
+  fill: #f58103;
 }
