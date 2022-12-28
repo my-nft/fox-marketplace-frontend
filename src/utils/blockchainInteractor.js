@@ -11,7 +11,7 @@ import FACTORY from "./contracts/FACTORY.json";
 import { authProvider } from "./web3ModalInteractor";
 
 let infura = "https://testnet-fx-json-web3.functionx.io:8545";
-let web3Infura = new Web3(infura);
+export let web3Infura = new Web3(infura);
 // injectProvider
 export const authProviderInstance = authProvider();
 

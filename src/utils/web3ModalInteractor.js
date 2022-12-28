@@ -25,9 +25,7 @@ export const authProvider = () => {
       provider = await web3Modal.connect();
       const web3 = new Web3(provider);
       const accounts = await web3.eth.getAccounts();
-      return Promise.resolve({
-        address: accounts[0],
-      });
+      return Promise.resolve(accounts[0]);
     },
 
     logout: async () => {
@@ -43,6 +41,7 @@ export const authProvider = () => {
 
     getInjectedWeb3: async () => {
       provider = await web3Modal.connect();
+      await provider.enable();
       return new Web3(provider);
     },
 

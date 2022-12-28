@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 
 // Worker saga will be fired on USER_FETCH_REQUESTED actions
 function* getConnectedUser(action) {
-  const {address} = action.payload;
+  const address = action.payload;
   try {
     yield put(setLoading(true));
     const response = yield call(api.getUserByAddress, address);
@@ -22,6 +22,8 @@ function* getConnectedUser(action) {
     yield put(setCurrentWallet(address));
   } catch (error) {
     console.log("error ", error.response.status);
+    console.log("CREATING NEW USER?", address)
+    console.log("STATUS", error.response.status)
     // userNotFound => Nothing to do here
     if (error.response.status === 404) {
       console.log("registration of a new user");
