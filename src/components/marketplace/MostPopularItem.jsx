@@ -40,7 +40,6 @@ const MostPopularItem = ({ viewType, item }) => {
 
   const [itemInfos, setItemInfos] = useState({});
   const [dateTime, setDateTime] = useState(new Date());
-  const navigate = useNavigate();
   const [price, setPrice] = useState(0);
 
   const init = async () => {
@@ -50,8 +49,9 @@ const MostPopularItem = ({ viewType, item }) => {
 
   const loadInfoPricing = async () => {
     if (item.listingType === AUCTION) {
+      console.log(item, itemInfos)
       setPrice(
-        itemInfos?.currentBidPrice ? itemInfos.currentBidPrice / 10 ** 18 : null
+        itemInfos?.currentBidPrice ? itemInfos.currentBidPrice / 10**18 : null
       );
     } else if (item.listingType === FIXED_PRICE) {
       const priceSmt = await getPriceByListing(item.listingId);

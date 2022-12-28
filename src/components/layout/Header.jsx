@@ -157,7 +157,7 @@ const Header = () => {
 
             <button id="signUpButton" onClick={connect}>
               {connectedWallet
-                ? optimizeWalletAddress(connectedWallet) + "/ Disconnect"
+                ? optimizeWalletAddress(connectedWallet)
                 : "Connect Wallect"}{" "}
             </button>
           </div>
