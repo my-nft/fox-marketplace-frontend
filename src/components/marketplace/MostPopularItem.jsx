@@ -7,9 +7,7 @@ import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 import { sameAddress } from "../../utils/walletUtils";
 
 const MostPopularItem = ({ viewType, item }) => {
-
   const walletAddress = useSelector(selectCurrentWallet);
-
 
   let styleList = {};
   let styleWrappedText = {};
@@ -45,7 +43,6 @@ const MostPopularItem = ({ viewType, item }) => {
   const navigate = useNavigate();
   const [price, setPrice] = useState(0);
 
-
   const init = async () => {
     const infos = await getAuctionInfos(item.auctionId);
     setItemInfos(infos);
@@ -78,6 +75,14 @@ const MostPopularItem = ({ viewType, item }) => {
     };
   }, []);
 
+  const toDoubleDigits = (num) => {
+    num += "";
+    if (num.length === 1) {
+      num = "0" + num;
+    }
+    return num;
+  };
+
   const calculateTimeLeftBeforeExpiration = (expirationDate, dateNow) => {
     const futurDate = new Date(Number(expirationDate * 1000));
 
@@ -103,19 +108,19 @@ const MostPopularItem = ({ viewType, item }) => {
       };
 
       if (timeLeft.days > 0) {
-        output += timeLeft.days + "d ";
+        output += toDoubleDigits(timeLeft.days) + "d ";
       }
 
       if (timeLeft.hours > 0) {
-        output += timeLeft.hours + "h ";
+        output += toDoubleDigits(timeLeft.hours) + "h ";
       }
 
       if (timeLeft.minutes > 0) {
-        output += timeLeft.minutes + "m ";
+        output += toDoubleDigits(timeLeft.minutes) + "m ";
       }
 
       if (timeLeft.seconds > 0) {
-        output += timeLeft.seconds + "s";
+        output += toDoubleDigits(timeLeft.seconds) + "s";
       }
     } else {
       output = "Expired";
@@ -157,7 +162,7 @@ const MostPopularItem = ({ viewType, item }) => {
         <div className="wrappedAllText" style={styleWrappedText}>
           <div className="wrapText bg">
             <div className="nameItem">
-              <span className="name">{item.name}</span>
+              <span className="name">{item.name ? item.name : "-"}</span>
               <span>
                 <img
                   src={item.image}
@@ -170,16 +175,24 @@ const MostPopularItem = ({ viewType, item }) => {
               </span>
             </div>
           </div>
-          <p className="nItem">#{item.id}</p>
+          {/* <p className="nItem">#{item.id}</p> */}
           <div className="wrapText">
-            {price ? (
+            {(price && timeEnd !== "Expired") ||
+            (price && item.listingType === FIXED_PRICE) ? (
               <p>
                 <label>Price</label>
                 <span className="orange">
-                  <b>f(x)</b> {price}
+                  <b>FX</b> {price}
                 </span>
               </p>
-            ) : null}
+            ) : (
+              <p>
+                <label>Price</label>
+                <span className="orange">
+                  <b>FX</b> -
+                </span>
+              </p>
+            )}
           </div>
           <div className="wrapText">
             <p>
@@ -188,6 +201,7 @@ const MostPopularItem = ({ viewType, item }) => {
                   {timeEnd === "Expired" ? "Ended" : <>Ends in {timeEnd}</>}
                 </span>
               )}
+              {item.listingType === FIXED_PRICE && <span>Fixed Price</span>}
             </p>
           </div>
         </div>
