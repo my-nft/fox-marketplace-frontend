@@ -3743,6 +3743,11 @@ ul#buttonIcon {
   justify-content: space-between;
 }
 
+#WEB3_CONNECT_MODAL_ID {
+  position: relative;
+  z-index: 200000;
+}
+
 .pageStatistics {
   position: fixed;
   right: 32px;
