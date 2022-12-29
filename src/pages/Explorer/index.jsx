@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { getCollectionsCall } from "../../api/collectionApi";
 import { getListedNfts } from "../../api/nftApi";
 import HeaderInput from "../../components/marketplace/HeaderInput";
 import Pagination from "../../components/pagination/pagination";
 import Spinner from "../../components/Spinner";
 
-import { LOAD_MARKET_PLACE } from "../../saga/actions";
 import AccordingCollection from "./AccordingCollection";
 import AccordingStatus from "./AccordingStatus";
 import AccordionPrice from "./AccordionPrice";
 import MostPopular from "./MostPopular";
 import MostPopularCollection from "./MostPopularCollection";
-import AccordionPropertiesFilter from "./PropertiesFilter";
 import { availableProperties } from "./properties";
 import { scrollTop } from "../../components/scrollToTop";
 

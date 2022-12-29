@@ -51,7 +51,7 @@ export const authProvider = () => {
     },
 
     addListners: async ({ clearSession = () => {} }) => {
-      //provider = await web3Modal.connect();
+      provider = await web3Modal.connect();
       provider.on("accountsChanged", (accounts) => {
         console.log("########accountsChanged##########");
         clearSession();
