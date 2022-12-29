@@ -50,6 +50,11 @@ export const authProvider = () => {
       return new Web3(provider);
     },
 
+    getProvider: async () => {
+      provider = await web3Modal.connect();
+      return provider;
+    },
+
     addListners: async ({ clearSession = () => {} }) => {
       provider = await web3Modal.connect();
       provider.on("accountsChanged", (accounts) => {
