@@ -68,7 +68,7 @@ const Header = () => {
           setBalance({
             ...balance,
             fx: walletBalance,
-            fxg: fxg / 10 ** 18,
+            fxg: Number(fxg / 10 ** 18).toFixed(0),
           });
         }
       });
