@@ -2522,7 +2522,8 @@ s #accordionListing table tr,
   margin: 0 8px;
   cursor: pointer;
   transition: 300ms ease-in-out;
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 600;
 }
 
 .paginationPage:hover {
