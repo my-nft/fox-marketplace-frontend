@@ -2,9 +2,9 @@ import { optimizeWalletAddress } from "../../utils/walletUtils";
 import placeholderBanner from "../../assets/images/account/profile_img_banner.jpg";
 import placeholderImage from "../../assets/images/account/img_account_default.jpg";
 import { useState } from "react";
+import Address from "../../components/Address";
 
 const AccountHeader = ({ user }) => {
-
   const [image, setImage] = useState(placeholderImage);
   const [banner, setBanner] = useState(placeholderBanner);
 
@@ -25,7 +25,9 @@ const AccountHeader = ({ user }) => {
           <span id="accountWallet">
             Wallet Address{" "}
             {user?.address ? (
-              optimizeWalletAddress(user.address)
+              <Address address={user.address}>
+                {optimizeWalletAddress(user.address)}
+              </Address>
             ) : (
               <i>Missing</i>
             )}

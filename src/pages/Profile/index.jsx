@@ -1,10 +1,10 @@
-
 import uploadIcon from "../../assets/images/create_icon_3.png";
 import { useEffect, useState } from "react";
 import Spinner from "../../components/Spinner";
 import { Form } from "formik";
 import { useSelector } from "react-redux";
 import { selectCurrentWallet } from "../../redux/userReducer";
+import Address from "../../components/Address";
 
 const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
   const [imageUrl, setImageUrl] = useState(null);
@@ -35,7 +35,6 @@ const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
     handleChange({ target: { name: "address", value: walletAddress } });
   }, []);
 
-
   /*
 
 if (image) {
@@ -64,7 +63,6 @@ if (image) {
     }
 
   */
-
 
   return (
     <>
@@ -201,14 +199,13 @@ if (image) {
                       </div>
                       <div className="form-group col-md-12">
                         <label htmlFor="inputArtName">Wallet Address</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="inputSiteweb"
-                          placeholder="yoursite.io"
-                          readOnly
-                          value={walletAddress}
-                        />
+
+                        <Address
+                          address={walletAddress}
+                          className="profileWallet"
+                        >
+                          {walletAddress}
+                        </Address>
                       </div>
                       <button
                         type="submit"
