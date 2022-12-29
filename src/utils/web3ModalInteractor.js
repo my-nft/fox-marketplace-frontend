@@ -28,7 +28,6 @@ export const authProvider = () => {
     login: async () => {
       web3Modal.clearCachedProvider();
       provider = await web3Modal.connect();
-      provider.enable();
       const web3 = new Web3(provider);
       const accounts = await web3.eth.getAccounts();
       return Promise.resolve(accounts[0]);
