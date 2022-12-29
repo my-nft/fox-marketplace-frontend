@@ -1,4 +1,5 @@
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import { ethers, providers } from "ethers";
 import Web3 from "web3";
 import Web3Modal from "web3modal";
 
@@ -28,9 +29,9 @@ export const authProvider = () => {
     login: async () => {
       web3Modal.clearCachedProvider();
       provider = await web3Modal.connect();
-      const web3 = new Web3(provider);
-      const accounts = await web3.eth.getAccounts();
-      return Promise.resolve(accounts[0]);
+      const ethersProvider = new providers.Web3Provider(provider)
+      const userAddress = await ethersProvider.getSigner().getAddress()
+      return Promise.resolve(userAddress);
     },
 
     logout: async () => {
@@ -59,13 +60,13 @@ export const authProvider = () => {
       // Subscribe to chainId change
       provider.on("chainChanged", async (chainId) => {
         console.log("########chainChanged##########");
-        await web3Modal.clearCachedProvider();
+        web3Modal.clearCachedProvider();
         clearSession();
       });
 
       provider.on("disconnect", async (chainId) => {
         console.log("########disconnect##########");
-        await web3Modal.clearCachedProvider();
+        web3Modal.clearCachedProvider();
         clearSession();
       });
     },
