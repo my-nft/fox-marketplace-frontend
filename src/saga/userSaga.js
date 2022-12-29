@@ -2,7 +2,6 @@ import { call, put, select, takeLatest } from "redux-saga/effects";
 import * as api from "../api/userApi";
 import {
   selectCurrentWallet,
-  selectToken,
   setCurrentUser,
   setCurrentWallet,
   setLoading,
@@ -50,6 +49,9 @@ function* updateUserProfile(action) {
       imageFile,
     } = action.payload;
 
+    const token = yield call(signWallet);
+    
+
     const response = yield call(api.updateUserToDatabase, {
       address,
       formData: {
@@ -60,6 +62,7 @@ function* updateUserProfile(action) {
       },
       image: imageFile,
       banner: bannerFile,
+      token
     });
 
     if (response) {
