@@ -62,19 +62,21 @@ const AccordionPropertiesFilter = ({
         >
           <div className="card-body">
             {properties.map((property, index) => {
-              <PropertyCategory
-                propertyTitle={property.name}
-                properties={property.properties}
-                key={index}
-                handleFilterChange={(propertyVal, boolean) => {
-                  console.log(propertyVal, boolean);
-                  handlePropertyFilterChange(
-                    propertyVal,
-                    property.name,
-                    boolean
-                  );
-                }}
-              />;
+              return (
+                <PropertyCategory
+                  propertyTitle={property.name}
+                  properties={property.properties}
+                  key={index}
+                  handleFilterChange={(propertyVal, boolean) => {
+                    console.log(propertyVal, boolean);
+                    handlePropertyFilterChange(
+                      propertyVal,
+                      property.name,
+                      boolean
+                    );
+                  }}
+                />
+              );
             })}
           </div>
         </div>
