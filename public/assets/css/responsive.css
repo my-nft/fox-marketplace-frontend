@@ -56,6 +56,9 @@
     align-items: center;
     display: flex;
   }
+  #signUpButton {
+    margin: 16px auto 0 !important;
+  }
   .navbar-collapse ul#buttonIcon li {
     margin: 0;
     padding: 0;
@@ -273,6 +276,24 @@
   .settingsButtons {
     display: flex;
     flex-direction: column;
+  }
+  #createCollection button {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+  .popup-wrapper {
+    width: 90%;
+    min-width: unset;
+  }
+  .entry-fields {
+    flex-direction: column;
+  }
+  .entry-fields input {
+    width: 100%;
+  }
+  .entry-fields > div {
+    width: 100%;
   }
   .settingsButtons button {
     margin: 8px 0;
