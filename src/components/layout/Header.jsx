@@ -32,7 +32,6 @@ const Header = () => {
   }, [userAddress]);
 
   const connect = async () => {
-    if (!connectedWallet) {
       const connectedWallet = await authProviderInstance.login();
       authProviderInstance.addListners({
         clearSession: () =>
@@ -44,8 +43,15 @@ const Header = () => {
         type: LOAD_USER,
         payload: connectedWallet,
       });
-    }
+    
   };
+
+  const disconnect = async () => {
+    await authProviderInstance.logout();
+    dispatch({
+      type: "DESTROY_SESSION",
+    });
+  }
 
   const [balance, setBalance] = useState({
     fx: 0,
@@ -157,7 +163,13 @@ const Header = () => {
               </ul>
             ) : null}
 
-            <button id="signUpButton" onClick={connect}>
+            <button id="signUpButton" onClick={async () => {
+              if(connectedWallet) {
+                await disconnect();
+              } else {
+                await connect();
+              }
+            }}>
               {connectedWallet ? (
                 <>
                   {optimizeWalletAddress(connectedWallet)}
