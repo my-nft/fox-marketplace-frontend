@@ -13,7 +13,7 @@ const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
   useEffect(() => {
     setImageUrl(values.image);
     setBannerUrl(values.banner);
-  }, [])
+  }, [values.image, values.banner])
 
   const walletAddress = useSelector(selectCurrentWallet);
 

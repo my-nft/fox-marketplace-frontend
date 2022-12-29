@@ -24,7 +24,9 @@ const formikEnhancer = withFormik({
     // setSubmitting(true);
     props.dispatch({
       type: UPDATE_PROFILE,
-      payload: values,
+      payload: {
+        ...values
+      },
       onSuccess: () => {
         setSubmitting(false);
       },
