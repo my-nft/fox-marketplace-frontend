@@ -36,10 +36,10 @@ export const authProvider = () => {
     logout: async () => {
       provider = await web3Modal.connect();
       if (provider && provider.close) {
-        await provider.close;
-        provider = null;
-        web3Modal.clearCachedProvider();
+        await provider.close();
       }
+      web3Modal.clearCachedProvider();
+      
       return Promise.resolve();
     },
 
