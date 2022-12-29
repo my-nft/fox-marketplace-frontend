@@ -67,7 +67,7 @@ const ExplorePopularCollectionItem = ({ itemData }) => {
           <p className="text-right">
             <label>Total Volume</label>
             <span>
-              <b>f(x)</b> {itemData.totalVolume}
+              <b>FX</b> {itemData.totalVolume}
             </span>
           </p>
         </div>

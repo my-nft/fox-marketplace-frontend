@@ -13,6 +13,8 @@ import ScrollToTop from "../scrollToTop";
 import useOutsideClick from "./../../utils/useOutsideClick";
 import SearchBar from "./../searchBar/searchBar";
 
+import { ReactComponent as LogoutIcon } from "../../assets/icons/exit.svg";
+
 import { selectCurrentWallet } from "../../redux/userReducer";
 import { LOAD_USER } from "../../saga/actions";
 
@@ -156,9 +158,15 @@ const Header = () => {
             ) : null}
 
             <button id="signUpButton" onClick={connect}>
-              {connectedWallet
-                ? optimizeWalletAddress(connectedWallet) + "/ Disconnect"
-                : "Connect Wallect"}{" "}
+              {connectedWallet ? (
+                <>
+                  {optimizeWalletAddress(connectedWallet)}
+                  <span></span>
+                  <LogoutIcon />
+                </>
+              ) : (
+                "Connect Wallect"
+              )}{" "}
             </button>
           </div>
         </nav>

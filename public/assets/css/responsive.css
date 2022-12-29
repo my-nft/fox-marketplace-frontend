@@ -63,6 +63,9 @@
   .navbar-collapse button {
     margin: 16px 0 0 !important;
   }
+  .wrapperMostPopular {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media (max-width: 1199px) {
@@ -110,7 +113,7 @@
     flex-direction: column;
   }
   #marketplace #headerInput {
-    margin-top: 72px;
+    margin-top: 24px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     row-gap: 16px;
@@ -128,6 +131,9 @@
   #marketplace #headerInput > button {
     grid-column-start: 2;
     grid-column-end: 3;
+  }
+  #marketplace .explorerItems {
+    margin-left: 0 !important;
   }
 }
 

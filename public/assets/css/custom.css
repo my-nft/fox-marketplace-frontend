@@ -246,6 +246,23 @@ header a {
   border-radius: 20px;
   margin-right: 25px;
   font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#signUpButton span {
+  background-color: #fefefe;
+  border-radius: 48px;
+  width: 1.3px;
+  height: 14px;
+  display: block;
+  content: "";
+}
+
+#signUpButton svg {
+  width: 19px;
+  height: 19px;
 }
 
 /* #loginButton {
@@ -358,6 +375,7 @@ ul#buttonIcon {
   height: 80vh;
   top: -15vh;
   left: 0;
+  z-index: -1;
 }
 
 #overlayTop {
@@ -484,8 +502,8 @@ td span {
 
 .slick-slide {
   margin: 0 10px;
-  height: 50vh;
-  padding: 5vh 0;
+  height: 100%;
+  padding: 0;
 }
 
 .slick-slide a {
@@ -855,7 +873,6 @@ footer a:hover {
 #marketplace #openClose {
   width: 72px;
   background: #0a0b0e;
-  margin-right: 24px;
 }
 
 #marketplace #headerInput {
@@ -864,7 +881,7 @@ footer a:hover {
 }
 
 #marketplace #headerInput > select {
-  margin-left: 32px;
+  margin-left: 32px !important;
 }
 
 #marketplace #headerInput > select,
@@ -939,7 +956,7 @@ footer a:hover {
 
 #marketplace {
   width: 95vw;
-  margin-top: 56px;
+  margin-top: 16px;
 }
 
 #command {
@@ -3580,6 +3597,7 @@ ul#buttonIcon {
 
 .slickArrowsContainer {
   position: relative;
+  margin-top: 24px;
 }
 
 .slickArrow {
