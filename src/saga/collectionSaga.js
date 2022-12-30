@@ -37,6 +37,8 @@ function* importCollection(action) {
     console.log("the token is", token);
     yield call(api.importCollectionCall, collectionAddress, token);
     yield delay(3000);
+
+    yield put(setCollectionIsLoading(false));
     action.onSuccess();
   } catch (error) {
     console.log("error ", error.response.status);
