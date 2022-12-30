@@ -49,7 +49,6 @@ const MostPopularItem = ({ viewType, item }) => {
 
   const loadInfoPricing = async () => {
     if (item.listingType === AUCTION) {
-      console.log(item, itemInfos)
       setPrice(
         itemInfos?.currentBidPrice ? itemInfos.currentBidPrice / 10**18 : null
       );
