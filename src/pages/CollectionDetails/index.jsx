@@ -189,22 +189,21 @@ const CollectionDetails = () => {
         filters={filters}
         changeFilterValue={setFilters}
       />
+      <ListNfts
+        nfts={content}
+        isVisible={visible}
+        viewType={viewType}
+        handleSelectNfts={handleSelectNfts}
+        filters={filters}
+        changeFilterValue={setFilters}
+        pagination={pagination}
+        totalElements={totalElements}
+        isLoadingNfts={isLoadingNfts}
+      />
       {isLoadingNfts ? (
         <Spinner />
       ) : (
         <>
-          <ListNfts
-            nfts={content}
-            isVisible={visible}
-            viewType={viewType}
-            handleSelectNfts={handleSelectNfts}
-            filters={filters}
-            changeFilterValue={setFilters}
-            pagination={pagination}
-            totalElements={totalElements}
-            isLoadingNfts={isLoadingNfts}
-          />
-
           {!isLoadingNfts && (
             <>
               {totalElements / 20 > 1 ? (
