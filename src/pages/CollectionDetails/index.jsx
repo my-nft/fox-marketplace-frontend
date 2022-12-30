@@ -22,6 +22,7 @@ const prepareProperties = (attributes) => {
 
       const propertyItem = {
         name: attribute.name,
+        tokens: attribute.tokens,
         properties,
       };
 
@@ -72,7 +73,10 @@ const CollectionDetails = () => {
     setIsLoadingCollection(true);
     const response = await getCollectionByAddress(collectionAddress);
     const { collection, attributes } = response.data;
+    console.log("RESPONSE: ", response.data);
     setCollectionDetails(collection);
+    console.log("ATTRIBUTES: ", attributes);
+    console.log("PROPERTIES: ", prepareProperties(attributes));
     setFilters({
       ...filters,
       properties: prepareProperties(attributes),
@@ -82,16 +86,20 @@ const CollectionDetails = () => {
 
   const loadNFTs = async () => {
     if (collectionDetails) {
-      const propertiesFiltered = [];
+      const propertiesForExport = [];
       filters.properties.map((category) => {
+        let propObj = {
+          name: category.name,
+          values: [],
+        };
         category.properties.map((property) => {
           if (property.active) {
-            propertiesFiltered.push({
-              trait_type: category.name,
-              value: property.title,
-            });
+            propObj.values.push(property.title);
           }
         });
+        if (propObj.values.length > 0) {
+          propertiesForExport.push(propObj);
+        }
       });
 
       setIsLoadingNfts(true);
@@ -100,7 +108,19 @@ const CollectionDetails = () => {
         {
           page: pagination.page,
           numberElements: 20,
-          properties: propertiesFiltered,
+          categories: filters.categories,
+
+          searchPrompt: filters.searchPrompt,
+          buyNow: filters.buyNow,
+          isAuction: filters.isAuction,
+          isNew: filters.isNew,
+          hasOffers: filters.hasOffers,
+          buyWithCard: filters.buyWithCard,
+          minPrice: filters.minPrice,
+          maxPrice: filters.maxPrice,
+          buyToken: filters.buyToken,
+          sortBy: filters.sortBy,
+          properties: propertiesForExport,
         }
       );
 
@@ -199,8 +219,10 @@ const CollectionDetails = () => {
         pagination={pagination}
         totalElements={totalElements}
         isLoadingNfts={isLoadingNfts}
+        changePage={changePage}
+        paginationPage={pagination.page}
       />
-      {isLoadingNfts ? (
+      {/* {isLoadingNfts ? (
         <Spinner />
       ) : (
         <>
@@ -216,7 +238,7 @@ const CollectionDetails = () => {
             </>
           )}
         </>
-      )}
+      )} */}
     </>
   );
 };

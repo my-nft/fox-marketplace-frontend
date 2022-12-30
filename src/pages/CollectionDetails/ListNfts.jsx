@@ -5,6 +5,7 @@ import AccordionCategory from "./AccordionCategory";
 import MostPopularItem from "../../components/marketplace/MostPopularItem";
 import ListActivities from "./ListActivities";
 import AccordionPropertiesFilter from "./PropertiesFilter";
+import Pagination from "../../components/pagination/pagination";
 
 const ListNfts = ({
   nfts,
@@ -14,6 +15,9 @@ const ListNfts = ({
   filters,
   changeFilterValue,
   isLoadingNfts = { isLoadingNfts },
+  totalElements,
+  changePage,
+  paginationPage,
 }) => {
   return (
     <section id="tabsNft" className="container-fluid accountListed">
@@ -67,6 +71,13 @@ const ListNfts = ({
                     />
                   ))}
                 </div>
+                {totalElements / 20 > 1 ? (
+                  <Pagination
+                    currentPage={paginationPage}
+                    pages={totalElements ? parseInt(totalElements / 20) : 1}
+                    setCurrentPage={changePage}
+                  />
+                ) : null}
               </div>
               <ListActivities />
             </div>
