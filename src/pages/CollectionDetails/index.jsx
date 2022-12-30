@@ -47,17 +47,14 @@ const CollectionDetails = () => {
 
   const [filters, setFilters] = useState({
     searchPrompt: "",
-    buyNow: false,
-    isAuction: false,
-    isNew: false,
-    hasOffers: false,
-    buyWithCard: false,
+
     minPrice: 0,
     maxPrice: 0,
     buyToken: "ETH",
     sortBy: "RECENTLY_LISTED",
     categories: [],
     properties: [],
+    status: [],
   });
 
   const dispatch = useDispatch();
@@ -102,23 +99,6 @@ const CollectionDetails = () => {
         }
       });
 
-      const status = [];
-      if (filters.buyNow) {
-        status.push("BUY_NOW");
-      }
-      if (filters.isAuction) {
-        status.push("AUCTION");
-      }
-      if (filters.isNew) {
-        status.push("NEW");
-      }
-      if (filters.hasOffers) {
-        status.push("HAS_OFFERS");
-      }
-      if (filters.buyWithCard) {
-        status.push("BUY_WITH_CARD");
-      }
-
       setIsLoadingNfts(true);
       const nftsElements = await getCollectionNftsCall(
         collectionDetails.collectionAddress,
@@ -128,7 +108,7 @@ const CollectionDetails = () => {
           categories: filters.categories,
 
           searchPrompt: filters.searchPrompt,
-          status: status,
+          status: filters.status,
           minPrice: filters.minPrice,
           maxPrice: filters.maxPrice,
           buyToken: filters.buyToken,
@@ -210,6 +190,8 @@ const CollectionDetails = () => {
       };
     }
   }, [collectionDetails]);
+
+  console.log(filters.status);
 
   return isLoadingCollection ? (
     <Spinner />

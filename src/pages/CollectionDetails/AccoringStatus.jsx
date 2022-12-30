@@ -1,9 +1,6 @@
 import SliderToggle from "../Account/SliderToggle";
 
-const AccordingStatus = ({filters, changeFilterValue}) => {
-
-
-
+const AccordingStatus = ({ filters, changeFilterValue }) => {
   return (
     <div id="accordionStatus">
       <div className="card">
@@ -38,43 +35,108 @@ const AccordingStatus = ({filters, changeFilterValue}) => {
           data-parent="#accordionStatus"
         >
           <div className="card-body">
-            <SliderToggle 
-              title={"Buy Now"} 
-              active={filters.buyNow} 
-              action={(boolean) => changeFilterValue({
-                ...filters,
-                "buyNow": boolean
-              }) }  
+            <SliderToggle
+              title={"Buy Now"}
+              active={
+                filters && filters.status && filters.status.includes("BUY_NOW")
+              }
+              action={(boolean) => {
+                if (boolean) {
+                  changeFilterValue({
+                    ...filters,
+                    status: [...filters.status, "BUY_NOW"],
+                  });
+                } else {
+                  changeFilterValue({
+                    ...filters,
+                    status: [...filters.status.filter((e) => e != "BUY_NOW")],
+                  });
+                }
+              }}
             />
-            <SliderToggle 
-              title={"On Auction"} 
-              active={filters.isAuction} 
-              action={(boolean) => changeFilterValue({
-                ...filters,
-                "isAuction": boolean
-              }) } 
+            <SliderToggle
+              title={"On Auction"}
+              active={
+                filters && filters.status && filters.status.includes("AUCTION")
+              }
+              action={(boolean) => {
+                if (boolean) {
+                  changeFilterValue({
+                    ...filters,
+                    status: [...filters.status, "AUCTION"],
+                  });
+                } else {
+                  changeFilterValue({
+                    ...filters,
+                    status: [...filters.status.filter((e) => e != "AUCTION")],
+                  });
+                }
+              }}
             />
-            <SliderToggle 
-              title={"New"} 
-              active={filters.isNew} 
-              action={(boolean) => changeFilterValue({
-                ...filters,
-                "isNew": boolean
-              }) } />
-            <SliderToggle 
-              title={"Has Offers"} 
-              active={filters.hasOffers} 
-              action={(boolean) => changeFilterValue({
-                ...filters,
-                "hasOffers": boolean
-              }) } />
-            <SliderToggle 
-              title={"Buy with Card"} 
-              active={filters.buyWithCard} 
-              action={(boolean) => changeFilterValue({
-                ...filters,
-                "buyWithCard": boolean
-              }) } 
+            <SliderToggle
+              title={"New"}
+              active={
+                filters && filters.status && filters.status.includes("NEW")
+              }
+              action={(boolean) => {
+                if (boolean) {
+                  changeFilterValue({
+                    ...filters,
+                    status: [...filters.status, "NEW"],
+                  });
+                } else {
+                  changeFilterValue({
+                    ...filters,
+                    status: [...filters.status.filter((e) => e != "NEW")],
+                  });
+                }
+              }}
+            />
+            <SliderToggle
+              title={"Has Offers"}
+              active={
+                filters &&
+                filters.status &&
+                filters.status.includes("HAS_OFFERS")
+              }
+              action={(boolean) => {
+                if (boolean) {
+                  changeFilterValue({
+                    ...filters,
+                    status: [...filters.status, "HAS_OFFERS"],
+                  });
+                } else {
+                  changeFilterValue({
+                    ...filters,
+                    status: [
+                      ...filters.status.filter((e) => e != "HAS_OFFERS"),
+                    ],
+                  });
+                }
+              }}
+            />
+            <SliderToggle
+              title={"Buy with Card"}
+              active={
+                filters &&
+                filters.status &&
+                filters.status.includes("BUY_WITH_CARD")
+              }
+              action={(boolean) => {
+                if (boolean) {
+                  changeFilterValue({
+                    ...filters,
+                    status: [...filters.status, "BUY_WITH_CARD"],
+                  });
+                } else {
+                  changeFilterValue({
+                    ...filters,
+                    status: [
+                      ...filters.status.filter((e) => e != "BUY_WITH_CARD"),
+                    ],
+                  });
+                }
+              }}
             />
           </div>
         </div>
