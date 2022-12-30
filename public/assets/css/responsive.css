@@ -84,6 +84,9 @@
   .timeEntry input {
     font-size: 40px;
   }
+  .timeEntry p {
+    font-size: 40px;
+  }
   .returnLink {
     left: 56px;
   }

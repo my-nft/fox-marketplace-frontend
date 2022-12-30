@@ -22,27 +22,29 @@ const ListNfts = ({
         className={`row collectionFilters ${!isVisible ? "filtersHide" : null}`}
         style={{ display: "flex" }}
       >
-        <div
-          className="col filtersCollapsible"
-          id="filter"
-          style={{ display: "block" }}
-        >
-          <div className="col pl-0">
-            <AccordingStatus
-              filters={filters}
-              changeFilterValue={changeFilterValue}
-            />
-            <AccordionPrice
-              filters={filters}
-              changeFilterValue={changeFilterValue}
-            />
-            <AccordingCollection listSearcheableCollections={[]} />
-            <AccordionCategory
-              filters={filters}
-              changeFilterValue={changeFilterValue}
-            />
+        {activeSection !== "COLLECTIONS" ? (
+          <div
+            className="col filtersCollapsible"
+            id="filter"
+            style={{ display: "block" }}
+          >
+            <div className="col pl-0">
+              <AccordingStatus
+                filters={filters}
+                changeFilterValue={changeFilterValue}
+              />
+              <AccordionPrice
+                filters={filters}
+                changeFilterValue={changeFilterValue}
+              />
+              <AccordingCollection listSearcheableCollections={[]} />
+              <AccordionCategory
+                filters={filters}
+                changeFilterValue={changeFilterValue}
+              />
+            </div>
           </div>
-        </div>
+        ) : null}
 
         <div className="col" id="wrapperNFT">
           <div className="tab-content" id="pills-tabContent">

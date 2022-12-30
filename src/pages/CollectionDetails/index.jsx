@@ -22,6 +22,7 @@ const prepareProperties = (attributes) => {
 
       const propertyItem = {
         name: attribute.name,
+        tokens: attribute.tokens,
         properties,
       };
 
@@ -46,17 +47,14 @@ const CollectionDetails = () => {
 
   const [filters, setFilters] = useState({
     searchPrompt: "",
-    buyNow: false,
-    isAuction: false,
-    isNew: false,
-    hasOffers: false,
-    buyWithCard: false,
+
     minPrice: 0,
     maxPrice: 0,
     buyToken: "ETH",
     sortBy: "RECENTLY_LISTED",
     categories: [],
     properties: [],
+    status: [],
   });
 
   const dispatch = useDispatch();
@@ -72,7 +70,10 @@ const CollectionDetails = () => {
     setIsLoadingCollection(true);
     const response = await getCollectionByAddress(collectionAddress);
     const { collection, attributes } = response.data;
+    console.log("RESPONSE: ", response.data);
     setCollectionDetails(collection);
+    console.log("ATTRIBUTES: ", attributes);
+    console.log("PROPERTIES: ", prepareProperties(attributes));
     setFilters({
       ...filters,
       properties: prepareProperties(attributes),
@@ -82,16 +83,20 @@ const CollectionDetails = () => {
 
   const loadNFTs = async () => {
     if (collectionDetails) {
-      const propertiesFiltered = [];
+      const propertiesForExport = [];
       filters.properties.map((category) => {
+        let propObj = {
+          name: category.name,
+          values: [],
+        };
         category.properties.map((property) => {
           if (property.active) {
-            propertiesFiltered.push({
-              trait_type: category.name,
-              value: property.title,
-            });
+            propObj.values.push(property.title);
           }
         });
+        if (propObj.values.length > 0) {
+          propertiesForExport.push(propObj);
+        }
       });
 
       setIsLoadingNfts(true);
@@ -100,7 +105,14 @@ const CollectionDetails = () => {
         {
           page: pagination.page,
           numberElements: 20,
-          properties: propertiesFiltered,
+          categories: filters.categories,
+          searchPrompt: filters.searchPrompt,
+          status: filters.status,
+          minPrice: filters.minPrice,
+          maxPrice: filters.maxPrice,
+          buyToken: filters.buyToken,
+          sortBy: filters.sortBy,
+          properties: propertiesForExport,
         }
       );
 
@@ -113,20 +125,7 @@ const CollectionDetails = () => {
     loadNFTs();
   }, [collectionDetails, filters]);
 
-  const initLoadNfts = async () => {
-    setIsLoadingNfts(true);
-    const nftsElements = await getCollectionNftsCall(
-      collectionDetails.collectionAddress,
-      {
-        page: pagination.page,
-        numberElements: 20,
-      }
-    );
-
-    setNfts(nftsElements.data);
-    setIsLoadingNfts(false);
-  };
-
+ 
   const changeSelectedView = (selection) => {
     setViewType(selection);
   };
@@ -145,7 +144,7 @@ const CollectionDetails = () => {
 
   useEffect(() => {
     if (collectionDetails) {
-      initLoadNfts();
+      loadNFTs();
     }
   }, [collectionDetails, pagination]);
 
@@ -169,7 +168,7 @@ const CollectionDetails = () => {
       toast.loading("Import progressing...");
       const interval = setInterval(() => {
         updateProcessing(interval);
-      }, 10000);
+      }, 30000);
       return () => {
         toast.clearWaitingQueue();
         toast.dismiss();
@@ -177,6 +176,8 @@ const CollectionDetails = () => {
       };
     }
   }, [collectionDetails]);
+
+  console.log(filters.status);
 
   return isLoadingCollection ? (
     <Spinner />
@@ -189,22 +190,23 @@ const CollectionDetails = () => {
         filters={filters}
         changeFilterValue={setFilters}
       />
-      {isLoadingNfts ? (
+      <ListNfts
+        nfts={content}
+        isVisible={visible}
+        viewType={viewType}
+        handleSelectNfts={handleSelectNfts}
+        filters={filters}
+        changeFilterValue={setFilters}
+        pagination={pagination}
+        totalElements={totalElements}
+        isLoadingNfts={isLoadingNfts}
+        changePage={changePage}
+        paginationPage={pagination.page}
+      />
+      {/* {isLoadingNfts ? (
         <Spinner />
       ) : (
         <>
-          <ListNfts
-            nfts={content}
-            isVisible={visible}
-            viewType={viewType}
-            handleSelectNfts={handleSelectNfts}
-            filters={filters}
-            changeFilterValue={setFilters}
-            pagination={pagination}
-            totalElements={totalElements}
-            isLoadingNfts={isLoadingNfts}
-          />
-
           {!isLoadingNfts && (
             <>
               {totalElements / 20 > 1 ? (
@@ -217,7 +219,7 @@ const CollectionDetails = () => {
             </>
           )}
         </>
-      )}
+      )} */}
     </>
   );
 };

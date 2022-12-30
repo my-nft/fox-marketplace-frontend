@@ -5,11 +5,7 @@ const ItemMint = (props) => {
         <img src="/assets/images/Element10.png" alt="" />
       </div>
       <div className="itemData">
-        <button className="buttonUP previousDrop">Previus drop</button>
-        <p className="descriptionData">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit.{" "}
-        </p>
-        <button className="subscribe">Subscribe</button>
+        <p className="descriptionData">Announced Soon</p>
       </div>
     </div>
   );

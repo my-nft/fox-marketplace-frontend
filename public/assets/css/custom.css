@@ -777,11 +777,16 @@ h3 {
 }
 
 .descriptionData {
-  left: 5%;
-  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 48px;
+  color: #f58103 !important;
+  bottom: 5%;
   position: absolute;
-  color: white;
-  font-size: 18px;
+  font-size: 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
 }
 
 button.subscribe {
@@ -2909,6 +2914,23 @@ input[type="number"]:focus-within {
   margin-bottom: 24px;
 }
 
+.timeEntry p {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: rgba(255, 255, 255, 0.6) !important;
+  height: 100%;
+  font-size: 60px;
+  padding: 0;
+  text-align: center;
+  transition: 300ms ease-in-out;
+  box-shadow: 0 3px 2px rgba(0, 0, 0, 0.65);
+  background: #131313;
+  width: 80px;
+  border-radius: 8px;
+  border: none !important;
+}
+
 .selectTime {
   display: flex;
   align-items: center;
@@ -2927,19 +2949,23 @@ input[type="number"]:focus-within {
   width: 80px;
   border-radius: 8px;
   border: none !important;
-  background: #131313;
-  color: rgba(254, 254, 254, 0.6);
+  background: transparent;
+  color: transparent;
   font-size: 64px;
   padding: 0;
   text-align: center;
   transition: 300ms ease-in-out;
   box-shadow: 0 3px 2px rgba(0, 0, 0, 0.65);
-}
-
-.timeEntry input:focus {
+  position: relative;
+  z-index: 10003;
   border: none !important;
   outline: none !important;
-  color: #fefefe;
+}
+
+.timeEntry:focus-within p {
+  border: none !important;
+  outline: none !important;
+  color: #fefefe !important;
   transform: scale(1.05);
 }
 
@@ -3756,6 +3782,15 @@ ul#buttonIcon {
   justify-content: space-between;
 }
 
+.propertyItem .checkBox {
+  min-width: unset;
+}
+
+.propertyItem p {
+  flex-grow: 2;
+  margin-right: 24px;
+}
+
 #WEB3_CONNECT_MODAL_ID {
   position: relative;
   z-index: 200000;
@@ -3928,4 +3963,111 @@ ul#buttonIcon {
 
 .profileWallet:hover {
   border: 1px solid #f58103;
+}
+
+@keyframes highlightAnim {
+  0% {
+    box-shadow: 0 0 0 0 rgba(250, 135, 8, 0);
+  }
+  50% {
+    box-shadow: 0 0 24px 20px rgba(250, 135, 8, 0.25);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(250, 135, 8, 0);
+  }
+}
+
+.upcomingMintHighlight {
+  margin: 0 auto;
+  margin: 30px 0px;
+  position: relative;
+  padding: 0 20px;
+  overflow: visible;
+}
+
+.upcomingMintHighlight img {
+  width: 100%;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+  border-radius: 48px;
+  animation: highlightAnim 4s ease-in-out infinite;
+  -webkit-animation: highlightAnim 4s ease-in-out infinite;
+}
+
+.upcomingMintHighlight .countdown {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  padding: 128px 0 32px;
+  background: linear-gradient(
+    to top,
+    rgba(250, 135, 8, 1),
+    rgba(250, 135, 8, 0)
+  );
+  width: calc(100% - 40px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 56px;
+}
+
+.countdown_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.countdown_item {
+  color: #fefefe;
+  font-weight: 600;
+}
+
+.countdown_item span {
+  font-size: 14px;
+  color: #fff;
+  font-weight: 400;
+}
+
+.upcomingMintHighlight p {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 32px;
+  line-height: 32px;
+  font-weight: 800;
+  z-index: 3;
+  color: #fff;
+  text-align: center;
+  padding: 24px 0 72px;
+  background: linear-gradient(
+    to bottom,
+    rgba(250, 135, 8, 1),
+    rgba(250, 135, 8, 0)
+  );
+  width: calc(100% - 40px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 56px;
+}
+
+.mintUpcoming {
+  padding: 12px 48px;
+  background: #130f0a;
+  border-radius: 10px;
+  color: #f58103;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 300ms ease-in-out;
+}
+
+.mintUpcoming:hover {
+  background: #f58103;
+  color: #130f0a;
+  box-shadow: 0 0 8px 4px rgba(25, 14, 0, 0.3);
 }
