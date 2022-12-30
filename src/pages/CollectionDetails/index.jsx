@@ -102,6 +102,23 @@ const CollectionDetails = () => {
         }
       });
 
+      const status = [];
+      if (filters.buyNow) {
+        status.push("BUY_NOW");
+      }
+      if (filters.isAuction) {
+        status.push("AUCTION");
+      }
+      if (filters.isNew) {
+        status.push("NEW");
+      }
+      if (filters.hasOffers) {
+        status.push("HAS_OFFERS");
+      }
+      if (filters.buyWithCard) {
+        status.push("BUY_WITH_CARD");
+      }
+
       setIsLoadingNfts(true);
       const nftsElements = await getCollectionNftsCall(
         collectionDetails.collectionAddress,
@@ -111,11 +128,7 @@ const CollectionDetails = () => {
           categories: filters.categories,
 
           searchPrompt: filters.searchPrompt,
-          buyNow: filters.buyNow,
-          isAuction: filters.isAuction,
-          isNew: filters.isNew,
-          hasOffers: filters.hasOffers,
-          buyWithCard: filters.buyWithCard,
+          status: status,
           minPrice: filters.minPrice,
           maxPrice: filters.maxPrice,
           buyToken: filters.buyToken,
