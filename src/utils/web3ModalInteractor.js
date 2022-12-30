@@ -34,6 +34,13 @@ export const authProvider = () => {
       return Promise.resolve(userAddress);
     },
 
+    connectedWallet: async () => {
+      provider = await web3Modal.connect();
+      const ethersProvider = new providers.Web3Provider(provider)
+      const userAddress = await ethersProvider.getSigner().getAddress()
+      return Promise.resolve(userAddress);
+    },
+
     logout: async () => {
       provider = await web3Modal.connect();
       if (provider && provider.close) {
@@ -53,6 +60,13 @@ export const authProvider = () => {
     getProvider: async () => {
       provider = await web3Modal.connect();
       return provider;
+    },
+
+    getSigner :  async () => {
+      provider = await web3Modal.connect();
+      const etherProvider = new ethers.providers.Web3Provider(provider); 
+      const signer = etherProvider.getSigner();    
+      return signer;
     },
 
     addListners: async ({ clearSession = () => {} }) => {

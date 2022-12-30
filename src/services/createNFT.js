@@ -1,5 +1,6 @@
 import { addNftToIpfs } from "../api/nftApi";
 import {
+  authProviderInstance,
   foxMasterCollectionAddress,
   getCurrentWalletConnected,
   loadERC20Contract,
@@ -7,40 +8,42 @@ import {
 } from "../utils/blockchainInteractor";
 import { sameAddress } from "../utils/walletUtils";
 
-
 export const mintNft = async ({
   collectionAddress = foxMasterCollectionAddress,
   nft,
   image,
   token,
 }) => {
-  const erc20Contract = await loadERC20Contract();
+  const signer = await authProviderInstance.getSigner();
 
-  if(!collectionAddress) {
-    collectionAddress = foxMasterCollectionAddress
+  const erc20Contract = await loadERC20Contract(signer);
+
+  if (!collectionAddress) {
+    collectionAddress = foxMasterCollectionAddress;
   }
 
   console.log("#####################");
-  
-  const foxMastercontract = await loadFoxMasterCollectionContract(collectionAddress);
+
+  const foxMastercontract = await loadFoxMasterCollectionContract(
+    collectionAddress,
+    signer
+  );
+
+  console.log(foxMastercontract);
 
   const connectedWallet = await getCurrentWalletConnected();
 
   if (sameAddress(collectionAddress, foxMasterCollectionAddress)) {
-    const mintFee = await foxMastercontract.methods.mintFee().call();
+    
+    const mintFee = await foxMastercontract.mintFee();
 
-    const gasLimit = await erc20Contract.methods
-      .approve(collectionAddress, mintFee)
-      .estimateGas({
-        from: connectedWallet,
-        to: collectionAddress,
-      });
+    const tsxApprove = await erc20Contract.populateTransaction.approve(
+      collectionAddress,
+      mintFee
+    );
 
-    await erc20Contract.methods.approve(collectionAddress, mintFee).send({
-      from: connectedWallet,
-      to: collectionAddress,
-      gasLimit,
-    });
+
+    await signer.sendUncheckedTransaction(tsxApprove);
   }
 
   // API ADD NFT TO IPFS
@@ -51,16 +54,13 @@ export const mintNft = async ({
     token,
   });
 
-  const tsx = await foxMastercontract.methods
-    .mint(connectedWallet, response.data)
-    .send({
-      from: connectedWallet,
-      to: collectionAddress,
-    });
+  const tsx = await foxMastercontract.mint(connectedWallet, response.data);
 
-  const tokenID = tsx?.events?.Transfer?.returnValues?.tokenId;
+  const returnedVal = await tsx.wait();
 
-  console.log("=====> TOKENID ", tokenID);
+  const tokenID = returnedVal?.events[0].args.tokenId;
+
+  console.log("=====> TOKENID ", parseInt(tokenID));
   console.log("=====> collectionAddress ", collectionAddress);
 
   return {

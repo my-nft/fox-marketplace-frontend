@@ -9,6 +9,7 @@ import OFFER_SYSTEM from "./contracts/OFFERSYSTEM.json";
 import FOX_MASTER from "./contracts/FOX_MASTER.json";
 import FACTORY from "./contracts/FACTORY.json";
 import { authProvider } from "./web3ModalInteractor";
+import { Contract } from "ethers";
 
 let infura = "https://testnet-fx-json-web3.functionx.io:8545";
 export let web3Infura = new Web3(infura);
@@ -55,12 +56,8 @@ export async function loadERC721Contract(collectionAddress, readOnly = false) {
   }
   return new web3Instance.eth.Contract(ERC721, collectionAddress);
 }
-export async function loadERC20Contract(readOnly = false) {
-  let web3Instance = web3Infura;
-  if (!readOnly) {
-    web3Instance = await authProviderInstance.getInjectedWeb3();
-  }
-  return new web3Instance.eth.Contract(ERC20, ERC20ContractAddress);
+export async function loadERC20Contract(signer) {
+  return new Contract(ERC20ContractAddress, ERC20, signer);
 }
 
 export async function loadCollectionContract(collectionAddress) {
@@ -99,10 +96,8 @@ export async function loadOfferSystemContract(readOnly = false) {
   return new web3Instance.eth.Contract(OFFER_SYSTEM, OfferSystemAddress);
 }
 
-export async function loadFoxMasterCollectionContract(collectionAddress) {
-  const web3 = await authProviderInstance.getInjectedWeb3();
-
-  return new web3.eth.Contract(FOX_MASTER, collectionAddress);
+export async function loadFoxMasterCollectionContract(collectionAddress, signer) {
+  return new Contract(collectionAddress, FOX_MASTER, signer);
 }
 
 export async function loadFactoryContract() {
