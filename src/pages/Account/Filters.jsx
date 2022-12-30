@@ -12,7 +12,9 @@ const FilterInput = ({
   return (
     <section id="filterInput" className="container-fluid">
       <div className="mr-5 wrapper">
-        <OpenCloseButton clickAction={onOpenClose} />
+        {activeSection !== "COLLECTIONS" ? (
+          <OpenCloseButton clickAction={onOpenClose} />
+        ) : null}
 
         <SearchBar
           changeFilterValue={changeFilterValue}
@@ -93,7 +95,9 @@ const FilterInput = ({
         </li>
         <li className="nav-item" role="presentation">
           <button
-            className={activeSection === "NFTS" ? "nav-link active" : "nav-link"}
+            className={
+              activeSection === "NFTS" ? "nav-link active" : "nav-link"
+            }
             id="pills-profile-tab"
             type="button"
             onClick={() => onChangeActiveSection("NFTS")}
@@ -103,7 +107,9 @@ const FilterInput = ({
         </li>
         <li className="nav-item" role="presentation">
           <button
-            className={activeSection === "CREATED" ? "nav-link active" : "nav-link"}
+            className={
+              activeSection === "CREATED" ? "nav-link active" : "nav-link"
+            }
             id="pills-contact-tab"
             type="button"
             onClick={() => onChangeActiveSection("CREATED")}
@@ -125,7 +131,9 @@ const FilterInput = ({
         </li>
         <li className="nav-item" role="presentation">
           <button
-            className={activeSection === "LISTED" ? "nav-link active" : "nav-link"}
+            className={
+              activeSection === "LISTED" ? "nav-link active" : "nav-link"
+            }
             id="pills-contact-tab"
             type="button"
             onClick={() => onChangeActiveSection("LISTED")}
