@@ -10,7 +10,9 @@ import FOX_MASTER from "./contracts/FOX_MASTER.json";
 import FACTORY from "./contracts/FACTORY.json";
 import { authProvider } from "./web3ModalInteractor";
 
-let infura = "https://testnet-fx-json-web3.functionx.io:8545";
+let infura = process.env.REACT_APP_RPC_URL;
+
+
 export let web3Infura = new Web3(infura);
 // injectProvider
 export const authProviderInstance = authProvider();
@@ -18,25 +20,20 @@ export const authProviderInstance = authProvider();
 export const marketplaceContractAddress = "";
 export const ERC721ContractAddress = "";
 
-export const FIXEDContractAddress =
-  "0x50f29e8dcf778Cb25405Bb74218A10eB3460B622";
 
-export const ERC20ContractAddress =
-  "0x7A060167b9d9508896c04a506a0BFf4e6A1C37e7";
+export const FIXEDContractAddress = process.env.REACT_APP_FIXEDContractAddress;
 
-export const AUTIONContractAddress =
-  "0xB0BCED0883272Bda6fA4Ae45bB4a56624BC140e7";
+export const ERC20ContractAddress = process.env.REACT_APP_ERC20ContractAddress;
 
-export const LoaderContractAddress =
-  "0x4e749ecaa475888eE8df3B749f69f92Ec42Cc514";
+export const AUTIONContractAddress = process.env.REACT_APP_AUTIONContractAddress;
 
-export const OfferSystemAddress = "0x2d6e99Accd37f6A267943fdf005e3122A96F6b9D";
+export const LoaderContractAddress = process.env.REACT_APP_LoaderContractAddress;
 
-export const foxMasterCollectionAddress =
-  "0x2C9952D9CE9494cF63E16e398EcE65522651C41c";
+export const OfferSystemAddress = process.env.REACT_APP_OfferSystemAddress;
 
-export const factoryCollectionAddress =
-  "0xcc63AccC3d63e8e2f0075cfcd994197f7923233F";
+export const foxMasterCollectionAddress = process.env.REACT_APP_foxMasterCollectionAddress;
+
+export const factoryCollectionAddress = process.env.REACT_APP_factoryCollectionAddress;
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 

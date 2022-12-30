@@ -1,18 +1,17 @@
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { ethers, providers } from "ethers";
+import { providers } from "ethers";
 import Web3 from "web3";
 import Web3Modal from "web3modal";
 
 let provider = null;
 
-const STORAGE_PROVIDER = "STORAGE_PROVIDER"
 
 const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider,
     options: {
-      rpc: { 90001: "https://testnet-fx-json-web3.functionx.io:8545" },
-      infuraId: "9c7e70b4bf234955945ff87b8149926e",
+      rpc: { 90001: process.env.REACT_APP_RPC_URL },
+      infuraId: process.env.REACT_APP_INFURA_ID,
     },
   },
 };
@@ -45,7 +44,6 @@ export const authProvider = () => {
     },
 
     getInjectedWeb3: async () => {
-      console.log("########getInjectedWeb3##########");
       provider = await web3Modal.connect();
       return new Web3(provider);
     },

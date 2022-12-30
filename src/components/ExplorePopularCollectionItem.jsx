@@ -22,7 +22,6 @@ const ExplorePopularCollectionItem = ({ itemData }) => {
         setImageUrl(`data:image/png;base64,${base64}`);
       } else if (image.type) {
         let url = URL.createObjectURL(image);
-        console.log(url);
         setImageUrl(url);
       } else if (typeof image === "string") {
         setImageUrl(image);
@@ -35,7 +34,6 @@ const ExplorePopularCollectionItem = ({ itemData }) => {
 
     if (itemData && itemData.banner) {
       const banner = itemData.banner;
-      console.log(banner);
       if (banner.data) {
         const base64 = Buffer.from(banner.data.data).toString("base64");
         setBannerUrl(`data:image/png;base64,${base64}`);

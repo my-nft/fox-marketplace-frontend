@@ -17,7 +17,6 @@ const MONTHS_MAP = [
 
 export const getDaysForMonth = (month, year) => {
     let monthNum = MONTHS_MAP.indexOf(month);
-    console.log(monthNum)
     const days = [];
     const date = new Date(year, monthNum, 1);
     while (date.getMonth() === monthNum) {
