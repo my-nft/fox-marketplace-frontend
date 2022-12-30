@@ -41,7 +41,7 @@ const CollectionSettings = () => {
     setIsLoadingCollection(true);
     const response = await getCollectionByAddress(collectionAddress);
     const { data } = response;
-    const {collection} = data;
+    const {collection} = response;
     setCollectionDetails(collection);
     setImage(data.image);
     setBanner(data.banner);
