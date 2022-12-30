@@ -107,8 +107,5 @@ export async function loadFactoryContract() {
 }
 
 export const getCurrentWalletConnected = async () => {
-  const web3 = await authProviderInstance.getInjectedWeb3();
-
-  const accounts = await web3.eth.getAccounts();
-  return accounts[0];
+  return await authProviderInstance.connectedWallet();
 };
