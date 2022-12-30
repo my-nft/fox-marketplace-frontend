@@ -3756,6 +3756,15 @@ ul#buttonIcon {
   justify-content: space-between;
 }
 
+.propertyItem .checkBox {
+  min-width: unset;
+}
+
+.propertyItem p {
+  flex-grow: 2;
+  margin-right: 24px;
+}
+
 #WEB3_CONNECT_MODAL_ID {
   position: relative;
   z-index: 200000;
