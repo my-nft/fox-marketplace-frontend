@@ -106,7 +106,6 @@ const CollectionDetails = () => {
           page: pagination.page,
           numberElements: 20,
           categories: filters.categories,
-
           searchPrompt: filters.searchPrompt,
           status: filters.status,
           minPrice: filters.minPrice,
@@ -126,20 +125,7 @@ const CollectionDetails = () => {
     loadNFTs();
   }, [collectionDetails, filters]);
 
-  const initLoadNfts = async () => {
-    setIsLoadingNfts(true);
-    const nftsElements = await getCollectionNftsCall(
-      collectionDetails.collectionAddress,
-      {
-        page: pagination.page,
-        numberElements: 20,
-      }
-    );
-
-    setNfts(nftsElements.data);
-    setIsLoadingNfts(false);
-  };
-
+ 
   const changeSelectedView = (selection) => {
     setViewType(selection);
   };
@@ -158,7 +144,7 @@ const CollectionDetails = () => {
 
   useEffect(() => {
     if (collectionDetails) {
-      initLoadNfts();
+      loadNFTs();
     }
   }, [collectionDetails, pagination]);
 
@@ -182,7 +168,7 @@ const CollectionDetails = () => {
       toast.loading("Import progressing...");
       const interval = setInterval(() => {
         updateProcessing(interval);
-      }, 10000);
+      }, 30000);
       return () => {
         toast.clearWaitingQueue();
         toast.dismiss();

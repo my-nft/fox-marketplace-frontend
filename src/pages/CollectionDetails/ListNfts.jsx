@@ -39,11 +39,13 @@ const ListNfts = ({
               filters={filters}
               changeFilterValue={changeFilterValue}
             />
-            {/* <AccordingCollection filters={filters} changeFilterValue={changeFilterValue} /> */}
+            {/* <AccordingCollection filters={filters} changeFilterValue={changeFilterValue} /> 
             <AccordionCategory
               filters={filters}
               changeFilterValue={changeFilterValue}
             />
+            */
+          }
             <AccordionPropertiesFilter
               filters={filters}
               changeFilterValue={changeFilterValue}
