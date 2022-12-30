@@ -94,7 +94,10 @@ const NonListedMyNft = ({
                       ? "btn orangeBg m-2 active"
                       : "btn orangeBg m-2 deactive"
                   }
-                  onClick={() => setType(AUCTION)}
+                  onClick={() => {
+                    setShowPicker(true);
+                    setType(AUCTION);
+                  }}
                 >
                   Timed auction
                 </button>

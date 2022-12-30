@@ -2914,6 +2914,23 @@ input[type="number"]:focus-within {
   margin-bottom: 24px;
 }
 
+.timeEntry p {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: rgba(255, 255, 255, 0.6) !important;
+  height: 100%;
+  font-size: 60px;
+  padding: 0;
+  text-align: center;
+  transition: 300ms ease-in-out;
+  box-shadow: 0 3px 2px rgba(0, 0, 0, 0.65);
+  background: #131313;
+  width: 80px;
+  border-radius: 8px;
+  border: none !important;
+}
+
 .selectTime {
   display: flex;
   align-items: center;
@@ -2932,19 +2949,23 @@ input[type="number"]:focus-within {
   width: 80px;
   border-radius: 8px;
   border: none !important;
-  background: #131313;
-  color: rgba(254, 254, 254, 0.6);
+  background: transparent;
+  color: transparent;
   font-size: 64px;
   padding: 0;
   text-align: center;
   transition: 300ms ease-in-out;
   box-shadow: 0 3px 2px rgba(0, 0, 0, 0.65);
-}
-
-.timeEntry input:focus {
+  position: relative;
+  z-index: 10003;
   border: none !important;
   outline: none !important;
-  color: #fefefe;
+}
+
+.timeEntry:focus-within p {
+  border: none !important;
+  outline: none !important;
+  color: #fefefe !important;
   transform: scale(1.05);
 }
 
