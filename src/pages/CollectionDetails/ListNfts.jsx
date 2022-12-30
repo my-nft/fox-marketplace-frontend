@@ -4,7 +4,8 @@ import AccordingCollection from "../Explorer/AccordingCollection";
 import AccordionCategory from "./AccordionCategory";
 import MostPopularItem from "../../components/marketplace/MostPopularItem";
 import ListActivities from "./ListActivities";
-import AccordionPropertiesFilter from "../Explorer/PropertiesFilter";
+import AccordionPropertiesFilter from "./PropertiesFilter";
+import Pagination from "../../components/pagination/pagination";
 
 const ListNfts = ({
   nfts,
@@ -13,6 +14,10 @@ const ListNfts = ({
   handleSelectNfts,
   filters,
   changeFilterValue,
+  isLoadingNfts = { isLoadingNfts },
+  totalElements,
+  changePage,
+  paginationPage,
 }) => {
   return (
     <section id="tabsNft" className="container-fluid accountListed">
@@ -34,11 +39,13 @@ const ListNfts = ({
               filters={filters}
               changeFilterValue={changeFilterValue}
             />
-            {/* <AccordingCollection filters={filters} changeFilterValue={changeFilterValue} /> */}
+            {/* <AccordingCollection filters={filters} changeFilterValue={changeFilterValue} /> 
             <AccordionCategory
               filters={filters}
               changeFilterValue={changeFilterValue}
             />
+            */
+          }
             <AccordionPropertiesFilter
               filters={filters}
               changeFilterValue={changeFilterValue}
@@ -47,28 +54,37 @@ const ListNfts = ({
           </div>
         </div>
 
-        <div className="col" id="wrapperNFT">
-          <div className="tab-content" id="pills-tabContent">
-            <div
-              className="tab-pane fade show active"
-              id="pills-Items"
-              role="tabpanel"
-              aria-labelledby="pills-Items"
-            >
-              <div className="wrapperMostPopular row">
-                {nfts.map((item, index) => (
-                  <MostPopularItem
-                    key={index}
-                    item={item}
-                    viewType={viewType}
-                    onSelectNfts={handleSelectNfts}
+        {!isLoadingNfts && (
+          <div className="col" id="wrapperNFT">
+            <div className="tab-content" id="pills-tabContent">
+              <div
+                className="tab-pane fade show active"
+                id="pills-Items"
+                role="tabpanel"
+                aria-labelledby="pills-Items"
+              >
+                <div className="wrapperMostPopular row">
+                  {nfts.map((item, index) => (
+                    <MostPopularItem
+                      key={index}
+                      item={item}
+                      viewType={viewType}
+                      onSelectNfts={handleSelectNfts}
+                    />
+                  ))}
+                </div>
+                {totalElements / 20 > 1 ? (
+                  <Pagination
+                    currentPage={paginationPage}
+                    pages={totalElements ? parseInt(totalElements / 20) : 1}
+                    setCurrentPage={changePage}
                   />
-                ))}
+                ) : null}
               </div>
+              <ListActivities />
             </div>
-            <ListActivities />
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

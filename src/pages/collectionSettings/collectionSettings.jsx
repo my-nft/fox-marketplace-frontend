@@ -39,9 +39,10 @@ const CollectionSettings = () => {
 
   const init = async () => {
     setIsLoadingCollection(true);
-    const collection = await getCollectionByAddress(collectionAddress);
-    const { data } = collection;
-    setCollectionDetails(data);
+    const response = await getCollectionByAddress(collectionAddress);
+    const { data } = response;
+    const {collection} = response;
+    setCollectionDetails(collection);
     setImage(data.image);
     setBanner(data.banner);
     setIsLoadingCollection(false);

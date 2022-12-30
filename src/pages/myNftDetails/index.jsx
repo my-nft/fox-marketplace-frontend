@@ -40,10 +40,11 @@ const MyNftDetails = () => {
   const loadNft = async () => {
     try {
       dispatch(setIsLoading(true));
+      console.log("HERRE");
       const nft = await getNftCall(collectionAddress, tokenID);
       const collection = await getCollectionByAddress(collectionAddress);
       setNftDetails(nft.data);
-      setCollectionDetails(collection.data);
+      setCollectionDetails(collection.data.collection);
     } finally {
       dispatch(setIsLoading(false));
     }

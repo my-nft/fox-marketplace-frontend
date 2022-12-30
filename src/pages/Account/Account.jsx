@@ -16,7 +16,10 @@ import {
   LOAD_USER,
 } from "../../saga/actions";
 import Pagination from "../../components/pagination/pagination";
-import { selectConnectedUser, selectCurrentWallet } from "../../redux/userReducer";
+import {
+  selectConnectedUser,
+  selectCurrentWallet,
+} from "../../redux/userReducer";
 
 const AccountPage = () => {
   const [visible, setVisible] = useState(false);
@@ -28,7 +31,7 @@ const AccountPage = () => {
   let content = [];
   let totalElements = 0;
 
-  if(activeSection === 'COLLECTIONS') {
+  if (activeSection === "COLLECTIONS") {
     content = collections?.content || [];
     totalElements = collections?.totalElements || 0;
   } else {
@@ -43,15 +46,12 @@ const AccountPage = () => {
 
   const [filters, setFilters] = useState({
     searchPrompt: "",
-    buyNow: false,
-    isAuction: false,
-    isNew: false,
-    hasOffers: false,
-    buyWithCard: false,
+
     minPrice: 0,
     maxPrice: 0,
     buyToken: "ETH",
     categories: [],
+    status: [],
     sortBy: "RECENTLY_LISTED",
   });
 
@@ -124,7 +124,7 @@ const AccountPage = () => {
   }, [activeSection]);
 
   useEffect(() => {
-    if(connectedWallet) {
+    if (connectedWallet) {
       dispatch({
         type: LOAD_USER,
         payload: connectedWallet,
@@ -156,11 +156,11 @@ const AccountPage = () => {
             filters={filters}
             changeFilterValue={setFilters}
           />
-            <Pagination
-              currentPage={pagination.page}
-              setCurrentPage={changePage}
-              pages={totalElements ? Math.ceil(totalElements / 20) : 1}
-            />
+          <Pagination
+            currentPage={pagination.page}
+            setCurrentPage={changePage}
+            pages={totalElements ? Math.ceil(totalElements / 20) : 1}
+          />
         </>
       )}
       <span className="d-block mt-4 mb-5"></span>
