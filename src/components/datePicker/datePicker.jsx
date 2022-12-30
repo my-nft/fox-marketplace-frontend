@@ -58,6 +58,13 @@ const CustomDatePicker = ({
     dateSetAction(dateObj);
   };
 
+  const toDoubleDigits = (num) => {
+    if (num < 10) {
+      return "0" + num;
+    }
+    return num;
+  };
+
   useState(() => {
     if (!showPicker) {
       setDateState({
@@ -101,6 +108,7 @@ const CustomDatePicker = ({
                   onChange={(e) => handleTimeChange(e, 23)}
                   maxLength={2}
                 />
+                <p>{toDoubleDigits(dateState.hour)}</p>
               </label>
               <span>:</span>
               <label htmlFor="time" className="timeEntry">
@@ -116,6 +124,7 @@ const CustomDatePicker = ({
                   onChange={(e) => handleTimeChange(e, 59)}
                   maxLength={2}
                 />
+                <p>{toDoubleDigits(dateState.minute)}</p>
               </label>
             </div>
             <div className="selectDate">
