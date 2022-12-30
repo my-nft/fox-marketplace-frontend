@@ -2,19 +2,16 @@ import { Link } from "react-router-dom";
 import { optimizeWalletAddress, sameAddress } from "../../utils/walletUtils";
 
 import { ReactComponent as SettingsIcon } from "../../assets/icons/settings.svg";
-import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 
 import collectionBannerPlaceholder from "../../assets/images/Popluar.jpg";
 import collectionImagePlaceholder from "../../assets/images/nft_test.jpg";
+import { selectCurrentWallet } from "../../redux/userReducer";
+import { useSelector } from "react-redux";
+import Address from "../../components/Address";
 
 const HeaderAccount = ({ collectionData }) => {
   const { image, banner } = collectionData;
-
-  const blocExplorerUri = process.env.REACT_APP_BLOCEXPLORER;
-
-  const onClickExternal = () => {
-    window.location.href = `${blocExplorerUri}${collectionData.collectionAddress}`;
-  };
+  const currentWallet = useSelector(selectCurrentWallet);
 
   const displayValue = (value) => {
     if (value) return value;
@@ -38,13 +35,10 @@ const HeaderAccount = ({ collectionData }) => {
       <div className="row p-4 mt-5" id="infoHeader">
         <div id="accountName">
           <p>{collectionData.name}</p>
-          <span
-            id="accountWallet"
-            onClick={() => {
-              onClickExternal();
-            }}
-          >
-            {optimizeWalletAddress(collectionData.collectionAddress)}
+          <span id="accountWallet">
+            <Address address={collectionData.collectionAddress}>
+              {optimizeWalletAddress(collectionData.collectionAddress)}
+            </Address>
           </span>
           <span className="dataLastVisit">
             {" "}
@@ -115,12 +109,12 @@ const HeaderAccount = ({ collectionData }) => {
           </ul>
         </div>
         <div className="row align-items-start">
-          {sameAddress(
-            collectionData.ownerAddress,
-            getCurrentWalletConnected()
-          ) ? (
+          {sameAddress(collectionData.ownerAddress, currentWallet) ? (
             <>
-              <Link to={`/single-nft?collectionAddress=${collectionData.collectionAddress}`} className="addNFTLink">
+              <Link
+                to={`/single-nft?collectionAddress=${collectionData.collectionAddress}`}
+                className="addNFTLink"
+              >
                 Add NFT to collection
               </Link>
               <Link

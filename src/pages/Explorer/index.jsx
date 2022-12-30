@@ -1,26 +1,28 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { getCollectionsCall } from "../../api/collectionApi";
 import { getListedNfts } from "../../api/nftApi";
 import HeaderInput from "../../components/marketplace/HeaderInput";
 import Pagination from "../../components/pagination/pagination";
 import Spinner from "../../components/Spinner";
 
-import { LOAD_MARKET_PLACE } from "../../saga/actions";
 import AccordingCollection from "./AccordingCollection";
 import AccordingStatus from "./AccordingStatus";
 import AccordionPrice from "./AccordionPrice";
 import MostPopular from "./MostPopular";
 import MostPopularCollection from "./MostPopularCollection";
-import AccordionPropertiesFilter from "./PropertiesFilter";
+import { availableProperties } from "./properties";
+import { scrollTop } from "../../components/scrollToTop";
+
+const INIT_PAGINATION = {
+  numberElements: 20,
+  page: 1,
+};
 
 const Explorer = () => {
-  const dispatch = useDispatch();
-
-
   const [isLoadingState, setIsLoadingState] = useState(true);
   const [isLoadingMspl, setIsLoadingMspl] = useState(true);
-  const [isLoadingSearcheableState, setIsLoadingSearcheableState] = useState(true);
+  const [isLoadingSearcheableState, setIsLoadingSearcheableState] =
+    useState(true);
 
   const [searcheableCollections, setSearcheableCollections] = useState([]);
   const [mostPopularCollections, setMostPopularCollections] = useState([]);
@@ -30,23 +32,18 @@ const Explorer = () => {
 
   const [filtersVisible, setFiltersVisible] = useState(false);
 
-  const [pagination, setPagination] = useState({
-    numberElements: 20,
-    page: 1,
-  });
-
+  const [pagination, setPagination] = useState(INIT_PAGINATION);
 
   const [filters, setFilters] = useState({
-    minPrice: 0,
-    maxPrice: 0,
-    buyToken: "ETH",
-    status: "ALL",
-    showRaritiy: false,
     sortBy: "RECENTLY_LISTED",
     collection: "",
-    properties: [],
+    properties: availableProperties,
+    collectionAddress: undefined,
+    status: [],
+    minPrice: undefined,
+    maxPrice: undefined,
+    buyToken: "ETH",
   });
-
 
   const loadMostPopular = async () => {
     setIsLoadingMspl(true);
@@ -54,17 +51,24 @@ const Explorer = () => {
       numberElements: pagination.numberElements,
       page: pagination.page,
     });
-    const {data} = mostPopular;
+    const { data } = mostPopular;
     setMostPopularCollections(data.content);
     setIsLoadingMspl(false);
   };
-  
+
   const loadListedNfts = async () => {
     setIsLoadingState(true);
-    const listedNfts = await getListedNfts(pagination.page, pagination.numberElements)
+    const listedNfts = await getListedNfts(
+      pagination.page,
+      pagination.numberElements,
+      filters.status,
+      filters.collectionAddress,
+      filters.minPrice,
+      filters.maxPrice
+    );
     setNfts(listedNfts.data);
     setIsLoadingState(false);
-  }
+  };
 
   const loadSearchable = async () => {
     setIsLoadingSearcheableState(true);
@@ -73,26 +77,38 @@ const Explorer = () => {
       page: pagination.page,
     });
 
-    const {data} = searchableCollections;
+    const { data } = searchableCollections;
     setSearcheableCollections(data?.content);
     setIsLoadingSearcheableState(false);
-  }
-
-
+  };
 
   useEffect(() => {
     loadMostPopular();
     loadListedNfts();
     loadSearchable();
+  }, []);
+
+  useEffect(() => {
+    loadListedNfts();
   }, [pagination]);
 
   const changePage = (page) => {
-    if (page < 1 || page > parseInt(totalElements / 20)) return;
+    if (page < 1 || page > Math.ceil(totalElements / 20)) return;
     setPagination({
       ...pagination,
       page,
     });
+    scrollTop();
   };
+
+  useEffect(() => {
+    console.log(filters);
+    if (pagination === INIT_PAGINATION) {
+      loadListedNfts();
+    } else {
+      setPagination(INIT_PAGINATION);
+    }
+  }, [filters]);
 
   return (
     <>
@@ -129,13 +145,6 @@ const Explorer = () => {
                   changeFilterValue={setFilters}
                 />
               )}
-
-              <AccordionPropertiesFilter
-                availableProperties={["Lmao", "Test"]}
-                filters={filters}
-                propertiesFilter={filters.properties}
-                changeFilterValue={setFilters}
-              />
             </div>
           </div>
           <div id="dx" className={`explorerItems ml-4`}>
@@ -156,13 +165,11 @@ const Explorer = () => {
               />
             )}
 
-            {totalElements && parseInt(totalElements / 20) > 0 ? (
-              <Pagination
-                pages={totalElements ? parseInt(totalElements / 20) : 1}
-                currentPage={pagination.page}
-                setCurrentPage={changePage}
-              />
-            ) : null}
+            <Pagination
+              pages={totalElements ? Math.ceil(totalElements / 20) : 1}
+              currentPage={pagination.page}
+              setCurrentPage={changePage}
+            />
           </div>
         </div>
       </section>

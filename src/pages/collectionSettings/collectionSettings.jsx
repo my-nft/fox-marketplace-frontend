@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { ReactComponent as Clipboard } from "../../assets/icons/clipboard.svg";
+import { ReactComponent as Chevron } from "../../assets/icons/arrow.svg";
 
 import SettingsImages from "./settingsImages";
 import Socials from "./socials";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getCollectionByAddress } from "../../api/collectionApi";
 import Spinner from "../../components/Spinner";
 import { useDispatch } from "react-redux";
@@ -38,9 +39,10 @@ const CollectionSettings = () => {
 
   const init = async () => {
     setIsLoadingCollection(true);
-    const collection = await getCollectionByAddress(collectionAddress);
-    const { data } = collection;
-    setCollectionDetails(data);
+    const response = await getCollectionByAddress(collectionAddress);
+    const { data } = response;
+    const {collection} = response;
+    setCollectionDetails(collection);
     setImage(data.image);
     setBanner(data.banner);
     setIsLoadingCollection(false);
@@ -99,6 +101,15 @@ const CollectionSettings = () => {
     <Spinner />
   ) : (
     <div id="createCollection">
+      <Link
+        to={`
+      /collection/${collectionAddress}
+      `}
+        className="returnLink"
+      >
+        <Chevron />
+        Return to Collection
+      </Link>
       <h2 className="collectionSettingsTitle">Collection Settings</h2>
       <div className="collectionUpdateSettings">
         <SettingsImages

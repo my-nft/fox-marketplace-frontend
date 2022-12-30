@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { LOAD_NFT_DETAIL } from "../../saga/actions";
+import { selectCurrentWallet } from "../../redux/userReducer";
 import { getAuctionInfos, getPriceByListing } from "../../services/listingNft";
-import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 import { sameAddress } from "../../utils/walletUtils";
 
 const MostPopularItem = ({ viewType, item }) => {
+  const walletAddress = useSelector(selectCurrentWallet);
+
   let styleList = {};
   let styleWrappedText = {};
 
@@ -39,24 +40,27 @@ const MostPopularItem = ({ viewType, item }) => {
 
   const [itemInfos, setItemInfos] = useState({});
   const [dateTime, setDateTime] = useState(new Date());
-  const navigate = useNavigate();
   const [price, setPrice] = useState(0);
-
-  const walletAddress = getCurrentWalletConnected();
 
   const init = async () => {
     const infos = await getAuctionInfos(item.auctionId);
     setItemInfos(infos);
+  };
 
+  const loadInfoPricing = async () => {
     if (item.listingType === AUCTION) {
       setPrice(
-        itemInfos?.currentBidPrice ? itemInfos.currentBidPrice / 10 ** 18 : null
+        itemInfos?.currentBidPrice ? itemInfos.currentBidPrice / 10**18 : null
       );
     } else if (item.listingType === FIXED_PRICE) {
       const priceSmt = await getPriceByListing(item.listingId);
       setPrice(priceSmt);
     }
   };
+
+  useEffect(() => {
+    loadInfoPricing();
+  }, [itemInfos]);
 
   useEffect(() => {
     init();
@@ -70,10 +74,12 @@ const MostPopularItem = ({ viewType, item }) => {
     };
   }, []);
 
-  const onSelectNfts = () => {
-    navigate(`/collection/${item.collectionAddress}/${item.tokenID}`, {
-      target: "_blank",
-    });
+  const toDoubleDigits = (num) => {
+    num += "";
+    if (num.length === 1) {
+      num = "0" + num;
+    }
+    return num;
   };
 
   const calculateTimeLeftBeforeExpiration = (expirationDate, dateNow) => {
@@ -101,19 +107,19 @@ const MostPopularItem = ({ viewType, item }) => {
       };
 
       if (timeLeft.days > 0) {
-        output += timeLeft.days + "d ";
+        output += toDoubleDigits(timeLeft.days) + "d ";
       }
 
       if (timeLeft.hours > 0) {
-        output += timeLeft.hours + "h ";
+        output += toDoubleDigits(timeLeft.hours) + "h ";
       }
 
       if (timeLeft.minutes > 0) {
-        output += timeLeft.minutes + "m ";
+        output += toDoubleDigits(timeLeft.minutes) + "m ";
       }
 
       if (timeLeft.seconds > 0) {
-        output += timeLeft.seconds + "s";
+        output += toDoubleDigits(timeLeft.seconds) + "s";
       }
     } else {
       output = "Expired";
@@ -148,14 +154,14 @@ const MostPopularItem = ({ viewType, item }) => {
             className="bigImage"
             alt=""
           />
-          {sameAddress(item.ownerAddress,walletAddress) && (
+          {sameAddress(item.ownerAddress, walletAddress) && (
             <p className="ownedItem">Owned by you</p>
           )}
         </div>
         <div className="wrappedAllText" style={styleWrappedText}>
           <div className="wrapText bg">
             <div className="nameItem">
-              <span className="name">{item.name}</span>
+              <span className="name">{item.name ? item.name : "-"}</span>
               <span>
                 <img
                   src={item.image}
@@ -168,23 +174,33 @@ const MostPopularItem = ({ viewType, item }) => {
               </span>
             </div>
           </div>
-          <p className="nItem">#{item.id}</p>
+          {/* <p className="nItem">#{item.id}</p> */}
           <div className="wrapText">
-            {price ? (
+            {(price && timeEnd !== "Expired") ||
+            (price && item.listingType === FIXED_PRICE) ? (
               <p>
                 <label>Price</label>
                 <span className="orange">
-                  <b>f(x)</b> {price}
+                  <b>FXG</b> {price}
                 </span>
               </p>
-            ) : null}
-
+            ) : (
+              <p>
+                <label>Price</label>
+                <span className="orange">
+                  <b>FXG</b> -
+                </span>
+              </p>
+            )}
+          </div>
+          <div className="wrapText">
             <p>
               {item.listingType === AUCTION && (
                 <span>
                   {timeEnd === "Expired" ? "Ended" : <>Ends in {timeEnd}</>}
                 </span>
               )}
+              {item.listingType === FIXED_PRICE && <span>Fixed Price</span>}
             </p>
           </div>
         </div>

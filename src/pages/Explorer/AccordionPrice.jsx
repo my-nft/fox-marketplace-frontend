@@ -1,42 +1,20 @@
 import { useState } from "react";
+import CustomSelect from "../../components/Select";
 
-const AccordionPrice = ({filters, changeFilterValue}) => {
-
+const AccordionPrice = ({ filters, changeFilterValue }) => {
   const [prices, setPrices] = useState({
     minPrice: filters.minPrice,
-    maxPrice: filters.maxPrice
+    maxPrice: filters.maxPrice,
   });
   const [token, setToken] = useState(filters.buyToken);
 
-  const processNumberInput = (key,e) => {
+  const processNumberInput = (key, e) => {
     const value = e.target.value;
-
-    if(key === "minPrice" && value > prices.maxPrice) {
-      console.log("Min price is greater than max price")
-      return;
-    }
-    else if(key === "maxPrice" && value < prices.minPrice) {
-      console.log("Max price is less than min price")
-      return;
-    }
-
-    if (value === "") {
-      console.log("Is empty")
-      setPrices({
-        ...prices,
-        [key]: Number(value)
-      })
-      return;
-    }
-    if (isNaN(value)) {
-      console.log("is NAN")
-      return;
-    }
     setPrices({
       ...prices,
-      [key]: Number(value)
-    })
-  }
+      [key]: parseInt(value),
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,8 +22,6 @@ const AccordionPrice = ({filters, changeFilterValue}) => {
       ...filters,
       "minPrice": prices.minPrice,
       "maxPrice": prices.maxPrice,
-      "buyToken": token
-
     })
 
   }
@@ -84,17 +60,39 @@ const AccordionPrice = ({filters, changeFilterValue}) => {
           aria-labelledby="headingTwo"
           data-parent="#accordionPrice"
         >
-          <form onSubmit={(e) => handleSubmit(e)}  className="card-body">
+          <form onSubmit={(e) => handleSubmit(e)} className="card-body">
             <div id="wrapperNumber">
-              <input type="number" placeholder="Min" min="0" max="15000" value={prices.minPrice} onInput={(e) => processNumberInput("minPrice",e)}  />
+              <input
+                type="number"
+                placeholder="Min"
+                min="0"
+                max="15000"
+                value={prices.minPrice}
+                onInput={(e) => processNumberInput("minPrice", e)}
+              />
               <span>to</span>
-              <input type="number" placeholder="Max" min="0" max="15000" value={prices.maxPrice} onInput={(e) => processNumberInput("maxPrice",e)}  />
-              <select value={token} onChange={(e) => setToken(e.target.value)} >
+              <input
+                type="number"
+                placeholder="Max"
+                min="0"
+                max="15000"
+                value={prices.maxPrice}
+                onInput={(e) => processNumberInput("maxPrice", e)}
+              />
+              {/* <select value={token} onChange={(e) => setToken(e.target.value)} >
                 <option value="ETH" >ETH</option>
                 <option value="DOGE" >DOGE</option>
-              </select>
+              </select> */}
+              <CustomSelect
+                options={[
+                  { value: "ETH", label: "ETH" },
+                  { value: "DOGE", label: "DOGE" },
+                ]}
+                value={{ value: token, label: token }}
+                onChange={(e) => setToken(e.value)}
+              />
             </div>
-            <button type='submit'>Apply</button>
+            <button type="submit">Apply</button>
           </form>
         </div>
       </div>

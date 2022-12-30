@@ -246,6 +246,23 @@ header a {
   border-radius: 20px;
   margin-right: 25px;
   font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#signUpButton span {
+  background-color: #fefefe;
+  border-radius: 48px;
+  width: 1.3px;
+  height: 14px;
+  display: block;
+  content: "";
+}
+
+#signUpButton svg {
+  width: 19px;
+  height: 19px;
 }
 
 /* #loginButton {
@@ -358,6 +375,7 @@ ul#buttonIcon {
   height: 80vh;
   top: -15vh;
   left: 0;
+  z-index: -1;
 }
 
 #overlayTop {
@@ -484,8 +502,8 @@ td span {
 
 .slick-slide {
   margin: 0 10px;
-  height: 50vh;
-  padding: 5vh 0;
+  height: 100%;
+  padding: 0;
 }
 
 .slick-slide a {
@@ -855,7 +873,6 @@ footer a:hover {
 #marketplace #openClose {
   width: 72px;
   background: #0a0b0e;
-  margin-right: 24px;
 }
 
 #marketplace #headerInput {
@@ -864,7 +881,7 @@ footer a:hover {
 }
 
 #marketplace #headerInput > select {
-  margin-left: 32px;
+  margin-left: 32px !important;
 }
 
 #marketplace #headerInput > select,
@@ -925,6 +942,7 @@ footer a:hover {
 
 .wrapText label {
   display: block;
+  margin-bottom: 0.3rem;
 }
 
 .wrapText span {
@@ -938,7 +956,7 @@ footer a:hover {
 
 #marketplace {
   width: 95vw;
-  margin-top: 56px;
+  margin-top: 16px;
 }
 
 #command {
@@ -1260,23 +1278,34 @@ footer a:hover {
 #wrapperNumber {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   flex-wrap: wrap;
 }
 
-#wrapperNumber span {
-  padding: 0px 15px;
+#wrapperNumber > div {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  background-color: #15191d;
+}
+
+#wrapperNumber > div > div {
+  border-bottom: none !important;
+}
+
+#wrapperNumber > div > div > div:first-of-type > div {
+  height: unset;
 }
 
 #wrapperNumber input {
   overflow: visible;
-  max-width: 30%;
+  max-width: 40%;
   padding: 12px;
   border-radius: 10px;
   border: none;
   background-color: #15191d;
   color: white;
-  margin-right: 5px;
 }
 
 #wrapperNumber select,
@@ -1391,7 +1420,6 @@ input[type="radio"] {
 }
 
 #tabsNft .listMostPopular {
-  width: calc(100% / 6);
   min-width: 230px;
 }
 
@@ -1669,6 +1697,10 @@ img.withGlow.active {
   display: none;
 }
 
+#createCollection {
+  position: relative;
+}
+
 #createCollection input.form-control,
 #createCollection textarea,
 #createCollection select {
@@ -1710,18 +1742,11 @@ img.withGlow.active {
   margin-top: 30px;
   padding: 10px 35px;
   border-radius: 15px;
+  outline: none;
+  border: none;
 }
 
 /*Account*/
-
-#accountWallet {
-  cursor: pointer;
-  transition: 300ms ease-in-out;
-}
-
-#accountWallet:hover {
-  color: #f58103;
-}
 
 #headerAccount {
   color: white;
@@ -2443,6 +2468,10 @@ s #accordionListing table tr,
   font-size: 18px;
 }
 
+#accountName {
+  max-width: 70%;
+}
+
 #accountName .description {
   font-size: 16px;
   margin-top: 15px;
@@ -2464,7 +2493,7 @@ s #accordionListing table tr,
 .paginationWrapper .paginationAction {
   cursor: pointer;
   transition: 300ms ease-in-out;
-  color: #212529;
+  color: rgba(255, 255, 255, 0.3);
 }
 
 .paginationWrapper .paginationAction:hover {
@@ -2484,6 +2513,8 @@ s #accordionListing table tr,
   margin: 0 8px;
   cursor: pointer;
   transition: 300ms ease-in-out;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 600;
 }
 
 .paginationPage:hover {
@@ -2539,11 +2570,14 @@ input[type="number"]:focus-within {
 
 .filtersExplorer {
   width: 100%;
+  min-width: 400px;
+  max-width: 400px;
 }
 
 .filtersHide.filtersExplorer {
   max-width: 0 !important;
   margin-right: 0 !important;
+  min-width: 0;
 }
 
 .filtersContainer #openClose {
@@ -3266,6 +3300,7 @@ input:read-only {
   max-width: 1140px;
   width: 100%;
   margin: 0 auto 96px;
+  position: relative;
 }
 
 .collectionSettingsTitle {
@@ -3556,6 +3591,7 @@ ul#buttonIcon {
 
 .slickArrowsContainer {
   position: relative;
+  margin-top: 24px;
 }
 
 .slickArrow {
@@ -3606,7 +3642,7 @@ ul#buttonIcon {
 }
 
 .nft .wrapText {
-  padding-top: 16px;
+  padding: 8px;
 }
 
 .nft .wrappedAllText {
@@ -3651,4 +3687,245 @@ ul#buttonIcon {
 
 #createCollection input[name="royaltyAddress"] {
   height: 54px;
+}
+
+.propertyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  cursor: pointer;
+  padding: 8px 12px 8px 16px;
+}
+
+.propertyHeader p {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fefefe;
+  margin: 0;
+}
+
+.propertyStatus {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.propertyStatus p {
+  font-size: 16px;
+  color: #fefefe;
+  margin: 0;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.propertyStatus p span:first-of-type {
+  opacity: 0.6;
+}
+
+.propertyHeader svg {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  margin-left: 16px;
+  transition: 300ms ease-in-out;
+  transform: rotate(-90deg);
+}
+
+.propertyCollapsed .propertyHeader svg {
+  transform: rotate(90deg);
+}
+
+.propertyItems {
+  max-height: 0;
+  overflow: hidden;
+  transition: 300ms ease-in-out;
+}
+
+.propertyCollapsed .propertyItems {
+  max-height: 3000px;
+}
+
+.propertyItem {
+  padding: 8px 0 8px 24px;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#WEB3_CONNECT_MODAL_ID {
+  position: relative;
+  z-index: 200000;
+}
+
+.pageStatistics {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  z-index: 2000;
+}
+
+.statsIcon {
+  padding: 12px;
+  height: 48px;
+  width: 48px;
+  background: #15191d;
+  border: 2px solid #f58103;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.statsIcon svg {
+  transform: translateY(-3px);
+}
+
+.statsIcon svg path {
+  fill: #f58103;
+  transition: 300ms ease-in-out;
+}
+
+.statsIcon svg line {
+  opacity: 0;
+  transition: 300ms ease-in-out;
+  stroke: #f58103;
+}
+
+/* .statsIcon:hover svg path:first-of-type {
+  transform: translateY(-72px);
+}
+
+.statsIcon:hover svg path:last-of-type {
+  transform: translateX(72px);
+}
+
+.statsIcon:hover svg line {
+  opacity: 1;
+} */
+
+.statsText p {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.statsText {
+  width: 240px;
+  border: 2px solid #f58103;
+  border-radius: 8px;
+  background: #131313;
+  color: #fff;
+  white-space: nowrap;
+
+  transition: 400ms ease-in-out;
+  transition-delay: 100ms;
+  max-width: 0;
+  max-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+.statsText p span {
+  color: #f58103;
+}
+
+.statsText h4 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  padding: 0 0 12px;
+  border-bottom: 1px solid #f58103;
+}
+
+.pageStatistics:hover .statsText {
+  max-width: 240px;
+  max-height: 560px;
+  visibility: visible;
+  margin-top: 12px;
+  padding: 12px 24px;
+}
+
+.pageStatistics .statsText * {
+  opacity: 0;
+  transition: 300ms ease-in-out;
+}
+
+.pageStatistics:hover .statsText * {
+  opacity: 1;
+}
+
+.returnLink {
+  position: absolute;
+  top: 20px;
+  left: 20%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.3);
+  transition: 500ms ease-in-out;
+}
+
+.returnLink:hover {
+  color: #f58103;
+}
+
+.returnLink svg {
+  width: 20px;
+  height: 20px;
+  opacity: 0.3;
+  transition: 500ms ease-in-out;
+}
+
+.returnLink svg path {
+  fill: #fff;
+  transition: 500ms ease-in-out;
+}
+
+.returnLink:hover svg {
+  opacity: 1;
+}
+
+.returnLink:hover svg path {
+  fill: #f58103;
+}
+
+.addressLink {
+  color: #f58103 !important;
+  position: relative;
+}
+
+.addressLink::before {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #f58103;
+  max-width: 0;
+  transition: 300ms ease-in-out;
+}
+
+.addressLink:hover::before {
+  max-width: 100%;
+}
+
+.profileWallet {
+  padding: 10px;
+  background: #130f0a;
+  border-radius: 10px;
+  display: block;
+  width: 100%;
+  border: 1px solid transparent;
+  transition: 300ms ease-in-out;
+}
+
+.profileWallet::before {
+  display: none;
+}
+
+.profileWallet:hover {
+  border: 1px solid #f58103;
 }

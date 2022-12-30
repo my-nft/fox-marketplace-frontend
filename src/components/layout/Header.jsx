@@ -4,25 +4,55 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
-  connectWallet,
-  getCurrentWalletConnected,
-} from "../../interactors/blockchainInteractor";
-import { selectConnectedUser } from "../../redux/userReducer";
-import { LOAD_USER } from "../../saga/actions";
-import { loadERC20Contract, web3 } from "../../utils/blockchainInteractor";
+  authProviderInstance,
+  loadERC20Contract,
+  web3Infura,
+} from "../../utils/blockchainInteractor";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 import ScrollToTop from "../scrollToTop";
 import useOutsideClick from "./../../utils/useOutsideClick";
 import SearchBar from "./../searchBar/searchBar";
+
+import { ReactComponent as LogoutIcon } from "../../assets/icons/exit.svg";
+
+import { selectCurrentWallet } from "../../redux/userReducer";
+import { LOAD_USER } from "../../saga/actions";
 
 const Header = () => {
   const clickRef = useOutsideClick(() => {
     document.querySelector(".navbar-collapse").classList.remove("show");
   });
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [connectedWallet, setConnectedWallet] = useState();
+  const userAddress = useSelector(selectCurrentWallet);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setConnectedWallet(userAddress);
+  }, [userAddress]);
+
+  const connect = async () => {
+      const connectedWallet = await authProviderInstance.login();
+      authProviderInstance.addListners({
+        clearSession: () =>
+          dispatch({
+            type: "DESTROY_SESSION",
+          }),
+      });
+      dispatch({
+        type: LOAD_USER,
+        payload: connectedWallet,
+      });
+    
+  };
+
+  const disconnect = async () => {
+    await authProviderInstance.logout();
+    dispatch({
+      type: "DESTROY_SESSION",
+    });
+  }
+
   const [balance, setBalance] = useState({
     fx: 0,
     fxg: 0,
@@ -31,59 +61,11 @@ const Header = () => {
     searchPrompt: "",
   });
 
-  const handleSignIn = async () => {
-    await connectWallet();
-    setConnectedWallet(getCurrentWalletConnected());
-  };
-
-  useEffect(() => {
-    if (connectedWallet) {
-      dispatch({
-        type: LOAD_USER,
-        payload: connectedWallet,
-      });
-    } else {
-      connectWallet();
-      setConnectedWallet(getCurrentWalletConnected());
-    }
-  }, [connectedWallet]);
-
-  const cleanSession = () => {
-    dispatch({ type: "DESTROY_SESSION" });
-    navigate("/");
-  };
-
-  const addWalletListener = () => {
-    window.ethereum.on("accountsChanged", async (accounts) => {
-      cleanSession();
-      handleSignIn();
-    });
-
-    window.ethereum.on("disconnect", async (accounts) => {
-      cleanSession();
-    });
-
-    window.ethereum.on("chainChanged", async (chainId) => {
-      if (parseInt(chainId, 16) !== 90001) {
-        alert("Not connected to the chainId");
-        cleanSession();
-      }
-    });
-  };
-
-  useEffect(() => {
-    // only if metamask is installed
-    if (window.ethereum) {
-      addWalletListener();
-      setConnectedWallet(getCurrentWalletConnected());
-    }
-  }, []);
-
   const initWalletData = async () => {
-    if (connectedWallet) {
-      const fxg = await loadERC20Contract()
-        .methods.balanceOf(connectedWallet)
-        .call();
+    const web3 = web3Infura;
+    if (connectedWallet && web3) {
+      const contract = await loadERC20Contract(true);
+      const fxg = await contract.methods.balanceOf(connectedWallet).call();
       web3.eth.getBalance(connectedWallet, (err, wei) => {
         if (!err) {
           const walletBalance = Number(
@@ -92,7 +74,7 @@ const Header = () => {
           setBalance({
             ...balance,
             fx: walletBalance,
-            fxg: fxg / 10 ** 18,
+            fxg: Number(fxg / 10 ** 18).toFixed(0),
           });
         }
       });
@@ -100,17 +82,14 @@ const Header = () => {
   };
 
   useEffect(() => {
-    initWalletData();
+    if (connectedWallet) {
+      initWalletData();
+    }
   }, [connectedWallet]);
-
-  useEffect(() => {
-    handleSignIn();
-  }, [])
 
   return (
     <>
       <ScrollToTop />
-
       <header className="container-fluid">
         <nav className="navbar navbar-expand-xl" ref={clickRef}>
           <Link className="navbar-brand" to="/">
@@ -184,10 +163,22 @@ const Header = () => {
               </ul>
             ) : null}
 
-            <button id="signUpButton" onClick={handleSignIn}>
-              {connectedWallet
-                ? optimizeWalletAddress(connectedWallet)
-                : "Connect Wallect"}{" "}
+            <button id="signUpButton" onClick={async () => {
+              if(connectedWallet) {
+                await disconnect();
+              } else {
+                await connect();
+              }
+            }}>
+              {connectedWallet ? (
+                <>
+                  {optimizeWalletAddress(connectedWallet)}
+                  <span></span>
+                  <LogoutIcon />
+                </>
+              ) : (
+                "Connect Wallect"
+              )}{" "}
             </button>
           </div>
         </nav>

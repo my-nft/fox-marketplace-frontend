@@ -7,7 +7,6 @@ import {
 } from "../utils/blockchainInteractor";
 import { sameAddress } from "../utils/walletUtils";
 
-const erc20Contract = loadERC20Contract();
 
 export const mintNft = async ({
   collectionAddress = foxMasterCollectionAddress,
@@ -15,16 +14,17 @@ export const mintNft = async ({
   image,
   token,
 }) => {
+  const erc20Contract = await loadERC20Contract();
 
   if(!collectionAddress) {
     collectionAddress = foxMasterCollectionAddress
   }
+
+  console.log("#####################");
   
-  console.log("=====> input collection address ", collectionAddress);
+  const foxMastercontract = await loadFoxMasterCollectionContract(collectionAddress);
 
-  const foxMastercontract = loadFoxMasterCollectionContract(collectionAddress);
-
-  const connectedWallet = getCurrentWalletConnected();
+  const connectedWallet = await getCurrentWalletConnected();
 
   if (sameAddress(collectionAddress, foxMasterCollectionAddress)) {
     const mintFee = await foxMastercontract.methods.mintFee().call();

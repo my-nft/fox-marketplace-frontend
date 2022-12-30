@@ -1,4 +1,6 @@
-const AccordingStatus = ({filters, changeFilterValue}) => {
+import SliderToggle from "../Account/SliderToggle";
+
+const AccordingStatus = ({ filters, changeFilterValue }) => {
   return (
     <div id="accordionStatus">
       <div className="card">
@@ -33,14 +35,72 @@ const AccordingStatus = ({filters, changeFilterValue}) => {
           data-parent="#accordionStatus"
         >
           <div className="card-body">
-            <button className={`${filters.status === "ALL" ? "active" : null}`} onClick={() => changeFilterValue({...filters, status: "ALL"})}>All</button>
-            <button className={`${filters.status === "BUY_NOW" ? "active" : null}`} onClick={() => changeFilterValue({...filters, status: "BUY_NOW"})}>Buy Now</button>
+            <SliderToggle
+              title={"Buy Now"}
+              active={
+                filters && filters.status && filters.status.includes("BUY_NOW")
+              }
+              action={(boolean) => {
+                if (boolean) {
+                  changeFilterValue({
+                    ...filters,
+                    status: [...filters.status, "BUY_NOW"],
+                  });
+                } else {
+                  changeFilterValue({
+                    ...filters,
+                    status: [...filters.status.filter((e) => e != "BUY_NOW")],
+                  });
+                }
+              }}
+            />
+            <SliderToggle
+              title={"On Auction"}
+              active={
+                filters &&
+                filters.status &&
+                filters.status.includes("ON_AUCTION")
+              }
+              action={(boolean) => {
+                if (boolean) {
+                  changeFilterValue({
+                    ...filters,
+                    status: [...filters.status, "ON_AUCTION"],
+                  });
+                } else {
+                  changeFilterValue({
+                    ...filters,
+                    status: [
+                      ...filters.status.filter((e) => e != "ON_AUCTION"),
+                    ],
+                  });
+                }
+              }}
+            />
+            <SliderToggle
+              title={"New"}
+              active={
+                filters && filters.status && filters.status.includes("NEW")
+              }
+              action={(boolean) => {
+                if (boolean) {
+                  changeFilterValue({
+                    ...filters,
+                    status: [...filters.status, "NEW"],
+                  });
+                } else {
+                  changeFilterValue({
+                    ...filters,
+                    status: [...filters.status.filter((e) => e != "NEW")],
+                  });
+                }
+              }}
+            />
           </div>
         </div>
       </div>
     </div>
   );
 };
-
 
 export default AccordingStatus;

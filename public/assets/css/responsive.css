@@ -1,3 +1,9 @@
+@media screen and (max-width: 1440px) {
+  .wrapperMostPopular {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
 @media screen and (max-width: 1280px) {
   .collectionSettingsWrapper {
     gap: 48px;
@@ -50,12 +56,18 @@
     align-items: center;
     display: flex;
   }
+  #signUpButton {
+    margin: 16px auto 0 !important;
+  }
   .navbar-collapse ul#buttonIcon li {
     margin: 0;
     padding: 0;
   }
   .navbar-collapse button {
     margin: 16px 0 0 !important;
+  }
+  .wrapperMostPopular {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -72,6 +84,9 @@
   .timeEntry input {
     font-size: 40px;
   }
+  .returnLink {
+    left: 56px;
+  }
 }
 
 @media (max-width: 991px) {
@@ -86,7 +101,9 @@
   .settingsForm {
     margin: 32px auto 16px;
   }
-
+  #accountName {
+    max-width: unset;
+  }
   #chooseLayout {
     display: none;
   }
@@ -99,7 +116,7 @@
     flex-direction: column;
   }
   #marketplace #headerInput {
-    margin-top: 72px;
+    margin-top: 24px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     row-gap: 16px;
@@ -118,6 +135,9 @@
     grid-column-start: 2;
     grid-column-end: 3;
   }
+  #marketplace .explorerItems {
+    margin-left: 0 !important;
+  }
 }
 
 @media screen and (max-width: 860px) {
@@ -130,6 +150,13 @@
   header .form-control-container {
     width: 100% !important;
     margin-top: 24px;
+  }
+  .returnLink {
+    position: relative;
+    left: unset;
+    top: unset;
+    justify-content: center;
+    margin: 12px auto 32px;
   }
 
   .confirmation-popup {
@@ -249,6 +276,24 @@
   .settingsButtons {
     display: flex;
     flex-direction: column;
+  }
+  #createCollection button {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+  .popup-wrapper {
+    width: 90%;
+    min-width: unset;
+  }
+  .entry-fields {
+    flex-direction: column;
+  }
+  .entry-fields input {
+    width: 100%;
+  }
+  .entry-fields > div {
+    width: 100%;
   }
   .settingsButtons button {
     margin: 8px 0;

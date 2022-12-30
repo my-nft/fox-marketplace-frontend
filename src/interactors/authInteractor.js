@@ -1,8 +1,12 @@
-import Web3 from "web3";
+import { Web3Provider } from "@ethersproject/providers";
 import { signinUser, signupUser } from "../api/AuthUserApi";
-export const web3 = new Web3(Web3.givenProvider);
+import { authProviderInstance, web3Infura } from "../utils/blockchainInteractor";
+
+
+
 
 export const signIn = async (address) => {
+
   console.log("SigIn user");
   const msg = `I would like to Sign in for user with address: ${address}`;
 
@@ -10,9 +14,14 @@ export const signIn = async (address) => {
     address,
   };
 
-  await web3.eth.personal.sign(msg, address, (err, signature) => {
-    JSONBody.signature = signature;
-  });
+  const provider = await authProviderInstance.getProvider();
+
+  const signedMessage = await provider.send(
+    'personal_sign',
+    [ msg , address ]
+  );
+
+  JSONBody.signature = signedMessage.result;
 
   try {
     const response = await signinUser(JSONBody);
@@ -32,9 +41,14 @@ export const signUp = async (address, formData) => {
     ...formData,
   };
 
-  await web3.eth.personal.sign(msg, address, (err, signature) => {
-    JSONBody.signature = signature;
-  });
+  const provider = await authProviderInstance.getProvider();
+
+  const signedMessage = await provider.send(
+    'personal_sign',
+    [ msg , address ]
+  );
+
+  JSONBody.signature = signedMessage.result;
 
   try {
     const response = await signupUser(JSONBody);

@@ -4,7 +4,7 @@ import AccordingCollection from "../Explorer/AccordingCollection";
 import AccordionCategory from "./AccordionCategory";
 import MostPopularItem from "../../components/marketplace/MostPopularItem";
 import ListActivities from "./ListActivities";
-import AccordionPropertiesFilter from "../Explorer/PropertiesFilter";
+import AccordionPropertiesFilter from "./PropertiesFilter";
 
 const ListNfts = ({
   nfts,
@@ -13,6 +13,7 @@ const ListNfts = ({
   handleSelectNfts,
   filters,
   changeFilterValue,
+  isLoadingNfts = { isLoadingNfts },
 }) => {
   return (
     <section id="tabsNft" className="container-fluid accountListed">
@@ -42,34 +43,35 @@ const ListNfts = ({
             <AccordionPropertiesFilter
               filters={filters}
               changeFilterValue={changeFilterValue}
-              propertiesFilter={filters.properties}
-              availableProperties={["Image", "Music", "Art"]}
+              properties={filters.properties}
             />
           </div>
         </div>
 
-        <div className="col" id="wrapperNFT">
-          <div className="tab-content" id="pills-tabContent">
-            <div
-              className="tab-pane fade show active"
-              id="pills-Items"
-              role="tabpanel"
-              aria-labelledby="pills-Items"
-            >
-              <div className="wrapperMostPopular row">
-                {nfts.map((item, index) => (
-                  <MostPopularItem
-                    key={index}
-                    item={item}
-                    viewType={viewType}
-                    onSelectNfts={handleSelectNfts}
-                  />
-                ))}
+        {!isLoadingNfts && (
+          <div className="col" id="wrapperNFT">
+            <div className="tab-content" id="pills-tabContent">
+              <div
+                className="tab-pane fade show active"
+                id="pills-Items"
+                role="tabpanel"
+                aria-labelledby="pills-Items"
+              >
+                <div className="wrapperMostPopular row">
+                  {nfts.map((item, index) => (
+                    <MostPopularItem
+                      key={index}
+                      item={item}
+                      viewType={viewType}
+                      onSelectNfts={handleSelectNfts}
+                    />
+                  ))}
+                </div>
               </div>
+              <ListActivities />
             </div>
-            <ListActivities />
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

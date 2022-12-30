@@ -5,8 +5,9 @@ import CardHeader from "../../components/nft/CardHeader";
 import CardNftWrapper from "../../components/nft/CardNftWrapper";
 import { getAuctionInfos } from "../../services/listingNft";
 import PlaceBid from "../../components/nft/PlaceBid";
-import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { sameAddress } from "../../utils/walletUtils";
+import { selectCurrentWallet } from "../../redux/userReducer";
+import { useSelector } from "react-redux";
 
 const ListedAuctionNft = ({
   itemDetails,
@@ -17,17 +18,15 @@ const ListedAuctionNft = ({
 }) => {
   const [itemInfos, setItemInfos] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const currentBidOwner = itemInfos?.currentBidOwner;
+  const bidCount = itemInfos?.bidCount;
+  const currentWallet = useSelector(selectCurrentWallet);
 
-
-  console.log(itemInfos);
-
-
-  console.log("****************************", itemInfos?.endAuction)
 
 
   const isTokenExpired = (endAuction) => {
     if (endAuction && !isNaN(endAuction)) {
-      const end = endAuction*1000;
+      const end = endAuction * 1000;
       const now = new Date().getTime();
       return end - now < 0;
     }
@@ -49,9 +48,8 @@ const ListedAuctionNft = ({
     init();
   }, []);
 
-  const currentBidOwner = itemInfos?.currentBidOwner;
-  const bidCount = itemInfos?.bidCount;
-  const currentWallet = getCurrentWalletConnected();
+
+
   const creator = itemInfos?.creator;
 
   return (

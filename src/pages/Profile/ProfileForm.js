@@ -1,7 +1,6 @@
 import { withFormik } from "formik";
 import * as Yup from "yup";
 import { UPDATE_PROFILE } from "../../saga/actions";
-import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import Profile from "./index";
 import { connect } from "react-redux";
 
@@ -25,7 +24,9 @@ const formikEnhancer = withFormik({
     // setSubmitting(true);
     props.dispatch({
       type: UPDATE_PROFILE,
-      payload: values,
+      payload: {
+        ...values
+      },
       onSuccess: () => {
         setSubmitting(false);
       },

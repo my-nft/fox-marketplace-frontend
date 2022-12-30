@@ -21,8 +21,7 @@ const ListItemCollection = ({
         type="radio"
         name="collection"
         checked={collectionActive === collection.collectionAddress}
-        onChange={() => {
-          console.log("CHANGE COLLECTION", collection);
+        onClick={() => {
           handleChangeCollection(collection.collectionAddress);
         }}
       />

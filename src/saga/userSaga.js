@@ -1,9 +1,9 @@
 import { call, put, select, takeLatest } from "redux-saga/effects";
 import * as api from "../api/userApi";
 import {
-  selectConnectedUser,
-  selectToken,
+  selectCurrentWallet,
   setCurrentUser,
+  setCurrentWallet,
   setLoading,
   setToken,
 } from "../redux/userReducer";
@@ -18,8 +18,11 @@ function* getConnectedUser(action) {
     yield put(setLoading(true));
     const response = yield call(api.getUserByAddress, address);
     yield put(setCurrentUser(response.data));
+    yield put(setCurrentWallet(address));
   } catch (error) {
     console.log("error ", error.response.status);
+    console.log("CREATING NEW USER?", address)
+    console.log("STATUS", error.response.status)
     // userNotFound => Nothing to do here
     if (error.response.status === 404) {
       console.log("registration of a new user");
@@ -46,6 +49,9 @@ function* updateUserProfile(action) {
       imageFile,
     } = action.payload;
 
+    const token = yield call(signWallet);
+    
+
     const response = yield call(api.updateUserToDatabase, {
       address,
       formData: {
@@ -56,6 +62,7 @@ function* updateUserProfile(action) {
       },
       image: imageFile,
       banner: bannerFile,
+      token
     });
 
     if (response) {
@@ -69,19 +76,13 @@ function* updateUserProfile(action) {
 }
 
 export function* signWallet() {
-    const connectedUser = yield select(selectConnectedUser);
-    const actualToken = yield select(selectToken);
-    if(!actualToken) {
-      const { token } = yield call(signIn, connectedUser.address);
-      console.log("######", token);
-      yield put(setToken(token));
-      return token;
-    } else {
-      console.log("######", actualToken);
+  const connectedWallet = yield select(selectCurrentWallet);
 
-      return actualToken;
-    }
-
+  console.log("connectedWallet ======", connectedWallet)
+  const { token } = yield call(signIn, connectedWallet);
+  console.log("######", token);
+  yield put(setToken(token));
+  return token;
 }
 
 // Starts fetchUser on each dispatched USER_FETCH_REQUESTED action
@@ -94,6 +95,5 @@ function* updateProfileForUser() {
 function* loadUser() {
   yield takeLatest(LOAD_USER, getConnectedUser);
 }
-
 
 export { loadUser, updateProfileForUser };

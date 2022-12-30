@@ -19,36 +19,36 @@ import {
   PLACE_BID,
   REFUND_NFT,
 } from "../../saga/blockchain.js/blockChainActions";
-import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 import { optimizeWalletAddress, sameAddress } from "../../utils/walletUtils";
 import ListedAuctionNft from "./listedAuctionNft";
 import ListedFixedNft from "./listedFixedNft";
 import NonListedMyNft from "./nonListedMyNft";
 import NonListedNft from "./nonListedNft";
+import { selectCurrentWallet } from "../../redux/userReducer";
+import Address from "../../components/Address";
 
 const MyNftDetails = () => {
   const { collectionAddress, tokenID } = useParams();
-  const connectedWallet = getCurrentWalletConnected();
+
+  const connectedWallet = useSelector(selectCurrentWallet);
   const isLoading = useSelector(selectIsLoading);
   const [nftDetails, setNftDetails] = useState();
   const [collectionDetails, setCollectionDetails] = useState();
   const dispatch = useDispatch();
 
-  console.log(nftDetails);
-
   const loadNft = async () => {
     try {
       dispatch(setIsLoading(true));
+      console.log("HERRE");
       const nft = await getNftCall(collectionAddress, tokenID);
       const collection = await getCollectionByAddress(collectionAddress);
       setNftDetails(nft.data);
-      setCollectionDetails(collection.data);
+      setCollectionDetails(collection.data.collection);
     } finally {
       dispatch(setIsLoading(false));
     }
   };
-
 
   useEffect(() => {
     loadNft();
@@ -90,7 +90,9 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId,
-        royaltyAddress: royaltyAddress ? royaltyAddress : collectionDetails.ownerAddress,
+        royaltyAddress: royaltyAddress
+          ? royaltyAddress
+          : collectionDetails.ownerAddress,
         royaltyPercent: royaltyPercent ? royaltyPercent : 0,
       },
       onSuccess: (nft) => setNftDetails(nft),
@@ -105,7 +107,9 @@ const MyNftDetails = () => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId,
-        royaltyAddress: royaltyAddress ? royaltyAddress : collectionDetails.ownerAddress,
+        royaltyAddress: royaltyAddress
+          ? royaltyAddress
+          : collectionDetails.ownerAddress,
         royaltyPercent: royaltyPercent ? royaltyPercent : 0,
       },
       onSuccess: (nft) => setNftDetails(nft),
@@ -134,7 +138,9 @@ const MyNftDetails = () => {
         price: Number(price),
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
-        royaltyAddress: royaltyAddress ? royaltyAddress : collectionDetails.ownerAddress,
+        royaltyAddress: royaltyAddress
+          ? royaltyAddress
+          : collectionDetails.ownerAddress,
         royaltyPercent: royaltyPercent ? royaltyPercent : 0,
       },
       onSuccess: (nft) => setNftDetails(nft),
@@ -172,7 +178,9 @@ const MyNftDetails = () => {
       payload: {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
-        royaltyAddress: royaltyAddress ? royaltyAddress : collectionDetails.ownerAddress,
+        royaltyAddress: royaltyAddress
+          ? royaltyAddress
+          : collectionDetails.ownerAddress,
         royaltyPercent: royaltyPercent ? royaltyPercent : 0,
       },
       onSuccess: (nft) => setNftDetails(nft),
@@ -213,9 +221,13 @@ const MyNftDetails = () => {
             <h3>{`${nftDetails?.name}(${nftDetails?.tokenID})`} </h3>
             <h4>
               Owned by{" "}
-              {sameAddress(connectedWallet, nftDetails.ownerAddress)
-                ? "You"
-                : optimizeWalletAddress(nftDetails.ownerAddress)}
+              {sameAddress(connectedWallet, nftDetails.ownerAddress) ? (
+                "You"
+              ) : (
+                <Address address={nftDetails.ownerAddress}>
+                  {optimizeWalletAddress(nftDetails.ownerAddress)}
+                </Address>
+              )}
             </h4>
           </header>
 

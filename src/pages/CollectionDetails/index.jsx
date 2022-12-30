@@ -12,6 +12,24 @@ import {
   getCollectionNftsCall,
 } from "../../api/collectionApi";
 
+const prepareProperties = (attributes) => {
+  return (
+    attributes.map((attribute) => {
+      let properties = attribute.values.map((value) => ({
+        title: value,
+        active: false,
+      }));
+
+      const propertyItem = {
+        name: attribute.name,
+        properties,
+      };
+
+      return propertyItem;
+    }) || []
+  );
+};
+
 const CollectionDetails = () => {
   let { collectionAddress } = useParams();
   const [isLoadingCollection, setIsLoadingCollection] = useState(true);
@@ -38,7 +56,7 @@ const CollectionDetails = () => {
     buyToken: "ETH",
     sortBy: "RECENTLY_LISTED",
     categories: [],
-    properties: []
+    properties: [],
   });
 
   const dispatch = useDispatch();
@@ -52,10 +70,48 @@ const CollectionDetails = () => {
 
   const initLoadCollection = async () => {
     setIsLoadingCollection(true);
-    const collection = await getCollectionByAddress(collectionAddress);
-    setCollectionDetails(collection.data);
+    const response = await getCollectionByAddress(collectionAddress);
+    const { collection, attributes } = response.data;
+    setCollectionDetails(collection);
+    setFilters({
+      ...filters,
+      properties: prepareProperties(attributes),
+    });
     setIsLoadingCollection(false);
   };
+
+  const loadNFTs = async () => {
+    if (collectionDetails) {
+      const propertiesFiltered = [];
+      filters.properties.map((category) => {
+        category.properties.map((property) => {
+          if (property.active) {
+            propertiesFiltered.push({
+              trait_type: category.name,
+              value: property.title,
+            });
+          }
+        });
+      });
+
+      setIsLoadingNfts(true);
+      const nftsElements = await getCollectionNftsCall(
+        collectionDetails.collectionAddress,
+        {
+          page: pagination.page,
+          numberElements: 20,
+          properties: propertiesFiltered,
+        }
+      );
+
+      setNfts(nftsElements.data);
+      setIsLoadingNfts(false);
+    }
+  };
+
+  useEffect(() => {
+    loadNFTs();
+  }, [collectionDetails, filters]);
 
   const initLoadNfts = async () => {
     setIsLoadingNfts(true);
@@ -66,7 +122,7 @@ const CollectionDetails = () => {
         numberElements: 20,
       }
     );
-   
+
     setNfts(nftsElements.data);
     setIsLoadingNfts(false);
   };
@@ -102,7 +158,7 @@ const CollectionDetails = () => {
       toast.clearWaitingQueue();
       toast.dismiss();
       toast.success("Congratulation your collection has been imported...");
-      dispatch(setCollectionDetails(tempCollection));
+      dispatch(setCollectionDetails(tempCollection.collection));
       clearInterval(interval);
       return;
     }
@@ -113,7 +169,7 @@ const CollectionDetails = () => {
       toast.loading("Import progressing...");
       const interval = setInterval(() => {
         updateProcessing(interval);
-      }, 3000);
+      }, 10000);
       return () => {
         toast.clearWaitingQueue();
         toast.dismiss();
@@ -144,14 +200,22 @@ const CollectionDetails = () => {
             handleSelectNfts={handleSelectNfts}
             filters={filters}
             changeFilterValue={setFilters}
+            pagination={pagination}
+            totalElements={totalElements}
+            isLoadingNfts={isLoadingNfts}
           />
-          {totalElements / 20 > 1 ? (
-            <Pagination
-              currentPage={pagination.page}
-              pages={totalElements ? parseInt(totalElements / 20) : 1}
-              setCurrentPage={changePage}
-            />
-          ) : null}
+
+          {!isLoadingNfts && (
+            <>
+              {totalElements / 20 > 1 ? (
+                <Pagination
+                  currentPage={pagination.page}
+                  pages={totalElements ? parseInt(totalElements / 20) : 1}
+                  setCurrentPage={changePage}
+                />
+              ) : null}
+            </>
+          )}
         </>
       )}
     </>

@@ -1,8 +1,7 @@
 import { optimizeWalletAddress } from "../../../utils/walletUtils";
+import Address from "../../Address";
 
-const AccordionDescription = ({nftDetails}) => {
-
-
+const AccordionDescription = ({ nftDetails }) => {
   return (
     <div id="accordionDescription">
       <div className="card">
@@ -53,17 +52,19 @@ const AccordionDescription = ({nftDetails}) => {
         >
           <div className="card-body">
             <p>
-              By <strong>{optimizeWalletAddress(nftDetails.ownerAddress)}</strong>
+              By
+              <Address address={nftDetails.ownerAddress} className="pl-1">
+                <strong>
+                  {optimizeWalletAddress(nftDetails.ownerAddress)}
+                </strong>
+              </Address>
             </p>
-            <span>
-              {nftDetails.description}
-            </span>
+            <span>{nftDetails.description}</span>
           </div>
         </div>
       </div>
     </div>
   );
 };
-
 
 export default AccordionDescription;
