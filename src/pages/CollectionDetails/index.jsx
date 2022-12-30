@@ -18,6 +18,7 @@ const CollectionDetails = () => {
   const [isLoadingCollection, setIsLoadingCollection] = useState(true);
   const [isLoadingNfts, setIsLoadingNfts] = useState(true);
   const [collectionDetails, setCollectionDetails] = useState();
+  const [attributes, setAttributes] = useState();
 
   const [nfts, setNfts] = useState({});
   const { totalElements, content } = nfts;
@@ -39,7 +40,7 @@ const CollectionDetails = () => {
     buyToken: "ETH",
     sortBy: "RECENTLY_LISTED",
     categories: [],
-    properties: [...availableProperties],
+    properties: [],
   });
 
   const dispatch = useDispatch();
@@ -53,8 +54,14 @@ const CollectionDetails = () => {
 
   const initLoadCollection = async () => {
     setIsLoadingCollection(true);
-    const collection = await getCollectionByAddress(collectionAddress);
-    setCollectionDetails(collection.data);
+    const response = await getCollectionByAddress(collectionAddress);
+    const {collection, attributes} = response.data
+    setCollectionDetails(collection);
+    setAttributes(attributes);
+    setFilters({
+      ...filters,
+      properties: attributes
+    })
     setIsLoadingCollection(false);
   };
 
@@ -63,7 +70,7 @@ const CollectionDetails = () => {
 
       const propertiesFiltered = [];
     filters.properties.map((category) => {
-      category.properties.map((property) => {
+      category.values.map((property) => {
         if (property.active) {
           propertiesFiltered.push({
             trait_type: category.name,
@@ -72,8 +79,6 @@ const CollectionDetails = () => {
         }
       });
     });
-
-    console.log(propertiesFiltered);
 
     setIsLoadingNfts(true);
     const nftsElements = await getCollectionNftsCall(
@@ -140,7 +145,7 @@ const CollectionDetails = () => {
       toast.clearWaitingQueue();
       toast.dismiss();
       toast.success("Congratulation your collection has been imported...");
-      dispatch(setCollectionDetails(tempCollection));
+      dispatch(setCollectionDetails(tempCollection.collection));
       clearInterval(interval);
       return;
     }
@@ -151,7 +156,7 @@ const CollectionDetails = () => {
       toast.loading("Import progressing...");
       const interval = setInterval(() => {
         updateProcessing(interval);
-      }, 3000);
+      }, 10000);
       return () => {
         toast.clearWaitingQueue();
         toast.dismiss();

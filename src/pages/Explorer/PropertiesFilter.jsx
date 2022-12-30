@@ -1,7 +1,4 @@
-import { useEffect, useState } from "react";
 import PropertyCategory from "../../components/PropertyCategory";
-import SliderToggle from "../Account/SliderToggle";
-import { availableProperties } from "./properties";
 
 const AccordionPropertiesFilter = ({
   properties = [],

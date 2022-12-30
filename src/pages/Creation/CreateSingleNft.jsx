@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Spinner from "../../components/Spinner";
 import { CreateNFTPopup } from "../../components/popups/popups";
 import { useDispatch, useSelector } from "react-redux";
-import { selectIsLoading } from "../../redux/nftReducer";
+import { selectIsLoading, setIsLoading } from "../../redux/nftReducer";
 import { MINT_NFT } from "../../saga/actions";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -18,6 +18,11 @@ const CreateSingleNft = () => {
   const collectionAddress = searchParams.get("collectionAddress");
 
   console.log("COLLECTION ADDRESS ", collectionAddress);
+
+
+  useEffect(() => {
+    dispatch(setIsLoading(false));
+  }, [])
 
   const [nftData, setNftData] = useState({
     name: "",
