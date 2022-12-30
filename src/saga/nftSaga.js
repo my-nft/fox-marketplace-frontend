@@ -28,11 +28,11 @@ function* runMintNft(action) {
 
     // import the specific token
     yield call(importCollectionToken, calculAddress, tokenID, token);
-
     yield put(setIsLoading(false));
 
     action.onSuccess(calculAddress, tokenID);
   } catch (error) {
+    yield put(setIsLoading(false));
     action?.onError(error);
   } finally {
     yield put(setIsLoading(false));
