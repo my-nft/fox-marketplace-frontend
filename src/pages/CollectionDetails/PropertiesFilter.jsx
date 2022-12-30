@@ -5,6 +5,7 @@ const AccordionPropertiesFilter = ({
   filters,
   changeFilterValue,
 }) => {
+
   const handlePropertyFilterChange = (property, category, boolean) => {
     const propertiesFilter = [...properties];
 
