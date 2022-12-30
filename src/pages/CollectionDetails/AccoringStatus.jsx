@@ -57,18 +57,22 @@ const AccordingStatus = ({ filters, changeFilterValue }) => {
             <SliderToggle
               title={"On Auction"}
               active={
-                filters && filters.status && filters.status.includes("AUCTION")
+                filters &&
+                filters.status &&
+                filters.status.includes("ON_AUCTION")
               }
               action={(boolean) => {
                 if (boolean) {
                   changeFilterValue({
                     ...filters,
-                    status: [...filters.status, "AUCTION"],
+                    status: [...filters.status, "ON_AUCTION"],
                   });
                 } else {
                   changeFilterValue({
                     ...filters,
-                    status: [...filters.status.filter((e) => e != "AUCTION")],
+                    status: [
+                      ...filters.status.filter((e) => e != "ON_AUCTION"),
+                    ],
                   });
                 }
               }}
