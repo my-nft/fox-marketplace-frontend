@@ -4,7 +4,6 @@ import createSagaMiddleware from "redux-saga";
 import localforage from "localforage";
 import { persistStore, persistReducer } from "redux-persist";
 import watchAll from "../saga/sagas";
-import { logger } from "redux-logger";
 
 // Create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -19,7 +18,7 @@ const makeStore = () => {
 
   const store = configureStore({
     reducer: persistedReducer,
-    middleware: [sagaMiddleware, logger],
+    middleware: [sagaMiddleware],
   });
 
   store.__persistor = persistStore(store);
