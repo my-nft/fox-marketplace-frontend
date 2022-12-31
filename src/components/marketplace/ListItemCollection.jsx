@@ -13,8 +13,8 @@ const ListItemCollection = ({
       <div className="itemText">
         <p>{collection.name}</p>
         <p>
-          <span>28868 ETH </span>
-          <b>/Floor:3.3 ETH</b>
+          <span>28868 FXG </span>
+          <b>/Floor:3.3 FXG</b>
         </p>
       </div>
       <input

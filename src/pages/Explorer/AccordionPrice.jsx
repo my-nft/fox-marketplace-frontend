@@ -79,14 +79,11 @@ const AccordionPrice = ({ filters, changeFilterValue }) => {
                 value={prices.maxPrice}
                 onInput={(e) => processNumberInput("maxPrice", e)}
               />
-              {/* <select value={token} onChange={(e) => setToken(e.target.value)} >
-                <option value="ETH" >ETH</option>
-                <option value="DOGE" >DOGE</option>
-              </select> */}
+         
               <CustomSelect
                 options={[
-                  { value: "ETH", label: "ETH" },
-                  { value: "DOGE", label: "DOGE" },
+                  { value: "FXG", label: "FXG" },
+             
                 ]}
                 value={{ value: token, label: token }}
                 onChange={(e) => setToken(e.value)}

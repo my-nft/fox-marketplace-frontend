@@ -50,7 +50,7 @@ const CollectionDetails = () => {
 
     minPrice: 0,
     maxPrice: 0,
-    buyToken: "ETH",
+    buyToken: "FXG",
     sortBy: "RECENTLY_LISTED",
     categories: [],
     properties: [],

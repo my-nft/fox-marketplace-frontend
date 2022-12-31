@@ -49,7 +49,7 @@ const AccountPage = () => {
 
     minPrice: 0,
     maxPrice: 0,
-    buyToken: "ETH",
+    buyToken: "FXG",
     categories: [],
     status: [],
     sortBy: "RECENTLY_LISTED",

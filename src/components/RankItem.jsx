@@ -6,8 +6,8 @@ const RankItem = ({elm = "", itemData, position}) => {
         <img src={itemData.image} alt="" />
         <span>{itemData.name + elm }</span>
       </td>
-      <td>{ itemData.floorPrice } ETH</td>
-      <td>{ itemData.volume } ETH</td>
+      <td>{ itemData.floorPrice } FXG</td>
+      <td>{ itemData.volume } FXG</td>
     </tr>
   );
 };
