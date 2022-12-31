@@ -20,12 +20,10 @@ const AccordionPrice = ({ filters, changeFilterValue }) => {
     e.preventDefault();
     changeFilterValue({
       ...filters,
-      "minPrice": prices.minPrice,
-      "maxPrice": prices.maxPrice,
-    })
-
-  }
-
+      minPrice: prices.minPrice,
+      maxPrice: prices.maxPrice,
+    });
+  };
 
   return (
     <div id="accordionPrice">
@@ -79,14 +77,21 @@ const AccordionPrice = ({ filters, changeFilterValue }) => {
                 value={prices.maxPrice}
                 onInput={(e) => processNumberInput("maxPrice", e)}
               />
-         
-              <CustomSelect
+
+              {/* <CustomSelect
                 options={[
                   { value: "FXG", label: "FXG" },
              
                 ]}
                 value={{ value: token, label: token }}
                 onChange={(e) => setToken(e.value)}
+              /> */}
+              <input
+                type="text"
+                value="FXG"
+                name="buyToken"
+                readOnly
+                className="priceToken"
               />
             </div>
             <button type="submit">Apply</button>

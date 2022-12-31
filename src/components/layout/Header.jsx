@@ -32,18 +32,17 @@ const Header = () => {
   }, [userAddress]);
 
   const connect = async () => {
-      const connectedWallet = await authProviderInstance.login();
-      authProviderInstance.addListners({
-        clearSession: () =>
-          dispatch({
-            type: "DESTROY_SESSION",
-          }),
-      });
-      dispatch({
-        type: LOAD_USER,
-        payload: connectedWallet,
-      });
-    
+    const connectedWallet = await authProviderInstance.login();
+    authProviderInstance.addListners({
+      clearSession: () =>
+        dispatch({
+          type: "DESTROY_SESSION",
+        }),
+    });
+    dispatch({
+      type: LOAD_USER,
+      payload: connectedWallet,
+    });
   };
 
   const disconnect = async () => {
@@ -51,7 +50,7 @@ const Header = () => {
     dispatch({
       type: "DESTROY_SESSION",
     });
-  }
+  };
 
   const [balance, setBalance] = useState({
     fx: 0,
@@ -118,8 +117,8 @@ const Header = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className={`navbar-nav ${connectedWallet ? "" : "mr-3"}`}>
               <li className="nav-item active">
-                <Link className="nav-link" to="/explorer">
-                  Explorer <span className="sr-only">(current)</span>
+                <Link className="nav-link" to="/explore">
+                  Explore <span className="sr-only">(current)</span>
                 </Link>
               </li>
               <li className="nav-item">
@@ -163,13 +162,16 @@ const Header = () => {
               </ul>
             ) : null}
 
-            <button id="signUpButton" onClick={async () => {
-              if(connectedWallet) {
-                await disconnect();
-              } else {
-                await connect();
-              }
-            }}>
+            <button
+              id="signUpButton"
+              onClick={async () => {
+                if (connectedWallet) {
+                  await disconnect();
+                } else {
+                  await connect();
+                }
+              }}
+            >
               {connectedWallet ? (
                 <>
                   {optimizeWalletAddress(connectedWallet)}

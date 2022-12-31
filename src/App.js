@@ -94,7 +94,7 @@ const router = createBrowserRouter(
       />
 
       <Route
-        path="explorer"
+        path="explore"
         element={
           <>
             <Explorer />
