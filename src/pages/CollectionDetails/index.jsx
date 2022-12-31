@@ -67,57 +67,67 @@ const CollectionDetails = () => {
   }, []);
 
   const initLoadCollection = async () => {
-    setIsLoadingCollection(true);
-    const response = await getCollectionByAddress(collectionAddress);
-    const { collection, attributes } = response.data;
-    console.log("RESPONSE: ", response.data);
-    setCollectionDetails(collection);
-    console.log("ATTRIBUTES: ", attributes);
-    console.log("PROPERTIES: ", prepareProperties(attributes));
-    setFilters({
-      ...filters,
-      properties: prepareProperties(attributes),
-    });
-    setIsLoadingCollection(false);
+    try {
+      setIsLoadingCollection(true);
+      const response = await getCollectionByAddress(collectionAddress);
+      const { collection, attributes } = response.data;
+      console.log("RESPONSE: ", response.data);
+      setCollectionDetails(collection);
+      console.log("ATTRIBUTES: ", attributes);
+      console.log("PROPERTIES: ", prepareProperties(attributes));
+      setFilters({
+        ...filters,
+        properties: prepareProperties(attributes),
+      });
+      setIsLoadingCollection(false);
+    } catch (error) {
+      console.log(error);
+      toast.error("Error loading Collection");
+    }
   };
 
   const loadNFTs = async () => {
-    if (collectionDetails) {
-      const propertiesForExport = [];
-      filters.properties.map((category) => {
-        let propObj = {
-          name: category.name,
-          values: [],
-        };
-        category.properties.map((property) => {
-          if (property.active) {
-            propObj.values.push(property.title);
+    try {
+      if (collectionDetails) {
+        const propertiesForExport = [];
+        filters.properties.map((category) => {
+          let propObj = {
+            name: category.name,
+            values: [],
+          };
+          category.properties.map((property) => {
+            if (property.active) {
+              propObj.values.push(property.title);
+            }
+          });
+          if (propObj.values.length > 0) {
+            propertiesForExport.push(propObj);
           }
         });
-        if (propObj.values.length > 0) {
-          propertiesForExport.push(propObj);
-        }
-      });
 
-      setIsLoadingNfts(true);
-      const nftsElements = await getCollectionNftsCall(
-        collectionDetails.collectionAddress,
-        {
-          page: pagination.page,
-          numberElements: 20,
-          categories: filters.categories,
-          searchPrompt: filters.searchPrompt,
-          status: filters.status,
-          minPrice: filters.minPrice,
-          maxPrice: filters.maxPrice,
-          buyToken: filters.buyToken,
-          sortBy: filters.sortBy,
-          properties: propertiesForExport,
-        }
-      );
+        setIsLoadingNfts(true);
+        const nftsElements = await getCollectionNftsCall(
+          collectionDetails.collectionAddress,
+          {
+            page: pagination.page,
+            numberElements: 20,
+            categories: filters.categories,
+            searchPrompt: filters.searchPrompt,
+            status: filters.status,
+            minPrice: filters.minPrice,
+            maxPrice: filters.maxPrice,
+            buyToken: filters.buyToken,
+            sortBy: filters.sortBy,
+            properties: propertiesForExport,
+          }
+        );
 
-      setNfts(nftsElements.data);
-      setIsLoadingNfts(false);
+        setNfts(nftsElements.data);
+        setIsLoadingNfts(false);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Error loading NFTs");
     }
   };
 
@@ -125,7 +135,6 @@ const CollectionDetails = () => {
     loadNFTs();
   }, [collectionDetails, filters]);
 
- 
   const changeSelectedView = (selection) => {
     setViewType(selection);
   };
@@ -176,8 +185,6 @@ const CollectionDetails = () => {
       };
     }
   }, [collectionDetails]);
-
-  console.log(filters.status);
 
   return isLoadingCollection ? (
     <Spinner />
