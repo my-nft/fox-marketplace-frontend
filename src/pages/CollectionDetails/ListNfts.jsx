@@ -19,6 +19,8 @@ const ListNfts = ({
   changePage,
   paginationPage,
 }) => {
+
+  console.log("##############",totalElements);
   return (
     <section id="tabsNft" className="container-fluid accountListed">
       <div
@@ -53,6 +55,7 @@ const ListNfts = ({
             />
           </div>
         </div>
+        
 
         {!isLoadingNfts && (
           <div className="col" id="wrapperNFT">
@@ -73,10 +76,10 @@ const ListNfts = ({
                     />
                   ))}
                 </div>
-                {totalElements / 20 > 1 ? (
+                {Math.ceil(totalElements / 20) > 1 ? (
                   <Pagination
                     currentPage={paginationPage}
-                    pages={totalElements ? parseInt(totalElements / 20) : 1}
+                    pages={totalElements ? Math.ceil(totalElements / 20) : 1}
                     setCurrentPage={changePage}
                   />
                 ) : null}
