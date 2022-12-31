@@ -24,7 +24,7 @@ const ActivityItem = ({id}) => {
               <span>Name of Nft</span>
             </td>
             <td className="tableItemPrice">
-              <p>0.01 5ETHW</p>
+              <p>0.01 FXG</p>
               <span className="p-0">$21,24</span>
             </td>
             <td>1</td>

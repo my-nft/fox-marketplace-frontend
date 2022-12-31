@@ -1217,6 +1217,15 @@ footer a:hover {
   color: white;
 }
 
+#accordionPrice input:read-only {
+  width: 100%;
+  margin-top: 12px;
+  outline: none !important;
+  border: none !important;
+  max-width: unset;
+  cursor: default;
+}
+
 #accordionFilters .card,
 #accordionStatus .card,
 #accordionPrice .card,
@@ -1313,7 +1322,7 @@ footer a:hover {
   color: white;
 }
 
-#wrapperNumber select,
+#wrapperNumber input:read-only,
 #headerInput select,
 #filterInput select {
   word-wrap: normal;

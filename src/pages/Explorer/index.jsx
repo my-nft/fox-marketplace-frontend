@@ -42,7 +42,7 @@ const Explorer = () => {
     status: [],
     minPrice: undefined,
     maxPrice: undefined,
-    buyToken: "ETH",
+    buyToken: "FXG",
   });
 
   const loadMostPopular = async () => {

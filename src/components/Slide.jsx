@@ -12,11 +12,11 @@ const Slide = ({imgSuffix}) => {
         <div className="description">
           <p>
             <label>Total Volume</label>
-            <span>1500 ETH</span>
+            <span>1500 FXG</span>
           </p>
           <p>
             <label>Floor Price</label>
-            <span>5 ETH</span>
+            <span>5 FXG</span>
           </p>
         </div>
       </div>

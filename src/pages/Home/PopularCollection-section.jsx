@@ -3,6 +3,7 @@ import { getCollections } from "../../api/collectionApi";
 import PopularCollectionItem from "../../components/PopularCollectionItem";
 import Spinner from "../../components/Spinner";
 import { popularAnimation } from "./Utils";
+import { Link } from "react-router-dom";
 
 const PopularCollection = () => {
   const popularElements = useRef();
@@ -16,31 +17,31 @@ const PopularCollection = () => {
   }, []);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     //let items = getCollections(null, "MOST_POPULAR");
     let items = [];
 
-    if(items.length !== 0) {
+    if (items.length !== 0) {
       setPopularCollections(items);
     }
-    
-  }, [])
+  }, []);
 
   return (
     <section id="popular" className="container-fluid mt-5">
       <div id="headerPopular">
         <h3>Most Popular Collections</h3>
-        <button>Browse Marketplace</button>
+        <Link to="/explorer">
+          <button>Browse Marketplace</button>
+        </Link>
       </div>
       <div id="wrapperPopularItems" className="row" ref={popularElements}>
-        {
-          loading && popularCollections.length === 0
-          ? <Spinner />
-          : popularCollections.map((item, index) => {
-            return <PopularCollectionItem key={index} itemData={item} />
+        {loading && popularCollections.length === 0 ? (
+          <Spinner />
+        ) : (
+          popularCollections.map((item, index) => {
+            return <PopularCollectionItem key={index} itemData={item} />;
           })
-        }
-   
+        )}
       </div>
     </section>
   );
