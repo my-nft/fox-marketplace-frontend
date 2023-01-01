@@ -14,14 +14,12 @@ export const signIn = async (address) => {
     address,
   };
 
-  const provider = await authProviderInstance.getProvider();
+  const web3 = await authProviderInstance.getInjectedWeb3();
 
-  const signedMessage = await provider.send(
-    'personal_sign',
-    [ msg , address ]
-  );
 
-  JSONBody.signature = signedMessage;
+  await web3.eth.personal.sign(msg, address, (err, signature) => {
+    JSONBody.signature = signature;
+  });
 
   const response = await signinUser(JSONBody);
   return response.data;
@@ -37,14 +35,11 @@ export const signUp = async (address, formData) => {
     ...formData,
   };
 
-  const provider = await authProviderInstance.getProvider();
+  const web3 = await authProviderInstance.getInjectedWeb3();
 
-  const signedMessage = await provider.send(
-    'personal_sign',
-    [ msg , address ]
-  );
-
-  JSONBody.signature = signedMessage;
+  await web3.eth.personal.sign(msg, address, (err, signature) => {
+    JSONBody.signature = signature;
+  });
 
   console.log(JSONBody);
 
