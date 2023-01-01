@@ -49,7 +49,8 @@ export const authProvider = () => {
 
     getProvider: async () => {
       provider = await web3Modal.connect();
-      return provider;
+      const web3Provider = new providers.Web3Provider(provider);
+      return web3Provider;
     },
 
     addListners: async ({ clearSession = () => {} }) => {

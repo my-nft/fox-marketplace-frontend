@@ -21,16 +21,10 @@ export const signIn = async (address) => {
     [ msg , address ]
   );
 
-  JSONBody.signature = signedMessage.result;
+  JSONBody.signature = signedMessage;
 
-  try {
-    const response = await signinUser(JSONBody);
-    return response.data;
-  } catch (err) {
-    return {
-      success: false,
-    };
-  }
+  const response = await signinUser(JSONBody);
+  return response.data;
 };
 
 export const signUp = async (address, formData) => {
@@ -48,14 +42,10 @@ export const signUp = async (address, formData) => {
     [ msg , address ]
   );
 
-  JSONBody.signature = signedMessage.result;
+  JSONBody.signature = signedMessage;
 
-  try {
-    const response = await signupUser(JSONBody);
-    return response.data;
-  } catch (err) {
-    return {
-      success: false,
-    };
-  }
+
+  const response = await signupUser(JSONBody);
+  
+  return response.data;
 };
