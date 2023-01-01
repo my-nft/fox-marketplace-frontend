@@ -30,6 +30,8 @@ export const signIn = async (address) => {
 export const signUp = async (address, formData) => {
   const msg = `I would like to Sign Up for user with address: ${address}`;
 
+  console.log(msg);
+
   let JSONBody = {
     address,
     ...formData,
@@ -43,6 +45,8 @@ export const signUp = async (address, formData) => {
   );
 
   JSONBody.signature = signedMessage;
+
+  console.log(JSONBody);
 
 
   const response = await signupUser(JSONBody);
