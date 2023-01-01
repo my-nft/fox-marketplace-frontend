@@ -2921,6 +2921,12 @@ input[type="number"]:focus-within {
   gap: 8px;
   margin-top: 16px;
   margin-bottom: 24px;
+  user-select: none !important;
+  width: 80px;
+  overflow: hidden;
+  padding: 4px 0;
+  border-radius: 8px;
+  border: none !important;
 }
 
 .timeEntry p {
@@ -2935,7 +2941,7 @@ input[type="number"]:focus-within {
   transition: 300ms ease-in-out;
   box-shadow: 0 3px 2px rgba(0, 0, 0, 0.65);
   background: #131313;
-  width: 80px;
+  width: 100%;
   border-radius: 8px;
   border: none !important;
 }
@@ -2955,7 +2961,9 @@ input[type="number"]:focus-within {
 }
 
 .timeEntry input {
-  width: 80px;
+  width: 100%;
+  padding-left: 1000px;
+
   border-radius: 8px;
   border: none !important;
   background: transparent;
@@ -2968,6 +2976,7 @@ input[type="number"]:focus-within {
   position: relative;
   z-index: 10003;
   border: none !important;
+  user-select: none !important;
   outline: none !important;
 }
 
@@ -3266,6 +3275,10 @@ input:read-only {
 .datePicker .react-datepicker-popper {
   transform: translate(0, -32px) !important;
 } */
+
+.react-datepicker-popper {
+  z-index: 100004 !important;
+}
 
 .react-datepicker {
   background-color: #131313 !important;

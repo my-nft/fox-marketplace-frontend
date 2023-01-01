@@ -14,48 +14,37 @@ export const signIn = async (address) => {
     address,
   };
 
-  const provider = await authProviderInstance.getProvider();
+  const web3 = await authProviderInstance.getInjectedWeb3();
 
-  const signedMessage = await provider.send(
-    'personal_sign',
-    [ msg , address ]
-  );
 
-  JSONBody.signature = signedMessage.result;
+  await web3.eth.personal.sign(msg, address, (err, signature) => {
+    JSONBody.signature = signature;
+  });
 
-  try {
-    const response = await signinUser(JSONBody);
-    return response.data;
-  } catch (err) {
-    return {
-      success: false,
-    };
-  }
+  const response = await signinUser(JSONBody);
+  return response.data;
 };
 
 export const signUp = async (address, formData) => {
   const msg = `I would like to Sign Up for user with address: ${address}`;
+
+  console.log(msg);
 
   let JSONBody = {
     address,
     ...formData,
   };
 
-  const provider = await authProviderInstance.getProvider();
+  const web3 = await authProviderInstance.getInjectedWeb3();
 
-  const signedMessage = await provider.send(
-    'personal_sign',
-    [ msg , address ]
-  );
+  await web3.eth.personal.sign(msg, address, (err, signature) => {
+    JSONBody.signature = signature;
+  });
 
-  JSONBody.signature = signedMessage.result;
+  console.log(JSONBody);
 
-  try {
-    const response = await signupUser(JSONBody);
-    return response.data;
-  } catch (err) {
-    return {
-      success: false,
-    };
-  }
+
+  const response = await signupUser(JSONBody);
+  
+  return response.data;
 };

@@ -5,12 +5,11 @@ import Web3Modal from "web3modal";
 
 let provider = null;
 
-
 const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider,
     options: {
-      rpc: { 90001: process.env.REACT_APP_RPC_URL },
+      rpc: { [process.env.REACT_APP_RPC_CHAIN_ID]: process.env.REACT_APP_RPC_URL },
       infuraId: process.env.REACT_APP_INFURA_ID,
     },
   },
@@ -50,7 +49,8 @@ export const authProvider = () => {
 
     getProvider: async () => {
       provider = await web3Modal.connect();
-      return provider;
+      const web3Provider = new providers.Web3Provider(provider);
+      return web3Provider;
     },
 
     addListners: async ({ clearSession = () => {} }) => {

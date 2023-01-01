@@ -119,8 +119,7 @@ const CustomDatePicker = ({
                   id="minute"
                   min="0"
                   max="59"
-                  defaultValue={0}
-                  value={dateState.minute}
+                  defaultValue={""}
                   onChange={(e) => handleTimeChange(e, 59)}
                   maxLength={2}
                 />
