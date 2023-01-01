@@ -44,7 +44,7 @@ jobs:
           build-args: ENVIRONMENT:.env.staging
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-staging:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-staging:v${{ steps.staging_version.outputs.result }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-staging:v${{ steps.release_name.outputs.result }}
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: deploy changes
