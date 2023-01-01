@@ -176,8 +176,7 @@ const MostPopularItem = ({ viewType, item }) => {
           </div>
           {/* <p className="nItem">#{item.id}</p> */}
           <div className="wrapText">
-            {(price && timeEnd !== "Expired") ||
-            (price && item.listingType === FIXED_PRICE) ? (
+            {(price) ? (
               <p>
                 <label>Price</label>
                 <span className="orange">

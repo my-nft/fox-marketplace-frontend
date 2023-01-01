@@ -64,7 +64,8 @@ const Explorer = () => {
       filters.status,
       filters.collectionAddress,
       filters.minPrice,
-      filters.maxPrice
+      filters.maxPrice,
+      filters.sortBy
     );
     setNfts(listedNfts.data);
     setIsLoadingState(false);

@@ -77,7 +77,6 @@ export function addNftToIpfs({
   collectionAddress, nft, image, token
 }) {
 
-  console.log("COLLECTION ADDRESS", collectionAddress);
   let formData = new FormData();
   formData.append("image", image);
 
@@ -96,7 +95,7 @@ export function addNftToIpfs({
 }
 
 
-export const getListedNfts = (page, numberElements, status, collectionAddress, minPrice, maxPrice) => {
+export const getListedNfts = (page, numberElements, status, collectionAddress, minPrice, maxPrice, sortBy) => {
   return methods.get(nftEndpoint + "listed", {
     params: {
       page,
@@ -104,7 +103,8 @@ export const getListedNfts = (page, numberElements, status, collectionAddress, m
       status,
       collectionAddress,
       minPrice,
-      maxPrice
+      maxPrice,
+      sortBy
     },
   });
 };
