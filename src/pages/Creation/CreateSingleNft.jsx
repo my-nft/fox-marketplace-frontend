@@ -83,7 +83,6 @@ const CreateSingleNft = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log(nftData);
     if (nftData.upload === null) {
       toast.error("Please upload an image");
       return;

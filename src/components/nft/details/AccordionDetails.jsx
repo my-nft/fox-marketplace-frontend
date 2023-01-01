@@ -1,15 +1,24 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Web3 from "web3";
+import { authProviderInstance } from "../../../utils/blockchainInteractor";
 import { optimizeWalletAddress } from "../../../utils/walletUtils";
 
 const AccordionDetails = ({ nftDetails, collectionDetails }) => {
 
-  const web3 = new Web3(Web3.givenProvider)
+  const [web3, setWeb3] = useState();
   const [chainId, setChainId] = useState(false);
 
   // get chain id and get name of the chain
   const navigate = useNavigate();
+
+  const initWeb3 = async () => {
+    const wbU = await authProviderInstance.getInjectedWeb3();
+    setWeb3(wbU);
+  }
+
+  useEffect(() => {
+    initWeb3();
+  }, []);
 
   useEffect(() => {
     if(web3) {
@@ -17,14 +26,7 @@ const AccordionDetails = ({ nftDetails, collectionDetails }) => {
         setChainId(res);
       });
     }
-   
-  }, []);
-
-  useEffect(() => {
-    if(web3) {
-      web3.eth.getProtocolVersion().then(console.log);
-    }
-  }, []);
+  }, [web3]);
 
   const goToCollection = () => {
     navigate(`/collection/${collectionDetails.collectionAddress}`);
