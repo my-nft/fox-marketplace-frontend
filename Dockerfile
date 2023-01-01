@@ -4,7 +4,8 @@ WORKDIR /app
 COPY . .
 RUN npm install -g npm@9.1.3
 RUN npm install 
-RUN npm run build -f .env.production
+ARG ENVIRONMENT=.env.production
+RUN npm run build -f ${ENVIRONMENT}
 
 # production environment
 FROM nginx:stable-alpine
