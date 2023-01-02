@@ -24,6 +24,51 @@ import MyNftDetails from "./pages/myNftDetails";
 import AccountPage from "./pages/Account/Account";
 import CollectionSettings from "./pages/collectionSettings/collectionSettings";
 import PageStatistics from "./components/Statistics";
+import { fxgChain } from "./utils/fxgChain";
+
+import {
+  EthereumClient,
+  modalConnectors,
+  walletConnectProvider,
+} from "@web3modal/ethereum";
+
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+
+import { Web3Modal } from "@web3modal/react";
+
+import { configureChains, createClient, WagmiConfig } from "wagmi";
+
+const chains = [fxgChain];
+
+// Wagmi client
+const { provider } = configureChains(chains, [
+  walletConnectProvider({
+    projectId: "c713aa69c46302aa2ce0353d8b67b8fa",
+    rpc: {
+      [process.env.REACT_APP_RPC_CHAIN_ID]: process.env.REACT_APP_RPC_URL,
+    },
+    infuraId: process.env.REACT_APP_INFURA_ID,
+    supportedChainIds: [process.env.REACT_APP_RPC_CHAIN_ID],
+    chainId: process.env.REACT_APP_RPC_CHAIN_ID,
+  }),
+]);
+const wagmiClient = createClient({
+  autoConnect: true,
+  connectors: [
+    new MetaMaskConnector({ chains }),
+    new WalletConnectConnector({
+      chains,
+      options: {
+        qrcode: true,
+      },
+    })
+  ],
+  provider,
+});
+
+// Web3Modal Ethereum Client
+const ethereumClient = new EthereumClient(wagmiClient, chains);
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -142,6 +187,7 @@ const router = createBrowserRouter(
 function App() {
   return (
     <>
+      <WagmiConfig client={wagmiClient}>
         <Provider store={store}>
           <PageStatistics />
           {/*
@@ -153,6 +199,12 @@ function App() {
 
           <RouterProvider router={router}></RouterProvider>
         </Provider>
+      </WagmiConfig>
+
+      <Web3Modal
+        projectId="c713aa69c46302aa2ce0353d8b67b8fa"
+        ethereumClient={ethereumClient}
+      />
     </>
   );
 }

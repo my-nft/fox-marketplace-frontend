@@ -18,7 +18,20 @@ import { ReactComponent as LogoutIcon } from "../../assets/icons/exit.svg";
 import { selectCurrentWallet } from "../../redux/userReducer";
 import { LOAD_USER } from "../../saga/actions";
 
+import {
+  useAccount,
+  useConnect,
+  useDisconnect,
+  useEnsAvatar,
+  useEnsName,
+} from "wagmi";
+
 const Header = () => {
+  const { address, connector, isConnected } = useAccount();
+
+  const { connect, connectors, error, isLoading, pendingConnector } =
+    useConnect();
+
   const clickRef = useOutsideClick(() => {
     document.querySelector(".navbar-collapse").classList.remove("show");
   });
@@ -31,7 +44,7 @@ const Header = () => {
     setConnectedWallet(userAddress);
   }, [userAddress]);
 
-  const connect = async () => {
+  const connectWA = async () => {
     const connectedWallet = await authProviderInstance.login();
     authProviderInstance.addListners({
       clearSession: () =>
@@ -94,6 +107,23 @@ const Header = () => {
           <Link className="navbar-brand" to="/">
             <img src="/assets/images/Logo_foxchange.png" alt="" />
           </Link>
+          <div>
+            {connectors.map((connector) => (
+              <button
+                disabled={!connector.ready}
+                key={connector.id}
+                onClick={() => connect({ connector })}
+              >
+                {connector.name}
+                {!connector.ready && " (unsupported)"}
+                {isLoading &&
+                  connector.id === pendingConnector?.id &&
+                  " (connecting)"}
+              </button>
+            ))}
+
+            {error && <div>{error.message}</div>}
+          </div>
           <form className="form-inline my-2 my-lg-0 ">
             <SearchBar
               filters={filters}
