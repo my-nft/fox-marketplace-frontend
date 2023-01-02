@@ -4,6 +4,8 @@ WORKDIR /app
 COPY . .
 RUN npm install -g npm@9.1.3
 RUN npm install 
+# TODO@sweexoridous use arguments
+RUN mv .env.staging .env.production
 RUN npm run build -f .env.production
 
 # production environment

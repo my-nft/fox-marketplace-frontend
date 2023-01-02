@@ -41,7 +41,7 @@ jobs:
         with:
           context: .
           push: true
-          build-args: ENVIRONMENT=.env.staging
+          file: Dockerfile_staging
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-staging:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-staging:v${{ steps.release_name.outputs.result }}
