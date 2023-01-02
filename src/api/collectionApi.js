@@ -45,7 +45,6 @@ export function updateCollection(collectionAddress, body, token) {
   return methods.put(collectionEndpoint + collectionAddress, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
-      "Access-Control-Allow-Origin": "*",
       Authorization: "Bearer " + token
     },
   });
