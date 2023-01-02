@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import uploadIcon from "../../assets/images/create_icon_3.png";
 import { Buffer } from "buffer";
+import { toast } from "react-toastify";
 
 const SettingsImages = ({
   banner,

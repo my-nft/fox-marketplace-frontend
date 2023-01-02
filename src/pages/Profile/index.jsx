@@ -5,6 +5,7 @@ import { Form } from "formik";
 import { useSelector } from "react-redux";
 import { selectCurrentWallet } from "../../redux/userReducer";
 import Address from "../../components/Address";
+import { toast } from "react-toastify";
 
 const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
   const [imageUrl, setImageUrl] = useState(null);
