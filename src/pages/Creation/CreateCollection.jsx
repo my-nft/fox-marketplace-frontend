@@ -17,10 +17,14 @@ const CreateCollection = () => {
 
   useEffect(() => {
     dispatch(setIsLoading(false));
-  }, [])
+  }, []);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
+    if (file.size > 15000000) {
+      toast.error("File size too large");
+      return;
+    }
 
     if (file) {
       const url = URL.createObjectURL(file);
@@ -32,7 +36,6 @@ const CreateCollection = () => {
       reader.readAsDataURL(file);
     }
   };
-
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
