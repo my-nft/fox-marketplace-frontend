@@ -24,6 +24,7 @@ import MyNftDetails from "./pages/myNftDetails";
 import AccountPage from "./pages/Account/Account";
 import CollectionSettings from "./pages/collectionSettings/collectionSettings";
 import PageStatistics from "./components/Statistics";
+import Page404 from "./pages/404/404";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -46,7 +47,6 @@ const router = createBrowserRouter(
           </>
         }
       />
-
       <Route
         path="/account"
         element={
@@ -92,7 +92,6 @@ const router = createBrowserRouter(
           </AuthWrapper>
         }
       />
-
       <Route
         path="explore"
         element={
@@ -102,7 +101,6 @@ const router = createBrowserRouter(
           </>
         }
       />
-
       <Route
         path="collection/:collectionAddress"
         exact
@@ -123,7 +121,6 @@ const router = createBrowserRouter(
           </>
         }
       />
-
       {/*  NOT my NFT  */}
       <Route
         path="collection/:collectionAddress/:tokenID"
@@ -131,6 +128,16 @@ const router = createBrowserRouter(
         element={
           <>
             <MyNftDetails />
+            <Footer />
+          </>
+        }
+      />
+      // 404 page
+      <Route
+        path="*"
+        element={
+          <>
+            <Page404 />
             <Footer />
           </>
         }

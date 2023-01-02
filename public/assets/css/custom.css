@@ -4093,3 +4093,53 @@ ul#buttonIcon {
   color: #130f0a;
   box-shadow: 0 0 8px 4px rgba(25, 14, 0, 0.3);
 }
+
+.page404 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 144px;
+  min-height: 80vh;
+  padding-bottom: 144px;
+}
+
+.page404 svg {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  overflow: visible;
+}
+
+.page404 h1 {
+  font-size: 72px;
+  color: #fefefe;
+  font-weight: 600;
+  margin: 0 0 16px;
+}
+
+.page404 h1 span {
+  color: #f58103;
+}
+
+.page404 h2 {
+  font-size: 24px;
+  font-weight: 400 !important;
+  margin: 0 0 56px;
+  max-width: 420px;
+  opacity: 0.2;
+  font-family: "Segoe UI";
+}
+
+.page404 a {
+  padding: 18px 56px;
+  background: #f58103;
+  color: #fefefe;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: 400ms ease-in-out;
+}
+
+.page404 a:hover {
+  background: #fefefe;
+  color: #f58103;
+}
