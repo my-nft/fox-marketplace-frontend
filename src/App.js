@@ -141,17 +141,19 @@ const router = createBrowserRouter(
 
 function App() {
   return (
-    <Provider store={store}>
-      <PageStatistics />
-      {/*
+    <>
+        <Provider store={store}>
+          <PageStatistics />
+          {/*
       <ConfirmationPopup
         title="Test"
         message="KLMOASDASDASDAsd adwqe adwa dwqe q"
       />
         */}
 
-      <RouterProvider router={router}></RouterProvider>
-    </Provider>
+          <RouterProvider router={router}></RouterProvider>
+        </Provider>
+    </>
   );
 }
 

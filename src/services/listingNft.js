@@ -137,6 +137,8 @@ export const getAuctionInfos = async (auctionId) => {
   try {
     const auctionContractReadOnly = await loadAuctionContract(true);
 
+    console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
+
     return await auctionContractReadOnly.methods.allAuctions(auctionId).call();
   } catch (error) {}
 };
