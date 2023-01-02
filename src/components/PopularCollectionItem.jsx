@@ -1,3 +1,5 @@
+import { FXG_PRICE } from "../utils/foxConstantes";
+
 const PopularCollectionItem = (props) => {
   const { itemData } = props;
 
@@ -15,7 +17,7 @@ const PopularCollectionItem = (props) => {
           />
         </span>
       </div>
-      <p>{/* ${itemData.lowestAsk} Lowest ask */}</p>
+      <p>${(Number(itemData.lowestAsk) * FXG_PRICE).toFixed(4)} Lowest ask</p>
       <p>{itemData.tokens}LAU</p>
     </div>
   );

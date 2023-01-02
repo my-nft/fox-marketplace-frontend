@@ -1,3 +1,5 @@
+import { FXG_PRICE } from "./../../utils/foxConstantes";
+
 const ActivityItem = ({ id }) => {
   return (
     <tr id={"item_" + id}>
@@ -25,7 +27,7 @@ const ActivityItem = ({ id }) => {
       </td>
       <td className="tableItemPrice">
         <p>0.01 FXG</p>
-        {/* <span className="p-0">$21,24</span> */}
+        <span className="p-0">${(21.24 * FXG_PRICE).toFixed(4)}</span>
       </td>
       <td>1</td>
       <td>address from</td>
