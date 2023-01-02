@@ -19,7 +19,7 @@ const CreateSingleNft = () => {
 
   useEffect(() => {
     dispatch(setIsLoading(false));
-  }, [])
+  }, []);
 
   const [nftData, setNftData] = useState({
     name: "",
@@ -33,8 +33,14 @@ const CreateSingleNft = () => {
 
   const handleChange = (e) => {
     if (e.target.name === "upload") {
+      if (e.target.files[0].size > 15000000) {
+        toast.error("File size too large");
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
+        // check if file less than 15 MB, if more send toast error, else set data
+
         setImageUpload(URL.createObjectURL(e.target.files[0]));
         setImageData(e.target.files[0]);
         setNftData({
