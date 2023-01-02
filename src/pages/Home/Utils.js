@@ -86,11 +86,17 @@ export const settings = {
         slidesToShow: 5,
       },
     },
+    {
+      breakpoint: 1310,
+      settings: {
+        slidesToShow: 4,
+      },
+    },
 
     {
       breakpoint: 1024,
       settings: {
-        slidesToShow: 4,
+        slidesToShow: 3,
       },
     },
     {

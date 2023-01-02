@@ -49,7 +49,6 @@ export const updateUserToDatabase = (data) => {
     {
       headers: {
         "Content-Type": "multipart/form-data",
-        "Access-Control-Allow-Origin": "*",
         Authorization: "Bearer " + data.token,
       },
     }

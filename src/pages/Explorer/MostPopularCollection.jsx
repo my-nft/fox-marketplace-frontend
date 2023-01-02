@@ -34,10 +34,12 @@ const MostPopularCollection = ({ collections }) => {
     function handleResize() {
       const width = getWindowDimensions().width;
 
-      if (width < 1440 && width > 1024) {
+      if (width < 1440 && width > 1310) {
         setSlidesToShow(5);
-      } else if (width < 1024 && width > 900) {
+      } else if (width < 1310 && width > 1024) {
         setSlidesToShow(4);
+      } else if (width < 1024 && width > 900) {
+        setSlidesToShow(3);
       } else if (width < 900 && width > 500) {
         setSlidesToShow(2);
       } else if (width < 500) {
@@ -90,7 +92,7 @@ const MostPopularCollection = ({ collections }) => {
           </Slider>
           <Arrow
             className={`slickArrow slickArrowNext ${
-              activeSlide < popularCollections.length - slidesToShow
+              activeSlide < popularCollections.length - slidesToShow + 1
                 ? "slickArrowShow"
                 : ""
             }`}

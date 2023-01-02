@@ -88,7 +88,6 @@ export function addNftToIpfs({
   return methods.put(`${nftEndpoint}load-ipfs`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
-      "Access-Control-Allow-Origin": "*",
       Authorization: "Bearer " + token
     },
   });
