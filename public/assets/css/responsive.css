@@ -93,6 +93,13 @@
 }
 
 @media (max-width: 991px) {
+  .page404 {
+    flex-direction: column-reverse;
+    gap: 128px;
+    align-items: center;
+    text-align: center;
+    margin-top: 48px;
+  }
   .collectionSettingsWrapper {
     display: flex;
     flex-direction: column;
