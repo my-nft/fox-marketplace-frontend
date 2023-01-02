@@ -61,6 +61,7 @@ export const authProvider = () => {
 
       const { chainId } = await ethersProvider.getNetwork();
 
+      console.log("CHAAAIN ID", chainId);
       
       await verifyAndRequestChangeNetwork(chainId, provider);
       
@@ -99,7 +100,6 @@ export const authProvider = () => {
       // Subscribe to chainId change
       provider.on("chainChanged", async (chainId) => {
         console.log("########chainChanged##########");
-        const ethersProvider = new providers.Web3Provider(provider);
         await verifyAndRequestChangeNetwork(chainId, provider);
       });
 
