@@ -26,18 +26,11 @@ const web3Modal = new Web3Modal({
   providerOptions,
 });
 
-/*
-        chainName: "FX Mainnet",
-        nativeCurrency: {
-            name: "FXG",
-            symbol: "FXG",
-            decimals: 18
-        },
-        blockExplorerUrls: ["https://polygonscan.com/"]
 
-*/
 
 const verifyAndRequestChangeNetwork = async (chainId, providerInjected) => {
+  console.log("verifyAndRequestChangeNetwork");
+
   if (chainId !== process.env.REACT_APP_RPC_CHAIN_ID) {
     await providerInjected.request({
       method: "wallet_addEthereumChain",
@@ -45,6 +38,13 @@ const verifyAndRequestChangeNetwork = async (chainId, providerInjected) => {
         {
           chainId: Web3.utils.toHex(process.env.REACT_APP_RPC_CHAIN_ID),
           rpcUrls: [process.env.REACT_APP_RPC_URL],
+          chainName: process.env.REACT_APP_RPC_CHAIN_NAME,
+          nativeCurrency: {
+            name: process.env.REACT_APP_RPC_SYMBOL,
+            symbol: process.env.REACT_APP_RPC_SYMBOL,
+            decimals: 18
+        },
+          blockExplorerUrls: [process.env.REACT_APP_RPC_URL_EXPLORER]
         },
       ],
     });
@@ -70,6 +70,8 @@ export const authProvider = () => {
     },
 
     logout: async () => {
+      console.log("logout");
+
       provider = await web3Modal.connect();
       if (provider && provider.close) {
         await provider.close();
@@ -80,11 +82,14 @@ export const authProvider = () => {
     },
 
     getInjectedWeb3: async () => {
+      console.log("getInjectedWeb3");
+
       provider = await web3Modal.connect();
       return new Web3(provider);
     },
 
     getProvider: async () => {
+      console.log("getProvider");
       provider = await web3Modal.connect();
       const web3Provider = new providers.Web3Provider(provider);
       return web3Provider;
