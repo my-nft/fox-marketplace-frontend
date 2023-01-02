@@ -9,8 +9,12 @@ const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider,
     options: {
-      rpc: { [process.env.REACT_APP_RPC_CHAIN_ID]: process.env.REACT_APP_RPC_URL },
+      rpc: {
+        [process.env.REACT_APP_RPC_CHAIN_ID]: process.env.REACT_APP_RPC_URL,
+      },
       infuraId: process.env.REACT_APP_INFURA_ID,
+      supportedChainIds: [process.env.REACT_APP_RPC_CHAIN_ID],
+      chainId: process.env.REACT_APP_RPC_CHAIN_ID,
     },
   },
 };
@@ -22,13 +26,45 @@ const web3Modal = new Web3Modal({
   providerOptions,
 });
 
+/*
+        chainName: "FX Mainnet",
+        nativeCurrency: {
+            name: "FXG",
+            symbol: "FXG",
+            decimals: 18
+        },
+        blockExplorerUrls: ["https://polygonscan.com/"]
+
+*/
+
+const verifyAndRequestChangeNetwork = async (chainId, providerInjected) => {
+  if (chainId !== process.env.REACT_APP_RPC_CHAIN_ID) {
+    await providerInjected.request({
+      method: "wallet_addEthereumChain",
+      params: [
+        {
+          chainId: Web3.utils.toHex(process.env.REACT_APP_RPC_CHAIN_ID),
+          rpcUrls: [process.env.REACT_APP_RPC_URL],
+        },
+      ],
+    });
+  }
+};
+
 export const authProvider = () => {
   return {
     login: async () => {
       web3Modal.clearCachedProvider();
       provider = await web3Modal.connect();
-      const ethersProvider = new providers.Web3Provider(provider)
-      const userAddress = await ethersProvider.getSigner().getAddress()
+      const ethersProvider = new providers.Web3Provider(provider);
+      const userAddress = await ethersProvider.getSigner().getAddress();
+
+      const { chainId } = await ethersProvider.getNetwork();
+
+      
+      await verifyAndRequestChangeNetwork(chainId, provider);
+      
+
       return Promise.resolve(userAddress);
     },
 
@@ -38,7 +74,7 @@ export const authProvider = () => {
         await provider.close();
       }
       web3Modal.clearCachedProvider();
-      
+
       return Promise.resolve();
     },
 
@@ -63,11 +99,11 @@ export const authProvider = () => {
       // Subscribe to chainId change
       provider.on("chainChanged", async (chainId) => {
         console.log("########chainChanged##########");
-        web3Modal.clearCachedProvider();
-        clearSession();
+        const ethersProvider = new providers.Web3Provider(provider);
+        await verifyAndRequestChangeNetwork(chainId, provider);
       });
 
-      provider.on("disconnect", async (chainId) => {
+      provider.on("disconnect", async () => {
         console.log("########disconnect##########");
         web3Modal.clearCachedProvider();
         clearSession();
