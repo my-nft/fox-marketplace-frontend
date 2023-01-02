@@ -14,12 +14,9 @@ export const signIn = async (address) => {
     address,
   };
 
-  const web3 = await authProviderInstance.getInjectedWeb3();
+  const signature = await authProviderInstance.signMessage(msg);
 
-
-  await web3.eth.personal.sign(msg, address, (err, signature) => {
-    JSONBody.signature = signature;
-  });
+  JSONBody.signature = signature;
 
   const response = await signinUser(JSONBody);
   return response.data;

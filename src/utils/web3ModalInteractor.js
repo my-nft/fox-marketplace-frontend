@@ -63,7 +63,7 @@ export const authProvider = () => {
 
       console.log("CHAAAIN ID", chainId);
       
-      await verifyAndRequestChangeNetwork(chainId, provider);
+      //await verifyAndRequestChangeNetwork(chainId, provider);
       
 
       return Promise.resolve(userAddress);
@@ -88,11 +88,26 @@ export const authProvider = () => {
       return new Web3(provider);
     },
 
-    getProvider: async () => {
+    signMessage: async (rawMessage) => {
       console.log("getProvider");
       provider = await web3Modal.connect();
       const web3Provider = new providers.Web3Provider(provider);
-      return web3Provider;
+      const signer = web3Provider.getSigner()
+      const address = await signer.getAddress();
+      
+      let signedMessage;
+      if (provider.wc) {
+          signedMessage = await web3Provider.send(
+              'personal_sign',
+              [ rawMessage, address ]
+          );
+      }
+      else { 
+          signedMessage = await signer.signMessage(rawMessage)
+      }
+
+      return signedMessage;
+
     },
 
     addListners: async ({ clearSession = () => {} }) => {
