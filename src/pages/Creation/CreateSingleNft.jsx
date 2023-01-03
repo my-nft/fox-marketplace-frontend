@@ -25,20 +25,6 @@ import Web3 from "web3";
 import { importCollectionToken } from "../../api/collectionApi";
 
 
-export function useCrowdFactoryFunctionWriter(
-  functionName, collectionAddress, args
-){
-  const contractWrite = usePrepareContractWrite({
-    address: collectionAddress,
-    abi: FOX_MASTER,
-    functionName,
-    args
-  });
- 
-  return contractWrite;
-}
-
-
 const CreateSingleNft = () => {
   const [imageUpload, setImageUpload] = useState(null);
   
@@ -56,6 +42,8 @@ const CreateSingleNft = () => {
 
   const { address, connector, isConnected } = useAccount();
 
+  const [token, setToken] = useState();
+
   const { signMessageAsync } = useSignMessage({
     message: `I would like to Sign in for user with address: ${address}`,
   });
@@ -66,34 +54,93 @@ const CreateSingleNft = () => {
     functionName : 'mintFee'
     }
   );
-  
-  const { config } = usePrepareContractWrite({
-    ...ERC_CONTRACT_INITILIZER,
-    functionName: 'approve',
-    enabled: true,
-    args: [collectionAddress, 0]
-  });
-  const { writeAsync : approve } = useContractWrite(config);
 
+  const [idIpfs, setIdIpfs] = useState('');
 
-  const { config : configMint, data: mintData } = usePrepareContractWrite({
+  const { config : configMint, status, error} = usePrepareContractWrite({
     address: collectionAddress,
     abi: FOX_MASTER,
     functionName: 'mint',
-    enabled: true,
-    args: [collectionAddress, 0]
+    args: [address, idIpfs],
+    enabled: Boolean(idIpfs),
   });
 
-  console.log(mintData)
+  console.log(status, error, collectionAddress);
 
-  const { writeAsync : mint } = useContractWrite(configMint);
+  const { writeAsync : JJJJJJ } = useContractWrite(configMint);
 
 
+  const runMint = async () => {
+    
+    const mintTsx = await JJJJJJ();
 
-  const mintingProcess = {
-    signing : async () => await signMessageAsync(),
-    countingFees : async () => await mintFee()
+    const receipt = await mintTsx.wait();
+
+    const tokenID = Web3.utils.hexToNumber(receipt.logs[0].topics[3].toString());
+
+    await importCollectionToken(collectionAddress, tokenID, token)
+
+    navigate(`/collection/${collectionAddress}/${tokenID}`);
   }
+
+  useEffect(() => {
+    if(idIpfs && status === 'success') {
+      runMint();
+    }
+  }, [idIpfs, status])
+
+
+  //#Approuve
+  const [fees, setFees] = useState();
+
+  const { config } = usePrepareContractWrite({
+    address: ERC20ContractAddress,
+    abi: ERC20,
+    functionName: 'approve',
+    args: [collectionAddress, fees],
+    enabled: Boolean(fees)
+  });
+  const { writeAsync : approve } = useContractWrite(config);
+
+  const runApprove = async () => {
+    await approve();
+
+    const { upload, ...rest } = nftData;
+
+    const response = await addNftToIpfs({
+      collectionAddress: collectionAddress,
+      image: imageData,
+      token,
+      nft: rest
+    });
+
+
+    console.log("IPFS URI", response.data);
+
+    setIdIpfs(response.data);
+  }
+
+  useEffect(() => {
+    if(fees) {
+      runApprove();
+    }
+  }, [fees]);
+
+
+  //# calculate fees
+
+  const continueMinting = async () => {
+    const mintFeesRet = await mintFee();
+    setFees(mintFeesRet.data);
+  }
+
+  useEffect(() => {
+    if(token){
+      continueMinting();
+    }
+  }, [token])
+
+
 
   const runMintNft = async () =>  {
     
@@ -106,37 +153,9 @@ const CreateSingleNft = () => {
 
     const token = responseSigning.data.token;
 
-    const fees = await mintFee();
-    console.log(fees.data);
-    await approve({
-      args: [collectionAddress, fees.data]
-    });
-    const { upload, ...rest } = nftData;
-
-    console.log(nftData)
-
-    const response = await addNftToIpfs({
-      collectionAddress: collectionAddress,
-      image: imageData,
-      token,
-      nft: rest
-    });
-
-
-    console.log("IPFS URI", response.data);
-
-    const mintTsx = await mint({
-      args: [address, response.data]
-    });
-
-    const receipt = await mintTsx.wait();
-
-    const tokenID = Web3.utils.hexToNumber(receipt.logs[0].topics[3].toString());
-
-    await importCollectionToken(collectionAddress, tokenID, token)
-
-    navigate(`/collection/${collectionAddress}/${tokenID}`);
+    setToken(token);
   };
+
 
   useEffect(() => {
     dispatch(setIsLoading(false));
