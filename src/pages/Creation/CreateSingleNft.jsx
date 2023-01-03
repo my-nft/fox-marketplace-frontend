@@ -6,20 +6,141 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectIsLoading, setIsLoading } from "../../redux/nftReducer";
 import { MINT_NFT } from "../../saga/actions";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  useSignMessage,
+  useAccount,
+  useContract,
+  useContractWrite,
+  usePrepareContractWrite,
+  useContractRead
+} from "wagmi";
+
+
+import { ERC20ContractAddress, ERC_CONTRACT_INITILIZER, foxMasterCollectionAddress, ZERO_ADDRESS } from "../../utils/blockchainInteractor";
+import FOX_MASTER from "../../utils/contracts/FOX_MASTER.json";
+import ERC20 from '../../utils/contracts/ERC20.json';
+import { addNftToIpfs } from "../../api/nftApi";
+import { signinUser } from "../../api/AuthUserApi";
+import Web3 from "web3";
+import { importCollectionToken } from "../../api/collectionApi";
+
+
+export function useCrowdFactoryFunctionWriter(
+  functionName, collectionAddress, args
+){
+  const contractWrite = usePrepareContractWrite({
+    address: collectionAddress,
+    abi: FOX_MASTER,
+    functionName,
+    args
+  });
+ 
+  return contractWrite;
+}
+
 
 const CreateSingleNft = () => {
   const [imageUpload, setImageUpload] = useState(null);
+  
   const [imageData, setImageData] = useState(null);
+  
+  
   const isLoading = useSelector(selectIsLoading);
   const [popupStatus, setPopupStatus] = useState(null);
   const dispatch = useDispatch();
+  
   const navigate = useNavigate();
+  
   const [searchParams, setSearchParams] = useSearchParams();
-  const collectionAddress = searchParams.get("collectionAddress");
+  let collectionAddress = searchParams.get("collectionAddress") || foxMasterCollectionAddress;
+
+  const { address, connector, isConnected } = useAccount();
+
+  const { signMessageAsync } = useSignMessage({
+    message: `I would like to Sign in for user with address: ${address}`,
+  });
+
+  const {refetch : mintFee} = useContractRead({
+    address: collectionAddress,
+    abi: FOX_MASTER,
+    functionName : 'mintFee'
+    }
+  );
+  
+  const { config } = usePrepareContractWrite({
+    ...ERC_CONTRACT_INITILIZER,
+    functionName: 'approve',
+    enabled: true,
+    args: [collectionAddress, 0]
+  });
+  const { writeAsync : approve } = useContractWrite(config);
+
+
+  const { config : configMint, data: mintData } = usePrepareContractWrite({
+    address: collectionAddress,
+    abi: FOX_MASTER,
+    functionName: 'mint',
+    enabled: true,
+    args: [collectionAddress, 0]
+  });
+
+  console.log(mintData)
+
+  const { writeAsync : mint } = useContractWrite(configMint);
+
+
+
+  const mintingProcess = {
+    signing : async () => await signMessageAsync(),
+    countingFees : async () => await mintFee()
+  }
+
+  const runMintNft = async () =>  {
+    
+    const signature = await signMessageAsync();
+
+    const responseSigning = await signinUser({
+      address,
+      signature
+    })
+
+    const token = responseSigning.data.token;
+
+    const fees = await mintFee();
+    console.log(fees.data);
+    await approve({
+      args: [collectionAddress, fees.data]
+    });
+    const { upload, ...rest } = nftData;
+
+    console.log(nftData)
+
+    const response = await addNftToIpfs({
+      collectionAddress: collectionAddress,
+      image: imageData,
+      token,
+      nft: rest
+    });
+
+
+    console.log("IPFS URI", response.data);
+
+    const mintTsx = await mint({
+      args: [address, response.data]
+    });
+
+    const receipt = await mintTsx.wait();
+
+    const tokenID = Web3.utils.hexToNumber(receipt.logs[0].topics[3].toString());
+
+    await importCollectionToken(collectionAddress, tokenID, token)
+
+    navigate(`/collection/${collectionAddress}/${tokenID}`);
+  };
 
   useEffect(() => {
     dispatch(setIsLoading(false));
-  }, [])
+  }, []);
 
   const [nftData, setNftData] = useState({
     name: "",
@@ -80,6 +201,9 @@ const CreateSingleNft = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    await runMintNft();
+
+    /*
     if (nftData.upload === null) {
       toast.error("Please upload an image");
       return;
@@ -115,6 +239,7 @@ const CreateSingleNft = () => {
         navigate(`/collection/${collectionAddress}/${tokenID}`);
       },
     });
+    */
   };
 
   return (

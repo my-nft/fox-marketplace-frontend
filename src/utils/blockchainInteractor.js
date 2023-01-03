@@ -36,6 +36,12 @@ export const foxMasterCollectionAddress = process.env.REACT_APP_foxMasterCollect
 
 export const factoryCollectionAddress = process.env.REACT_APP_factoryCollectionAddress;
 
+export const ERC_CONTRACT_INITILIZER = {
+  address: ERC20ContractAddress,
+  abi: ERC20,
+}
+
+
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 export async function loadMarketplaceContract(readOnly = false) {
@@ -56,7 +62,7 @@ export async function loadERC721Contract(collectionAddress, readOnly = false) {
 export async function loadERC20Contract(readOnly = false) {
   let web3Instance = web3Infura;
   if (!readOnly) {
-    web3Instance = await authProviderInstance.getInjectedWeb3();
+    web3Instance = new Web3(this.web3.currentProvider);
   }
   return new web3Instance.eth.Contract(ERC20, ERC20ContractAddress);
 }
@@ -98,7 +104,7 @@ export async function loadOfferSystemContract(readOnly = false) {
 }
 
 export async function loadFoxMasterCollectionContract(collectionAddress) {
-  const web3 = await authProviderInstance.getInjectedWeb3();
+  const web3 = Web3(this.web3.currentProvider);
 
   return new web3.eth.Contract(FOX_MASTER, collectionAddress);
 }
@@ -110,7 +116,7 @@ export async function loadFactoryContract() {
 }
 
 export const getCurrentWalletConnected = async () => {
-  const web3 = new Web3(provider);
+  const web3 = Web3(this.web3.currentProvider);
 
   const accounts = await web3.eth.getAccounts();
   return accounts[0];
