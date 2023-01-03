@@ -82,10 +82,7 @@ export const authProvider = () => {
     },
 
     getInjectedWeb3: async () => {
-      console.log("getInjectedWeb3");
-
-      provider = await web3Modal.connect();
-      return new Web3(provider);
+      return new Web3(window.ethereum);
     },
 
     getProvider: async () => {
