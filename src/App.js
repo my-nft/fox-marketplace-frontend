@@ -2,6 +2,7 @@ import "./App.css";
 import {
   createBrowserRouter,
   createRoutesFromElements,
+  defer,
   Route,
   RouterProvider,
 } from "react-router-dom";
@@ -25,6 +26,8 @@ import AccountPage from "./pages/Account/Account";
 import CollectionSettings from "./pages/collectionSettings/collectionSettings";
 import PageStatistics from "./components/Statistics";
 import Page404 from "./pages/404/404";
+import { getNftCall } from "./api/nftApi";
+import { getCollectionByAddress } from "./api/collectionApi";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -125,6 +128,18 @@ const router = createBrowserRouter(
       <Route
         path="collection/:collectionAddress/:tokenID"
         exact
+        loader={async ({ params }) => {
+          const getNFTPromise = getNftCall(
+            params.collectionAddress,
+            params.tokenID
+          );
+          const getCollectionPromise = getCollectionByAddress(
+            params.collectionAddress
+          );
+          return defer({
+            dataPromise: Promise.all([getNFTPromise, getCollectionPromise]),
+          });
+        }}
         element={
           <>
             <MyNftDetails />

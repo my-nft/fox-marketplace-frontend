@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Await, useLoaderData, useParams } from "react-router-dom";
 import { getNftCall } from "../../api/nftApi";
 import { getCollectionByAddress } from "../../api/collectionApi";
 import NftMoreInfos from "../../components/nft/details/NftMoreInfos";
@@ -27,6 +27,7 @@ import NonListedMyNft from "./nonListedMyNft";
 import NonListedNft from "./nonListedNft";
 import { selectCurrentWallet } from "../../redux/userReducer";
 import Address from "../../components/Address";
+import Page404 from "../404/404";
 
 const MyNftDetails = () => {
   const { collectionAddress, tokenID } = useParams();
@@ -50,9 +51,18 @@ const MyNftDetails = () => {
     }
   };
 
-  useEffect(() => {
-    loadNft();
-  }, []);
+  const data = useLoaderData();
+
+  // useEffect(() => {
+  //   data.nft
+  //     .then((data) => {
+  //       console.log("NFT Data: ", data.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log("NFT Data Error: ", err);
+  //     });
+  //   // loadNft();
+  // }, []);
 
   const handleAuction = async (values) => {
     const auctionPrice = Number(values.auctionPrice);
@@ -200,104 +210,118 @@ const MyNftDetails = () => {
     });
   };
 
-  return isLoading || !nftDetails ? (
-    <Spinner />
-  ) : (
-    <div className="container my-5" id="nftPage">
-      <img src="/assets/images/Background.jpg" id="layer" />
-      <h3 className="my-5 text-center">{collectionDetails?.name}</h3>
-      <div className="row">
-        <div className="col-md-12  col-lg-5 order-2 order-lg-1 ">
-          <div id="imgNft" className="imgForSale">
-            <img src={nftDetails?.image} id="NFT" className="imgForSale" />
-          </div>
-          <NftMoreInfos
-            nftDetails={nftDetails}
-            collectionDetails={collectionDetails}
-          />
-        </div>
-        <div className="col-md-12  col-lg-7 order-1 order-lg-2 ">
-          <header id="infoNFT" className="mb-3">
-            <h3>{`${nftDetails?.name}(${nftDetails?.tokenID})`} </h3>
-            <h4>
-              Owned by{" "}
-              {sameAddress(connectedWallet, nftDetails.ownerAddress) ? (
-                "You"
-              ) : (
-                <Address address={nftDetails.ownerAddress}>
-                  {optimizeWalletAddress(nftDetails.ownerAddress)}
-                </Address>
-              )}
-            </h4>
-          </header>
+  return (
+    <Suspense fallback={<Spinner />}>
+      <Await resolve={data.dataPromise} errorElement={<Page404 />}>
+        {(data) => {
+          const nftDetails = data[0].data;
+          const collectionDetails = data[1].data;
 
-          {
-            /*
-              CASE OF MY NFT
-            */
-            !nftDetails.isListed &&
-            sameAddress(connectedWallet, nftDetails.ownerAddress) ? (
-              <NonListedMyNft
-                nftDetails={nftDetails}
-                handleAuction={handleAuction}
-                handleFixedPrice={handleFixedPrice}
-                handleAcceptOffer={onAcceptOffer}
-              />
-            ) : null
-          }
+          return (
+            <div className="container my-5" id="nftPage">
+              <img src="/assets/images/Background.jpg" id="layer" />
+              <h3 className="my-5 text-center">{collectionDetails?.name}</h3>
+              <div className="row">
+                <div className="col-md-12  col-lg-5 order-2 order-lg-1 ">
+                  <div id="imgNft" className="imgForSale">
+                    <img
+                      src={nftDetails?.image}
+                      id="NFT"
+                      className="imgForSale"
+                    />
+                  </div>
+                  <NftMoreInfos
+                    nftDetails={nftDetails}
+                    collectionDetails={collectionDetails}
+                  />
+                </div>
+                <div className="col-md-12  col-lg-7 order-1 order-lg-2 ">
+                  <header id="infoNFT" className="mb-3">
+                    <h3>{`${nftDetails?.name}(${nftDetails?.tokenID})`} </h3>
+                    <h4>
+                      Owned by{" "}
+                      {sameAddress(connectedWallet, nftDetails.ownerAddress) ? (
+                        "You"
+                      ) : (
+                        <Address address={nftDetails.ownerAddress}>
+                          {optimizeWalletAddress(nftDetails.ownerAddress)}
+                        </Address>
+                      )}
+                    </h4>
+                  </header>
 
-          {
-            /*
-              CASE OF NOT MY NFT
-              */
+                  {
+                    /*
+                    CASE OF MY NFT
+                  */
+                    !nftDetails.isListed &&
+                    sameAddress(connectedWallet, nftDetails.ownerAddress) ? (
+                      <NonListedMyNft
+                        nftDetails={nftDetails}
+                        handleAuction={handleAuction}
+                        handleFixedPrice={handleFixedPrice}
+                        handleAcceptOffer={onAcceptOffer}
+                      />
+                    ) : null
+                  }
 
-            !nftDetails.isListed &&
-            !sameAddress(connectedWallet, nftDetails.ownerAddress) ? (
-              <NonListedNft
-                itemDetails={nftDetails}
-                handleMakeOffer={onMakeOffer}
-              />
-            ) : null
-          }
+                  {
+                    /*
+                    CASE OF NOT MY NFT
+                    */
 
-          {nftDetails.isListed && nftDetails.listingType === AUCTION ? (
-            <ListedAuctionNft
-              itemDetails={nftDetails}
-              onPlaceBid={onPlaceBid}
-              onRefund={handleRefund}
-              onClaimNft={handleClaimNFT}
-              onClaimToken={handleClaimToken}
-            />
-          ) : null}
+                    !nftDetails.isListed &&
+                    !sameAddress(connectedWallet, nftDetails.ownerAddress) ? (
+                      <NonListedNft
+                        itemDetails={nftDetails}
+                        handleMakeOffer={onMakeOffer}
+                      />
+                    ) : null
+                  }
 
-          {nftDetails.isListed && nftDetails.listingType === FIXED_PRICE ? (
-            <ListedFixedNft
-              itemDetails={nftDetails}
-              onBuyItem={onBuyItem}
-              onMakeOffer={onMakeOffer}
-              onDelist={onDelistItem}
-              onAcceptOffer={onAcceptOffer}
-            />
-          ) : null}
+                  {nftDetails.isListed && nftDetails.listingType === AUCTION ? (
+                    <ListedAuctionNft
+                      itemDetails={nftDetails}
+                      onPlaceBid={onPlaceBid}
+                      onRefund={handleRefund}
+                      onClaimNft={handleClaimNFT}
+                      onClaimToken={handleClaimToken}
+                    />
+                  ) : null}
 
-          <div className="card" id="fees">
-            <div className="card-body">
-              <div className="card-text">
-                <ul>
-                  <li>
-                    <span>Services fees </span>
-                    <strong>10 fxg</strong>
-                  </li>
-                  <li>
-                    <span>Creator fees</span> <strong>10 fxg</strong>
-                  </li>
-                </ul>
+                  {nftDetails.isListed &&
+                  nftDetails.listingType === FIXED_PRICE ? (
+                    <ListedFixedNft
+                      itemDetails={nftDetails}
+                      onBuyItem={onBuyItem}
+                      onMakeOffer={onMakeOffer}
+                      onDelist={onDelistItem}
+                      onAcceptOffer={onAcceptOffer}
+                    />
+                  ) : null}
+
+                  <div className="card" id="fees">
+                    <div className="card-body">
+                      <div className="card-text">
+                        <ul>
+                          <li>
+                            <span>Services fees </span>
+                            <strong>10 fxg</strong>
+                          </li>
+                          <li>
+                            <span>Creator fees</span> <strong>10 fxg</strong>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          );
+        }}
+      </Await>
+    </Suspense>
   );
 };
 
