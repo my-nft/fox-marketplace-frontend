@@ -1,16 +1,17 @@
 import FilterInput from "./FilterInput";
 import HeaderAccount from "./HeaderAccount";
 import ListNfts from "./ListNfts";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Spinner from "../../components/Spinner";
 import { useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { Await, useLoaderData, useNavigate, useParams } from "react-router-dom";
 import Pagination from "../../components/pagination/pagination";
 import { toast } from "react-toastify";
 import {
   getCollectionByAddress,
   getCollectionNftsCall,
 } from "../../api/collectionApi";
+import Page404 from "../404/404";
 
 const prepareProperties = (attributes) => {
   return (
@@ -32,8 +33,7 @@ const prepareProperties = (attributes) => {
 };
 
 const CollectionDetails = () => {
-  let { collectionAddress } = useParams();
-  const [isLoadingCollection, setIsLoadingCollection] = useState(true);
+  const { collectionAddress } = useParams();
   const [isLoadingNfts, setIsLoadingNfts] = useState(true);
   const [collectionDetails, setCollectionDetails] = useState();
 
@@ -62,69 +62,42 @@ const CollectionDetails = () => {
   const [visible, setVisible] = useState(false);
   const [viewType, setViewType] = useState("CHANGE_FOR_MIN");
 
-  useEffect(() => {
-    initLoadCollection();
-  }, []);
-
-  const initLoadCollection = async () => {
-    try {
-      setIsLoadingCollection(true);
-      const response = await getCollectionByAddress(collectionAddress);
-      const { collection, attributes } = response.data;
-      console.log("RESPONSE: ", response.data);
-      setCollectionDetails(collection);
-      console.log("ATTRIBUTES: ", attributes);
-      console.log("PROPERTIES: ", prepareProperties(attributes));
-      setFilters({
-        ...filters,
-        properties: prepareProperties(attributes),
-      });
-      setIsLoadingCollection(false);
-    } catch (error) {
-      console.log(error);
-      toast.error("Error loading Collection");
-    }
-  };
+  const data = useLoaderData();
 
   const loadNFTs = async () => {
     try {
-      if (collectionDetails) {
-        const propertiesForExport = [];
-        filters.properties.map((category) => {
-          let propObj = {
-            name: category.name,
-            values: [],
-          };
-          category.properties.map((property) => {
-            if (property.active) {
-              propObj.values.push(property.title);
-            }
-          });
-          if (propObj.values.length > 0) {
-            propertiesForExport.push(propObj);
+      const propertiesForExport = [];
+      filters.properties.map((category) => {
+        let propObj = {
+          name: category.name,
+          values: [],
+        };
+        category.properties.map((property) => {
+          if (property.active) {
+            propObj.values.push(property.title);
           }
         });
+        if (propObj.values.length > 0) {
+          propertiesForExport.push(propObj);
+        }
+      });
 
-        setIsLoadingNfts(true);
-        const nftsElements = await getCollectionNftsCall(
-          collectionDetails.collectionAddress,
-          {
-            page: pagination.page,
-            numberElements: 20,
-            categories: filters.categories,
-            searchPrompt: filters.searchPrompt,
-            status: filters.status,
-            minPrice: filters.minPrice,
-            maxPrice: filters.maxPrice,
-            buyToken: filters.buyToken,
-            sortBy: filters.sortBy,
-            properties: propertiesForExport,
-          }
-        );
+      setIsLoadingNfts(true);
+      const nftsElements = await getCollectionNftsCall(collectionAddress, {
+        page: pagination.page,
+        numberElements: 20,
+        categories: filters.categories,
+        searchPrompt: filters.searchPrompt,
+        status: filters.status,
+        minPrice: filters.minPrice,
+        maxPrice: filters.maxPrice,
+        buyToken: filters.buyToken,
+        sortBy: filters.sortBy,
+        properties: propertiesForExport,
+      });
 
-        setNfts(nftsElements.data);
-        setIsLoadingNfts(false);
-      }
+      setNfts(nftsElements.data);
+      setIsLoadingNfts(false);
     } catch (error) {
       console.log(error);
       toast.error("Error loading NFTs");
@@ -133,7 +106,12 @@ const CollectionDetails = () => {
 
   useEffect(() => {
     loadNFTs();
-  }, [collectionDetails, filters]);
+  }, [filters]);
+
+  useEffect(() => {
+    console.log("LOADING NFTS");
+    loadNFTs();
+  }, []);
 
   const changeSelectedView = (selection) => {
     setViewType(selection);
@@ -152,82 +130,85 @@ const CollectionDetails = () => {
   };
 
   useEffect(() => {
-    if (collectionDetails) {
-      loadNFTs();
-    }
+    loadNFTs();
   }, [collectionDetails, pagination]);
 
-  const updateProcessing = async (interval) => {
-    const response = await getCollectionByAddress(
-      collectionDetails.collectionAddress
-    );
-    const tempCollection = response.data;
-    if (!tempCollection.importProcessing) {
-      toast.clearWaitingQueue();
-      toast.dismiss();
-      toast.success("Congratulation your collection has been imported...");
-      dispatch(setCollectionDetails(tempCollection.collection));
-      clearInterval(interval);
-      return;
-    }
-  };
+  // const updateProcessing = async (interval) => {
+  //   const response = await getCollectionByAddress(
+  //     collectionDetails.collectionAddress
+  //   );
+  //   const tempCollection = response.data;
+  //   if (!tempCollection.importProcessing) {
+  //     toast.clearWaitingQueue();
+  //     toast.dismiss();
+  //     toast.success("Congratulation your collection has been imported...");
+  //     dispatch(setCollectionDetails(tempCollection.collection));
+  //     clearInterval(interval);
+  //     return;
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (collectionDetails && collectionDetails.importProcessing) {
+  //     toast.loading("Import progressing...");
+  //     const interval = setInterval(() => {
+  //       updateProcessing(interval);
+  //     }, 30000);
+  //     return () => {
+  //       toast.clearWaitingQueue();
+  //       toast.dismiss();
+  //       clearInterval(interval);
+  //     };
+  //   }
+  // }, [collectionDetails]);
 
   useEffect(() => {
-    if (collectionDetails && collectionDetails.importProcessing) {
-      toast.loading("Import progressing...");
-      const interval = setInterval(() => {
-        updateProcessing(interval);
-      }, 30000);
-      return () => {
-        toast.clearWaitingQueue();
-        toast.dismiss();
-        clearInterval(interval);
-      };
-    }
-  }, [collectionDetails]);
+    data.dataPromise
+      .then((promiseData) => {
+        setFilters({
+          ...filters,
+          properties: prepareProperties(promiseData[0].data.attributes),
+        });
+      })
+      .catch((err) => {
+        // console.log(err);
+      });
+  }, []);
 
-  return isLoadingCollection ? (
-    <Spinner />
-  ) : (
-    <>
-      <HeaderAccount collectionData={collectionDetails} />
-      <FilterInput
-        onOpenClose={() => setVisible(!visible)}
-        onChangeSelectedView={changeSelectedView}
-        filters={filters}
-        changeFilterValue={setFilters}
-      />
-      <ListNfts
-        nfts={content}
-        isVisible={visible}
-        viewType={viewType}
-        handleSelectNfts={handleSelectNfts}
-        filters={filters}
-        changeFilterValue={setFilters}
-        pagination={pagination}
-        totalElements={totalElements}
-        isLoadingNfts={isLoadingNfts}
-        changePage={changePage}
-        paginationPage={pagination.page}
-      />
-      {/* {isLoadingNfts ? (
-        <Spinner />
-      ) : (
-        <>
-          {!isLoadingNfts && (
+  return (
+    <Suspense fallback={<Spinner />}>
+      <Await resolve={data.dataPromise} errorElement={<Page404 />}>
+        {(data) => {
+          console.log(data);
+          const collectionDetails = data[0].data.collection;
+
+          return (
             <>
-              {totalElements / 20 > 1 ? (
-                <Pagination
-                  currentPage={pagination.page}
-                  pages={totalElements ? parseInt(totalElements / 20) : 1}
-                  setCurrentPage={changePage}
-                />
-              ) : null}
+              <HeaderAccount collectionData={collectionDetails} />
+              <FilterInput
+                onOpenClose={() => setVisible(!visible)}
+                onChangeSelectedView={changeSelectedView}
+                filters={filters}
+                changeFilterValue={setFilters}
+              />
+              <ListNfts
+                nfts={content}
+                isVisible={visible}
+                viewType={viewType}
+                handleSelectNfts={handleSelectNfts}
+                filters={filters}
+                changeFilterValue={setFilters}
+                pagination={pagination}
+                totalElements={totalElements}
+                isLoadingNfts={isLoadingNfts}
+                changePage={changePage}
+                paginationPage={pagination.page}
+              />
             </>
-          )}
-        </>
-      )} */}
-    </>
+          );
+        }}
+      </Await>
+    </Suspense>
   );
 };
 

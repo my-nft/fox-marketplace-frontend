@@ -213,9 +213,10 @@ const MyNftDetails = () => {
   return (
     <Suspense fallback={<Spinner />}>
       <Await resolve={data.dataPromise} errorElement={<Page404 />}>
-        {(data) => {
-          const nftDetails = data[0].data;
-          const collectionDetails = data[1].data;
+        {(returnData) => {
+          console.log(returnData);
+          const nftDetails = returnData[0].data;
+          const collectionDetails = returnData[1].data;
 
           return (
             <div className="container my-5" id="nftPage">

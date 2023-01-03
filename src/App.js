@@ -27,7 +27,10 @@ import CollectionSettings from "./pages/collectionSettings/collectionSettings";
 import PageStatistics from "./components/Statistics";
 import Page404 from "./pages/404/404";
 import { getNftCall } from "./api/nftApi";
-import { getCollectionByAddress } from "./api/collectionApi";
+import {
+  getCollectionByAddress,
+  getCollectionNftsCall,
+} from "./api/collectionApi";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -107,6 +110,32 @@ const router = createBrowserRouter(
       <Route
         path="collection/:collectionAddress"
         exact
+        loader={async ({ params }) => {
+          const getCollectionPromise = getCollectionByAddress(
+            params.collectionAddress
+          );
+          const getCollectionNFTsPromise = getCollectionNftsCall(
+            params.collectionAddress,
+            {
+              page: 1,
+              numberElements: 20,
+              categories: [],
+              searchPrompt: "",
+              status: [],
+              minPrice: 0,
+              maxPrice: 0,
+              buyToken: "FXG",
+              sortBy: "RECENTLY_LISTED",
+              properties: [],
+            }
+          );
+          return defer({
+            dataPromise: Promise.all([
+              getCollectionPromise,
+              // getCollectionNFTsPromise,
+            ]),
+          });
+        }}
         element={
           <>
             <CollectionDetails />
@@ -117,6 +146,14 @@ const router = createBrowserRouter(
       <Route
         path="collection/:collectionAddress/settings"
         exact
+        loader={async ({ params }) => {
+          const getCollectionPromise = getCollectionByAddress(
+            params.collectionAddress
+          );
+          return defer({
+            dataPromise: Promise.all([getCollectionPromise]),
+          });
+        }}
         element={
           <>
             <CollectionSettings />

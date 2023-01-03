@@ -1,27 +1,40 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { ReactComponent as Clipboard } from "../../assets/icons/clipboard.svg";
 import { ReactComponent as Chevron } from "../../assets/icons/arrow.svg";
 
 import SettingsImages from "./settingsImages";
 import Socials from "./socials";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  Await,
+  Link,
+  useLoaderData,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { getCollectionByAddress } from "../../api/collectionApi";
 import Spinner from "../../components/Spinner";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UPDATE_COLLECTION } from "../../saga/actions";
 import CustomSelect from "../../components/Select";
+import Page404 from "../404/404";
+import { sameAddress } from "../../utils/walletUtils";
+import { getCurrentWalletConnected } from "../../utils/blockchainInteractor";
+import { selectCurrentWallet } from "../../redux/userReducer";
 
 const CollectionSettings = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { collectionAddress } = useParams();
-  const [isLoadingCollection, setIsLoadingCollection] = useState(true);
   const [collectionDetails, setCollectionDetails] = useState();
-  const [image, setImage] = useState(collectionDetails?.image);
-  const [banner, setBanner] = useState(collectionDetails?.banner);
+  const [isLoadingCollection, setIsLoadingCollection] = useState(true);
+  const [image, setImage] = useState(false);
+  const [banner, setBanner] = useState(false);
 
   const [imageFile, setImageFile] = useState();
   const [bannerFile, setBannerFile] = useState();
+  const currentWallet = useSelector(selectCurrentWallet);
+
+  const data = useLoaderData();
 
   useEffect(() => {
     if (imageFile) {
@@ -37,23 +50,10 @@ const CollectionSettings = () => {
     }
   }, [bannerFile]);
 
-  const init = async () => {
-    setIsLoadingCollection(true);
-    const response = await getCollectionByAddress(collectionAddress);
-    const { data } = response;
-    const {collection} = data;
-    setCollectionDetails(collection);
-    setImage(data.image);
-    setBanner(data.banner);
-    setIsLoadingCollection(false);
-  };
-
-  useEffect(() => {
-    init();
-  }, []);
-
   const handleSubmitData = (e) => {
     e.preventDefault();
+    console.log("collectionDetails", collectionDetails);
+    return;
     setIsLoadingCollection(true);
     dispatch({
       type: UPDATE_COLLECTION,
@@ -93,169 +93,206 @@ const CollectionSettings = () => {
     // navigate("/")
   };
 
+  useEffect(() => {
+    data.dataPromise
+      .then((data) => {
+        setCollectionDetails(data[0].data.collection);
+        setImage(data[0].data.collection.image);
+        setBanner(data[0].data.collection.banner);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   const clipboardCopy = (value) => {
     navigator.clipboard.writeText(value);
   };
 
-  return isLoadingCollection ? (
-    <Spinner />
-  ) : (
-    <div id="createCollection">
-      <Link
-        to={`
+  return (
+    <Suspense fallback={<Spinner />}>
+      <Await resolve={data.dataPromise} errorElement={<Page404 />}>
+        {(returnData) => {
+          console.log(
+            returnData[0].data.collection.ownerAddress,
+            currentWallet
+          );
+          if (
+            !sameAddress(
+              returnData[0].data.collection.ownerAddress,
+              currentWallet
+            )
+          ) {
+            throw new Error();
+          }
+
+          return (
+            <div id="createCollection">
+              <Link
+                to={`
       /collection/${collectionAddress}
       `}
-        className="returnLink"
-      >
-        <Chevron />
-        Return to Collection
-      </Link>
-      <h2 className="collectionSettingsTitle">Collection Settings</h2>
-      <div className="collectionUpdateSettings">
-        <SettingsImages
-          setCollectionImage={setImageFile}
-          setCollectionBanner={setBannerFile}
-          image={image}
-          banner={banner}
-        />
-        <form onSubmit={handleSubmitData} className="collectionSettingsData">
-          <div className="settingsGroup">
-            <h2>Collection Info</h2>
-            <div className="settingGroup settingsWidthFull">
-              <label htmlFor="name">Url</label>
-              <div className="inputWrapper">
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  placeholder="Collection url"
-                  value={collectionDetails.url}
-                  onChange={(e) =>
-                    setCollectionDetails({
-                      ...collectionDetails,
-                      url: e.target.value,
-                    })
-                  }
+                className="returnLink"
+              >
+                <Chevron />
+                Return to Collection
+              </Link>
+              <h2 className="collectionSettingsTitle">Collection Settings</h2>
+              <div className="collectionUpdateSettings">
+                <SettingsImages
+                  setCollectionImage={setImageFile}
+                  setCollectionBanner={setBannerFile}
+                  image={image}
+                  banner={banner}
                 />
-                <Clipboard
-                  onClick={() => clipboardCopy(collectionDetails.url)}
-                />
-              </div>
-            </div>
-            <div className="settingGroup settingsWidthFull">
-              <label htmlFor="name">Item Description</label>
-              <div className="inputWrapper">
-                <textarea
-                  name="description"
-                  id="description"
-                  placeholder="Item Description"
-                  value={collectionDetails.description}
-                  onChange={(e) =>
-                    setCollectionDetails({
-                      ...collectionDetails,
-                      description: e.target.value,
-                    })
-                  }
-                />
-              </div>
-            </div>
-            <div className="settingGroup settingsWidthHalf">
-              <label htmlFor="name">Category</label>
+                <form
+                  onSubmit={handleSubmitData}
+                  className="collectionSettingsData"
+                >
+                  <div className="settingsGroup">
+                    <h2>Collection Info</h2>
+                    <div className="settingGroup settingsWidthFull">
+                      <label htmlFor="name">Url</label>
+                      <div className="inputWrapper">
+                        <input
+                          type="text"
+                          name="name"
+                          id="name"
+                          placeholder="Collection url"
+                          value={collectionDetails.url}
+                          onChange={(e) =>
+                            setCollectionDetails({
+                              ...collectionDetails,
+                              url: e.target.value,
+                            })
+                          }
+                        />
+                        <Clipboard
+                          onClick={() => clipboardCopy(collectionDetails.url)}
+                        />
+                      </div>
+                    </div>
+                    <div className="settingGroup settingsWidthFull">
+                      <label htmlFor="name">Item Description</label>
+                      <div className="inputWrapper">
+                        <textarea
+                          name="description"
+                          id="description"
+                          placeholder="Item Description"
+                          value={collectionDetails.description}
+                          onChange={(e) =>
+                            setCollectionDetails({
+                              ...collectionDetails,
+                              description: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="settingGroup settingsWidthHalf">
+                      <label htmlFor="name">Category</label>
 
-              <CustomSelect
-                className="settingsWidthFull"
-                name="category"
-                id="category"
-                value={{
-                  value: collectionDetails.category,
-                  label: collectionDetails.category,
-                }}
-                onChange={(e) =>
-                  setCollectionDetails({
-                    ...collectionDetails,
-                    category: e.value,
-                  })
-                }
-                options={[
-                  { value: "Art", label: "Art" },
-                  { value: "Collectibles", label: "Collectibles" },
-                  { value: "Music NFTs", label: "Music NFTs" },
-                  { value: "Photography", label: "Photography" },
-                  { value: "Sports NFTs", label: "Sports NFTs" },
-                  { value: "Trading Cards NFTs", label: "Trading Cards NFTs" },
-                  { value: "Utility NFTs", label: "Utility NFTs" },
-                ]}
-              />
-            </div>
-          </div>
-          <Socials
-            collectionDetails={collectionDetails}
-            setCollectionDetails={setCollectionDetails}
-          />
-          <div className="settingsSplitGrouping">
-            <div className="settingGroup">
-              <label htmlFor="royaltyAddress">Royalty Address</label>
-              <div className="inputWrapper">
-                <input
-                  type="text"
-                  name="royaltyAddress"
-                  id="royaltyAddress"
-                  placeholder="Royalty Address"
-                  value={collectionDetails.royaltyAddress}
-                  onChange={(e) => {
-                    if (!e.target.value) {
-                      setCollectionDetails({
-                        ...collectionDetails,
-                        royaltyPercent: "0",
-                        royaltyAddress: e.target.value,
-                      });
-                    } else {
-                      setCollectionDetails({
-                        ...collectionDetails,
-                        royaltyAddress: e.target.value,
-                      });
-                    }
-                  }}
-                />
+                      <CustomSelect
+                        className="settingsWidthFull"
+                        name="category"
+                        id="category"
+                        value={{
+                          value: collectionDetails.category,
+                          label: collectionDetails.category,
+                        }}
+                        onChange={(e) =>
+                          setCollectionDetails({
+                            ...collectionDetails,
+                            category: e.value,
+                          })
+                        }
+                        options={[
+                          { value: "Art", label: "Art" },
+                          { value: "Collectibles", label: "Collectibles" },
+                          { value: "Music NFTs", label: "Music NFTs" },
+                          { value: "Photography", label: "Photography" },
+                          { value: "Sports NFTs", label: "Sports NFTs" },
+                          {
+                            value: "Trading Cards NFTs",
+                            label: "Trading Cards NFTs",
+                          },
+                          { value: "Utility NFTs", label: "Utility NFTs" },
+                        ]}
+                      />
+                    </div>
+                  </div>
+                  <Socials
+                    collectionDetails={collectionDetails}
+                    setCollectionDetails={setCollectionDetails}
+                  />
+                  <div className="settingsSplitGrouping">
+                    <div className="settingGroup">
+                      <label htmlFor="royaltyAddress">Royalty Address</label>
+                      <div className="inputWrapper">
+                        <input
+                          type="text"
+                          name="royaltyAddress"
+                          id="royaltyAddress"
+                          placeholder="Royalty Address"
+                          value={collectionDetails.royaltyAddress}
+                          onChange={(e) => {
+                            if (!e.target.value) {
+                              setCollectionDetails({
+                                ...collectionDetails,
+                                royaltyPercent: "0",
+                                royaltyAddress: e.target.value,
+                              });
+                            } else {
+                              setCollectionDetails({
+                                ...collectionDetails,
+                                royaltyAddress: e.target.value,
+                              });
+                            }
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="settingGroup">
+                      <label htmlFor="royaltyPercent">Rights Amount</label>
+
+                      <CustomSelect
+                        className="settingsWidthFull"
+                        name="royaltyPercent"
+                        id="royaltyPercent"
+                        value={{
+                          value: collectionDetails.royaltyPercent,
+                          label: collectionDetails.royaltyPercent,
+                        }}
+                        onChange={(e) =>
+                          setCollectionDetails({
+                            ...collectionDetails,
+                            royaltyPercent: e.value,
+                          })
+                        }
+                        options={[
+                          { value: "0", label: "0" },
+                          { value: "1", label: "1" },
+                          { value: "2", label: "2" },
+                          { value: "3", label: "3" },
+                          { value: "4", label: "4" },
+                          { value: "5", label: "5" },
+                          { value: "6", label: "6" },
+                          { value: "7", label: "7" },
+                          { value: "8", label: "8" },
+                          { value: "9", label: "9" },
+                          { value: "10", label: "10" },
+                        ]}
+                      />
+                    </div>
+                  </div>
+                  <button type="submit">Update</button>
+                </form>
               </div>
             </div>
-            <div className="settingGroup">
-              <label htmlFor="royaltyPercent">Rights Amount</label>
-
-              <CustomSelect
-                className="settingsWidthFull"
-                name="royaltyPercent"
-                id="royaltyPercent"
-                value={{
-                  value: collectionDetails.royaltyPercent,
-                  label: collectionDetails.royaltyPercent,
-                }}
-                onChange={(e) =>
-                  setCollectionDetails({
-                    ...collectionDetails,
-                    royaltyPercent: e.value,
-                  })
-                }
-                options={[
-                  { value: "0", label: "0" },
-                  { value: "1", label: "1" },
-                  { value: "2", label: "2" },
-                  { value: "3", label: "3" },
-                  { value: "4", label: "4" },
-                  { value: "5", label: "5" },
-                  { value: "6", label: "6" },
-                  { value: "7", label: "7" },
-                  { value: "8", label: "8" },
-                  { value: "9", label: "9" },
-                  { value: "10", label: "10" },
-                ]}
-              />
-            </div>
-          </div>
-          <button type="submit">Update</button>
-        </form>
-      </div>
-    </div>
+          );
+        }}
+      </Await>
+    </Suspense>
   );
 };
 
