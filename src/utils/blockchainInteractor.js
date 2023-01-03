@@ -9,6 +9,7 @@ import OFFER_SYSTEM from "./contracts/OFFERSYSTEM.json";
 import FOX_MASTER from "./contracts/FOX_MASTER.json";
 import FACTORY from "./contracts/FACTORY.json";
 import { authProvider } from "./web3ModalInteractor";
+import { provider } from "../App";
 
 let infura = process.env.REACT_APP_RPC_URL;
 
@@ -109,7 +110,7 @@ export async function loadFactoryContract() {
 }
 
 export const getCurrentWalletConnected = async () => {
-  const web3 = await authProviderInstance.getInjectedWeb3();
+  const web3 = new Web3(provider);
 
   const accounts = await web3.eth.getAccounts();
   return accounts[0];

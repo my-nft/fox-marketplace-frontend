@@ -1,7 +1,9 @@
-import { Chain } from 'wagmi'
+//IMPORTANT import { Chain } from 'wagmi'
  
+const networkId = Number(process.env.REACT_APP_RPC_CHAIN_ID);
+
 export const fxgChain = {
-  id: 43_114,
+  id: networkId,
   name: 'FXG',
   network: 'FX',
   nativeCurrency: {
@@ -15,12 +17,4 @@ export const fxgChain = {
   blockExplorers: {
     default: { name: 'SnowTrace', url: process.env.REACT_APP_RPC_URL_EXPLORER },
   },
-  /*
-  contracts: {
-    multicall3: {
-      address: '0xca11bde05977b3631167028862be2a173976ca11',
-      blockCreated: 11907934,
-    },
-  },
-  */
 }

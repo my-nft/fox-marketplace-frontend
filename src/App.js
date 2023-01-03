@@ -31,39 +31,29 @@ import {
   modalConnectors,
   walletConnectProvider,
 } from "@web3modal/ethereum";
+import { createClient, configureChains } from 'wagmi'
 
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 
 import { Web3Modal } from "@web3modal/react";
 
-import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { WagmiConfig } from "wagmi";
 
-const chains = [fxgChain];
-
+const chains=[fxgChain]
 // Wagmi client
-const { provider } = configureChains(chains, [
-  walletConnectProvider({
-    projectId: "c713aa69c46302aa2ce0353d8b67b8fa",
-    rpc: {
-      [process.env.REACT_APP_RPC_CHAIN_ID]: process.env.REACT_APP_RPC_URL,
-    },
-    infuraId: process.env.REACT_APP_INFURA_ID,
-    supportedChainIds: [process.env.REACT_APP_RPC_CHAIN_ID],
-    chainId: process.env.REACT_APP_RPC_CHAIN_ID,
-  }),
+export const { provider } = configureChains(chains, [
+  walletConnectProvider({ 
+    projectId: "c713aa69c46302aa2ce0353d8b67b8fa",  
+  })
 ]);
+
+console.log(provider)
+
 const wagmiClient = createClient({
+  logger: {
+    warn: (message) => console.log(message),
+  },
   autoConnect: true,
-  connectors: [
-    new MetaMaskConnector({ chains }),
-    new WalletConnectConnector({
-      chains,
-      options: {
-        qrcode: true,
-      },
-    })
-  ],
+  connectors: modalConnectors({ appName: "web3Modal", chains }),
   provider,
 });
 

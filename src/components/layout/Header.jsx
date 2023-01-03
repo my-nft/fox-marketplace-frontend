@@ -3,49 +3,70 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Web3Button } from "@web3modal/react";
+import { Web3NetworkSwitch } from "@web3modal/react";
+
 import {
   authProviderInstance,
   loadERC20Contract,
   web3Infura,
 } from "../../utils/blockchainInteractor";
-import { optimizeWalletAddress } from "../../utils/walletUtils";
 import ScrollToTop from "../scrollToTop";
 import useOutsideClick from "./../../utils/useOutsideClick";
 import SearchBar from "./../searchBar/searchBar";
-
-import { ReactComponent as LogoutIcon } from "../../assets/icons/exit.svg";
-
 import { selectCurrentWallet } from "../../redux/userReducer";
 import { LOAD_USER } from "../../saga/actions";
 
+
 import {
   useAccount,
-  useConnect,
-  useDisconnect,
-  useEnsAvatar,
-  useEnsName,
-} from "wagmi";
+} from 'wagmi'
+
+
 
 const Header = () => {
-  const { address, connector, isConnected } = useAccount();
 
-  const { connect, connectors, error, isLoading, pendingConnector } =
-    useConnect();
+  const dispatch = useDispatch();
+
+  const [balance, setBalance] = useState({
+    fx: 0,
+    fxg: 0,
+  });
+  const [filters, setFilters] = useState({
+    searchPrompt: "",
+  });
+
+
+  const { address, connector, isConnected } = useAccount(
+    {
+      onConnect({ address, connector, isReconnected }) {
+        console.log('Connected', { address, connector, isReconnected })
+        dispatch({
+          type: LOAD_USER,
+          payload: address,
+        });
+      },
+      onDisconnect() {
+        dispatch({
+          type: "DESTROY_SESSION",
+        });
+      },
+    }
+  );
+
+  console.log(address);
+
 
   const clickRef = useOutsideClick(() => {
     document.querySelector(".navbar-collapse").classList.remove("show");
   });
 
-  const [connectedWallet, setConnectedWallet] = useState();
   const userAddress = useSelector(selectCurrentWallet);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    setConnectedWallet(userAddress);
-  }, [userAddress]);
+
 
   const connectWA = async () => {
-    const connectedWallet = await authProviderInstance.login();
+    const address = await authProviderInstance.login();
     authProviderInstance.addListners({
       clearSession: () =>
         dispatch({
@@ -54,7 +75,7 @@ const Header = () => {
     });
     dispatch({
       type: LOAD_USER,
-      payload: connectedWallet,
+      payload: address,
     });
   };
 
@@ -65,20 +86,14 @@ const Header = () => {
     });
   };
 
-  const [balance, setBalance] = useState({
-    fx: 0,
-    fxg: 0,
-  });
-  const [filters, setFilters] = useState({
-    searchPrompt: "",
-  });
+
 
   const initWalletData = async () => {
     const web3 = web3Infura;
-    if (connectedWallet && web3) {
+    if (address && web3) {
       const contract = await loadERC20Contract(true);
-      const fxg = await contract.methods.balanceOf(connectedWallet).call();
-      web3.eth.getBalance(connectedWallet, (err, wei) => {
+      const fxg = await contract.methods.balanceOf(address).call();
+      web3.eth.getBalance(address, (err, wei) => {
         if (!err) {
           const walletBalance = Number(
             web3.utils.fromWei(wei, "ether")
@@ -94,10 +109,10 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (connectedWallet) {
+    if (address) {
       initWalletData();
     }
-  }, [connectedWallet]);
+  }, [address]);
 
   return (
     <>
@@ -107,23 +122,6 @@ const Header = () => {
           <Link className="navbar-brand" to="/">
             <img src="/assets/images/Logo_foxchange.png" alt="" />
           </Link>
-          <div>
-            {connectors.map((connector) => (
-              <button
-                disabled={!connector.ready}
-                key={connector.id}
-                onClick={() => connect({ connector })}
-              >
-                {connector.name}
-                {!connector.ready && " (unsupported)"}
-                {isLoading &&
-                  connector.id === pendingConnector?.id &&
-                  " (connecting)"}
-              </button>
-            ))}
-
-            {error && <div>{error.message}</div>}
-          </div>
           <form className="form-inline my-2 my-lg-0 ">
             <SearchBar
               filters={filters}
@@ -145,7 +143,7 @@ const Header = () => {
           </button>
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className={`navbar-nav ${connectedWallet ? "" : "mr-3"}`}>
+            <ul className={`navbar-nav ${address ? "" : "mr-3"}`}>
               <li className="nav-item active">
                 <Link className="nav-link" to="/explore">
                   Explore <span className="sr-only">(current)</span>
@@ -158,7 +156,7 @@ const Header = () => {
               </li>
             </ul>
 
-            {connectedWallet ? (
+            {address ? (
               <ul id="buttonIcon">
                 <li className="nav-item">
                   <Link className="nav-link" to="/account">
@@ -192,26 +190,9 @@ const Header = () => {
               </ul>
             ) : null}
 
-            <button
-              id="signUpButton"
-              onClick={async () => {
-                if (connectedWallet) {
-                  await disconnect();
-                } else {
-                  await connect();
-                }
-              }}
-            >
-              {connectedWallet ? (
-                <>
-                  {optimizeWalletAddress(connectedWallet)}
-                  <span></span>
-                  <LogoutIcon />
-                </>
-              ) : (
-                "Connect Wallect"
-              )}{" "}
-            </button>
+
+            <Web3NetworkSwitch/>
+            <Web3Button/>
           </div>
         </nav>
       </header>

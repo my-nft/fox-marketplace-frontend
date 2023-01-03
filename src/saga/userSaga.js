@@ -49,6 +49,8 @@ function* updateUserProfile(action) {
       imageFile,
     } = action.payload;
 
+    console.log("signing");
+
     const token = yield call(signWallet);
     
 
