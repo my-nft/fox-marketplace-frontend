@@ -57,7 +57,7 @@ const CreateSingleNft = () => {
 
   const [idIpfs, setIdIpfs] = useState('');
 
-  const { config : configMint, status, error} = usePrepareContractWrite({
+  const { config : configMint, status : statutMint, error} = usePrepareContractWrite({
     address: collectionAddress,
     abi: FOX_MASTER,
     functionName: 'mint',
@@ -65,14 +65,14 @@ const CreateSingleNft = () => {
     enabled: Boolean(idIpfs),
   });
 
-  console.log(status, error, collectionAddress);
+  console.log(statutMint, error, collectionAddress);
 
-  const { writeAsync : JJJJJJ } = useContractWrite(configMint);
+  const { writeAsync : mint } = useContractWrite(configMint);
 
 
   const runMint = async () => {
     
-    const mintTsx = await JJJJJJ();
+    const mintTsx = await mint();
 
     const receipt = await mintTsx.wait();
 
@@ -84,10 +84,10 @@ const CreateSingleNft = () => {
   }
 
   useEffect(() => {
-    if(idIpfs && status === 'success') {
+    if(idIpfs && statutMint === 'success') {
       runMint();
     }
-  }, [idIpfs, status])
+  }, [idIpfs, statutMint])
 
 
   //#Approuve
@@ -100,7 +100,7 @@ const CreateSingleNft = () => {
     args: [collectionAddress, fees],
     enabled: Boolean(fees)
   });
-  const { writeAsync : approve } = useContractWrite(config);
+  const { writeAsync : approve, status: statutApprove } = useContractWrite(config);
 
   const runApprove = async () => {
     await approve();
@@ -121,10 +121,10 @@ const CreateSingleNft = () => {
   }
 
   useEffect(() => {
-    if(fees) {
+    if(fees && statutApprove === 'success') {
       runApprove();
     }
-  }, [fees]);
+  }, [fees, statutApprove]);
 
 
   //# calculate fees
