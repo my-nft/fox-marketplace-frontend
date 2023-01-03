@@ -1,4 +1,5 @@
 import { Web3Provider } from "@ethersproject/providers";
+import { providers } from "ethers";
 import Web3 from "web3";
 import { signinUser, signupUser } from "../api/AuthUserApi";
 import { provider } from "../App";
@@ -16,7 +17,8 @@ export const signIn = async (address) => {
     address,
   };
 
-  const web3 = new Web3(provider);
+
+  const web3 = new Web3(window.ethereum);
 
 
   await web3.eth.personal.sign(msg, address, (err, signature) => {

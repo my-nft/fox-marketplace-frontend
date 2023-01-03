@@ -25,6 +25,7 @@ import AccountPage from "./pages/Account/Account";
 import CollectionSettings from "./pages/collectionSettings/collectionSettings";
 import PageStatistics from "./components/Statistics";
 import { fxgChain } from "./utils/fxgChain";
+import { ethers, providers } from "ethers";
 
 import {
   EthereumClient,
@@ -38,6 +39,8 @@ import { Web3Modal } from "@web3modal/react";
 
 import { WagmiConfig } from "wagmi";
 
+
+
 const chains=[fxgChain]
 // Wagmi client
 export const { provider } = configureChains(chains, [
@@ -46,7 +49,6 @@ export const { provider } = configureChains(chains, [
   })
 ]);
 
-console.log(provider)
 
 const wagmiClient = createClient({
   logger: {
