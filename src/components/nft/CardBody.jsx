@@ -22,7 +22,7 @@ const CardBody = ({
           <p id="price">
             {price} FXG
             <span id="priceDollar">
-              ${(Number(priceDollar) * FXG_PRICE).toFixed(4)}
+              ${parseFloat((Number(priceDollar) * FXG_PRICE).toFixed(4))}
             </span>
           </p>
         ) : null}
@@ -33,7 +33,7 @@ const CardBody = ({
             <p id="price">
               {bestOffer} FXG
               <span id="priceDollar">
-                ${(Number(bestOffer) * FXG_PRICE).toFixed(4)}
+                ${parseFloat((Number(bestOffer) * FXG_PRICE).toFixed(4))}
               </span>
             </p>
             {sameAddress(currentWallet, ownerAddress) ? (
