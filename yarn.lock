@@ -13595,10 +13595,10 @@
   dependencies:
     "xml-name-validator" "^3.0.0"
 
-"wagmi@^0.10.3":
-  "integrity" "sha512-BYEjNjnzZFaEUKXCScdRYq0tGVeu+6hooqCBfVXrf6WFqvp3Z55TcRhCfvbT2KHEPFZpXRTlVH/f5lX0RyMvrw=="
-  "resolved" "https://registry.npmjs.org/wagmi/-/wagmi-0.10.3.tgz"
-  "version" "0.10.3"
+"wagmi@^0.10.4":
+  "integrity" "sha512-ifJSnmkG+5S+MgelY5gKiZmDJdYe4/ObtzpnfngLTKxmmH+bdevfDD+dqJCgZKTUx9KFytSVpOAHSibctf1I3g=="
+  "resolved" "https://registry.npmjs.org/wagmi/-/wagmi-0.10.4.tgz"
+  "version" "0.10.4"
   dependencies:
     "@coinbase/wallet-sdk" "^3.6.0"
     "@tanstack/query-sync-storage-persister" "^4.14.5"
