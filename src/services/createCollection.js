@@ -55,10 +55,8 @@ export const mintCollection = async ({ name, symbol }) => {
     });
 
 
-    console.log(tsx);
-
-    console.log("COLLECTION ADDRESS CREATED  ", tsx.events[0].address)
+    console.log("COLLECTION ADDRESS CREATED  ", tsx.events[2].address)
 
 
-  return tsx.events[0].address;
+  return tsx.events[2].address;
 };
