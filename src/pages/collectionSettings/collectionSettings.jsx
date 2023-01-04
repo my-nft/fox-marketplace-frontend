@@ -53,7 +53,6 @@ const CollectionSettings = () => {
   const handleSubmitData = (e) => {
     e.preventDefault();
     console.log("collectionDetails", collectionDetails);
-    return;
     setIsLoadingCollection(true);
     dispatch({
       type: UPDATE_COLLECTION,
