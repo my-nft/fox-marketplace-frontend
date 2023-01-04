@@ -57,7 +57,7 @@ const CreateSingleNft = () => {
 
   const [idIpfs, setIdIpfs] = useState('');
 
-  const { config : configMint, status : statutMint, error} = usePrepareContractWrite({
+  const { config : configMint, isError, isFetchedAfterMount, isFetching, isIdle, isLoading : isL, isSuccess : isSuccessMint, status} = usePrepareContractWrite({
     address: collectionAddress,
     abi: FOX_MASTER,
     functionName: 'mint',
@@ -65,9 +65,9 @@ const CreateSingleNft = () => {
     enabled: Boolean(idIpfs),
   });
 
-  console.log(statutMint, error, collectionAddress);
 
-  const { writeAsync : mint } = useContractWrite(configMint);
+  const { writeAsync : mint} = useContractWrite(configMint);
+
 
 
   const runMint = async () => {
@@ -84,23 +84,24 @@ const CreateSingleNft = () => {
   }
 
   useEffect(() => {
-    if(idIpfs && statutMint === 'success') {
+    console.log("$$$$$$$$$$$", isError, isFetchedAfterMount, isFetching, isIdle, isL, isSuccessMint, status)
+    if(idIpfs && mint && isSuccessMint) {
       runMint();
     }
-  }, [idIpfs, statutMint])
+  }, [idIpfs, isSuccessMint])
 
 
   //#Approuve
   const [fees, setFees] = useState();
 
-  const { config } = usePrepareContractWrite({
+  const { config, isSuccess : isSuccessApprove } = usePrepareContractWrite({
     address: ERC20ContractAddress,
     abi: ERC20,
     functionName: 'approve',
     args: [collectionAddress, fees],
     enabled: Boolean(fees)
   });
-  const { writeAsync : approve, status: statutApprove } = useContractWrite(config);
+  const { writeAsync : approve } = useContractWrite(config);
 
   const runApprove = async () => {
     await approve();
@@ -121,10 +122,10 @@ const CreateSingleNft = () => {
   }
 
   useEffect(() => {
-    if(fees && statutApprove === 'success') {
+    if(fees && isSuccessApprove) {
       runApprove();
     }
-  }, [fees, statutApprove]);
+  }, [fees, isSuccessApprove]);
 
 
   //# calculate fees
