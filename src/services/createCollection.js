@@ -54,6 +54,9 @@ export const mintCollection = async ({ name, symbol }) => {
       gasLimit,
     });
 
+
+    console.log(tsx);
+
     console.log("COLLECTION ADDRESS CREATED  ", tsx.events[0].address)
 
 
