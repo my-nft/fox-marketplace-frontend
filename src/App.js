@@ -26,8 +26,7 @@ import CollectionSettings from "./pages/collectionSettings/collectionSettings";
 import PageStatistics from "./components/Statistics";
 import { fxgChain } from "./utils/fxgChain";
 import { ethers, providers } from "ethers";
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+
 import {
   EthereumClient,
   modalConnectors,
@@ -56,15 +55,7 @@ const wagmiClient = createClient({
     warn: (message) => console.log(message),
   },
   autoConnect: true,
-  connectors: [
-    new MetaMaskConnector({ chains }),
-    new WalletConnectConnector({
-      chains,
-      options: {
-        qrcode: true,
-      },
-    }),
-  ],
+  connectors: modalConnectors({ appName: "web3Modal", chains }),
   provider,
 });
 
