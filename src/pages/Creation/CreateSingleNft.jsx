@@ -3,107 +3,121 @@ import { toast } from "react-toastify";
 import Spinner from "../../components/Spinner";
 import { CreateNFTPopup } from "../../components/popups/popups";
 import { useDispatch, useSelector } from "react-redux";
-import { selectIsLoading, setIsLoading } from "../../redux/nftReducer";
-import { MINT_NFT } from "../../saga/actions";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   useSignMessage,
   useAccount,
-  useContract,
   useContractWrite,
   usePrepareContractWrite,
-  useContractRead
+  useContractRead,
 } from "wagmi";
 
-
-import { ERC20ContractAddress, ERC_CONTRACT_INITILIZER, foxMasterCollectionAddress, ZERO_ADDRESS } from "../../utils/blockchainInteractor";
+import {
+  ERC20ContractAddress,
+  foxMasterCollectionAddress,
+} from "../../utils/blockchainInteractor";
 import FOX_MASTER from "../../utils/contracts/FOX_MASTER.json";
-import ERC20 from '../../utils/contracts/ERC20.json';
+import ERC20 from "../../utils/contracts/ERC20.json";
 import { addNftToIpfs } from "../../api/nftApi";
 import { signinUser } from "../../api/AuthUserApi";
 import Web3 from "web3";
 import { importCollectionToken } from "../../api/collectionApi";
 
-
 const CreateSingleNft = () => {
   const [imageUpload, setImageUpload] = useState(null);
-  
+
   const [imageData, setImageData] = useState(null);
-  
-  
-  const isLoading = useSelector(selectIsLoading);
+
+  const [isLoading, setIsLoading] = useState(false);
   const [popupStatus, setPopupStatus] = useState(null);
-  const dispatch = useDispatch();
-  
   const navigate = useNavigate();
-  
+
   const [searchParams, setSearchParams] = useSearchParams();
-  let collectionAddress = searchParams.get("collectionAddress") || foxMasterCollectionAddress;
+  let collectionAddress =
+    searchParams.get("collectionAddress") || foxMasterCollectionAddress;
 
   const { address, connector, isConnected } = useAccount();
 
   const [token, setToken] = useState();
 
+  const [mintingStep, setMintingStep] = useState("");
+
   const { signMessageAsync } = useSignMessage({
     message: `I would like to Sign in for user with address: ${address}`,
   });
 
-  const {refetch : mintFee} = useContractRead({
+  const { refetch: mintFee } = useContractRead({
     address: collectionAddress,
     abi: FOX_MASTER,
-    functionName : 'mintFee'
-    }
-  );
+    functionName: "mintFee"
+  });
 
-  const [idIpfs, setIdIpfs] = useState('');
+  const [idIpfs, setIdIpfs] = useState("");
 
-  const { config : configMint, isError, isFetchedAfterMount, isFetching, isIdle, isLoading : isL, isSuccess : isSuccessMint, status} = usePrepareContractWrite({
+  const {
+    config: configMint,
+    isSuccess: isSuccessMint,
+    error,
+  } = usePrepareContractWrite({
     address: collectionAddress,
     abi: FOX_MASTER,
-    functionName: 'mint',
+    functionName: "mint",
     args: [address, idIpfs],
     enabled: Boolean(idIpfs),
   });
 
-
-  const { writeAsync : mint} = useContractWrite(configMint);
-
-
+  const { writeAsync: mint } = useContractWrite({...configMint, onError(error) {
+    console.log("Error", error);
+    setIsLoading(false);
+  }});
 
   const runMint = async () => {
-    
+
+    setMintingStep("Running Mint")
+
     const mintTsx = await mint();
 
     const receipt = await mintTsx.wait();
 
-    const tokenID = Web3.utils.hexToNumber(receipt.logs[0].topics[3].toString());
+    const tokenID = Web3.utils.hexToNumber(
+      receipt.logs[0].topics[3].toString()
+    );
 
-    await importCollectionToken(collectionAddress, tokenID, token)
+    setMintingStep("synchronizing Token")
+
+    await importCollectionToken(collectionAddress, tokenID, token);
 
     navigate(`/collection/${collectionAddress}/${tokenID}`);
-  }
+  };
 
   useEffect(() => {
-    console.log("$$$$$$$$$$$", isError, isFetchedAfterMount, isFetching, isIdle, isL, isSuccessMint, status)
-    if(idIpfs && mint && isSuccessMint) {
+    if (idIpfs && mint && isSuccessMint) {
       runMint();
     }
-  }, [idIpfs, isSuccessMint])
-
+  }, [idIpfs, isSuccessMint]);
 
   //#Approuve
   const [fees, setFees] = useState();
 
-  const { config, isSuccess : isSuccessApprove } = usePrepareContractWrite({
+  const { config, isSuccess: isSuccessApprove } = usePrepareContractWrite({
     address: ERC20ContractAddress,
     abi: ERC20,
-    functionName: 'approve',
+    functionName: "approve",
     args: [collectionAddress, fees],
-    enabled: Boolean(fees)
+    enabled: Boolean(fees),
   });
-  const { writeAsync : approve } = useContractWrite(config);
+  const { writeAsync: approve } = useContractWrite({
+    ...config,
+    onError(error) {
+      console.log("Error", error);
+      setIsLoading(false);
+    },
+  });
 
   const runApprove = async () => {
+
+    setMintingStep("Wallet Approve")
+
     await approve();
 
     const { upload, ...rest } = nftData;
@@ -112,55 +126,48 @@ const CreateSingleNft = () => {
       collectionAddress: collectionAddress,
       image: imageData,
       token,
-      nft: rest
+      nft: rest,
     });
-
 
     console.log("IPFS URI", response.data);
 
     setIdIpfs(response.data);
-  }
+  };
 
   useEffect(() => {
-    if(fees && isSuccessApprove) {
+    if (fees && isSuccessApprove) {
       runApprove();
     }
   }, [fees, isSuccessApprove]);
-
 
   //# calculate fees
 
   const continueMinting = async () => {
     const mintFeesRet = await mintFee();
     setFees(mintFeesRet.data);
-  }
+  };
 
   useEffect(() => {
-    if(token){
+    if (token) {
       continueMinting();
     }
-  }, [token])
+  }, [token]);
 
+  const runMintNft = async () => {
 
+    setMintingStep("Wallet signing");
 
-  const runMintNft = async () =>  {
-    
     const signature = await signMessageAsync();
-
     const responseSigning = await signinUser({
       address,
-      signature
-    })
+      signature,
+    });
 
     const token = responseSigning.data.token;
 
     setToken(token);
   };
 
-
-  useEffect(() => {
-    dispatch(setIsLoading(false));
-  }, []);
 
   const [nftData, setNftData] = useState({
     name: "",
@@ -221,6 +228,7 @@ const CreateSingleNft = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     await runMintNft();
 
     /*
@@ -280,7 +288,7 @@ const CreateSingleNft = () => {
         {isLoading ? (
           <div className="processing processingMargin">
             <Spinner />
-            <h2>Processing</h2>
+            <h2>Processing : {mintingStep}</h2>
           </div>
         ) : (
           <form onSubmit={handleFormSubmit} className="row text-center">
@@ -312,7 +320,7 @@ const CreateSingleNft = () => {
                     onChange={(e) => handleChange(e)}
                   />
                   <p>Upload Image</p>
-                  <span>Max 8 Mb.</span>
+                  <span>Max 10 Mb.</span>
                 </div>
               </label>
             </div>
@@ -434,8 +442,9 @@ const CreateSingleNft = () => {
                   </div>
                 </div> */}
 
-                <button type="submit" className="btn">
-                  Create NFT
+                <button type="submit" className="btn" disabled={!isConnected}>
+                  Create NFT{" "}
+                  {!isConnected ? " (Please connect your wallet)" : ""}
                 </button>
               </div>
             </div>

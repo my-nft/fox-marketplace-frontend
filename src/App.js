@@ -25,8 +25,8 @@ import AccountPage from "./pages/Account/Account";
 import CollectionSettings from "./pages/collectionSettings/collectionSettings";
 import PageStatistics from "./components/Statistics";
 import { fxgChain } from "./utils/fxgChain";
-import { ethers, providers } from "ethers";
 import Page404 from "./pages/404/404";
+
 
 import {
   EthereumClient,
@@ -56,7 +56,7 @@ const wagmiClient = createClient({
     warn: (message) => console.log(message),
   },
   autoConnect: true,
-  connectors: modalConnectors({ appName: "web3Modal", chains }),
+  connectors: [...modalConnectors({ appName: "web3Modal", chains }), ],
   provider,
 });
 
