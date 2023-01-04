@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 import uploadIcon from "../../assets/images/create_icon_3.png";
-import {Buffer} from 'buffer';
+import { Buffer } from "buffer";
+import { toast } from "react-toastify";
 
-const SettingsImages = ({ banner, image, setCollectionImage, setCollectionBanner }) => {
-
+const SettingsImages = ({
+  banner,
+  image,
+  setCollectionImage,
+  setCollectionBanner,
+}) => {
   console.log(image);
 
   /*
@@ -43,29 +48,25 @@ const SettingsImages = ({ banner, image, setCollectionImage, setCollectionBanner
 
   const handleImageChange = (e, type) => {
     if (e.target.files && e.target.files[0]) {
-
-      if(type === "profile") {
-        setCollectionImage(e.target.files[0])
+      if (e.target.files[0].size > 15000000) {
+        toast.error("File size too large");
+        return;
       }
-      else{
-        setCollectionBanner(e.target.files[0])
+
+      if (type === "profile") {
+        setCollectionImage(e.target.files[0]);
+      } else {
+        setCollectionBanner(e.target.files[0]);
       }
     }
   };
-
-
-
-  
 
   return (
     <form className="collectionSettingsImages">
       <div className="settingsGroup imageChange profileChange">
         <h2>Profile Image</h2>
         <label htmlFor="profileChange">
-          <img
-            src={image}
-            alt="profile"
-          />
+          <img src={image} alt="profile" />
           <div className="changeOverlay">
             <img src={uploadIcon} />
             <p>Change image</p>
@@ -81,14 +82,7 @@ const SettingsImages = ({ banner, image, setCollectionImage, setCollectionBanner
       <div className="settingsGroup imageChange bannerChange">
         <h2>Banner Image</h2>
         <label htmlFor="bannerChange">
-          <img
-            src={
-              banner
-                ? banner
-                : null
-            }
-            alt="banner"
-          />
+          <img src={banner ? banner : null} alt="banner" />
           <div className="changeOverlay">
             <img src={uploadIcon} />
             <p>Change image</p>

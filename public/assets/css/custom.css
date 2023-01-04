@@ -2084,6 +2084,7 @@ input.form-control::placeholder {
 #cardNft #priceDollar {
   color: #828892;
   font-size: 15px;
+  margin-left: 12px;
 }
 
 #cardNft button {
