@@ -1,31 +1,88 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CardBody from "../../components/nft/CardBody";
 import CardNftWrapper from "../../components/nft/CardNftWrapper";
 import { selectCurrentWallet } from "../../redux/userReducer";
 import {
-  getBestOffer,
-  getPriceByListing,
-} from "../../services/listingNft";
+  ACCEPT_OFFER,
+  BUY_NFT,
+  DELIST_ITEM,
+  MAKE_OFFER,
+} from "../../saga/blockchain.js/blockChainActions";
+import { getBestOffer, getPriceByListing } from "../../services/listingNft";
 import { sameAddress } from "../../utils/walletUtils";
 
-const ListedFixedNft = ({
-  itemDetails,
-  onBuyItem,
-  onMakeOffer,
-  onDelist,
-  onAcceptOffer,
-}) => {
+const ListedFixedNft = ({ itemDetails, collectionDetails }) => {
   const currentWallet = useSelector(selectCurrentWallet);
 
+  const [itemInfos, setItemInfos] = useState();
   const [currentPrice, setCurrentPrice] = useState();
   const [currentOffer, setCurrentOffer] = useState(0);
   const [bestOffer, setBestOffer] = useState(undefined);
   const [showMakeOffer, setShowMakeOffer] = useState(false);
+  const dispatch = useDispatch();
 
   const handleChange = (evt) => {
     setCurrentOffer(evt.target.value);
+  };
+
+  const onBuyItem = async (price) => {
+    const { royaltyAddress, royaltyPercent } = collectionDetails;
+    dispatch({
+      type: BUY_NFT,
+      payload: {
+        listingId: itemDetails.listingId,
+        price: Number(price),
+        tokenID: itemDetails.tokenID,
+        collectionAddress: itemDetails.collectionAddress,
+        royaltyAddress: royaltyAddress
+          ? royaltyAddress
+          : collectionDetails.ownerAddress,
+        royaltyPercent: royaltyPercent ? royaltyPercent : 0,
+      },
+      onSuccess: (nft) => setItemInfos(nft),
+    });
+  };
+
+  const onMakeOffer = (offerPrice) => {
+    dispatch({
+      type: MAKE_OFFER,
+      payload: {
+        price: Number(offerPrice),
+        tokenID: itemDetails.tokenID,
+        collectionAddress: itemDetails.collectionAddress,
+      },
+      onSuccess: (nft) => setItemInfos(nft),
+    });
+  };
+
+  const onDelist = async () => {
+    dispatch({
+      type: DELIST_ITEM,
+      payload: {
+        listingId: itemDetails.listingId,
+        tokenID: itemDetails.tokenID,
+        collectionAddress: itemDetails.collectionAddress,
+      },
+      onSuccess: (nft) => setItemInfos(nft),
+    });
+  };
+
+  const onAcceptOffer = () => {
+    const { royaltyAddress, royaltyPercent } = collectionDetails;
+    dispatch({
+      type: ACCEPT_OFFER,
+      payload: {
+        tokenID: itemInfos.tokenID,
+        collectionAddress: itemInfos.collectionAddress,
+        royaltyAddress: royaltyAddress
+          ? royaltyAddress
+          : collectionDetails.ownerAddress,
+        royaltyPercent: royaltyPercent ? royaltyPercent : 0,
+      },
+      onSuccess: (nft) => setItemInfos(nft),
+    });
   };
 
   const init = async () => {
@@ -39,6 +96,7 @@ const ListedFixedNft = ({
   };
 
   useEffect(() => {
+    setItemInfos(itemDetails);
     init();
   }, [itemDetails]);
 
@@ -50,9 +108,9 @@ const ListedFixedNft = ({
         priceDollar={currentPrice}
         bestOffer={bestOffer}
         onAcceptOffer={onAcceptOffer}
-        ownerAddress={itemDetails.ownerAddress}
+        ownerAddress={itemInfos.ownerAddress}
       >
-        {!sameAddress(currentWallet, itemDetails.ownerAddress) && (
+        {!sameAddress(currentWallet, itemInfos.ownerAddress) && (
           <>
             <button
               id="buyItem"
@@ -113,7 +171,7 @@ const ListedFixedNft = ({
           </>
         )}
 
-        {sameAddress(currentWallet, itemDetails.ownerAddress) ? (
+        {sameAddress(currentWallet, itemInfos.ownerAddress) ? (
           <>
             <button id="makeOffer" className="btn" onClick={onDelist}>
               DeList

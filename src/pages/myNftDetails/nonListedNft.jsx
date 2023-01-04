@@ -1,15 +1,31 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import CardBody from "../../components/nft/CardBody";
 import CardNftWrapper from "../../components/nft/CardNftWrapper";
+import { MAKE_OFFER } from "../../saga/blockchain.js/blockChainActions";
 import { getBestOffer } from "../../services/listingNft";
 
-const NonListedNft = ({ handleMakeOffer, itemDetails }) => {
+const NonListedNft = ({ itemDetails }) => {
   // values
   const [bestOffer, setBestOffer] = useState();
   const [values, setValues] = useState({
     offerPrice: 0,
   });
+  const [itemInfo, setItemInfo] = useState();
+  const dispatch = useDispatch();
+
+  const handleMakeOffer = (offerPrice) => {
+    dispatch({
+      type: MAKE_OFFER,
+      payload: {
+        price: Number(offerPrice),
+        tokenID: itemInfo.tokenID,
+        collectionAddress: itemInfo.collectionAddress,
+      },
+      onSuccess: (nft) => setItemInfo(nft),
+    });
+  };
 
   const handleChange = (evt) => {
     setValues({ ...values, [evt.target.name]: evt.target.value });
@@ -21,24 +37,23 @@ const NonListedNft = ({ handleMakeOffer, itemDetails }) => {
   };
 
   const init = async () => {
-    if(itemDetails) {
+    if (itemDetails) {
       const bestOfferPrice = await getBestOffer(
-        itemDetails.collectionAddress,
-        itemDetails.tokenID
+        itemInfo.collectionAddress,
+        itemInfo.tokenID
       );
       setBestOffer(bestOfferPrice);
     }
   };
 
   useEffect(() => {
+    setItemInfo(itemDetails);
     init();
   }, []);
 
   return (
     <CardNftWrapper>
-      <CardBody
-        bestOffer={bestOffer}
-      >
+      <CardBody bestOffer={bestOffer}>
         <div className="card mt-2" id="fixedPriceDetails">
           <div className="card-body">
             <form id="setPrice">

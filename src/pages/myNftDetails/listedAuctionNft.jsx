@@ -7,22 +7,80 @@ import { getAuctionInfos } from "../../services/listingNft";
 import PlaceBid from "../../components/nft/PlaceBid";
 import { sameAddress } from "../../utils/walletUtils";
 import { selectCurrentWallet } from "../../redux/userReducer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  CLAIM_NFT,
+  CLAIM_TOKEN,
+  PLACE_BID,
+  REFUND_NFT,
+} from "../../saga/blockchain.js/blockChainActions";
 
-const ListedAuctionNft = ({
-  itemDetails,
-  onPlaceBid,
-  onRefund,
-  onClaimNft,
-  onClaimToken,
-}) => {
+const ListedAuctionNft = ({ itemDetails, collectionDetails }) => {
   const [itemInfos, setItemInfos] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const currentBidOwner = itemInfos?.currentBidOwner;
   const bidCount = itemInfos?.bidCount;
   const currentWallet = useSelector(selectCurrentWallet);
+  const dispatch = useDispatch();
 
+  const onPlaceBid = async (price) => {
+    dispatch({
+      type: PLACE_BID,
+      payload: {
+        tokenID: itemDetails.tokenID,
+        collectionAddress: itemDetails.collectionAddress,
+        auctionId: itemDetails.auctionId,
+        price,
+      },
+      onSuccess: (nft) => setItemInfos(nft),
+    });
+  };
 
+  const onRefund = async () => {
+    dispatch({
+      type: REFUND_NFT,
+      payload: {
+        tokenID: itemDetails.tokenID,
+        collectionAddress: itemDetails.collectionAddress,
+        auctionId: itemDetails.auctionId,
+      },
+      onSuccess: (nft) => setItemInfos(nft),
+    });
+  };
+
+  const onClaimNft = async () => {
+    const { royaltyAddress, royaltyPercent } = collectionDetails;
+    dispatch({
+      type: CLAIM_NFT,
+      payload: {
+        tokenId: itemDetails.tokenID,
+        collectionAddress: itemDetails.collectionAddress,
+        auctionId: itemDetails.auctionId,
+        royaltyAddress: royaltyAddress
+          ? royaltyAddress
+          : collectionDetails.ownerAddress,
+        royaltyPercent: royaltyPercent ? royaltyPercent : 0,
+      },
+      onSuccess: (nft) => setItemInfos(nft),
+    });
+  };
+
+  const onClaimToken = async () => {
+    const { royaltyAddress, royaltyPercent } = collectionDetails;
+    dispatch({
+      type: CLAIM_TOKEN,
+      payload: {
+        tokenId: itemDetails.tokenID,
+        collectionAddress: itemDetails.collectionAddress,
+        auctionId: itemDetails.auctionId,
+        royaltyAddress: royaltyAddress
+          ? royaltyAddress
+          : collectionDetails.ownerAddress,
+        royaltyPercent: royaltyPercent ? royaltyPercent : 0,
+      },
+      onSuccess: (nft) => setItemInfos(nft),
+    });
+  };
 
   const isTokenExpired = (endAuction) => {
     if (endAuction && !isNaN(endAuction)) {
@@ -34,7 +92,7 @@ const ListedAuctionNft = ({
   };
 
   const setAuctionItemInfos = async () => {
-    console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
+    console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
     const infos = await getAuctionInfos(itemDetails.auctionId);
     setItemInfos(infos);
   };
@@ -48,8 +106,6 @@ const ListedAuctionNft = ({
   useEffect(() => {
     init();
   }, []);
-
-
 
   const creator = itemInfos?.creator;
 
