@@ -30,7 +30,7 @@ const PopularCollection = () => {
     <section id="popular" className="container-fluid mt-5">
       <div id="headerPopular">
         <h3>Most Popular Collections</h3>
-        <Link to="/explorer">
+        <Link to="/explore">
           <button>Browse Marketplace</button>
         </Link>
       </div>
