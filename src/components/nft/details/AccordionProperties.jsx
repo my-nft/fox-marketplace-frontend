@@ -4,10 +4,10 @@ const AccordionProperties = ({ nftDetails }) => {
   const [properties, setProperties] = useState([]);
 
   useEffect(() => {
-    if (nftDetails) {
+    if (nftDetails && nftDetails.attributes) {
       let data = [];
 
-      nftDetails.attributes.map((item) => {
+      nftDetails.attributes.filter(item => item.value !== '' && item.value !== 'None' && item.value).map((item) => {
         data.push({
           name: item.trait_type ? item.trait_type : "-",
           value: item.value,

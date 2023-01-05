@@ -98,8 +98,9 @@ const NonListedMyNft = ({
                     setShowPicker(true);
                     setType(AUCTION);
                   }}
+                  disabled
                 >
-                  Timed auction
+                  Timed auction (Soon)
                 </button>
               </div>
             </div>
