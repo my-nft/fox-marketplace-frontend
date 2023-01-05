@@ -57,7 +57,7 @@ const ListedFixedNft = ({ itemDetails, collectionDetails }) => {
     config: configBuy,
     isSuccess: isSuccessBuy,
     error: errorBuy,
-  } = useContractWrite({
+  } = usePrepareContractWrite({
     address: collectionAddress,
     abi: FOX_MASTER,
     functionName: "buy",
@@ -69,11 +69,11 @@ const ListedFixedNft = ({ itemDetails, collectionDetails }) => {
     config: configMakeOffer,
     isSuccess: isSuccessMakeOffer,
     error: errorMakeOffer,
-  } = useContractWrite({
+  } = usePrepareContractWrite({
     address: collectionAddress,
     abi: FOX_MASTER,
     functionName: "makeOffer",
-    args: [address, idIpfs],
+    args: [address, itemDetails.tokenID, currentOffer],
     enabled: Boolean(idIpfs),
   });
 
@@ -81,11 +81,11 @@ const ListedFixedNft = ({ itemDetails, collectionDetails }) => {
     config: configDelist,
     isSuccess: isSuccessDelist,
     error: errorDelist,
-  } = useContractWrite({
+  } = usePrepareContractWrite({
     address: collectionAddress,
     abi: FOX_MASTER,
     functionName: "delist",
-    args: [address, idIpfs],
+    args: [itemInfos.listingId],
     enabled: Boolean(idIpfs),
   });
 
@@ -93,11 +93,11 @@ const ListedFixedNft = ({ itemDetails, collectionDetails }) => {
     config: configAcceptOffer,
     isSuccess: isSuccessAcceptOffer,
     error: errorAcceptOffer,
-  } = useContractWrite({
+  } = usePrepareContractWrite({
     address: collectionAddress,
     abi: FOX_MASTER,
     functionName: "acceptOffer",
-    args: [address, idIpfs],
+    args: [address, itemInfos.tokenID],
     enabled: Boolean(idIpfs),
   });
 
@@ -105,11 +105,11 @@ const ListedFixedNft = ({ itemDetails, collectionDetails }) => {
     config: configApprove,
     isSuccess: isSuccessApprove,
     error: errorApprove,
-  } = useContractWrite({
+  } = usePrepareContractWrite({
     address: ERC20ContractAddress,
     abi: ERC20,
     functionName: "approve",
-    args: [collectionAddress, fees],
+    args: [collectionAddress, fees, currentPrice],
     enabled: Boolean(fees),
   });
 
@@ -121,35 +121,35 @@ const ListedFixedNft = ({ itemDetails, collectionDetails }) => {
   });
 
   // contracts for actions
-  const { writeAsync: writeBuy } = usePrepareContractWrite({
+  const { writeAsync: writeBuy } = useContractWrite({
     ...configBuy,
     onError(error) {
       console.log(error);
     },
   });
 
-  const { writeAsync: writeMakeOffer } = usePrepareContractWrite({
+  const { writeAsync: writeMakeOffer } = useContractWrite({
     ...configMakeOffer,
     onError(error) {
       console.log(error);
     },
   });
 
-  const { writeAsync: writeDelist } = usePrepareContractWrite({
+  const { writeAsync: writeDelist } = useContractWrite({
     ...configDelist,
     onError(error) {
       console.log(error);
     },
   });
 
-  const { writeAsync: writeAcceptOffer } = usePrepareContractWrite({
+  const { writeAsync: writeAcceptOffer } = useContractWrite({
     ...configAcceptOffer,
     onError(error) {
       console.log(error);
     },
   });
 
-  const { writeAsync: writeApprove } = usePrepareContractWrite({
+  const { writeAsync: writeApprove } = useContractWrite({
     ...configApprove,
     onError(error) {
       console.log(error);

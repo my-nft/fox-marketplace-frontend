@@ -56,60 +56,80 @@ const ListedAuctionNft = ({ itemDetails, collectionDetails }) => {
     config: configPlaceBid,
     isSuccess: isSuccessPlaceBid,
     error: errorPlaceBid,
-  } = useContractWrite({
+  } = usePrepareContractWrite({
     address: collectionAddress,
     abi: FOX_MASTER,
     functionName: "placeBid",
-    args: [address, idIpfs],
-    enabled: Boolean(idIpfs),
+    args: [itemDetails.auctionId, itemDetails.currentBidPrice],
+    enabled: Boolean(itemDetails.auctionId && itemDetails.currentBidPrice),
   });
 
   const {
     config: configRefund,
     isSuccess: isSuccessRefund,
     error: errorRefund,
-  } = useContractWrite({
+  } = usePrepareContractWrite({
     address: collectionAddress,
     abi: FOX_MASTER,
     functionName: "refund",
-    args: [address, idIpfs],
-    enabled: Boolean(idIpfs),
+    args: [itemDetails.auctionId],
+    enabled: Boolean(itemDetails.auctionId),
   });
 
   const {
     config: configClaimNft,
     isSuccess: isSuccessClaimNft,
     error: errorClaimNft,
-  } = useContractWrite({
+  } = usePrepareContractWrite({
     address: collectionAddress,
     abi: FOX_MASTER,
     functionName: "claimNft",
-    args: [address, idIpfs],
-    enabled: Boolean(idIpfs),
+    args: [
+      {
+        auctionId: itemDetails.auctionId,
+        royaltyAddress: collectionDetails.royaltyAddress
+          ? collectionDetails.royaltyAddress
+          : collectionDetails.ownerAddress,
+        royaltyPercent: collectionDetails.royaltyPercent
+          ? collectionDetails.royaltyPercent
+          : 0,
+      },
+    ],
+    enabled: Boolean(itemDetails && itemDetails.auctionId),
   });
 
   const {
     config: configClaimToken,
     isSuccess: isSuccessClaimToken,
     error: errorClaimToken,
-  } = useContractWrite({
+  } = usePrepareContractWrite({
     address: collectionAddress,
     abi: FOX_MASTER,
     functionName: "claimToken",
-    args: [address, idIpfs],
-    enabled: Boolean(idIpfs),
+    args: [
+      {
+        auctionId: itemDetails.auctionId,
+        royaltyAddress: collectionDetails.royaltyAddress
+          ? collectionDetails.royaltyAddress
+          : collectionDetails.ownerAddress,
+        royaltyPercent: collectionDetails.royaltyPercent
+          ? collectionDetails.royaltyPercent
+          : 0,
+      },
+    ],
+    enabled: Boolean(itemDetails && itemDetails.auctionId),
   });
 
   const {
     config: configApprove,
     isSuccess: isSuccessApprove,
     error: errorApprove,
-  } = useContractWrite({
+  } = usePrepareContractWrite({
     address: ERC20ContractAddress,
     abi: ERC20,
     functionName: "approve",
-    args: [collectionAddress, fees],
-    enabled: Boolean(fees),
+    args: [collectionAddress, fees, itemDetails.currentBidPrice],
+    enabled: Boolean(itemDetails.currentBidPrice),
   });
 
   const { refetch: actionFee } = useContractRead({
@@ -118,35 +138,35 @@ const ListedAuctionNft = ({ itemDetails, collectionDetails }) => {
     functionName: "getFee",
   });
 
-  const { writeAsync: writePlaceBid } = usePrepareContractWrite({
+  const { writeAsync: writePlaceBid } = useContractWrite({
     ...configPlaceBid,
     onError(error) {
       console.log(error);
     },
   });
 
-  const { writeAsync: writeRefund } = usePrepareContractWrite({
+  const { writeAsync: writeRefund } = useContractWrite({
     ...configRefund,
     onError(error) {
       console.log(error);
     },
   });
 
-  const { writeAsync: writeClaimNft } = usePrepareContractWrite({
+  const { writeAsync: writeClaimNft } = useContractWrite({
     ...configClaimNft,
     onError(error) {
       console.log(error);
     },
   });
 
-  const { writeAsync: writeClaimToken } = usePrepareContractWrite({
+  const { writeAsync: writeClaimToken } = useContractWrite({
     ...configClaimToken,
     onError(error) {
       console.log(error);
     },
   });
 
-  const { writeAsync: writeApprove } = usePrepareContractWrite({
+  const { writeAsync: writeApprove } = useContractWrite({
     ...configApprove,
     onError(error) {
       console.log(error);

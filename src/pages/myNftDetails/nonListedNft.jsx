@@ -72,7 +72,7 @@ const NonListedNft = ({ itemDetails }) => {
     address: ERC20ContractAddress,
     abi: ERC20,
     functionName: "approve",
-    args: [address, values.offerPrice],
+    args: [address, fees, values.offerPrice],
     enabled: Boolean(fees),
   });
 

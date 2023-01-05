@@ -68,7 +68,7 @@ const NonListedMyNft = ({ collectionDetails, nftDetails }) => {
     address: ERC20ContractAddress,
     abi: ERC20,
     functionName: "approve",
-    args: [collectionAddress, fees],
+    args: [collectionAddress, fees, values.auctionPrice],
     enabled: Boolean(fees),
   });
 
@@ -80,7 +80,7 @@ const NonListedMyNft = ({ collectionDetails, nftDetails }) => {
     address: collectionAddress,
     abi: FOX_MASTER,
     functionName: "listFixedPrice",
-    args: [address, idIpfs],
+    args: [address, itemDetails.tokenID, values.fixedPrice],
     enabled: Boolean(idIpfs),
   });
 
@@ -92,7 +92,14 @@ const NonListedMyNft = ({ collectionDetails, nftDetails }) => {
     address: collectionAddress,
     abi: FOX_MASTER,
     functionName: "acceptOffer",
-    args: [address, idIpfs],
+    args: [
+      address,
+      itemDetails.tokenID,
+      collectionDetails.royaltyAddress
+        ? collectionDetails.royaltyAddress
+        : collectionDetails.ownerAddress,
+      collectionDetails.royaltyPercent ? collectionDetails.royaltyPercent : 0,
+    ],
     enabled: Boolean(idIpfs),
   });
 
