@@ -43,8 +43,8 @@ const CollectionSettings = () => {
     const { data } = response;
     const {collection} = data;
     setCollectionDetails(collection);
-    setImage(data.image);
-    setBanner(data.banner);
+    setImage(collection.image);
+    setBanner(collection.banner);
     setIsLoadingCollection(false);
   };
 
