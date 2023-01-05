@@ -10,6 +10,22 @@ import {
 } from "../../saga/blockchain.js/blockChainActions";
 import { getBestOffer } from "../../services/listingNft";
 import { FIXED_PRICE, AUCTION } from "../../utils/foxConstantes";
+import {
+  useSignMessage,
+  useAccount,
+  useContractWrite,
+  usePrepareContractWrite,
+  useContractRead,
+} from "wagmi";
+import {
+  ERC20ContractAddress,
+  foxMasterCollectionAddress,
+} from "../../utils/blockchainInteractor";
+import FOX_MASTER from "../../utils/contracts/FOX_MASTER.json";
+import ERC20 from "../../utils/contracts/ERC20.json";
+import Web3 from "web3";
+import { useSearchParams } from "react-router-dom";
+import { signinUser } from "../../api/AuthUserApi";
 
 const NonListedMyNft = ({ collectionDetails, nftDetails }) => {
   const [type, setType] = useState(FIXED_PRICE);
@@ -17,6 +33,194 @@ const NonListedMyNft = ({ collectionDetails, nftDetails }) => {
   const [bestOffer, setBestOffer] = useState();
   const [itemDetails, setItemDetails] = useState();
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { address, connector, isConnected } = useAccount();
+  const [token, setToken] = useState();
+  const [mintingStep, setMintingStep] = useState("");
+  const [idIpfs, setIdIpfs] = useState("");
+  const [fees, setFees] = useState(0);
+
+  let collectionAddress =
+    searchParams.get("collectionAddress") || foxMasterCollectionAddress;
+
+  const { signMessageAsync } = useSignMessage({
+    message: `I would like to Sign in for user with address: ${address}`,
+  });
+
+  // configs
+  const {
+    config: configAuction,
+    isSuccess: isSuccessAuction,
+    error: errorAuction,
+  } = usePrepareContractWrite({
+    address: collectionAddress,
+    abi: FOX_MASTER,
+    functionName: "listAuction",
+    args: [address, itemDetails.tokenID, values.auctionPrice, values.time],
+    enabled: Boolean(values.auctionPrice && values.time),
+  });
+
+  const {
+    config: configApprove,
+    isSuccess: isSuccessApprove,
+    error: errorApprove,
+  } = usePrepareContractWrite({
+    address: ERC20ContractAddress,
+    abi: ERC20,
+    functionName: "approve",
+    args: [collectionAddress, fees],
+    enabled: Boolean(fees),
+  });
+
+  const {
+    config: configFixedPrice,
+    isSuccess: isSuccessFixedPrice,
+    error: errorFixedPrice,
+  } = usePrepareContractWrite({
+    address: collectionAddress,
+    abi: FOX_MASTER,
+    functionName: "listFixedPrice",
+    args: [address, idIpfs],
+    enabled: Boolean(idIpfs),
+  });
+
+  const {
+    config: configAcceptOffer,
+    isSuccess: isSuccessAcceptOffer,
+    error: errorAcceptOffer,
+  } = usePrepareContractWrite({
+    address: collectionAddress,
+    abi: FOX_MASTER,
+    functionName: "acceptOffer",
+    args: [address, idIpfs],
+    enabled: Boolean(idIpfs),
+  });
+
+  // fees contract
+  const { refetch: actionFee } = useContractRead({
+    address: collectionAddress,
+    abi: FOX_MASTER,
+    functionName: "getFee",
+  });
+
+  // contract writes
+
+  const { writeAsync: writeAuction } = useContractWrite({
+    ...configAuction,
+    onError(error) {
+      console.log(error);
+    },
+  });
+
+  const { writeAsync: writeApprove } = useContractWrite({
+    ...configApprove,
+    onError(error) {
+      console.log(error);
+    },
+  });
+
+  const { writeAsync: writeFixedPrice } = useContractWrite({
+    ...configFixedPrice,
+    onError(error) {
+      console.log(error);
+    },
+  });
+
+  const { writeAsync: writeAcceptOffer } = useContractWrite({
+    ...configAcceptOffer,
+    onError(error) {
+      console.log(error);
+    },
+  });
+
+  // approve method
+  const runApprove = async () => {
+    setMintingStep("Wallet Approve");
+
+    await writeApprove();
+
+    const { upload, ...rest } = itemDetails;
+  };
+
+  // signing method
+  const signingMethod = async () => {
+    setMintingStep("Wallet Signing");
+    const signature = await signMessageAsync();
+    const responseSigning = await signinUser({
+      address,
+      signature,
+    });
+
+    const token = responseSigning.data.token;
+    setToken(token);
+  };
+
+  // methods for actions
+  const runAuction = async () => {
+    setMintingStep("Running Auction");
+    const auctionTsx = await writeAuction();
+    const receipt = await auctionTsx.wait();
+
+    const tokenID = Web3.utils.hexToNumber(
+      receipt.logs[0].topics[3].toString()
+    );
+  };
+
+  const runFixedPrice = async () => {
+    setMintingStep("Running Fixed Price");
+    const fixedPriceTsx = await writeFixedPrice();
+    const receipt = await fixedPriceTsx.wait();
+
+    const tokenID = Web3.utils.hexToNumber(
+      receipt.logs[0].topics[3].toString()
+    );
+  };
+
+  const runAcceptOffer = async () => {
+    setMintingStep("Running Accept Offer");
+    const acceptOfferTsx = await writeAcceptOffer();
+    const receipt = await acceptOfferTsx.wait();
+
+    const tokenID = Web3.utils.hexToNumber(
+      receipt.logs[0].topics[3].toString()
+    );
+  };
+
+  // set fees
+  const continueProcess = async () => {
+    const actionFeesRet = await actionFee();
+    setFees(actionFeesRet.data);
+  };
+
+  // useEffects for contracts
+
+  useEffect(() => {
+    if (token) {
+      continueProcess();
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (fees && isSuccessApprove) {
+      runApprove();
+    }
+  }, [fees, isSuccessApprove]);
+
+  useEffect(() => {
+    if (type === FIXED_PRICE) {
+      if (idIpfs && writeFixedPrice && isSuccessFixedPrice) {
+        runFixedPrice();
+      }
+    } else if (type === AUCTION) {
+      if (idIpfs && writeAuction && isSuccessAuction) {
+        runAuction();
+      }
+    } else if (type === ACCEPT_OFFER) {
+      if (idIpfs && writeAcceptOffer && isSuccessAcceptOffer) {
+        runAcceptOffer();
+      }
+    }
+  }, [idIpfs, isSuccessFixedPrice, isSuccessAuction, isSuccessAcceptOffer]);
 
   // values
   const [values, setValues] = useState({
@@ -25,50 +229,8 @@ const NonListedMyNft = ({ collectionDetails, nftDetails }) => {
     time: 0,
   });
 
-  const handleAuction = async (values) => {
-    const auctionPrice = Number(values.auctionPrice);
-    const endAuction = (values.time - new Date().getTime()) / 1000;
-
-    dispatch({
-      type: LISTING_AUCTION,
-      payload: {
-        collectionAddress: nftDetails.collectionAddress,
-        tokenID: nftDetails.tokenID,
-        auctionPrice: auctionPrice,
-        endAuction: Math.floor(endAuction),
-      },
-      onSuccess: (nft) => setItemDetails(nft),
-    });
-  };
-
-  const handleFixedPrice = async (values) => {
-    const fixedPrice = Number(values.fixedPrice);
-
-    dispatch({
-      type: LISTING_FIXED_PRICE,
-      payload: {
-        collectionAddress: nftDetails.collectionAddress,
-        tokenID: nftDetails.tokenID,
-        fixedPrice: fixedPrice,
-      },
-      onSuccess: (nft) => setItemDetails(nft),
-    });
-  };
-
   const handleAcceptOffer = async () => {
-    const { royaltyAddress, royaltyPercent } = collectionDetails;
-    dispatch({
-      type: ACCEPT_OFFER,
-      payload: {
-        tokenID: nftDetails.tokenID,
-        collectionAddress: nftDetails.collectionAddress,
-        royaltyAddress: royaltyAddress
-          ? royaltyAddress
-          : collectionDetails.ownerAddress,
-        royaltyPercent: royaltyPercent ? royaltyPercent : 0,
-      },
-      onSuccess: (nft) => setItemDetails(nft),
-    });
+    await signingMethod();
   };
 
   const handleChange = (evt) => {
@@ -77,10 +239,8 @@ const NonListedMyNft = ({ collectionDetails, nftDetails }) => {
 
   const onSubmitForm = async (evt) => {
     evt.preventDefault();
-    if (type === AUCTION) {
-      handleAuction(values);
-    } else if (type === FIXED_PRICE) {
-      handleFixedPrice(values);
+    if (type === AUCTION || type === FIXED_PRICE) {
+      await signingMethod();
     }
   };
 
