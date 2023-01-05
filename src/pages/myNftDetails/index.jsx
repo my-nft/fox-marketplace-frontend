@@ -205,7 +205,12 @@ const MyNftDetails = () => {
   ) : (
     <div className="container my-5" id="nftPage">
       <img src="/assets/images/Background.jpg" id="layer" />
-      <h3 className="my-5 text-center">{collectionDetails?.name}</h3>
+      <a
+        href={`/collection/${nftDetails.collectionAddress}`}
+        className=" my-5 text-center motherCollection"
+      >
+        {collectionDetails?.name}
+      </a>
       <div className="row">
         <div className="col-md-12  col-lg-5 order-2 order-lg-1 ">
           <div id="imgNft" className="imgForSale">

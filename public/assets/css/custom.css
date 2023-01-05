@@ -4144,3 +4144,36 @@ ul#buttonIcon {
   background: #fefefe;
   color: #f58103;
 }
+
+.motherCollection {
+  font-size: 32px;
+  font-weight: 600;
+  color: #fefefe;
+  width: max-content;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  cursor: pointer;
+  transition: 300ms ease-in-out;
+  position: relative;
+}
+
+.motherCollection::before {
+  position: absolute;
+  content: "";
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #f58103;
+  max-width: 0;
+  transition: 300ms ease-in-out;
+}
+
+.motherCollection:hover::before {
+  max-width: 100%;
+}
+
+.motherCollection:hover {
+  color: #f58103;
+}
