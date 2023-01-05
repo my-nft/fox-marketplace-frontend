@@ -27,36 +27,31 @@ import PageStatistics from "./components/Statistics";
 import { fxgChain } from "./utils/fxgChain";
 import Page404 from "./pages/404/404";
 
-
 import {
   EthereumClient,
   modalConnectors,
   walletConnectProvider,
 } from "@web3modal/ethereum";
-import { createClient, configureChains } from 'wagmi'
-
+import { createClient, configureChains } from "wagmi";
 
 import { Web3Modal } from "@web3modal/react";
 
 import { WagmiConfig } from "wagmi";
 
-
-
-const chains=[fxgChain]
+const chains = [fxgChain];
 // Wagmi client
 export const { provider } = configureChains(chains, [
-  walletConnectProvider({ 
-    projectId: "c713aa69c46302aa2ce0353d8b67b8fa",  
-  })
+  walletConnectProvider({
+    projectId: "c713aa69c46302aa2ce0353d8b67b8fa",
+  }),
 ]);
-
 
 const wagmiClient = createClient({
   logger: {
     warn: (message) => console.log(message),
   },
   autoConnect: true,
-  connectors: [...modalConnectors({ appName: "web3Modal", chains }), ],
+  connectors: [...modalConnectors({ appName: "web3Modal", chains })],
   provider,
 });
 
@@ -203,6 +198,7 @@ function App() {
       <Web3Modal
         projectId="c713aa69c46302aa2ce0353d8b67b8fa"
         ethereumClient={ethereumClient}
+        themeZIndex={1000000}
       />
     </>
   );

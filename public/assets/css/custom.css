@@ -2056,6 +2056,9 @@ input.form-control::placeholder {
   background-color: transparent;
 }
 
+#w3m-modal {
+  z-index: 1000000;
+}
 #cardNft .card-header {
   padding: 25px;
   background: #0f2f5f;

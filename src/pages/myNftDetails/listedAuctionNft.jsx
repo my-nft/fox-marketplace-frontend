@@ -30,7 +30,7 @@ import ERC20 from "../../utils/contracts/ERC20.json";
 import Web3 from "web3";
 import { useSearchParams } from "react-router-dom";
 import { signinUser } from "../../api/AuthUserApi";
-import { getNftCall } from "./../../api/nftApi";
+import { getNftCall, setNftToUnlisted } from "./../../api/nftApi";
 
 const ListedAuctionNft = ({ itemDetails, collectionDetails }) => {
   const [itemInfos, setItemInfos] = useState();
@@ -136,7 +136,7 @@ const ListedAuctionNft = ({ itemDetails, collectionDetails }) => {
   const { refetch: actionFee } = useContractRead({
     address: collectionAddress,
     abi: FOX_MASTER,
-    functionName: "getFee",
+    functionName: "mintFee",
   });
 
   const { writeAsync: writePlaceBid } = useContractWrite({
