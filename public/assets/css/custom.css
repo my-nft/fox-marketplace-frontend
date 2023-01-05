@@ -4177,3 +4177,9 @@ ul#buttonIcon {
 .motherCollection:hover {
   color: #f58103;
 }
+
+.nftCollectionName {
+  padding-bottom: 4px !important;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: "gothamBold";
+}
