@@ -190,9 +190,9 @@ const MostPopularItem = ({ viewType, item }) => {
 
           <div className="wrapText">
             {price ? (
-              <p>
-                <label>Price</label>
-                <span className="orange">
+              <p className="w-100 d-flex justify-content-between">
+                <span>Price: </span>
+                <span className="orange ml-auto">
                   <b>FXG</b> {parseFloat(price.toFixed(4))}
                 </span>
               </p>
