@@ -28,6 +28,7 @@ import ERC20 from "../../utils/contracts/ERC20.json";
 import Web3 from "web3";
 import { useSearchParams } from "react-router-dom";
 import { signinUser } from "../../api/AuthUserApi";
+import { acceptOffer, getNftCall, setNftToUnlisted } from "../../api/nftApi";
 
 const ListedFixedNft = ({ itemDetails, collectionDetails }) => {
   const currentWallet = useSelector(selectCurrentWallet);
@@ -189,6 +190,10 @@ const ListedFixedNft = ({ itemDetails, collectionDetails }) => {
     const tokenID = Web3.utils.hexToNumber(
       receipt.logs[0].topics[3].toString()
     );
+
+    const response = await getNftCall(collectionAddress, itemInfos.tokenID);
+
+    setItemInfos(response.data);
   };
 
   // make offer method
@@ -199,6 +204,11 @@ const ListedFixedNft = ({ itemDetails, collectionDetails }) => {
     const tokenID = Web3.utils.hexToNumber(
       receipt.logs[0].topics[3].toString()
     );
+    const response = await getNftCall({
+      collectionAddress: collectionAddress,
+      tokenID: itemInfos.tokenID,
+    });
+    setItemInfos(response.data);
   };
 
   // delist method
@@ -209,6 +219,18 @@ const ListedFixedNft = ({ itemDetails, collectionDetails }) => {
     const tokenID = Web3.utils.hexToNumber(
       receipt.logs[0].topics[3].toString()
     );
+
+    await setNftToUnlisted(
+      {
+        collectionAddress: collectionAddress,
+        tokenID: itemInfos.tokenID,
+      },
+      token
+    );
+
+    const response = await getNftCall(collectionAddress, itemInfos.tokenID);
+
+    setItemInfos(response.data);
   };
 
   // accept offer method
@@ -219,6 +241,15 @@ const ListedFixedNft = ({ itemDetails, collectionDetails }) => {
     const tokenID = Web3.utils.hexToNumber(
       receipt.logs[0].topics[3].toString()
     );
+    const response = await acceptOffer(
+      {
+        collectionAddress: collectionAddress,
+        tokenID: itemDetails.tokenID,
+      },
+      token
+    );
+
+    setItemInfos(response.data);
   };
 
   // useEffect for contracts

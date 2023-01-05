@@ -99,6 +99,12 @@ const NonListedNft = ({ itemDetails }) => {
     );
 
     setMintingStep("Syncing NFT");
+
+    const response = await getNftCall({
+      collectionAddress: collectionAddress,
+      tokenID: itemInfo.tokenID,
+    });
+    setItemInfo(response.data);
   };
 
   const runApprove = async () => {

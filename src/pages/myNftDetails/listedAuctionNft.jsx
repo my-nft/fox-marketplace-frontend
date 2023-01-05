@@ -30,6 +30,7 @@ import ERC20 from "../../utils/contracts/ERC20.json";
 import Web3 from "web3";
 import { useSearchParams } from "react-router-dom";
 import { signinUser } from "../../api/AuthUserApi";
+import { getNftCall } from "./../../api/nftApi";
 
 const ListedAuctionNft = ({ itemDetails, collectionDetails }) => {
   const [itemInfos, setItemInfos] = useState();
@@ -197,6 +198,9 @@ const ListedAuctionNft = ({ itemDetails, collectionDetails }) => {
     const tokenID = Web3.utils.hexToNumber(
       receipt.logs[0].topics[3].toString()
     );
+    const response = await getNftCall(collectionAddress, itemInfos.tokenID);
+
+    setItemInfos(response.data);
   };
 
   const runRefund = async () => {
@@ -206,6 +210,17 @@ const ListedAuctionNft = ({ itemDetails, collectionDetails }) => {
     const tokenID = Web3.utils.hexToNumber(
       receipt.logs[0].topics[3].toString()
     );
+    await setNftToUnlisted(
+      {
+        collectionAddress: collectionAddress,
+        tokenID: itemInfos.tokenID,
+      },
+      token
+    );
+
+    const response = await getNftCall(collectionAddress, itemInfos.tokenID);
+
+    setItemInfos(response.data);
   };
 
   const runClaimNft = async () => {
@@ -215,6 +230,18 @@ const ListedAuctionNft = ({ itemDetails, collectionDetails }) => {
     const tokenID = Web3.utils.hexToNumber(
       receipt.logs[0].topics[3].toString()
     );
+
+    await setNftToUnlisted(
+      {
+        collectionAddress: collectionAddress,
+        tokenID: itemInfos.tokenID,
+      },
+      token
+    );
+
+    const response = await getNftCall(collectionAddress, itemInfos.tokenID);
+
+    setItemInfos(response.data);
   };
 
   const runClaimToken = async () => {
@@ -224,6 +251,17 @@ const ListedAuctionNft = ({ itemDetails, collectionDetails }) => {
     const tokenID = Web3.utils.hexToNumber(
       receipt.logs[0].topics[3].toString()
     );
+    await setNftToUnlisted(
+      {
+        collectionAddress: collectionAddress,
+        tokenID: itemInfos.tokenID,
+      },
+      token
+    );
+
+    const response = await getNftCall(collectionAddress, itemInfos.tokenID);
+
+    setItemInfos(response.data);
   };
 
   const continueProcessing = async () => {

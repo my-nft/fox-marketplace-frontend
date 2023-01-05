@@ -26,6 +26,7 @@ import ERC20 from "../../utils/contracts/ERC20.json";
 import Web3 from "web3";
 import { useSearchParams } from "react-router-dom";
 import { signinUser } from "../../api/AuthUserApi";
+import { acceptOffer, setNftToListed } from "../../api/nftApi";
 
 const NonListedMyNft = ({ collectionDetails, nftDetails }) => {
   const [type, setType] = useState(FIXED_PRICE);
@@ -171,6 +172,19 @@ const NonListedMyNft = ({ collectionDetails, nftDetails }) => {
     const tokenID = Web3.utils.hexToNumber(
       receipt.logs[0].topics[3].toString()
     );
+
+    const response = await setNftToListed(
+      {
+        collectionAddress: collectionAddress,
+        tokenID: itemDetails.tokenID,
+        auctionId: itemDetails.auctionId,
+        endAuction: values.time,
+        listingType: AUCTION,
+      },
+      token
+    );
+
+    setItemDetails(response.data);
   };
 
   const runFixedPrice = async () => {
@@ -181,6 +195,19 @@ const NonListedMyNft = ({ collectionDetails, nftDetails }) => {
     const tokenID = Web3.utils.hexToNumber(
       receipt.logs[0].topics[3].toString()
     );
+
+    const response = await setNftToListed(
+      {
+        collectionAddress: collectionAddress,
+        tokenID: itemDetails.tokenID,
+        listingType: FIXED_PRICE,
+        price: values.fixedPrice,
+        listingId: itemDetails.listingId,
+      },
+      token
+    );
+
+    setItemDetails(response.data);
   };
 
   const runAcceptOffer = async () => {
@@ -191,6 +218,16 @@ const NonListedMyNft = ({ collectionDetails, nftDetails }) => {
     const tokenID = Web3.utils.hexToNumber(
       receipt.logs[0].topics[3].toString()
     );
+
+    const response = await acceptOffer(
+      {
+        collectionAddress: collectionAddress,
+        tokenID: itemDetails.tokenID,
+      },
+      token
+    );
+
+    setItemDetails(response.data);
   };
 
   // set fees
