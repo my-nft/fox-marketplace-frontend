@@ -1,7 +1,4 @@
-import { useEffect, useState } from "react";
-import { getCollections } from "../../../api/collectionApi";
 import RankItem from "../../../components/RankItem"
-import Spinner from "../../../components/Spinner";
 
 const TrendingCollection = ({collections}) => {
 

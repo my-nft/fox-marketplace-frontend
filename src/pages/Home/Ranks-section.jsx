@@ -15,6 +15,7 @@ const RanksSection = ({trendingCollections, topCollections}) => {
     return () => ctx.revert();
   }, []);
 
+
   return (
     <section id="ranks" className="container-fluid" ref={rank}>
       <RanksSelector
