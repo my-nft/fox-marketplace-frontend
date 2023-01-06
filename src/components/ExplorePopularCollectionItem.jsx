@@ -61,7 +61,6 @@ const ExplorePopularCollectionItem = ({ itemData }) => {
           <p>
             <label>{itemData.name ? itemData.name : "-"}</label>
           </p>
-          <p>{itemData.importProcessing ? "GOT IT" : ""}</p>
           <p className="text-right">
             <label>Total Volume</label>
             <span>
