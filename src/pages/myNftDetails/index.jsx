@@ -207,7 +207,7 @@ const MyNftDetails = () => {
       <img src="/assets/images/Background.jpg" id="layer" />
       <h3 className="my-5 text-center">
         <Link to={`/collection/${collectionDetails?.collectionAddress}`}>
-        {collectionDetails?.name}
+          {collectionDetails?.name}
         </Link>
       </h3>
       <div className="row">
