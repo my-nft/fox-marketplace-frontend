@@ -135,9 +135,12 @@ const MostPopularItem = ({ viewType, item }) => {
     dateTime
   );
 
-  getCollectionByAddress(item.collectionAddress).then((res) => {
-    setCollectionName(res.data.collection.name);
-  });
+  useEffect(() => {
+    console.log("LOADING", item.collectionAddress)
+    getCollectionByAddress(item.collectionAddress).then((res) => {
+      setCollectionName(res.data.collection.name);
+    });
+  }, [])
 
   return (
     <Link
