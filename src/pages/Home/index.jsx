@@ -16,19 +16,18 @@ const Home = () => {
     setIsLoading(true);
     const response = await getCollectionsCall({
       filter: {
-        tag: "TRENDING"
-      }
+        tag: "TRENDING",
+      },
     });
-    const {content} = response.data;
-
+    const { content } = response.data;
 
     const mostPopularResponse = await getCollectionsCall({
       filter: {
-        tag: "MOST_POPULAR"
-      }
+        tag: "MOST_POPULAR",
+      },
     });
 
-    const {content : mstContent} = mostPopularResponse.data;
+    const { content: mstContent } = mostPopularResponse.data;
 
     setCollections(content);
     setMostPopularCollections(mstContent);
@@ -48,8 +47,12 @@ const Home = () => {
       ) : (
         <>
           <TradingSection collections={collections} />
-          <RanksSection trendingCollections={collections} topCollections={collections}/>
-          <PopularCollection popularCollections={mostPopularCollections}/>
+
+          {/*
+            <RanksSection trendingCollections={collections} topCollections={collections}/>*/}
+
+          <PopularCollection popularCollections={mostPopularCollections} />
+
           <UpcomingMints />
         </>
       )}
