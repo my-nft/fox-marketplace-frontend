@@ -1,7 +1,6 @@
-
-const Slide = ({collectionDetails}) => {
+const Slide = ({ collectionDetails }) => {
   return (
-    <>
+    <div className="slide">
       <div className="maskContainer">
         <a href={collectionDetails.image}>
           <img src={collectionDetails.image} alt="" />
@@ -20,7 +19,7 @@ const Slide = ({collectionDetails}) => {
           </p>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -12,7 +12,7 @@ const PopularCollectionItem = (props) => {
           {itemData.likes}{" "}
           <img
             src="/assets/images/Iconmonstr-favorite-2-16.png"
-            style={{ width: "16px" }}
+            style={{ width: "20px" }}
             alt=""
           />
         </span>
