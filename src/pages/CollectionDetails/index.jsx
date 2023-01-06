@@ -3,14 +3,14 @@ import HeaderAccount from "./HeaderAccount";
 import ListNfts from "./ListNfts";
 import { useEffect, useState } from "react";
 import Spinner from "../../components/Spinner";
-import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import Pagination from "../../components/pagination/pagination";
 import { toast } from "react-toastify";
 import {
   getCollectionByAddress,
   getCollectionNftsCall,
 } from "../../api/collectionApi";
+
+import ConfirmationPopup from "./../../components/confirmationPopup/confirmationPopup";
 
 const prepareProperties = (attributes) => {
   return (
@@ -36,10 +36,9 @@ const CollectionDetails = () => {
   const [isLoadingCollection, setIsLoadingCollection] = useState(true);
   const [isLoadingNfts, setIsLoadingNfts] = useState(true);
   const [collectionDetails, setCollectionDetails] = useState();
-
-  const [nfts, setNfts] = useState({});
-  const { totalElements, content } = nfts;
-
+  const [isProcessing, setIsProcessing] = useState("noProcess");
+  const [visible, setVisible] = useState(false);
+  const [viewType, setViewType] = useState("CHANGE_FOR_MIN");
   const [pagination, setPagination] = useState({
     page: 1,
     numberElements: 20,
@@ -56,16 +55,13 @@ const CollectionDetails = () => {
     properties: [],
     status: [],
   });
+  const [nfts, setNfts] = useState({});
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [visible, setVisible] = useState(false);
-  const [viewType, setViewType] = useState("CHANGE_FOR_MIN");
 
-  useEffect(() => {
-    initLoadCollection();
-  }, []);
+  const { totalElements, content } = nfts;
 
+  // load collection details
   const initLoadCollection = async () => {
     try {
       setIsLoadingCollection(true);
@@ -86,6 +82,11 @@ const CollectionDetails = () => {
     }
   };
 
+  useEffect(() => {
+    initLoadCollection();
+  }, []);
+
+  // load nfts for collection
   const loadNFTs = async () => {
     try {
       if (collectionDetails) {
@@ -132,8 +133,8 @@ const CollectionDetails = () => {
   };
 
   useEffect(() => {
-    loadNFTs();
-  }, [collectionDetails, filters]);
+    if (collectionDetails) loadNFTs();
+  }, [collectionDetails, filters, pagination]);
 
   const changeSelectedView = (selection) => {
     setViewType(selection);
@@ -151,33 +152,28 @@ const CollectionDetails = () => {
     });
   };
 
-  useEffect(() => {
-    if (collectionDetails) {
-      loadNFTs();
-    }
-  }, [collectionDetails, pagination]);
-
+  // import processing
   const updateProcessing = async (interval) => {
     const response = await getCollectionByAddress(
       collectionDetails.collectionAddress
     );
     const tempCollection = response.data;
-    if (!tempCollection.importProcessing) {
+    if (!tempCollection.collection.importProcessing) {
+      setIsProcessing("processingFinished");
       toast.clearWaitingQueue();
       toast.dismiss();
-      toast.success("Congratulation your collection has been imported...");
-      dispatch(setCollectionDetails(tempCollection.collection));
+      setCollectionDetails(tempCollection.collection);
       clearInterval(interval);
-      return;
     }
   };
 
   useEffect(() => {
     if (collectionDetails && collectionDetails.importProcessing) {
       toast.loading("Import progressing...");
+      setIsProcessing("isProcessing");
       const interval = setInterval(() => {
         updateProcessing(interval);
-      }, 30000);
+      }, 15000);
       return () => {
         toast.clearWaitingQueue();
         toast.dismiss();
@@ -190,6 +186,14 @@ const CollectionDetails = () => {
     <Spinner />
   ) : (
     <>
+      {true && (
+        <ConfirmationPopup
+          title="Import has been finished"
+          message="Congratulation your collection has been imported. Do you want to refresh the page?"
+          onConfirm={() => window.location.reload()}
+          onCancel={() => {}}
+        />
+      )}
       <HeaderAccount collectionData={collectionDetails} />
       <FilterInput
         onOpenClose={() => setVisible(!visible)}
@@ -197,6 +201,11 @@ const CollectionDetails = () => {
         filters={filters}
         changeFilterValue={setFilters}
       />
+      {isProcessing === "isProcessing" && (
+        <Spinner>
+          <p className="loaderMessage">Processing</p>
+        </Spinner>
+      )}
       <ListNfts
         nfts={content}
         isVisible={visible}
