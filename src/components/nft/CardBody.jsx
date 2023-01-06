@@ -20,7 +20,7 @@ const CardBody = ({
         <h3>{title}</h3>
         {price ? (
           <p id="price">
-            {price} FXG
+            ${parseFloat((price).toFixed(4))} FXG
             <span id="priceDollar">
               ${parseFloat((Number(priceDollar) * FXG_PRICE).toFixed(4))}
             </span>

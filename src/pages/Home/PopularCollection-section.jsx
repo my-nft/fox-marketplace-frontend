@@ -1,41 +1,27 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { getCollections } from "../../api/collectionApi";
+import { useLayoutEffect, useRef } from "react";
 import PopularCollectionItem from "../../components/PopularCollectionItem";
 import Spinner from "../../components/Spinner";
 import { popularAnimation } from "./Utils";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const PopularCollection = () => {
+const PopularCollection = ({popularCollections}) => {
   const popularElements = useRef();
-
-  const [popularCollections, setPopularCollections] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   useLayoutEffect(() => {
     const ctx = popularAnimation(popularElements);
     return () => ctx.revert();
   }, []);
 
-  useEffect(() => {
-    setLoading(true);
-    //let items = getCollections(null, "MOST_POPULAR");
-    let items = [];
-
-    if (items.length !== 0) {
-      setPopularCollections(items);
-    }
-  }, []);
-
   return (
     <section id="popular" className="container-fluid mt-5">
       <div id="headerPopular">
         <h3>Most Popular Collections</h3>
-        <Link to="/explorer">
+        <Link to="/explore">
           <button>Browse Marketplace</button>
         </Link>
       </div>
       <div id="wrapperPopularItems" className="row" ref={popularElements}>
-        {loading && popularCollections.length === 0 ? (
+        {popularCollections.length === 0 ? (
           <Spinner />
         ) : (
           popularCollections.map((item, index) => {

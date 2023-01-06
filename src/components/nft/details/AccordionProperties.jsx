@@ -1,18 +1,29 @@
 import { useEffect, useState } from "react";
 
+const equals = (val, val2) => {
+ val = val || '';
+ val2 = val2 || '';
+ return val.toLowerCase() === val2.toLowerCase();
+}
+
 const AccordionProperties = ({ nftDetails }) => {
   const [properties, setProperties] = useState([]);
 
   useEffect(() => {
-    if (nftDetails) {
+    if (nftDetails && nftDetails.attributes) {
       let data = [];
 
-      nftDetails.attributes.map((item) => {
-        data.push({
-          name: item.trait_type ? item.trait_type : "-",
-          value: item.value,
+      nftDetails.attributes
+        .filter(
+          (item) => !equals(item.value,"None") && !equals(item.value, "Null")
+        )
+        .map((item) => {
+          data.push({
+            name: item.trait_type ? item.trait_type : "-",
+            value: item.value,
+            rarityPercent: item.rarity,
+          });
         });
-      });
 
       setProperties(data);
     }
@@ -72,7 +83,7 @@ const AccordionProperties = ({ nftDetails }) => {
                   <div className="tags" key={index}>
                     <h6>{item.name ? item.name : "-"}</h6>
                     <p>{item.value ? item.value : "-"}</p>
-                    <span>61% have this trait</span>
+                    <span>{item.rarityPercent}% have this trait</span>
                   </div>
                 );
               })}

@@ -210,23 +210,6 @@ const CollectionDetails = () => {
         changePage={changePage}
         paginationPage={pagination.page}
       />
-      {/* {isLoadingNfts ? (
-        <Spinner />
-      ) : (
-        <>
-          {!isLoadingNfts && (
-            <>
-              {totalElements / 20 > 1 ? (
-                <Pagination
-                  currentPage={pagination.page}
-                  pages={totalElements ? parseInt(totalElements / 20) : 1}
-                  setCurrentPage={changePage}
-                />
-              ) : null}
-            </>
-          )}
-        </>
-      )} */}
     </>
   );
 };

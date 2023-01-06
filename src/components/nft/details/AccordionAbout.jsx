@@ -1,4 +1,5 @@
-const AccordionAbout = ({ nftDetails }) => {
+const AccordionAbout = ({ collectionDetails }) => {
+
   return (
     <div id="accordionAbout">
       <div className="card">
@@ -26,7 +27,7 @@ const AccordionAbout = ({ nftDetails }) => {
                   />
                 </svg>
                 <span className="pl-3">About</span>
-                <strong> {nftDetails.name}</strong>
+                <strong> {collectionDetails?.name}</strong>
               </div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +50,11 @@ const AccordionAbout = ({ nftDetails }) => {
           data-parent="#accordionAbout"
         >
           <div className="card-body">
-            <span>{nftDetails.description}</span>
+            <span>
+              {!collectionDetails?.description
+                ? "This collection has no description"
+                : collectionDetails?.description}
+            </span>
           </div>
         </div>
       </div>
