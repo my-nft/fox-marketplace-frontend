@@ -153,15 +153,7 @@ const MostPopularItem = ({ viewType, item }) => {
     >
       <div className="wrapContent">
         <div className="wrapImg">
-          <img
-            src={item.image}
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null;
-              currentTarget.src = "./assets/images/nft_test.jpg";
-            }}
-            className="bigImage"
-            alt=""
-          />
+          <img src={item.image} className="bigImage" alt="" />
           {sameAddress(item.ownerAddress, walletAddress) && (
             <p className="ownedItem">Owned by you</p>
           )}
@@ -174,14 +166,7 @@ const MostPopularItem = ({ viewType, item }) => {
             <div className="nameItem">
               <span className="name">{item.name ? item.name : "-"}</span>
               <span>
-                <img
-                  src={item.image}
-                  style={{ width: "14px" }}
-                  onError={({ currentTarget }) => {
-                    currentTarget.onerror = null;
-                    currentTarget.src = "./assets/images/nft_test.jpg";
-                  }}
-                />
+                <img src={item.image} style={{ width: "14px" }} />
               </span>
             </div>
           </div>
