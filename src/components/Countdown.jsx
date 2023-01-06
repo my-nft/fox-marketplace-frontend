@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const Countdown = ({ date }) => {
+const Countdown = ({ date, endMessage = "Mint your NFT" }) => {
   const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
@@ -23,8 +23,13 @@ const Countdown = ({ date }) => {
   };
 
   useEffect(() => {
+    let timeLeft = calculateTimeLeft();
+    setDays(timeLeft.days);
+    setHours(timeLeft.hours);
+    setMinutes(timeLeft.minutes);
+    setSeconds(timeLeft.seconds);
     const timer = setTimeout(() => {
-      const timeLeft = calculateTimeLeft();
+      timeLeft = calculateTimeLeft();
       setDays(timeLeft.days);
       setHours(timeLeft.hours);
       setMinutes(timeLeft.minutes);
@@ -59,7 +64,7 @@ const Countdown = ({ date }) => {
           </div>
         </div>
       ) : (
-        <span className="mintUpcoming">Mint your NFT</span>
+        <span className="mintUpcoming">{endMessage}</span>
       )}
     </div>
   );
