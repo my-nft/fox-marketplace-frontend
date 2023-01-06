@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getNftCall } from "../../api/nftApi";
 import { getCollectionByAddress } from "../../api/collectionApi";
 import NftMoreInfos from "../../components/nft/details/NftMoreInfos";
@@ -205,12 +205,11 @@ const MyNftDetails = () => {
   ) : (
     <div className="container my-5" id="nftPage">
       <img src="/assets/images/Background.jpg" id="layer" />
-      <a
-        href={`/collection/${nftDetails.collectionAddress}`}
-        className=" my-5 text-center motherCollection"
-      >
-        {collectionDetails?.name}
-      </a>
+      <h3 className="my-5 text-center">
+        <Link to={`/collection/${collectionDetails?.collectionAddress}`}>
+          {collectionDetails?.name}
+        </Link>
+      </h3>
       <div className="row">
         <div className="col-md-12  col-lg-5 order-2 order-lg-1 ">
           <div id="imgNft" className="imgForSale">
@@ -291,10 +290,7 @@ const MyNftDetails = () => {
                 <ul>
                   <li>
                     <span>Services fees </span>
-                    <strong>10 fxg</strong>
-                  </li>
-                  <li>
-                    <span>Creator fees</span> <strong>10 fxg</strong>
+                    <strong>1%</strong>
                   </li>
                 </ul>
               </div>

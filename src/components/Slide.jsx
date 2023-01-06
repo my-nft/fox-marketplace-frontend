@@ -1,22 +1,22 @@
 
-const Slide = ({imgSuffix}) => {
+const Slide = ({collectionDetails}) => {
   return (
     <>
       <div className="maskContainer">
-        <a href={"/assets/images/Slide"+ imgSuffix + ".jpg"}>
-          <img src={"/assets/images/Slide"+ imgSuffix + ".jpg"} alt="" />
+        <a href={collectionDetails.image}>
+          <img src={collectionDetails.image} alt="" />
         </a>
       </div>
       <div className="textItems">
-        <h4>name</h4>
+        <h4>{collectionDetails.name}</h4>
         <div className="description">
           <p>
             <label>Total Volume</label>
-            <span>1500 FXG</span>
+            <span>-</span>
           </p>
           <p>
             <label>Floor Price</label>
-            <span>5 FXG</span>
+            <span>-</span>
           </p>
         </div>
       </div>

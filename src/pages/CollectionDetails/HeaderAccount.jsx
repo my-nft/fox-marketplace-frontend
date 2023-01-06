@@ -52,7 +52,7 @@ const HeaderAccount = ({ collectionData }) => {
           <ul id="totalItemsInfo">
             <li>
               <span>Items</span>
-              <p>{displayValue(collectionData.items)}</p>
+              <p>{displayValue(collectionData.totalSupply)}</p>
             </li>
             <li>
               <span>Created</span>
@@ -72,7 +72,7 @@ const HeaderAccount = ({ collectionData }) => {
             </li>
             <li>
               <span>Chain</span>
-              <p>{displayValue(collectionData.chain)}</p>
+              <p>{"FX"}</p>
             </li>
           </ul>
           <ul id="totalItemsPrice">

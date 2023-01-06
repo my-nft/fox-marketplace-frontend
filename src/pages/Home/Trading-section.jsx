@@ -5,7 +5,7 @@ import { putSliderIcons, settings } from "./Utils";
 
 import { ReactComponent as Arrow } from "../../assets/icons/arrow.svg";
 
-const TradingSection = () => {
+const TradingSection = ({collections = []}) => {
   const sliderRef = useRef(null);
 
   const [slidesToShow, setSlidesToShow] = useState(6);
@@ -65,13 +65,10 @@ const TradingSection = () => {
             setActiveSlide(slide + 1);
           }}
         >
-          <Slide imgSuffix={"1"} />
-          <Slide imgSuffix={"2"} />
-          <Slide imgSuffix={"3"} />
-          <Slide imgSuffix={"4"} />
-          <Slide imgSuffix={"2"} />
-          <Slide imgSuffix={"1"} />
-          <Slide imgSuffix={"3"} />
+
+          {
+            collections && collections.map(item => (<Slide collectionDetails={item} />))
+          }
         </Slider>
         <Arrow
           className={`slickArrow slickArrowNext ${
