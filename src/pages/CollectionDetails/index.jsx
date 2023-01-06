@@ -186,7 +186,7 @@ const CollectionDetails = () => {
     <Spinner />
   ) : (
     <>
-      {true && (
+      {isProcessing === "processingFinished" && (
         <ConfirmationPopup
           title="Import has been finished"
           message="Congratulation your collection has been imported. Do you want to refresh the page?"
