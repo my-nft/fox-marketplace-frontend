@@ -1,10 +1,15 @@
-import { FXG_PRICE } from "../utils/foxConstantes";
+import { useNavigate } from "react-router-dom";
 
 const PopularCollectionItem = (props) => {
   const { itemData } = props;
+  const navigate = useNavigate();
+  
+  const goToCollection = () => {
+    navigate(`/collection/${itemData.collectionAddress}`)
+  }
 
   return (
-    <div className="popularItems col-sm-6 col-md-3">
+    <div className="popularItems col-sm-6 col-md-3" onClick={goToCollection}>
       <img src={itemData.image} alt="" />
       <div className="nameItem">
         <span className="name">{itemData.name}</span>
@@ -17,11 +22,7 @@ const PopularCollectionItem = (props) => {
           />
         </span>
       </div>
-      <p>
-        ${parseFloat((Number(itemData.lowestAsk) * FXG_PRICE).toFixed(4))}{" "}
-        Lowest ask
-      </p>
-      <p>{itemData.tokens}LAU</p>
+      <p>{itemData.totalSupply} NFTs</p>
     </div>
   );
 };
