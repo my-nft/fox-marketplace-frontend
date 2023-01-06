@@ -54,116 +54,11 @@ const MyNftDetails = () => {
     loadNft();
   }, []);
 
-  const handleAuction = async (values) => {
-    const auctionPrice = Number(values.auctionPrice);
-    const endAuction = (values.time - new Date().getTime()) / 1000;
-
-    dispatch({
-      type: LISTING_AUCTION,
-      payload: {
-        collectionAddress: nftDetails.collectionAddress,
-        tokenID: nftDetails.tokenID,
-        auctionPrice: auctionPrice,
-        endAuction: Math.floor(endAuction),
-      },
-      onSuccess: (nft) => setNftDetails(nft),
-    });
-  };
-
-  const handleRefund = async () => {
-    dispatch({
-      type: REFUND_NFT,
-      payload: {
-        tokenID: nftDetails.tokenID,
-        collectionAddress: nftDetails.collectionAddress,
-        auctionId: nftDetails.auctionId,
-      },
-      onSuccess: (nft) => setNftDetails(nft),
-    });
-  };
-
-  const handleClaimNFT = async () => {
-    const { royaltyAddress, royaltyPercent } = collectionDetails;
-    dispatch({
-      type: CLAIM_NFT,
-      payload: {
-        tokenID: nftDetails.tokenID,
-        collectionAddress: nftDetails.collectionAddress,
-        auctionId: nftDetails.auctionId,
-        royaltyAddress: royaltyAddress
-          ? royaltyAddress
-          : collectionDetails.ownerAddress,
-        royaltyPercent: royaltyPercent ? royaltyPercent : 0,
-      },
-      onSuccess: (nft) => setNftDetails(nft),
-    });
-  };
-
-  const handleClaimToken = async () => {
-    const { royaltyAddress, royaltyPercent } = collectionDetails;
-    dispatch({
-      type: CLAIM_TOKEN,
-      payload: {
-        tokenID: nftDetails.tokenID,
-        collectionAddress: nftDetails.collectionAddress,
-        auctionId: nftDetails.auctionId,
-        royaltyAddress: royaltyAddress
-          ? royaltyAddress
-          : collectionDetails.ownerAddress,
-        royaltyPercent: royaltyPercent ? royaltyPercent : 0,
-      },
-      onSuccess: (nft) => setNftDetails(nft),
-    });
-  };
-
-  const handleFixedPrice = async (values) => {
-    const fixedPrice = Number(values.fixedPrice);
-    dispatch({
-      type: LISTING_FIXED_PRICE,
-      payload: {
-        collectionAddress: nftDetails.collectionAddress,
-        tokenID: nftDetails.tokenID,
-        fixedPrice: fixedPrice,
-      },
-      onSuccess: (nft) => setNftDetails(nft),
-    });
-  };
-
-  const onBuyItem = async (price) => {
-    const { royaltyAddress, royaltyPercent } = collectionDetails;
-    dispatch({
-      type: BUY_NFT,
-      payload: {
-        listingId: nftDetails.listingId,
-        price: Number(price),
-        tokenID: nftDetails.tokenID,
-        collectionAddress: nftDetails.collectionAddress,
-        royaltyAddress: royaltyAddress
-          ? royaltyAddress
-          : collectionDetails.ownerAddress,
-        royaltyPercent: royaltyPercent ? royaltyPercent : 0,
-      },
-      onSuccess: (nft) => setNftDetails(nft),
-    });
-  };
-
   const onMakeOffer = (offerPrice) => {
     dispatch({
       type: MAKE_OFFER,
       payload: {
         price: Number(offerPrice),
-        tokenID: nftDetails.tokenID,
-        collectionAddress: nftDetails.collectionAddress,
-      },
-      onSuccess: (nft) => setNftDetails(nft),
-    });
-  };
-
-  const onDelistItem = async () => {
-    dispatch({
-      type: DELIST_ITEM,
-      payload: {
-        listingId: nftDetails.listingId,
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
       },
@@ -182,19 +77,6 @@ const MyNftDetails = () => {
           ? royaltyAddress
           : collectionDetails.ownerAddress,
         royaltyPercent: royaltyPercent ? royaltyPercent : 0,
-      },
-      onSuccess: (nft) => setNftDetails(nft),
-    });
-  };
-
-  const onPlaceBid = async (price) => {
-    dispatch({
-      type: PLACE_BID,
-      payload: {
-        tokenID: nftDetails.tokenID,
-        collectionAddress: nftDetails.collectionAddress,
-        auctionId: nftDetails.auctionId,
-        price,
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -246,8 +128,6 @@ const MyNftDetails = () => {
             sameAddress(connectedWallet, nftDetails.ownerAddress) ? (
               <NonListedMyNft
                 nftDetails={nftDetails}
-                handleAuction={handleAuction}
-                handleFixedPrice={handleFixedPrice}
                 handleAcceptOffer={onAcceptOffer}
               />
             ) : null
@@ -270,19 +150,15 @@ const MyNftDetails = () => {
           {nftDetails.isListed && nftDetails.listingType === AUCTION ? (
             <ListedAuctionNft
               itemDetails={nftDetails}
-              onPlaceBid={onPlaceBid}
-              onRefund={handleRefund}
-              onClaimNft={handleClaimNFT}
-              onClaimToken={handleClaimToken}
+              collectionDetails={collectionDetails}
             />
           ) : null}
 
           {nftDetails.isListed && nftDetails.listingType === FIXED_PRICE ? (
             <ListedFixedNft
               itemDetails={nftDetails}
-              onBuyItem={onBuyItem}
+              collectionDetails={collectionDetails}
               onMakeOffer={onMakeOffer}
-              onDelist={onDelistItem}
               onAcceptOffer={onAcceptOffer}
             />
           ) : null}

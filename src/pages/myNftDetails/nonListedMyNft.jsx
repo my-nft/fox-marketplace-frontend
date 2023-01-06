@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import CustomDatePicker from "../../components/datePicker/datePicker";
 import CardBody from "../../components/nft/CardBody";
 import CardNftWrapper from "../../components/nft/CardNftWrapper";
+import {
+  LISTING_AUCTION,
+  LISTING_FIXED_PRICE,
+} from "../../saga/blockchain.js/blockChainActions";
 import { getBestOffer } from "../../services/listingNft";
 import { FIXED_PRICE, AUCTION } from "../../utils/foxConstantes";
 
-const NonListedMyNft = ({
-  handleAuction,
-  handleFixedPrice,
-  handleAcceptOffer,
-  nftDetails,
-}) => {
+const NonListedMyNft = ({ handleAcceptOffer, nftDetails }) => {
   const [type, setType] = useState(FIXED_PRICE);
   const [showPicker, setShowPicker] = useState(false);
   const [bestOffer, setBestOffer] = useState();
-
+  const [itemDetails, setItemDetails] = useState(nftDetails);
+  const dispatch = useDispatch();
   // values
   const [values, setValues] = useState({
     fixedPrice: 0,
@@ -37,10 +38,39 @@ const NonListedMyNft = ({
 
   const init = async () => {
     const bestOfferPrice = await getBestOffer(
-      nftDetails.collectionAddress,
-      nftDetails.tokenID
+      itemDetails.collectionAddress,
+      itemDetails.tokenID
     );
     setBestOffer(bestOfferPrice);
+  };
+
+  const handleFixedPrice = async (values) => {
+    const fixedPrice = Number(values.fixedPrice);
+    dispatch({
+      type: LISTING_FIXED_PRICE,
+      payload: {
+        collectionAddress: itemDetails.collectionAddress,
+        tokenID: itemDetails.tokenID,
+        fixedPrice: fixedPrice,
+      },
+      onSuccess: (nft) => setItemDetails(nft),
+    });
+  };
+
+  const handleAuction = async (values) => {
+    const auctionPrice = Number(values.auctionPrice);
+    const endAuction = (values.time - new Date().getTime()) / 1000;
+
+    dispatch({
+      type: LISTING_AUCTION,
+      payload: {
+        collectionAddress: itemDetails.collectionAddress,
+        tokenID: itemDetails.tokenID,
+        auctionPrice: auctionPrice,
+        endAuction: Math.floor(endAuction),
+      },
+      onSuccess: (nft) => setItemDetails(nft),
+    });
   };
 
   useEffect(() => {
@@ -71,7 +101,7 @@ const NonListedMyNft = ({
         <CardBody
           bestOffer={bestOffer}
           onAcceptOffer={handleAcceptOffer}
-          ownerAddress={nftDetails.ownerAddress}
+          ownerAddress={itemDetails.ownerAddress}
         >
           <div className="card" id="cardNft">
             <div className="card-body">

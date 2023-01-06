@@ -1,20 +1,20 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CardBody from "../../components/nft/CardBody";
 import CardNftWrapper from "../../components/nft/CardNftWrapper";
 import { selectCurrentWallet } from "../../redux/userReducer";
 import {
-  getBestOffer,
-  getPriceByListing,
-} from "../../services/listingNft";
+  BUY_NFT,
+  DELIST_ITEM,
+} from "../../saga/blockchain.js/blockChainActions";
+import { getBestOffer, getPriceByListing } from "../../services/listingNft";
 import { sameAddress } from "../../utils/walletUtils";
 
 const ListedFixedNft = ({
   itemDetails,
-  onBuyItem,
+  collectionDetails,
   onMakeOffer,
-  onDelist,
   onAcceptOffer,
 }) => {
   const currentWallet = useSelector(selectCurrentWallet);
@@ -23,9 +23,41 @@ const ListedFixedNft = ({
   const [currentOffer, setCurrentOffer] = useState(0);
   const [bestOffer, setBestOffer] = useState(undefined);
   const [showMakeOffer, setShowMakeOffer] = useState(false);
+  const [nftDetails, setNftDetails] = useState(itemDetails);
+  const dispatch = useDispatch();
 
   const handleChange = (evt) => {
     setCurrentOffer(evt.target.value);
+  };
+
+  const onBuyItem = async (price) => {
+    const { royaltyAddress, royaltyPercent } = collectionDetails;
+    dispatch({
+      type: BUY_NFT,
+      payload: {
+        listingId: nftDetails.listingId,
+        price: Number(price),
+        tokenID: nftDetails.tokenID,
+        collectionAddress: nftDetails.collectionAddress,
+        royaltyAddress: royaltyAddress
+          ? royaltyAddress
+          : collectionDetails.ownerAddress,
+        royaltyPercent: royaltyPercent ? royaltyPercent : 0,
+      },
+      onSuccess: (nft) => setNftDetails(nft),
+    });
+  };
+
+  const onDelist = async () => {
+    dispatch({
+      type: DELIST_ITEM,
+      payload: {
+        listingId: nftDetails.listingId,
+        tokenID: nftDetails.tokenID,
+        collectionAddress: nftDetails.collectionAddress,
+      },
+      onSuccess: (nft) => setNftDetails(nft),
+    });
   };
 
   const init = async () => {
