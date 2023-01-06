@@ -11,6 +11,15 @@
   .settingsForm {
     grid-column: span 6;
   }
+  .mintLimitedWrapper {
+    gap: 24px;
+    width: 80%;
+  }
+  .mintLimitedWrapper .sidebar {
+    width: 300px;
+    min-width: 300px;
+    max-width: 300px;
+  }
 
   .ownership {
     flex-direction: column;
@@ -153,6 +162,18 @@
 @media screen and (max-width: 860px) {
   .wrapperMostPopular {
     grid-template-columns: repeat(3, 1fr);
+  }
+  .mintLimitedWrapper {
+    flex-direction: column-reverse;
+  }
+  .mintLimitedWrapper .sidebar {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
+  .mintSidebarMain img {
+    width: 196px;
+    height: 196px;
   }
 }
 
@@ -341,10 +362,23 @@
     padding: 0;
     max-width: initial;
   }
+  .mintLimitedWrapper .sidebar {
+    padding: 24px 32px 32px;
+  }
+  .mintLimitedWrapper .mintInfo {
+    padding: 32px;
+  }
 }
 
 @media screen and (max-width: 480px) {
   .wrapperMostPopular {
     grid-template-columns: repeat(1, 1fr);
+  }
+  .mintSidebarMain img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    max-width: 172px;
+    max-height: 172px;
   }
 }

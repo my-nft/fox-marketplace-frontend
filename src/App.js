@@ -25,6 +25,7 @@ import AccountPage from "./pages/Account/Account";
 import CollectionSettings from "./pages/collectionSettings/collectionSettings";
 import PageStatistics from "./components/Statistics";
 import Page404 from "./pages/404/404";
+import MintLimited from "./pages/mintLimited/mintLimited";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -38,6 +39,14 @@ const router = createBrowserRouter(
           </>
         }
       />
+      <Route 
+      path='drops'
+      element={
+        <>
+          <MintLimited />
+          <Footer />
+        </>
+      } />
       <Route
         path="creation"
         element={
