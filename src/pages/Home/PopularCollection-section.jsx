@@ -5,26 +5,16 @@ import Spinner from "../../components/Spinner";
 import { popularAnimation } from "./Utils";
 import { Link } from "react-router-dom";
 
-const PopularCollection = () => {
+const PopularCollection = ({popularCollections}) => {
   const popularElements = useRef();
 
-  const [popularCollections, setPopularCollections] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   useLayoutEffect(() => {
     const ctx = popularAnimation(popularElements);
     return () => ctx.revert();
   }, []);
 
-  useEffect(() => {
-    setLoading(true);
-    //let items = getCollections(null, "MOST_POPULAR");
-    let items = [];
 
-    if (items.length !== 0) {
-      setPopularCollections(items);
-    }
-  }, []);
 
   return (
     <section id="popular" className="container-fluid mt-5">
@@ -35,7 +25,7 @@ const PopularCollection = () => {
         </Link>
       </div>
       <div id="wrapperPopularItems" className="row" ref={popularElements}>
-        {loading && popularCollections.length === 0 ? (
+        {popularCollections.length === 0 ? (
           <Spinner />
         ) : (
           popularCollections.map((item, index) => {

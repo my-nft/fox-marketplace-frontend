@@ -59,7 +59,11 @@ const AccordionDescription = ({ nftDetails }) => {
                 </strong>
               </Address>
             </p>
-            <span>{nftDetails.description}</span>
+            <span>
+              {!nftDetails.description
+                ? "This NFT has no description"
+                : nftDetails.description}
+            </span>
           </div>
         </div>
       </div>

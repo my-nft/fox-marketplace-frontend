@@ -22,6 +22,8 @@ const AccountHeader = ({ user }) => {
       <div className="row p-4 mt-5" id="infoHeader">
         <div id="accountName">
           <p>{user?.username ? user.username : "-"}</p>
+          <span>{user?.bio}</span>
+          <br/>
           <span id="accountWallet">
             Wallet Address{" "}
             {user?.address ? (

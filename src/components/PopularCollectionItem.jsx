@@ -17,11 +17,7 @@ const PopularCollectionItem = (props) => {
           />
         </span>
       </div>
-      <p>
-        ${parseFloat((Number(itemData.lowestAsk) * FXG_PRICE).toFixed(4))}{" "}
-        Lowest ask
-      </p>
-      <p>{itemData.tokens}LAU</p>
+      <p>{itemData.totalSupply} NFTs</p>
     </div>
   );
 };

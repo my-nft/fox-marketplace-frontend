@@ -209,6 +209,7 @@ const CollectionDetails = () => {
         }}
       </Await>
     </Suspense>
+
   );
 };
 
