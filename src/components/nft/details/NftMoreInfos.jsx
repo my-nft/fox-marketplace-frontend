@@ -6,7 +6,7 @@ import AccordionProperties from "./AccordionProperties";
 const NftMoreInfos = ({ nftDetails, collectionDetails }) => {
   return (
     <>
-      <AccordionAbout nftDetails={nftDetails} />
+      <AccordionAbout collectionDetails={collectionDetails} />
       <AccordionDescription nftDetails={nftDetails} />
       <AccordionProperties nftDetails={nftDetails} />
       <AccordionDetails

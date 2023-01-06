@@ -1,12 +1,12 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import RanksSelector from "./Ranks/Ranks-selector";
-import { TERENDINGS } from "./Ranks/constantes";
+import { TOP, TERENDINGS } from "./Ranks/constantes";
 import TopCollections from "./Ranks/Top-collection";
 import TrendingCollection from "./Ranks/Trending-collection";
 import { rankAnimation } from "./Utils";
 
-const RanksSection = () => {
-  const [selection, setSelection] = useState(TERENDINGS);
+const RanksSection = ({trendingCollections, topCollections}) => {
+  const [selection, setSelection] = useState(TOP);
 
   const rank = useRef();
 
@@ -41,9 +41,9 @@ const RanksSection = () => {
               </thead>
               <tbody>
                 {selection === TERENDINGS ? (
-                  <TrendingCollection />
+                  <TrendingCollection collections={trendingCollections}/>
                 ) : (
-                  <TopCollections />
+                  <TopCollections collections={topCollections}/>
                 )}
               </tbody>
             </table>
