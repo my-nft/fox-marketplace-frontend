@@ -1,20 +1,16 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { getCollections } from "../../api/collectionApi";
+import { useLayoutEffect, useRef } from "react";
 import PopularCollectionItem from "../../components/PopularCollectionItem";
 import Spinner from "../../components/Spinner";
 import { popularAnimation } from "./Utils";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const PopularCollection = ({popularCollections}) => {
   const popularElements = useRef();
-
 
   useLayoutEffect(() => {
     const ctx = popularAnimation(popularElements);
     return () => ctx.revert();
   }, []);
-
-
 
   return (
     <section id="popular" className="container-fluid mt-5">
