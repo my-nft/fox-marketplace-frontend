@@ -1,4 +1,4 @@
-import { TERENDINGS, COLLECTIONS } from "./constantes";
+import { TERENDINGS, TOP } from "./constantes";
 
 
 const RanksSelector = (props) => {
@@ -14,26 +14,30 @@ const RanksSelector = (props) => {
             role="tab"
             aria-controls="pills-top"
             aria-selected="false"
-            onClick={() => props.onChangeSelected(COLLECTIONS)}
+            onClick={() => props.onChangeSelected(TOP)}
           >
             Top
           </button>
         </li>
-        <li className="nav-item" role="presentation">
-          <button
-            className="nav-link active"
-            id="pills-home-tab"
-            data-toggle="pill"
-            data-target="#pills-trending"
-            type="button"
-            role="tab"
-            aria-controls="pills-trending"
-            aria-selected="true"
-            onClick={() => props.onChangeSelected(TERENDINGS)}
-          >
-            Trending
-          </button>
-        </li>
+        {
+          /*
+          <li className="nav-item" role="presentation">
+            <button
+              className="nav-link active"
+              id="pills-home-tab"
+              data-toggle="pill"
+              data-target="#pills-trending"
+              type="button"
+              role="tab"
+              aria-controls="pills-trending"
+              aria-selected="true"
+              onClick={() => props.onChangeSelected(TERENDINGS)}
+            >
+              Trending
+            </button>
+          </li>
+        */
+        }
       </ul>
     )
 }
