@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
 
+const equals = (val, val2) => {
+ val = val || '';
+ val2 = val2 || '';
+ return val.toLowerCase() === val2.toLowerCase();
+}
+
 const AccordionProperties = ({ nftDetails }) => {
   const [properties, setProperties] = useState([]);
 
@@ -7,13 +13,17 @@ const AccordionProperties = ({ nftDetails }) => {
     if (nftDetails && nftDetails.attributes) {
       let data = [];
 
-      nftDetails.attributes.filter(item => item.value !== '' && item.value !== 'None' && item.value).map((item) => {
-        data.push({
-          name: item.trait_type ? item.trait_type : "-",
-          value: item.value,
-          rarityPercent: item.rarity,
+      nftDetails.attributes
+        .filter(
+          (item) => !equals(item.value,"None") && !equals(item.value, "Null")
+        )
+        .map((item) => {
+          data.push({
+            name: item.trait_type ? item.trait_type : "-",
+            value: item.value,
+            rarityPercent: item.rarity,
+          });
         });
-      });
 
       setProperties(data);
     }

@@ -1,10 +1,15 @@
-import { FXG_PRICE } from "../utils/foxConstantes";
+import { useNavigate } from "react-router-dom";
 
 const PopularCollectionItem = (props) => {
   const { itemData } = props;
+  const navigate = useNavigate();
+  
+  const goToCollection = () => {
+    navigate(`/collection/${itemData.collectionAddress}`)
+  }
 
   return (
-    <div className="popularItems col-sm-6 col-md-3">
+    <div className="popularItems col-sm-6 col-md-3" onClick={goToCollection}>
       <img src={itemData.image} alt="" />
       <div className="nameItem">
         <span className="name">{itemData.name}</span>

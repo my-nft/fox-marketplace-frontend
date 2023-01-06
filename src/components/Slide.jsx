@@ -1,12 +1,18 @@
+import { useNavigate } from "react-router-dom";
+
 const Slide = ({ collectionDetails }) => {
+  const navigate = useNavigate();
+
+  const goToCollection = () => {
+    navigate(`/collection/${collectionDetails.collectionAddress}`);
+  };
+
   return (
     <div className="slide">
-      <div className="maskContainer">
-        <a href={collectionDetails.image}>
-          <img src={collectionDetails.image} alt="" />
-        </a>
+      <div className="maskContainer" onClick={goToCollection}>
+        <img src={collectionDetails.image} alt="" />
       </div>
-      <div className="textItems">
+      <div className="textItems" onClick={goToCollection}>
         <h4>{collectionDetails.name}</h4>
         <div className="description">
           <p>

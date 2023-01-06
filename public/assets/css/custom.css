@@ -685,6 +685,7 @@ h3 {
   font-family: gothamLight;
   width: calc(100% / 4);
   max-width: 320px;
+  cursor: pointer;
 }
 
 .nameItem {

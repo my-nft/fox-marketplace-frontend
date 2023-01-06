@@ -9,6 +9,7 @@ import Spinner from "../../components/Spinner";
 
 const Home = () => {
   const [collections, setCollections] = useState();
+  const [mostPopularCollections, setMostPopularCollections] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
   const init = async () => {
@@ -19,7 +20,18 @@ const Home = () => {
       }
     });
     const {content} = response.data;
+
+
+    const mostPopularResponse = await getCollectionsCall({
+      filter: {
+        tag: "MOST_POPULAR"
+      }
+    });
+
+    const {content : mstContent} = mostPopularResponse.data;
+
     setCollections(content);
+    setMostPopularCollections(mstContent);
     setIsLoading(false);
   };
 
@@ -37,7 +49,7 @@ const Home = () => {
         <>
           <TradingSection collections={collections} />
           <RanksSection trendingCollections={collections} topCollections={collections}/>
-          <PopularCollection popularCollections={collections}/>
+          <PopularCollection popularCollections={mostPopularCollections}/>
           <UpcomingMints />
         </>
       )}
