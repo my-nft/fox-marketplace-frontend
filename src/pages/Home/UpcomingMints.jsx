@@ -14,7 +14,7 @@ const UpcomingMints = (props) => {
         <div className="upcomingMintHighlight col-md-6 col-sm-12 col-lg-4">
           <img src={FOXCollectionImage} alt="" />
           <p>LIMITED FOX COLLECTION</p>
-          <Countdown date="2023-01-08T00:00:00" />
+          <Countdown date="2023-01-15T00:00:00" />
           <div className="highlight"></div>
         </div>
         {

@@ -5,6 +5,7 @@ import { Form } from "formik";
 import { useSelector } from "react-redux";
 import { selectCurrentWallet } from "../../redux/userReducer";
 import Address from "../../components/Address";
+import { toast } from "react-toastify";
 
 const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
   const [imageUrl, setImageUrl] = useState(null);
@@ -13,11 +14,15 @@ const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
   useEffect(() => {
     setImageUrl(values.image);
     setBannerUrl(values.banner);
-  }, [values.image, values.banner])
+  }, [values.image, values.banner]);
 
   const walletAddress = useSelector(selectCurrentWallet);
 
   const handleImageUpload = (e) => {
+    if (e.target.files[0].size > 15000000) {
+      toast.error("File size too large");
+      return;
+    }
     const file = e.target.files[0];
     let url = URL.createObjectURL(file);
     setImageUrl(url);
@@ -25,6 +30,10 @@ const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
   };
 
   const handleBannerUpload = (e) => {
+    if (e.target.files[0].size > 15000000) {
+      toast.error("File size too large");
+      return;
+    }
     const file = e.target.files[0];
     let url = URL.createObjectURL(file);
     setBannerUrl(url);
@@ -34,35 +43,6 @@ const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
   useEffect(() => {
     handleChange({ target: { name: "address", value: walletAddress } });
   }, []);
-
-  /*
-
-if (image) {
-      if (image.data) {
-        const base64 = Buffer.from(image.data.data).toString("base64");
-        setImageUrl(`data:image/png;base64,${base64}`);
-      } else if (image.type) {
-        let url = URL.createObjectURL(image);
-        console.log(url);
-        setImageUrl(url);
-      } else if (typeof image === "string") {
-        setImageUrl(image);
-      }
-    }
-
-    if (banner) {
-      if (banner.data) {
-        const base64 = Buffer.from(banner.data.data).toString("base64");
-        setBannerUrl(`data:image/png;base64,${base64}`);
-      } else if (banner.type) {
-        let url = URL.createObjectURL(banner);
-        setBannerUrl(url);
-      } else if (typeof banner === "string") {
-        setBannerUrl(banner);
-      }
-    }
-
-  */
 
   return (
     <>

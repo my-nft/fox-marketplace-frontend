@@ -11,6 +11,7 @@ const AccordionProperties = ({ nftDetails }) => {
         data.push({
           name: item.trait_type ? item.trait_type : "-",
           value: item.value,
+          rarityPercent: item.rarity,
         });
       });
 
@@ -72,7 +73,7 @@ const AccordionProperties = ({ nftDetails }) => {
                   <div className="tags" key={index}>
                     <h6>{item.name ? item.name : "-"}</h6>
                     <p>{item.value ? item.value : "-"}</p>
-                    <span>61% have this trait</span>
+                    <span>{item.rarityPercent}% have this trait</span>
                   </div>
                 );
               })}

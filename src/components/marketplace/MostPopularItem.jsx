@@ -50,7 +50,7 @@ const MostPopularItem = ({ viewType, item }) => {
   const loadInfoPricing = async () => {
     if (item.listingType === AUCTION) {
       setPrice(
-        itemInfos?.currentBidPrice ? itemInfos.currentBidPrice / 10**18 : null
+        itemInfos?.currentBidPrice ? itemInfos.currentBidPrice / 10 ** 18 : null
       );
     } else if (item.listingType === FIXED_PRICE) {
       const priceSmt = await getPriceByListing(item.listingId);
@@ -176,11 +176,11 @@ const MostPopularItem = ({ viewType, item }) => {
           </div>
           {/* <p className="nItem">#{item.id}</p> */}
           <div className="wrapText">
-            {(price) ? (
+            {price ? (
               <p>
                 <label>Price</label>
                 <span className="orange">
-                  <b>FXG</b> {price}
+                  <b>FXG</b> {parseFloat(price.toFixed(4))}
                 </span>
               </p>
             ) : (
