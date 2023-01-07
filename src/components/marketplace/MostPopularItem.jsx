@@ -7,74 +7,8 @@ import { getAuctionInfos, getPriceByListing } from "../../services/listingNft";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 import { sameAddress } from "../../utils/walletUtils";
 
-const MostPopularItem = ({ viewType, item }) => {
-  const walletAddress = useSelector(selectCurrentWallet);
-
-  let styleList = {};
-  let styleWrappedText = {};
-
-  if (viewType === "CHANGE_FOR_MIN") {
-    styleList = {
-      width: "calc(100% / 6)",
-      minWidth: "230px",
-    };
-    styleWrappedText = {
-      display: "block",
-    };
-  } else if (viewType === "CHANGE_FOR_MAX") {
-    styleList = {
-      width: "calc(100% / 8)",
-      minWidth: "170px",
-    };
-    styleWrappedText = {
-      display: "block",
-    };
-  } else if (viewType === "CHANGE_FOR_IMAGE") {
-    styleList = {
-      width: "calc(100% / 4)",
-    };
-
-    styleWrappedText = {
-      display: "none",
-    };
-  }
-
-  const [itemInfos, setItemInfos] = useState({});
+const EndCountdown = ({ endAuction }) => {
   const [dateTime, setDateTime] = useState(new Date());
-  const [price, setPrice] = useState(0);
-  const [collectionName, setCollectionName] = useState("");
-
-  const init = async () => {
-    const infos = await getAuctionInfos(item.auctionId);
-    setItemInfos(infos);
-  };
-
-  const loadInfoPricing = async () => {
-    if (item.listingType === AUCTION) {
-      setPrice(
-        itemInfos?.currentBidPrice ? itemInfos.currentBidPrice / 10 ** 18 : null
-      );
-    } else if (item.listingType === FIXED_PRICE) {
-      const priceSmt = await getPriceByListing(item.listingId);
-      setPrice(priceSmt);
-    }
-  };
-
-  useEffect(() => {
-    loadInfoPricing();
-  }, [itemInfos]);
-
-  useEffect(() => {
-    init();
-  }, []);
-
-  // create time initilizer
-  useEffect(() => {
-    const id = setInterval(() => setDateTime(new Date()), 1000);
-    return () => {
-      clearInterval(id);
-    };
-  }, []);
 
   const toDoubleDigits = (num) => {
     num += "";
@@ -86,6 +20,7 @@ const MostPopularItem = ({ viewType, item }) => {
 
   const calculateTimeLeftBeforeExpiration = (expirationDate, dateNow) => {
     const futurDate = new Date(Number(expirationDate * 1000));
+    if (!expirationDate) return "Loading...";
 
     const difference = futurDate - dateNow;
     let timeLeft = {};
@@ -130,18 +65,93 @@ const MostPopularItem = ({ viewType, item }) => {
     return output;
   };
 
-  const timeEnd = calculateTimeLeftBeforeExpiration(
-    itemInfos?.endAuction,
-    dateTime
+  useEffect(() => {
+    const id = setInterval(() => setDateTime(new Date()), 1000);
+    return () => {
+      clearInterval(id);
+    };
+  }, []);
+
+  const timeEnd = calculateTimeLeftBeforeExpiration(endAuction, dateTime);
+
+  return (
+    <span>
+      {timeEnd === "Expired" ? (
+        "Ended"
+      ) : timeEnd === "Loading..." ? (
+        "Loading..."
+      ) : (
+        <>Ends in {timeEnd}</>
+      )}
+    </span>
   );
+};
+
+const MostPopularItem = ({ viewType, item }) => {
+  const walletAddress = useSelector(selectCurrentWallet);
+
+  let styleList = {};
+  let styleWrappedText = {};
+
+  if (viewType === "CHANGE_FOR_MIN") {
+    styleList = {
+      width: "calc(100% / 6)",
+      minWidth: "230px",
+    };
+    styleWrappedText = {
+      display: "block",
+    };
+  } else if (viewType === "CHANGE_FOR_MAX") {
+    styleList = {
+      width: "calc(100% / 8)",
+      minWidth: "170px",
+    };
+    styleWrappedText = {
+      display: "block",
+    };
+  } else if (viewType === "CHANGE_FOR_IMAGE") {
+    styleList = {
+      width: "calc(100% / 4)",
+    };
+
+    styleWrappedText = {
+      display: "none",
+    };
+  }
+
+  const [itemInfos, setItemInfos] = useState({});
+  const [price, setPrice] = useState(0);
+  const [collectionName, setCollectionName] = useState("");
+
+  const init = async () => {
+    const infos = await getAuctionInfos(item.auctionId);
+    setItemInfos(infos);
+  };
+
+  const loadInfoPricing = async () => {
+    if (item.listingType === AUCTION) {
+      setPrice(
+        itemInfos?.currentBidPrice ? itemInfos.currentBidPrice / 10 ** 18 : null
+      );
+    } else if (item.listingType === FIXED_PRICE) {
+      const priceSmt = await getPriceByListing(item.listingId);
+      setPrice(priceSmt);
+    }
+  };
+
+  useEffect(() => {
+    loadInfoPricing();
+  }, [itemInfos]);
+
+  useEffect(() => {
+    init();
+  }, []);
 
   useEffect(() => {
     getCollectionByAddress(item.collectionAddress).then((res) => {
       setCollectionName(res.data.collection.name);
     });
   }, []);
-
-  console.log(item);
 
   return (
     <Link
@@ -197,9 +207,7 @@ const MostPopularItem = ({ viewType, item }) => {
           <div className="wrapText">
             <p>
               {item.listingType === AUCTION && (
-                <span>
-                  {timeEnd === "Expired" ? "Ended" : <>Ends in {timeEnd}</>}
-                </span>
+                <EndCountdown endAuction={itemInfos?.endAuction} />
               )}
               {item.listingType === FIXED_PRICE && <span>Fixed Price</span>}
               {item.isListed === false && <span>Unlisted</span>}
