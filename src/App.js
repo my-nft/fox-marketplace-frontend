@@ -28,7 +28,10 @@ import PageStatistics from "./components/Statistics";
 import Page404 from "./pages/404/404";
 import MintLimited from "./pages/mintLimited/mintLimited";
 import { getNftCall } from "./api/nftApi";
-import { getCollectionByAddress } from "./api/collectionApi";
+import {
+  getCollectionByAddress,
+  getCollectionNftsCall,
+} from "./api/collectionApi";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -117,6 +120,15 @@ const router = createBrowserRouter(
       <Route
         path="collection/:collectionAddress"
         exact
+        loader={async ({ params }) => {
+          const getCollectionPromise = getCollectionByAddress(
+            params.collectionAddress
+          );
+
+          return defer({
+            dataPromise: getCollectionPromise,
+          });
+        }}
         element={
           <>
             <CollectionDetails />

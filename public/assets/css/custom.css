@@ -3769,10 +3769,6 @@ ul#buttonIcon {
   color: #f58103;
 }
 
-#createCollection input[name="royaltyAddress"] {
-  height: 54px;
-}
-
 .propertyHeader {
   display: flex;
   justify-content: space-between;
