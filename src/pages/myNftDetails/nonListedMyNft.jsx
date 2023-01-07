@@ -128,7 +128,7 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails }) => {
                     setShowPicker(true);
                     setType(AUCTION);
                   }}
-                  disabled
+                  
                 >
                   Timed auction (Soon)
                 </button>

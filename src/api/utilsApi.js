@@ -7,7 +7,7 @@ export function getStats() {
   return methods.get(utilsApiEndpoint + "stats");
 }
 
-export const putTraceTransaction = ({
+export const postTraceTransaction = ({
   fromAddress,
   toAddress,
   price,
@@ -16,7 +16,7 @@ export const putTraceTransaction = ({
   event,
   transactionId,
   link,
-}) => {
+}, token) => {
   return methods.post(utilsApiEndpoint + "trace-transaction", {
     fromAddress,
     toAddress,
@@ -26,5 +26,11 @@ export const putTraceTransaction = ({
     event,
     transactionId,
     link,
+  },
+  {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: "Bearer " + token,
+    },
   });
 }

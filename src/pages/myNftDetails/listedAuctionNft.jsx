@@ -61,6 +61,8 @@ const ListedAuctionNft = ({ itemDetails, collectionDetails }) => {
           ? royaltyAddress
           : collectionDetails.ownerAddress,
         royaltyPercent: royaltyPercent ? royaltyPercent : 0,
+        ownerAddress: nftDetails.ownerAddress,
+        price: itemInfos?.currentBidPrice / 10 ** 18
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -78,6 +80,8 @@ const ListedAuctionNft = ({ itemDetails, collectionDetails }) => {
           ? royaltyAddress
           : collectionDetails.ownerAddress,
         royaltyPercent: royaltyPercent ? royaltyPercent : 0,
+        ownerAddress: nftDetails.ownerAddress,
+        price: itemInfos?.currentBidPrice / 10 ** 18
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -107,28 +111,28 @@ const ListedAuctionNft = ({ itemDetails, collectionDetails }) => {
     init();
   }, []);
 
-  const creator = nftDetails?.creator;
+  const creator = itemInfos?.creator;
 
   return (
     !isLoading && (
       <>
         <CardNftWrapper>
-          <CardHeader endDate={Number(nftDetails?.endAuction)} />
+          <CardHeader endDate={Number(itemInfos?.endAuction)} />
           <CardBody
             title={Number(bidCount) === 0 ? "Minimum bid" : "Current bid"}
-            price={nftDetails?.currentBidPrice / 10 ** 18}
-            priceDollar={nftDetails?.currentBidPrice / 10 ** 18}
+            price={itemInfos?.currentBidPrice / 10 ** 18}
+            priceDollar={itemInfos?.currentBidPrice / 10 ** 18}
           >
             {sameAddress(currentWallet, creator) &&
               Number(bidCount) === 0 &&
-              isTokenExpired(Number(nftDetails?.endAuction)) && (
+              isTokenExpired(Number(itemInfos?.endAuction)) && (
                 <button id="buyItem" className="btn" onClick={onRefund}>
                   Refund
                 </button>
               )}
 
             {sameAddress(currentWallet, currentBidOwner) &&
-              isTokenExpired(Number(nftDetails?.endAuction)) &&
+              isTokenExpired(Number(itemInfos?.endAuction)) &&
               Number(bidCount) > 0 && (
                 <button id="buyItem" className="btn" onClick={onClaimNft}>
                   Claim NFT
@@ -137,7 +141,7 @@ const ListedAuctionNft = ({ itemDetails, collectionDetails }) => {
 
             {sameAddress(currentWallet, creator) &&
               Number(bidCount) > 0 &&
-              isTokenExpired(Number(nftDetails?.endAuction)) &&
+              isTokenExpired(Number(itemInfos?.endAuction)) &&
               Number(bidCount) > 0 && (
                 <button id="buyItem" className="btn" onClick={onClaimToken}>
                   Claim Token
@@ -145,7 +149,7 @@ const ListedAuctionNft = ({ itemDetails, collectionDetails }) => {
               )}
           </CardBody>
         </CardNftWrapper>
-        {!isTokenExpired(Number(nftDetails?.endAuction)) &&
+        {!isTokenExpired(Number(itemInfos?.endAuction)) &&
           !sameAddress(currentBidOwner, currentWallet) &&
           !sameAddress(creator, currentWallet) && (
             <PlaceBid onPlaceBid={onPlaceBid} />

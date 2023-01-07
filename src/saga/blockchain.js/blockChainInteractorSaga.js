@@ -1,6 +1,6 @@
 import { setIsLoading } from "../../redux/nftReducer";
 import * as nftApi from "../../api/nftApi";
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, select, takeLatest } from "redux-saga/effects";
 import { toast } from "react-toastify";
 import {
   buyItem,
@@ -27,8 +27,10 @@ import {
   PLACE_BID,
   REFUND_NFT,
 } from "./blockChainActions";
-import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
+import { AUCTION, EVENT_WIN_AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 import { signWallet } from "../userSaga";
+import { postTraceTransaction } from "../../api/utilsApi";
+import { selectCurrentWallet } from "../../redux/userReducer";
 
 function* runBuyNft(action) {
   try {
@@ -203,8 +205,7 @@ function* runListFixedPrice(action) {
   try {
     const { collectionAddress, tokenID, fixedPrice } = action.payload;
 
-
-    console.log("##################################################")
+    console.log("##################################################");
     const token = yield call(signWallet);
 
     yield put(setIsLoading(true));
@@ -326,14 +327,30 @@ function* runHandleClaimNFT(action) {
     tokenID,
     royaltyAddress,
     royaltyPercent,
+    ownerAddress,
+    price
   } = action.payload;
 
   try {
     yield put(setIsLoading(true));
 
+    const connectedWallet = yield select(selectCurrentWallet);
+
     const token = yield call(signWallet);
 
-    yield call(claimNFT, { auctionId, royaltyAddress, royaltyPercent });
+
+    const tsxId = yield call(claimNFT, { auctionId, royaltyAddress, royaltyPercent });
+
+    yield call(postTraceTransaction, {
+      fromAddress : connectedWallet,
+      toAddress: ownerAddress,
+      price,
+      collectionAddress,
+      tokenID,
+      event : EVENT_WIN_AUCTION,
+      transactionId : "",
+      link : "",
+    }, token);
 
     yield call(
       nftApi.setNftToUnlisted,
@@ -345,6 +362,7 @@ function* runHandleClaimNFT(action) {
     );
     // get the nft details
     const response = yield call(nftApi.getNftCall, collectionAddress, tokenID);
+
     // putting the NFT details
     yield put(setIsLoading(false));
     action.onSuccess(response.data);
