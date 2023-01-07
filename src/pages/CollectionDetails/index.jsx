@@ -1,9 +1,9 @@
 import FilterInput from "./FilterInput";
 import HeaderAccount from "./HeaderAccount";
 import ListNfts from "./ListNfts";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Spinner from "../../components/Spinner";
-import { useNavigate, useParams } from "react-router-dom";
+import { Await, useLoaderData, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   getCollectionByAddress,
@@ -11,6 +11,7 @@ import {
 } from "../../api/collectionApi";
 
 import ConfirmationPopup from "./../../components/confirmationPopup/confirmationPopup";
+import Page404 from "../404/404";
 
 const prepareProperties = (attributes) => {
   return (
@@ -32,8 +33,6 @@ const prepareProperties = (attributes) => {
 };
 
 const CollectionDetails = () => {
-  let { collectionAddress } = useParams();
-  const [isLoadingCollection, setIsLoadingCollection] = useState(true);
   const [isLoadingNfts, setIsLoadingNfts] = useState(true);
   const [collectionDetails, setCollectionDetails] = useState();
   const [isProcessing, setIsProcessing] = useState("noProcess");
@@ -56,34 +55,20 @@ const CollectionDetails = () => {
     status: [],
   });
   const [nfts, setNfts] = useState({});
+  const loaderData = useLoaderData();
 
   const navigate = useNavigate();
 
   const { totalElements, content } = nfts;
 
-  // load collection details
-  const initLoadCollection = async () => {
-    try {
-      setIsLoadingCollection(true);
-      const response = await getCollectionByAddress(collectionAddress);
-      const { collection, attributes } = response.data;
-      console.log("RESPONSE: ", response.data);
-      setCollectionDetails(collection);
-      console.log("ATTRIBUTES: ", attributes);
-      console.log("PROPERTIES: ", prepareProperties(attributes));
+  useEffect(() => {
+    loaderData.dataPromise.then((data) => {
+      setCollectionDetails(data.data.collection);
       setFilters({
         ...filters,
-        properties: prepareProperties(attributes),
+        properties: prepareProperties(data.data.attributes),
       });
-      setIsLoadingCollection(false);
-    } catch (error) {
-      console.log(error);
-      toast.error("Error loading Collection");
-    }
-  };
-
-  useEffect(() => {
-    initLoadCollection();
+    });
   }, []);
 
   // load nfts for collection
@@ -182,44 +167,50 @@ const CollectionDetails = () => {
     }
   }, [collectionDetails]);
 
-  return isLoadingCollection ? (
-    <Spinner />
-  ) : (
-    <>
-      {isProcessing === "processingFinished" && (
-        <ConfirmationPopup
-          title="Import has been finished"
-          message="Congratulation your collection has been imported. Do you want to refresh the page?"
-          onConfirm={() => window.location.reload()}
-          onCancel={() => {}}
-        />
-      )}
-      <HeaderAccount collectionData={collectionDetails} />
-      <FilterInput
-        onOpenClose={() => setVisible(!visible)}
-        onChangeSelectedView={changeSelectedView}
-        filters={filters}
-        changeFilterValue={setFilters}
-      />
-      {isProcessing === "isProcessing" && (
-        <Spinner>
-          <p className="loaderMessage">Processing</p>
-        </Spinner>
-      )}
-      <ListNfts
-        nfts={content}
-        isVisible={visible}
-        viewType={viewType}
-        handleSelectNfts={handleSelectNfts}
-        filters={filters}
-        changeFilterValue={setFilters}
-        pagination={pagination}
-        totalElements={totalElements}
-        isLoadingNfts={isLoadingNfts}
-        changePage={changePage}
-        paginationPage={pagination.page}
-      />
-    </>
+  return (
+    <Suspense fallback={<Spinner />}>
+      <Await resolve={loaderData.dataPromise} errorElement={<Page404 />}>
+        {() => {
+          return (
+            <>
+              {isProcessing === "processingFinished" && (
+                <ConfirmationPopup
+                  title="Import has been finished"
+                  message="Congratulation your collection has been imported. Do you want to refresh the page?"
+                  onConfirm={() => window.location.reload()}
+                  onCancel={() => {}}
+                />
+              )}
+              <HeaderAccount collectionData={collectionDetails} />
+              <FilterInput
+                onOpenClose={() => setVisible(!visible)}
+                onChangeSelectedView={changeSelectedView}
+                filters={filters}
+                changeFilterValue={setFilters}
+              />
+              {isProcessing === "isProcessing" && (
+                <Spinner>
+                  <p className="loaderMessage">Processing</p>
+                </Spinner>
+              )}
+              <ListNfts
+                nfts={content}
+                isVisible={visible}
+                viewType={viewType}
+                handleSelectNfts={handleSelectNfts}
+                filters={filters}
+                changeFilterValue={setFilters}
+                pagination={pagination}
+                totalElements={totalElements}
+                isLoadingNfts={isLoadingNfts}
+                changePage={changePage}
+                paginationPage={pagination.page}
+              />
+            </>
+          );
+        }}
+      </Await>
+    </Suspense>
   );
 };
 
