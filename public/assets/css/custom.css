@@ -3735,6 +3735,10 @@ ul#buttonIcon {
   padding: 8px;
 }
 
+.nft .wrapText p {
+  margin: 0;
+}
+
 .nft .wrappedAllText {
   flex-grow: 2;
 }
