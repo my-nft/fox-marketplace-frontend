@@ -12,7 +12,8 @@ import { getBestOffer, getPriceByListing } from "../../services/listingNft";
 import { sameAddress } from "../../utils/walletUtils";
 
 const ListedFixedNft = ({
-  itemDetails,
+  nftDetails,
+  setNftDetails,
   collectionDetails,
   onMakeOffer,
   onAcceptOffer,
@@ -23,7 +24,6 @@ const ListedFixedNft = ({
   const [currentOffer, setCurrentOffer] = useState(0);
   const [bestOffer, setBestOffer] = useState(undefined);
   const [showMakeOffer, setShowMakeOffer] = useState(false);
-  const [nftDetails, setNftDetails] = useState(itemDetails);
   const dispatch = useDispatch();
 
   const handleChange = (evt) => {
@@ -61,10 +61,10 @@ const ListedFixedNft = ({
   };
 
   const init = async () => {
-    const currentPrice = await getPriceByListing(itemDetails.listingId);
+    const currentPrice = await getPriceByListing(nftDetails.listingId);
     const bestOfferPrice = await getBestOffer(
-      itemDetails.collectionAddress,
-      itemDetails.tokenID
+      nftDetails.collectionAddress,
+      nftDetails.tokenID
     );
     setCurrentPrice(currentPrice);
     setBestOffer(bestOfferPrice);
@@ -72,7 +72,7 @@ const ListedFixedNft = ({
 
   useEffect(() => {
     init();
-  }, [itemDetails]);
+  }, [nftDetails]);
 
   return (
     <CardNftWrapper>
@@ -82,9 +82,9 @@ const ListedFixedNft = ({
         priceDollar={currentPrice}
         bestOffer={bestOffer}
         onAcceptOffer={onAcceptOffer}
-        ownerAddress={itemDetails.ownerAddress}
+        ownerAddress={nftDetails.ownerAddress}
       >
-        {!sameAddress(currentWallet, itemDetails.ownerAddress) && (
+        {!sameAddress(currentWallet, nftDetails.ownerAddress) && (
           <>
             <button
               id="buyItem"
@@ -145,7 +145,7 @@ const ListedFixedNft = ({
           </>
         )}
 
-        {sameAddress(currentWallet, itemDetails.ownerAddress) ? (
+        {sameAddress(currentWallet, nftDetails.ownerAddress) ? (
           <>
             <button id="makeOffer" className="btn" onClick={onDelist}>
               DeList

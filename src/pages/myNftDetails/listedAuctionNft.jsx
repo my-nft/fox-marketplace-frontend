@@ -15,10 +15,9 @@ import {
   REFUND_NFT,
 } from "../../saga/blockchain.js/blockChainActions";
 
-const ListedAuctionNft = ({ itemDetails, collectionDetails }) => {
+const ListedAuctionNft = ({ nftDetails, collectionDetails, setNftDetails }) => {
   const [itemInfos, setItemInfos] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [nftDetails, setNftDetails] = useState(itemDetails);
   const currentBidOwner = itemInfos?.currentBidOwner;
   const bidCount = itemInfos?.bidCount;
   const currentWallet = useSelector(selectCurrentWallet);
@@ -97,7 +96,7 @@ const ListedAuctionNft = ({ itemDetails, collectionDetails }) => {
   };
 
   const setAuctionItemInfos = async () => {
-    const infos = await getAuctionInfos(itemDetails.auctionId);
+    const infos = await getAuctionInfos(nftDetails.auctionId);
     setItemInfos(infos);
   };
 

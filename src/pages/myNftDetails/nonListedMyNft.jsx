@@ -10,11 +10,10 @@ import {
 import { getBestOffer } from "../../services/listingNft";
 import { FIXED_PRICE, AUCTION } from "../../utils/foxConstantes";
 
-const NonListedMyNft = ({ handleAcceptOffer, nftDetails }) => {
+const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
   const [type, setType] = useState(FIXED_PRICE);
   const [showPicker, setShowPicker] = useState(false);
   const [bestOffer, setBestOffer] = useState();
-  const [itemDetails, setItemDetails] = useState(nftDetails);
   const dispatch = useDispatch();
   // values
   const [values, setValues] = useState({
@@ -38,8 +37,8 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails }) => {
 
   const init = async () => {
     const bestOfferPrice = await getBestOffer(
-      itemDetails.collectionAddress,
-      itemDetails.tokenID
+      nftDetails.collectionAddress,
+      nftDetails.tokenID
     );
     setBestOffer(bestOfferPrice);
   };
@@ -49,11 +48,11 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails }) => {
     dispatch({
       type: LISTING_FIXED_PRICE,
       payload: {
-        collectionAddress: itemDetails.collectionAddress,
-        tokenID: itemDetails.tokenID,
+        collectionAddress: nftDetails.collectionAddress,
+        tokenID: nftDetails.tokenID,
         fixedPrice: fixedPrice,
       },
-      onSuccess: (nft) => setItemDetails(nft),
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
@@ -64,12 +63,12 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails }) => {
     dispatch({
       type: LISTING_AUCTION,
       payload: {
-        collectionAddress: itemDetails.collectionAddress,
-        tokenID: itemDetails.tokenID,
+        collectionAddress: nftDetails.collectionAddress,
+        tokenID: nftDetails.tokenID,
         auctionPrice: auctionPrice,
         endAuction: Math.floor(endAuction),
       },
-      onSuccess: (nft) => setItemDetails(nft),
+      onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
@@ -101,7 +100,7 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails }) => {
         <CardBody
           bestOffer={bestOffer}
           onAcceptOffer={handleAcceptOffer}
-          ownerAddress={itemDetails.ownerAddress}
+          ownerAddress={nftDetails.ownerAddress}
         >
           <div className="card" id="cardNft">
             <div className="card-body">
