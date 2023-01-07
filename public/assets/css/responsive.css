@@ -301,6 +301,26 @@
 }
 
 @media (max-width: 575px) {
+  #headerInput {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 0 32px;
+  }
+  #marketplace #headerInput > select {
+    width: 100%;
+
+    margin-left: 0 !important;
+  }
+  /* style select arrow */
+
+  #headerInput #command {
+    padding: 0;
+  }
+  #headerInput button {
+    width: 100%;
+    margin-left: 0 !important;
+  }
   .wrapperMostPopular {
     grid-template-columns: repeat(2, 1fr);
   }
