@@ -27,7 +27,11 @@ import {
   PLACE_BID,
   REFUND_NFT,
 } from "./blockChainActions";
-import { AUCTION, EVENT_WIN_AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
+import {
+  AUCTION,
+  EVENT_WIN_AUCTION,
+  FIXED_PRICE,
+} from "../../utils/foxConstantes";
 import { signWallet } from "../userSaga";
 import { postTraceTransaction } from "../../api/utilsApi";
 import { selectCurrentWallet } from "../../redux/userReducer";
@@ -327,30 +331,35 @@ function* runHandleClaimNFT(action) {
     tokenID,
     royaltyAddress,
     royaltyPercent,
-    ownerAddress,
-    price
+    from,
+    to,
+    price,
   } = action.payload;
 
   try {
     yield put(setIsLoading(true));
 
-    const connectedWallet = yield select(selectCurrentWallet);
-
     const token = yield call(signWallet);
 
+    const tsxId = yield call(claimNFT, {
+      auctionId,
+      royaltyAddress,
+      royaltyPercent,
+    });
 
-    const tsxId = yield call(claimNFT, { auctionId, royaltyAddress, royaltyPercent });
-
-    yield call(postTraceTransaction, {
-      fromAddress : connectedWallet,
-      toAddress: ownerAddress,
-      price,
-      collectionAddress,
-      tokenID,
-      event : EVENT_WIN_AUCTION,
-      transactionId : "",
-      link : "",
-    }, token);
+    yield call(
+      postTraceTransaction,
+      {
+        fromAddress: from,
+        toAddress: to,
+        price,
+        collectionAddress,
+        tokenID,
+        event: EVENT_WIN_AUCTION,
+        transactionId: tsxId,
+      },
+      token
+    );
 
     yield call(
       nftApi.setNftToUnlisted,
@@ -381,6 +390,9 @@ function* runHandleClaimToken(action) {
     tokenID,
     royaltyAddress,
     royaltyPercent,
+    from,
+    to,
+    price,
   } = action.payload;
 
   try {
@@ -388,7 +400,25 @@ function* runHandleClaimToken(action) {
 
     const token = yield call(signWallet);
 
-    yield call(claimToken, { auctionId, royaltyAddress, royaltyPercent });
+    const tsxId = yield call(claimToken, {
+      auctionId,
+      royaltyAddress,
+      royaltyPercent,
+    });
+
+    yield call(
+      postTraceTransaction,
+      {
+        fromAddress: from,
+        toAddress: to,
+        price,
+        collectionAddress,
+        tokenID,
+        event: EVENT_WIN_AUCTION,
+        transactionId: tsxId,
+      },
+      token
+    );
 
     yield call(
       nftApi.setNftToUnlisted,

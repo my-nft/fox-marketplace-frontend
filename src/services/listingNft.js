@@ -215,16 +215,7 @@ export const claimNFT = async ({
       gasLimit,
     });
 
-  console.log(tsx);
-
-
-  return {
-    fromAddress : connectWallet,
-    event: EVENT_WIN_AUCTION,
-    transactionId : tsx,
-    link: '/tsx',
-  }
-
+  return tsx.transactionHash;
 };
 
 export const claimToken = async ({
@@ -240,13 +231,15 @@ export const claimToken = async ({
       from: connectWallet,
       to: AUTIONContractAddress,
     });
-  await auctionContract.methods
+  const tsx = await auctionContract.methods
     .claimToken(auctionId, royaltyAddress, royaltyPercent)
     .send({
       from: connectWallet,
       to: AUTIONContractAddress,
       gasLimit,
     });
+
+  return tsx.transactionHash;
 };
 
 export const createListing = async (collectionAddress, tokenID, priceInput) => {

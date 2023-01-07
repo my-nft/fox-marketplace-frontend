@@ -9,15 +9,7 @@ import Spinner from "../../components/Spinner";
 import { selectIsLoading, setIsLoading } from "../../redux/nftReducer";
 import {
   ACCEPT_OFFER,
-  BUY_NFT,
-  CLAIM_NFT,
-  CLAIM_TOKEN,
-  DELIST_ITEM,
-  LISTING_AUCTION,
-  LISTING_FIXED_PRICE,
   MAKE_OFFER,
-  PLACE_BID,
-  REFUND_NFT,
 } from "../../saga/blockchain.js/blockChainActions";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 import { optimizeWalletAddress, sameAddress } from "../../utils/walletUtils";
