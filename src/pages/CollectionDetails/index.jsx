@@ -188,11 +188,7 @@ const CollectionDetails = () => {
                 filters={filters}
                 changeFilterValue={setFilters}
               />
-              {isProcessing === "isProcessing" && (
-                <Spinner>
-                  <p className="loaderMessage">Processing</p>
-                </Spinner>
-              )}
+
               <ListNfts
                 nfts={content}
                 isVisible={visible}
