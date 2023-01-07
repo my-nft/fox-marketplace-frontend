@@ -138,13 +138,14 @@ const MyNftDetails = () => {
 
                   {
                     /*
-                      CASE OF MY NFT
-                    */
+              CASE OF MY NFT
+            */
                     !nftDetails.isListed &&
                     sameAddress(connectedWallet, nftDetails.ownerAddress) ? (
                       <NonListedMyNft
                         nftDetails={nftDetails}
                         handleAcceptOffer={onAcceptOffer}
+                        setNftDetails={setNftDetails}
                       />
                     ) : null
                   }
@@ -157,7 +158,7 @@ const MyNftDetails = () => {
                     !nftDetails.isListed &&
                     !sameAddress(connectedWallet, nftDetails.ownerAddress) ? (
                       <NonListedNft
-                        itemDetails={nftDetails}
+                        nftDetails={nftDetails}
                         handleMakeOffer={onMakeOffer}
                       />
                     ) : null
@@ -165,7 +166,8 @@ const MyNftDetails = () => {
 
                   {nftDetails.isListed && nftDetails.listingType === AUCTION ? (
                     <ListedAuctionNft
-                      itemDetails={nftDetails}
+                      nftDetails={nftDetails}
+                      setNftDetails={setNftDetails}
                       collectionDetails={collectionDetails}
                     />
                   ) : null}
@@ -173,7 +175,8 @@ const MyNftDetails = () => {
                   {nftDetails.isListed &&
                   nftDetails.listingType === FIXED_PRICE ? (
                     <ListedFixedNft
-                      itemDetails={nftDetails}
+                      nftDetails={nftDetails}
+                      setNftDetails={setNftDetails}
                       collectionDetails={collectionDetails}
                       onMakeOffer={onMakeOffer}
                       onAcceptOffer={onAcceptOffer}
