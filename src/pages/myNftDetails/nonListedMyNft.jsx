@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import CustomDatePicker from "../../components/datePicker/datePicker";
 import CardBody from "../../components/nft/CardBody";
 import CardNftWrapper from "../../components/nft/CardNftWrapper";
+import {
+  LISTING_AUCTION,
+  LISTING_FIXED_PRICE,
+} from "../../saga/blockchain.js/blockChainActions";
 import { getBestOffer } from "../../services/listingNft";
 import { FIXED_PRICE, AUCTION } from "../../utils/foxConstantes";
 
-const NonListedMyNft = ({
-  handleAuction,
-  handleFixedPrice,
-  handleAcceptOffer,
-  nftDetails,
-}) => {
+const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
   const [type, setType] = useState(FIXED_PRICE);
   const [showPicker, setShowPicker] = useState(false);
   const [bestOffer, setBestOffer] = useState();
-
+  const dispatch = useDispatch();
   // values
   const [values, setValues] = useState({
     fixedPrice: 0,
@@ -41,6 +41,35 @@ const NonListedMyNft = ({
       nftDetails.tokenID
     );
     setBestOffer(bestOfferPrice);
+  };
+
+  const handleFixedPrice = async (values) => {
+    const fixedPrice = Number(values.fixedPrice);
+    dispatch({
+      type: LISTING_FIXED_PRICE,
+      payload: {
+        collectionAddress: nftDetails.collectionAddress,
+        tokenID: nftDetails.tokenID,
+        fixedPrice: fixedPrice,
+      },
+      onSuccess: (nft) => setNftDetails(nft),
+    });
+  };
+
+  const handleAuction = async (values) => {
+    const auctionPrice = Number(values.auctionPrice);
+    const endAuction = (values.time - new Date().getTime()) / 1000;
+
+    dispatch({
+      type: LISTING_AUCTION,
+      payload: {
+        collectionAddress: nftDetails.collectionAddress,
+        tokenID: nftDetails.tokenID,
+        auctionPrice: auctionPrice,
+        endAuction: Math.floor(endAuction),
+      },
+      onSuccess: (nft) => setNftDetails(nft),
+    });
   };
 
   useEffect(() => {
@@ -98,7 +127,7 @@ const NonListedMyNft = ({
                     setShowPicker(true);
                     setType(AUCTION);
                   }}
-                  disabled
+                  
                 >
                   Timed auction (Soon)
                 </button>

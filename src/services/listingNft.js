@@ -1,3 +1,4 @@
+import { putTraceTransaction } from "../api/utilsApi";
 import {
   authProviderInstance,
   AUTIONContractAddress,
@@ -13,6 +14,7 @@ import {
   OfferSystemAddress,
   web3Infura,
 } from "../utils/blockchainInteractor";
+import { EVENT_WIN_AUCTION } from "../utils/foxConstantes";
 
 import { sameAddress } from "../utils/walletUtils";
 
@@ -205,13 +207,15 @@ export const claimNFT = async ({
       from: connectWallet,
       to: AUTIONContractAddress,
     });
-  await auctionContract.methods
+  const tsx = await auctionContract.methods
     .claimNFT(auctionId, royaltyAddress, royaltyPercent)
     .send({
       from: connectWallet,
       to: AUTIONContractAddress,
       gasLimit,
     });
+
+  return tsx.transactionHash;
 };
 
 export const claimToken = async ({
@@ -227,13 +231,15 @@ export const claimToken = async ({
       from: connectWallet,
       to: AUTIONContractAddress,
     });
-  await auctionContract.methods
+  const tsx = await auctionContract.methods
     .claimToken(auctionId, royaltyAddress, royaltyPercent)
     .send({
       from: connectWallet,
       to: AUTIONContractAddress,
       gasLimit,
     });
+
+  return tsx.transactionHash;
 };
 
 export const createListing = async (collectionAddress, tokenID, priceInput) => {

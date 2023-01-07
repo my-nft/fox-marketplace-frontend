@@ -17,8 +17,6 @@ const CreateSingleNft = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const collectionAddress = searchParams.get("collectionAddress");
 
-  console.log("COLLECTION ADDRESS ", collectionAddress);
-
 
   useEffect(() => {
     dispatch(setIsLoading(false));

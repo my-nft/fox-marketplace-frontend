@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { getCollectionByAddress } from "../../api/collectionApi";
 import { selectCurrentWallet } from "../../redux/userReducer";
 import { getAuctionInfos, getPriceByListing } from "../../services/listingNft";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
@@ -41,6 +42,7 @@ const MostPopularItem = ({ viewType, item }) => {
   const [itemInfos, setItemInfos] = useState({});
   const [dateTime, setDateTime] = useState(new Date());
   const [price, setPrice] = useState(0);
+  const [collectionName, setCollectionName] = useState("");
 
   const init = async () => {
     const infos = await getAuctionInfos(item.auctionId);
@@ -133,6 +135,12 @@ const MostPopularItem = ({ viewType, item }) => {
     dateTime
   );
 
+  useEffect(() => {
+    getCollectionByAddress(item.collectionAddress).then((res) => {
+      setCollectionName(res.data.collection.name);
+    });
+  }, []);
+
   return (
     <Link
       to={`/collection/${item.collectionAddress}/${item.tokenID}`}
@@ -145,41 +153,33 @@ const MostPopularItem = ({ viewType, item }) => {
     >
       <div className="wrapContent">
         <div className="wrapImg">
-          <img
-            src={item.image}
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null;
-              currentTarget.src = "./assets/images/nft_test.jpg";
-            }}
-            className="bigImage"
-            alt=""
-          />
+          <img src={item.image} className="bigImage" alt="" />
           {sameAddress(item.ownerAddress, walletAddress) && (
             <p className="ownedItem">Owned by you</p>
           )}
         </div>
         <div className="wrappedAllText" style={styleWrappedText}>
+          <div className="wrapText nftCollectionName">
+            <p>{collectionName ? collectionName : "-"}</p>
+          </div>
           <div className="wrapText bg">
             <div className="nameItem">
               <span className="name">{item.name ? item.name : "-"}</span>
               <span>
-                <img
-                  src={item.image}
-                  style={{ width: "14px" }}
-                  onError={({ currentTarget }) => {
-                    currentTarget.onerror = null;
-                    currentTarget.src = "./assets/images/nft_test.jpg";
-                  }}
-                />
+                <img src={item.image} style={{ width: "14px" }} />
               </span>
             </div>
           </div>
           {/* <p className="nItem">#{item.id}</p> */}
+          {/* <div className="wrapText">
+            <p>{}</p>
+          </div> */}
+
           <div className="wrapText">
             {price ? (
-              <p>
-                <label>Price</label>
-                <span className="orange">
+              <p className="w-100 d-flex justify-content-between">
+                <span>Price: </span>
+                <span className="orange ml-auto">
                   <b>FXG</b> {parseFloat(price.toFixed(4))}
                 </span>
               </p>

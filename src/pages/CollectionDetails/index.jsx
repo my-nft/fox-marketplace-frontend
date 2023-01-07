@@ -1,16 +1,17 @@
 import FilterInput from "./FilterInput";
 import HeaderAccount from "./HeaderAccount";
 import ListNfts from "./ListNfts";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Spinner from "../../components/Spinner";
-import { useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import Pagination from "../../components/pagination/pagination";
+import { Await, useLoaderData, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   getCollectionByAddress,
   getCollectionNftsCall,
 } from "../../api/collectionApi";
+
+import ConfirmationPopup from "./../../components/confirmationPopup/confirmationPopup";
+import Page404 from "../404/404";
 
 const prepareProperties = (attributes) => {
   return (
@@ -32,14 +33,11 @@ const prepareProperties = (attributes) => {
 };
 
 const CollectionDetails = () => {
-  let { collectionAddress } = useParams();
-  const [isLoadingCollection, setIsLoadingCollection] = useState(true);
   const [isLoadingNfts, setIsLoadingNfts] = useState(true);
   const [collectionDetails, setCollectionDetails] = useState();
-
-  const [nfts, setNfts] = useState({});
-  const { totalElements, content } = nfts;
-
+  const [isProcessing, setIsProcessing] = useState("noProcess");
+  const [visible, setVisible] = useState(false);
+  const [viewType, setViewType] = useState("CHANGE_FOR_MIN");
   const [pagination, setPagination] = useState({
     page: 1,
     numberElements: 20,
@@ -56,36 +54,24 @@ const CollectionDetails = () => {
     properties: [],
     status: [],
   });
+  const [nfts, setNfts] = useState({});
+  const loaderData = useLoaderData();
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [visible, setVisible] = useState(false);
-  const [viewType, setViewType] = useState("CHANGE_FOR_MIN");
+
+  const { totalElements, content } = nfts;
 
   useEffect(() => {
-    initLoadCollection();
-  }, []);
-
-  const initLoadCollection = async () => {
-    try {
-      setIsLoadingCollection(true);
-      const response = await getCollectionByAddress(collectionAddress);
-      const { collection, attributes } = response.data;
-      console.log("RESPONSE: ", response.data);
-      setCollectionDetails(collection);
-      console.log("ATTRIBUTES: ", attributes);
-      console.log("PROPERTIES: ", prepareProperties(attributes));
+    loaderData.dataPromise.then((data) => {
+      setCollectionDetails(data.data.collection);
       setFilters({
         ...filters,
-        properties: prepareProperties(attributes),
+        properties: prepareProperties(data.data.attributes),
       });
-      setIsLoadingCollection(false);
-    } catch (error) {
-      console.log(error);
-      toast.error("Error loading Collection");
-    }
-  };
+    });
+  }, []);
 
+  // load nfts for collection
   const loadNFTs = async () => {
     try {
       if (collectionDetails) {
@@ -123,17 +109,19 @@ const CollectionDetails = () => {
         );
 
         setNfts(nftsElements.data);
-        setIsLoadingNfts(false);
+        
       }
     } catch (error) {
       console.log(error);
       toast.error("Error loading NFTs");
+    } finally {
+      setIsLoadingNfts(false);
     }
   };
 
   useEffect(() => {
-    loadNFTs();
-  }, [collectionDetails, filters]);
+    if (collectionDetails) loadNFTs();
+  }, [collectionDetails, filters, pagination]);
 
   const changeSelectedView = (selection) => {
     setViewType(selection);
@@ -151,33 +139,28 @@ const CollectionDetails = () => {
     });
   };
 
-  useEffect(() => {
-    if (collectionDetails) {
-      loadNFTs();
-    }
-  }, [collectionDetails, pagination]);
-
+  // import processing
   const updateProcessing = async (interval) => {
     const response = await getCollectionByAddress(
       collectionDetails.collectionAddress
     );
     const tempCollection = response.data;
-    if (!tempCollection.importProcessing) {
+    if (!tempCollection.collection.importProcessing) {
+      setIsProcessing("processingFinished");
       toast.clearWaitingQueue();
       toast.dismiss();
-      toast.success("Congratulation your collection has been imported...");
-      dispatch(setCollectionDetails(tempCollection.collection));
+      setCollectionDetails(tempCollection.collection);
       clearInterval(interval);
-      return;
     }
   };
 
   useEffect(() => {
     if (collectionDetails && collectionDetails.importProcessing) {
       toast.loading("Import progressing...");
+      setIsProcessing("isProcessing");
       const interval = setInterval(() => {
         updateProcessing(interval);
-      }, 30000);
+      }, 15000);
       return () => {
         toast.clearWaitingQueue();
         toast.dismiss();
@@ -185,32 +168,47 @@ const CollectionDetails = () => {
       };
     }
   }, [collectionDetails]);
+  
 
-  return isLoadingCollection ? (
-    <Spinner />
-  ) : (
-    <>
-      <HeaderAccount collectionData={collectionDetails} />
-      <FilterInput
-        onOpenClose={() => setVisible(!visible)}
-        onChangeSelectedView={changeSelectedView}
-        filters={filters}
-        changeFilterValue={setFilters}
-      />
-      <ListNfts
-        nfts={content}
-        isVisible={visible}
-        viewType={viewType}
-        handleSelectNfts={handleSelectNfts}
-        filters={filters}
-        changeFilterValue={setFilters}
-        pagination={pagination}
-        totalElements={totalElements}
-        isLoadingNfts={isLoadingNfts}
-        changePage={changePage}
-        paginationPage={pagination.page}
-      />
-    </>
+  return (
+    <Suspense fallback={<Spinner />}>
+      <Await resolve={loaderData.dataPromise} errorElement={<Page404 />}>
+        {() => {
+          return (
+            <>
+              {isProcessing === "processingFinished" && (
+                <ConfirmationPopup
+                  title="Import has been finished"
+                  message="Congratulation your collection has been imported. Do you want to refresh the page?"
+                  onConfirm={() => window.location.reload()}
+                  onCancel={() => {}}
+                />
+              )}
+              <HeaderAccount collectionData={collectionDetails} />
+              <FilterInput
+                onOpenClose={() => setVisible(!visible)}
+                onChangeSelectedView={changeSelectedView}
+                filters={filters}
+                changeFilterValue={setFilters}
+              />
+              <ListNfts
+                nfts={content}
+                isVisible={visible}
+                viewType={viewType}
+                handleSelectNfts={handleSelectNfts}
+                filters={filters}
+                changeFilterValue={setFilters}
+                pagination={pagination}
+                totalElements={totalElements}
+                isLoadingNfts={isLoadingNfts}
+                changePage={changePage}
+                paginationPage={pagination.page}
+              />
+            </>
+          );
+        }}
+      </Await>
+    </Suspense>
   );
 };
 
