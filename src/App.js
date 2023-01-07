@@ -139,6 +139,14 @@ const router = createBrowserRouter(
       <Route
         path="collection/:collectionAddress/settings"
         exact
+        loader={async ({ params }) => {
+          const getCollectionPromise = getCollectionByAddress(
+            params.collectionAddress
+          );
+          return defer({
+            dataPromise: getCollectionPromise,
+          });
+        }}
         element={
           <>
             <CollectionSettings />

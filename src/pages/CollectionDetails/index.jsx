@@ -3,7 +3,7 @@ import HeaderAccount from "./HeaderAccount";
 import ListNfts from "./ListNfts";
 import { Suspense, useEffect, useState } from "react";
 import Spinner from "../../components/Spinner";
-import { Await, useLoaderData, useNavigate, useParams } from "react-router-dom";
+import { Await, useLoaderData, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   getCollectionByAddress,
@@ -33,8 +33,6 @@ const prepareProperties = (attributes) => {
 };
 
 const CollectionDetails = () => {
-  let { collectionAddress } = useParams();
-  const [isLoadingCollection, setIsLoadingCollection] = useState(true);
   const [isLoadingNfts, setIsLoadingNfts] = useState(true);
   const [collectionDetails, setCollectionDetails] = useState();
   const [isProcessing, setIsProcessing] = useState("noProcess");
@@ -62,27 +60,6 @@ const CollectionDetails = () => {
   const navigate = useNavigate();
 
   const { totalElements, content } = nfts;
-
-  // load collection details
-  const initLoadCollection = async () => {
-    try {
-      setIsLoadingCollection(true);
-      const response = await getCollectionByAddress(collectionAddress);
-      const { collection, attributes } = response.data;
-      console.log("RESPONSE: ", response.data);
-      setCollectionDetails(collection);
-      console.log("ATTRIBUTES: ", attributes);
-      console.log("PROPERTIES: ", prepareProperties(attributes));
-      setFilters({
-        ...filters,
-        properties: prepareProperties(attributes),
-      });
-      setIsLoadingCollection(false);
-    } catch (error) {
-      console.log(error);
-      toast.error("Error loading Collection");
-    }
-  };
 
   useEffect(() => {
     loaderData.dataPromise.then((data) => {
