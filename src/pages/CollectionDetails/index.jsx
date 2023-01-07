@@ -191,6 +191,7 @@ const CollectionDetails = () => {
                 filters={filters}
                 changeFilterValue={setFilters}
               />
+
               <ListNfts
                 nfts={content}
                 isVisible={visible}

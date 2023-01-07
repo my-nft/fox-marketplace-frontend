@@ -141,6 +141,8 @@ const MostPopularItem = ({ viewType, item }) => {
     });
   }, []);
 
+  console.log(item);
+
   return (
     <Link
       to={`/collection/${item.collectionAddress}/${item.tokenID}`}
@@ -184,9 +186,9 @@ const MostPopularItem = ({ viewType, item }) => {
                 </span>
               </p>
             ) : (
-              <p>
-                <label>Price</label>
-                <span className="orange">
+              <p className="w-100 d-flex justify-content-between">
+                <span>Price: </span>
+                <span className="orange ml-auto">
                   <b>FXG</b> -
                 </span>
               </p>
@@ -200,6 +202,7 @@ const MostPopularItem = ({ viewType, item }) => {
                 </span>
               )}
               {item.listingType === FIXED_PRICE && <span>Fixed Price</span>}
+              {item.isListed === false && <span>Unlisted</span>}
             </p>
           </div>
         </div>

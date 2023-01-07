@@ -107,7 +107,11 @@ export const CreateNFTPopup = ({
                   <p>{item.value}</p>
                   <p
                     className="trait-remove"
-                    onClick={() => handleRemoveFromArray(popupTitle, index)}
+                    onClick={() =>
+                      handleRemoveFromArray(popupTitle, {
+                        name: item.name,
+                      })
+                    }
                   >
                     Remove
                   </p>
