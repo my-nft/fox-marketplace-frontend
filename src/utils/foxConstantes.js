@@ -1,0 +1,19 @@
+export const FIXED_PRICE = "FIXED_PRICE";
+export const AUCTION = "AUCTION";
+
+export const FXG_PRICE = 0.0058;
+
+
+// Transactions trace
+
+export const EVENT_WIN_AUCTION="EVENT_WIN_AUCTION";
+
+export const EVENT_BUY_LISTING="EVENT_BUY_LISTING";
+
+export const EVENT_ACCEPT_OFFER="EVENT_ACCEPT_OFFER";
+
+export const EVENT_MAKE_OFFER="EVENT_MAKE_OFFER";
+
+export const EVENT_LISTING="EVENT_LISTING";
+
+export const EVENT_CREATE_AUCTION="EVENT_CREATE_AUCTION";
