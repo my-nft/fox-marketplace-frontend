@@ -129,7 +129,7 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
                   }}
                   
                 >
-                  Timed auction (Soon)
+                  Timed auction
                 </button>
               </div>
             </div>
