@@ -109,11 +109,13 @@ const CollectionDetails = () => {
         );
 
         setNfts(nftsElements.data);
-        setIsLoadingNfts(false);
+        
       }
     } catch (error) {
       console.log(error);
       toast.error("Error loading NFTs");
+    } finally {
+      setIsLoadingNfts(false);
     }
   };
 
@@ -166,6 +168,7 @@ const CollectionDetails = () => {
       };
     }
   }, [collectionDetails]);
+  
 
   return (
     <Suspense fallback={<Spinner />}>
@@ -188,11 +191,6 @@ const CollectionDetails = () => {
                 filters={filters}
                 changeFilterValue={setFilters}
               />
-              {isProcessing === "isProcessing" && (
-                <Spinner>
-                  <p className="loaderMessage">Processing</p>
-                </Spinner>
-              )}
               <ListNfts
                 nfts={content}
                 isVisible={visible}
