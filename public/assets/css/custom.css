@@ -4569,3 +4569,37 @@ ul#buttonIcon {
   text-align: center;
   color: #ededed;
 }
+
+.collectionSocials {
+  margin-right: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.collectionSocials a {
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  width: 48px;
+  height: 48px;
+  background: rgbA(255, 255, 255, 0.15);
+  transition: 300ms ease-in-out;
+}
+
+.collectionSocials a svg {
+  width: 100% !important;
+  height: 100% !important;
+  margin-right: 0;
+}
+
+.collectionSocials a * {
+  transition: 300ms ease-in-out;
+}
+
+.collectionSocials a:hover path {
+  fill: #f58103;
+}
+
+.collectionSocials a:hover {
+  background: #fff;
+}
