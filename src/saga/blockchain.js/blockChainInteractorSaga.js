@@ -34,7 +34,6 @@ import {
 } from "../../utils/foxConstantes";
 import { signWallet } from "../userSaga";
 import { postTraceTransaction } from "../../api/utilsApi";
-import { selectCurrentWallet } from "../../redux/userReducer";
 
 function* runBuyNft(action) {
   try {

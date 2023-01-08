@@ -32,19 +32,6 @@ const MyNftDetails = () => {
 
   const loaderData = useLoaderData();
 
-  const loadNft = async () => {
-    try {
-      dispatch(setIsLoading(true));
-      console.log("HERRE");
-      const nft = await getNftCall(collectionAddress, tokenID);
-      const collection = await getCollectionByAddress(collectionAddress);
-      setNftDetails(nft.data);
-      setCollectionDetails(collection.data.collection);
-    } finally {
-      dispatch(setIsLoading(false));
-    }
-  };
-
   useEffect(() => {
     loaderData.dataPromise
       .then((data) => {
@@ -63,12 +50,15 @@ const MyNftDetails = () => {
         price: Number(offerPrice),
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
+
+        from: connectedWallet,
+        to: nftDetails.ownerAddress,
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
-  const onAcceptOffer = () => {
+  const onAcceptOffer = (bestOffer) => {
     const { royaltyAddress, royaltyPercent } = collectionDetails;
     dispatch({
       type: ACCEPT_OFFER,
@@ -79,6 +69,10 @@ const MyNftDetails = () => {
           ? royaltyAddress
           : collectionDetails.ownerAddress,
         royaltyPercent: royaltyPercent ? royaltyPercent : 0,
+
+        from: connectedWallet,
+        to: nftDetails.ownerAddress,
+        price: Number(bestOffer)
       },
       onSuccess: (nft) => setNftDetails(nft),
     });

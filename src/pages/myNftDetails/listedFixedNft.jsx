@@ -43,6 +43,12 @@ const ListedFixedNft = ({
           ? royaltyAddress
           : collectionDetails.ownerAddress,
         royaltyPercent: royaltyPercent ? royaltyPercent : 0,
+        
+        from: currentWallet,
+        to: nftDetails.collectionAddress,
+        price: Number(price)
+
+
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -55,18 +61,23 @@ const ListedFixedNft = ({
         listingId: nftDetails.listingId,
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
+ 
+
+        from: currentWallet,
+        to: undefined,
+        price: Number(currentPrice)
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
   const init = async () => {
-    const currentPrice = await getPriceByListing(nftDetails.listingId);
+    const cPrice = await getPriceByListing(nftDetails.listingId);
     const bestOfferPrice = await getBestOffer(
       nftDetails.collectionAddress,
       nftDetails.tokenID
     );
-    setCurrentPrice(currentPrice);
+    setCurrentPrice(cPrice);
     setBestOffer(bestOfferPrice);
   };
 
