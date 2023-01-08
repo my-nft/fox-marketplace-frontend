@@ -12,6 +12,7 @@ import MostPopular from "./MostPopular";
 import MostPopularCollection from "./MostPopularCollection";
 import { availableProperties } from "./properties";
 import { scrollTop } from "../../components/scrollToTop";
+import { useSearchParams } from "react-router-dom";
 
 const INIT_PAGINATION = {
   numberElements: 20,
@@ -33,6 +34,16 @@ const Explorer = () => {
   const [filtersVisible, setFiltersVisible] = useState(false);
 
   const [pagination, setPagination] = useState(INIT_PAGINATION);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    setPagination({
+      ...pagination,
+      page:
+        (Math.ceil(totalElements / 20) && Number(searchParams.get("page"))) ||
+        1,
+    });
+  }, [searchParams]);
 
   const [filters, setFilters] = useState({
     sortBy: "RECENTLY_LISTED",
@@ -120,6 +131,7 @@ const Explorer = () => {
       )}
 
       <section id="marketplace" className="container-fluid mb-5">
+        <p>Page: {pagination.page}</p>
         <div className="row flex-nowrap md-flex-row flex-col">
           <div
             id="sx"

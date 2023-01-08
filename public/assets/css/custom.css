@@ -749,6 +749,7 @@ h3 {
   transition: 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
   cursor: pointer;
 }
+
 .slide,
 .slide .textItems {
   overflow: hidden;
@@ -758,14 +759,19 @@ h3 {
   transform: scale(1.025);
 }
 
+#tradingNow .slide {
+  position: relative;
+}
+
 #tradingNow .slick-slide * {
   transition: 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
   max-height: 100%;
 }
-
+#tradingNow .slick-slide .textItems {
+  bottom: 0;
+}
 #tradingNow .slick-slide:hover .textItems {
-  max-height: 40px !important;
-  bottom: 16px;
+  bottom: -72px;
 }
 
 .itemMints {
@@ -923,6 +929,15 @@ footer a:hover {
 
 #marketplace #headerInput > select {
   margin-left: 32px !important;
+  appearance: none;
+  padding-left: 24px;
+  padding-right: 24px;
+  appearance: none;
+  min-width: 200px;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1.5rem center;
+  background-size: 1em;
 }
 
 #marketplace #headerInput > select,
@@ -3729,6 +3744,10 @@ ul#buttonIcon {
   padding: 8px;
 }
 
+.nft .wrapText p {
+  margin: 0;
+}
+
 .nft .wrappedAllText {
   flex-grow: 2;
 }
@@ -4549,4 +4568,38 @@ ul#buttonIcon {
   margin: 16px 0 48px;
   text-align: center;
   color: #ededed;
+}
+
+.collectionSocials {
+  margin-right: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.collectionSocials a {
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  width: 48px;
+  height: 48px;
+  background: rgbA(255, 255, 255, 0.15);
+  transition: 300ms ease-in-out;
+}
+
+.collectionSocials a svg {
+  width: 100% !important;
+  height: 100% !important;
+  margin-right: 0;
+}
+
+.collectionSocials a * {
+  transition: 300ms ease-in-out;
+}
+
+.collectionSocials a:hover path {
+  fill: #f58103;
+}
+
+.collectionSocials a:hover {
+  background: #fff;
 }
