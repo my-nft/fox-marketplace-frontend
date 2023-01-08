@@ -125,11 +125,13 @@ const CollectionDetails = () => {
         );
 
         setNfts(nftsElements.data);
-        setIsLoadingNfts(false);
+        
       }
     } catch (error) {
       console.log(error);
       toast.error("Error loading NFTs");
+    } finally {
+      setIsLoadingNfts(false);
     }
   };
 
@@ -179,6 +181,7 @@ const CollectionDetails = () => {
       };
     }
   }, [collectionDetails]);
+  
 
   return (
     <Suspense fallback={<Spinner />}>

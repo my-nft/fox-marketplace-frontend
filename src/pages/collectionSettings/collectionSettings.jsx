@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { UPDATE_COLLECTION } from "../../saga/actions";
 import CustomSelect from "../../components/Select";
 import Page404 from "../404/404";
+import { setIsLoading } from "../../redux/collectionReducer";
 
 const CollectionSettings = () => {
   const dispatch = useDispatch();
@@ -50,6 +51,7 @@ const CollectionSettings = () => {
       setCollectionDetails(data.data.collection);
       setImage(data.data.collection.image);
       setBanner(data.data.collection.banner);
+      setIsLoadingCollection(false);
     });
   }, []);
 
@@ -79,6 +81,7 @@ const CollectionSettings = () => {
           symbol: collectionDetails.symbol,
           tags: collectionDetails.tags,
           totalSupply: collectionDetails.totalSupply,
+          url:collectionDetails.url
         },
       },
 

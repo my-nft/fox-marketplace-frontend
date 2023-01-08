@@ -6,6 +6,7 @@ import MostPopularItem from "../../components/marketplace/MostPopularItem";
 import ListActivities from "./ListActivities";
 import AccordionPropertiesFilter from "./PropertiesFilter";
 import Pagination from "../../components/pagination/pagination";
+import Spinner from "../../components/Spinner";
 
 const ListNfts = ({
   nfts,
@@ -20,7 +21,6 @@ const ListNfts = ({
   paginationPage,
 }) => {
 
-  console.log("##############",totalElements);
   return (
     <section id="tabsNft" className="container-fluid accountListed">
       <div
@@ -57,7 +57,7 @@ const ListNfts = ({
         </div>
         
 
-        {!isLoadingNfts && (
+        {!isLoadingNfts ? (
           <div className="col" id="wrapperNFT">
             <div className="tab-content" id="pills-tabContent">
               <div
@@ -87,7 +87,7 @@ const ListNfts = ({
               <ListActivities />
             </div>
           </div>
-        )}
+        ) : <Spinner/>}
       </div>
     </section>
   );
