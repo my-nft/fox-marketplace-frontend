@@ -79,6 +79,7 @@ const CreateSingleNft = () => {
     const newArray = nftData[arrayTarget].filter(
       (item) => item.name !== objectToRemove.name
     );
+    console.log(nftData[arrayTarget], newArray, objectToRemove);
     setNftData({
       ...nftData,
       [arrayTarget]: newArray,
