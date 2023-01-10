@@ -114,7 +114,7 @@ export const createAuction = async (
       to: AUTIONContractAddress,
     });
 
-  await auctionContract.methods
+  const tsx = await auctionContract.methods
     .createAuction(
       collectionAddress,
       ERC20ContractAddress,
@@ -132,7 +132,10 @@ export const createAuction = async (
     .auctionIdByToken(collectionAddress, tokenID)
     .call();
 
-  return auctionId;
+  return {
+    auctionId,
+    transactionId: tsx.transactionHash
+  };
 };
 
 export const getAuctionInfos = async (auctionId) => {
@@ -172,11 +175,13 @@ export const placeBid = async (auctionId, bidValue) => {
       to: AUTIONContractAddress,
     });
 
-  await auctionContract.methods.bid(auctionId, bidValueTrans).send({
+  const tsx = await auctionContract.methods.bid(auctionId, bidValueTrans).send({
     from: connectWallet,
     to: AUTIONContractAddress,
     gasLimit: gasLimitPlaceBid,
   });
+
+  return tsx.transactionHash;
 };
 
 export const refundNft = async (auctionId) => {
@@ -186,11 +191,13 @@ export const refundNft = async (auctionId) => {
     from: connectWallet,
     to: AUTIONContractAddress,
   });
-  await auctionContract.methods.refund(auctionId).send({
+  const tsx = await auctionContract.methods.refund(auctionId).send({
     from: connectWallet,
     to: AUTIONContractAddress,
     gasLimit,
   });
+
+  return tsx.transactionHash;
 };
 
 export const claimNFT = async ({
@@ -286,7 +293,10 @@ export const createListing = async (collectionAddress, tokenID, priceInput) => {
       gasLimit,
     });
 
-  return tnx.events.ListingCreated.returnValues.id;
+  return {
+    listingId : tnx.events.ListingCreated.returnValues.id,
+    transactionId : tnx.transactionHash
+  }
 };
 
 export const buyItem = async ({
@@ -329,13 +339,15 @@ export const buyItem = async ({
       to: FIXEDContractAddress,
     });
 
-  await fixedPriceContract.methods
+  const tsx = await fixedPriceContract.methods
     .buyToken(listingId, royaltyAddress, royaltyPercent)
     .send({
       from: connectWallet,
       to: FIXEDContractAddress,
       gasLimit: gasLimitBuy,
     });
+
+  return tsx.transactionHash;
 };
 
 export const deListItem = async (listingId) => {
@@ -350,16 +362,16 @@ export const deListItem = async (listingId) => {
         to: FIXEDContractAddress,
       });
 
-    await fixedPriceContract.methods.deactivateListing(listingId).send({
+    const tsx = await fixedPriceContract.methods.deactivateListing(listingId).send({
       from: connectWallet,
       to: FIXEDContractAddress,
       gasLimit: gasLimitBuy,
     });
+
+    return tsx.transactionHash;
 };
 
 export const makeOfferToOwner = async (collectionAddress, tokenID, price) => {
-
-  console.log("HERE");
 
   const connectWallet = await getCurrentWalletConnected();
   const erc20Contract = await loadERC20Contract();
@@ -387,13 +399,14 @@ export const makeOfferToOwner = async (collectionAddress, tokenID, price) => {
       to: FIXEDContractAddress,
     });
 
-  await offerSystemContract.methods
+  const tsx = await offerSystemContract.methods
     .makeBuyOffer(collectionAddress, tokenID, offerPrice)
     .send({
       from: connectWallet,
       to: FIXEDContractAddress,
       gasLimit: gasLimitOffer,
     });
+  return tsx.transactionHash;
 };
 
 export const acceptOffer = async (
@@ -434,13 +447,15 @@ export const acceptOffer = async (
       to: OfferSystemAddress,
     });
 
-  await offerSystemContract.methods
+  const tsx = await offerSystemContract.methods
     .acceptBuyOffer(collectionAddress, tokenID, royaltyAddress, royaltyPercent)
     .send({
       from: connectWallet,
       to: OfferSystemAddress,
       gasLimit: gasLimitAcceptOffer,
     });
+
+  return tsx.transactionHash;
 };
 
 const bigNumberPricing = async (price) => {

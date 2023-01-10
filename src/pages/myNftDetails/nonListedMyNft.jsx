@@ -76,7 +76,6 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
 
         from: currentWallet,
         to: undefined,
-        price: Number(auctionPrice)
       },
       onSuccess: (nft) => setNftDetails(nft),
     });

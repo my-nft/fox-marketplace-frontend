@@ -2,8 +2,6 @@ import { Suspense, useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Await, Link, useLoaderData, useParams } from "react-router-dom";
-import { getNftCall } from "../../api/nftApi";
-import { getCollectionByAddress } from "../../api/collectionApi";
 import NftMoreInfos from "../../components/nft/details/NftMoreInfos";
 import Spinner from "../../components/Spinner";
 import { selectIsLoading, setIsLoading } from "../../redux/nftReducer";

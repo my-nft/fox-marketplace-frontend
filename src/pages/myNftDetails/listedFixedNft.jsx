@@ -46,9 +46,6 @@ const ListedFixedNft = ({
         
         from: currentWallet,
         to: nftDetails.collectionAddress,
-        price: Number(price)
-
-
       },
       onSuccess: (nft) => setNftDetails(nft),
     });

@@ -33,6 +33,9 @@ const ListedAuctionNft = ({ nftDetails, collectionDetails, setNftDetails }) => {
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId,
+        from: currentWallet,
+        to: creator,
+        price: currentBidOwner
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -46,6 +49,9 @@ const ListedAuctionNft = ({ nftDetails, collectionDetails, setNftDetails }) => {
         collectionAddress: nftDetails.collectionAddress,
         auctionId: nftDetails.auctionId,
         price,
+        from: currentWallet,
+        to: creator,
+        price: price
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
