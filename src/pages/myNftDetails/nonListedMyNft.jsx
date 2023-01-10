@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CustomDatePicker from "../../components/datePicker/datePicker";
 import CardBody from "../../components/nft/CardBody";
 import CardNftWrapper from "../../components/nft/CardNftWrapper";
+import { selectCurrentWallet } from "../../redux/userReducer";
 import {
   LISTING_AUCTION,
   LISTING_FIXED_PRICE,
@@ -14,6 +15,7 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
   const [type, setType] = useState(FIXED_PRICE);
   const [showPicker, setShowPicker] = useState(false);
   const [bestOffer, setBestOffer] = useState();
+  const currentWallet = useSelector(selectCurrentWallet);
   const dispatch = useDispatch();
   // values
   const [values, setValues] = useState({
@@ -51,6 +53,10 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
         collectionAddress: nftDetails.collectionAddress,
         tokenID: nftDetails.tokenID,
         fixedPrice: fixedPrice,
+
+        from: currentWallet,
+        to: undefined,
+        price: Number(fixedPrice)
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -67,6 +73,9 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
         tokenID: nftDetails.tokenID,
         auctionPrice: auctionPrice,
         endAuction: Math.floor(endAuction),
+
+        from: currentWallet,
+        to: undefined,
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
