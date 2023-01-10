@@ -18,6 +18,7 @@ import NonListedNft from "./nonListedNft";
 import { selectCurrentWallet } from "../../redux/userReducer";
 import Address from "../../components/Address";
 import Page404 from "../404/404";
+import { OwnershipTransferPopup } from "../../components/popups/popups";
 
 const MyNftDetails = () => {
   const { collectionAddress, tokenID } = useParams();
@@ -26,6 +27,7 @@ const MyNftDetails = () => {
   const isLoading = useSelector(selectIsLoading);
   const [nftDetails, setNftDetails] = useState();
   const [collectionDetails, setCollectionDetails] = useState();
+  const [showTransferPopup, setShowTransferPopup] = useState(false);
   const dispatch = useDispatch();
 
   const loaderData = useLoaderData();
@@ -70,7 +72,7 @@ const MyNftDetails = () => {
 
         from: connectedWallet,
         to: nftDetails.ownerAddress,
-        price: Number(bestOffer)
+        price: Number(bestOffer),
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -195,8 +197,25 @@ const MyNftDetails = () => {
                           </div>
                         </div>
                       </div>
+                      {sameAddress(connectedWallet, nftDetails.ownerAddress) ||
+                        (true && (
+                          <p
+                            className="transferOwnership nftTransfer"
+                            onClick={() => setShowTransferPopup(true)}
+                          >
+                            Transfer Ownership
+                          </p>
+                        ))}
                     </div>
                   </div>
+                  <OwnershipTransferPopup
+                    popupType={showTransferPopup}
+                    popupCloseAction={() => setShowTransferPopup(false)}
+                    submitAction={(e) => {
+                      e.preventDefault();
+                      setShowTransferPopup(false);
+                    }}
+                  />
                 </div>
               )}
             </>

@@ -125,6 +125,37 @@ export const CreateNFTPopup = ({
   );
 };
 
+export const OwnershipTransferPopup = ({
+  submitAction,
+  popupCloseAction,
+  popupType,
+}) => {
+  return (
+    <PopupContainerWrapper
+      popupType={popupType}
+      popupCloseAction={popupCloseAction}
+    >
+      <div className="popup-wrapper transferPopup">
+        <div className="popupHeader">
+          <div className="popup-header-text">
+            <h3>Transfer Ownership</h3>
+            <p>Enter the address of the new owner</p>
+          </div>
+          <p className="popup-close" onClick={() => popupCloseAction(false)}>
+            X
+          </p>
+        </div>
+        <form onSubmit={submitAction}>
+          <input type="text" name="newOwner" className="form-control" />
+          <button type="submit" className="transferOwnership">
+            Transfer
+          </button>
+        </form>
+      </div>
+    </PopupContainerWrapper>
+  );
+};
+
 const PopupContainerWrapper = ({
   popupType,
   children,
