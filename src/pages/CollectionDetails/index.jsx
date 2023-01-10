@@ -3,7 +3,13 @@ import HeaderAccount from "./HeaderAccount";
 import ListNfts from "./ListNfts";
 import { Suspense, useEffect, useState } from "react";
 import Spinner from "../../components/Spinner";
-import { Await, useLoaderData, useNavigate } from "react-router-dom";
+import {
+  Await,
+  useLoaderData,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   getCollectionByAddress,
@@ -56,6 +62,16 @@ const CollectionDetails = () => {
   });
   const [nfts, setNfts] = useState({});
   const loaderData = useLoaderData();
+  const [searchParams, setSearchParams] = useSearchParams();
+  console.log("PAGE: ", searchParams.get("page"));
+
+  useEffect(() => {
+    setPagination({
+      ...pagination,
+      page: Number(searchParams.get("page")) || 1,
+    });
+    window.scrollTo(0, 0, { behavior: "smooth" });
+  }, [searchParams]);
 
   const navigate = useNavigate();
 
@@ -133,10 +149,7 @@ const CollectionDetails = () => {
 
   const changePage = (page) => {
     if (page < 1 || page > totalElements) return;
-    setPagination({
-      ...pagination,
-      page,
-    });
+    setSearchParams({ page: page });
   };
 
   // import processing
@@ -176,35 +189,39 @@ const CollectionDetails = () => {
         {() => {
           return (
             <>
-              {isProcessing === "processingFinished" && (
-                <ConfirmationPopup
-                  title="Import has been finished"
-                  message="Congratulation your collection has been imported. Do you want to refresh the page?"
-                  onConfirm={() => window.location.reload()}
-                  onCancel={() => {}}
-                />
-              )}
-              <HeaderAccount collectionData={collectionDetails} />
-              <FilterInput
-                onOpenClose={() => setVisible(!visible)}
-                onChangeSelectedView={changeSelectedView}
-                filters={filters}
-                changeFilterValue={setFilters}
-              />
+              {collectionDetails && (
+                <>
+                  {isProcessing === "processingFinished" && (
+                    <ConfirmationPopup
+                      title="Import has been finished"
+                      message="Congratulation your collection has been imported. Do you want to refresh the page?"
+                      onConfirm={() => window.location.reload()}
+                      onCancel={() => {}}
+                    />
+                  )}
+                  <HeaderAccount collectionData={collectionDetails} />
+                  <FilterInput
+                    onOpenClose={() => setVisible(!visible)}
+                    onChangeSelectedView={changeSelectedView}
+                    filters={filters}
+                    changeFilterValue={setFilters}
+                  />
 
-              <ListNfts
-                nfts={content}
-                isVisible={visible}
-                viewType={viewType}
-                handleSelectNfts={handleSelectNfts}
-                filters={filters}
-                changeFilterValue={setFilters}
-                pagination={pagination}
-                totalElements={totalElements}
-                isLoadingNfts={isLoadingNfts}
-                changePage={changePage}
-                paginationPage={pagination.page}
-              />
+                  <ListNfts
+                    nfts={content}
+                    isVisible={visible}
+                    viewType={viewType}
+                    handleSelectNfts={handleSelectNfts}
+                    filters={filters}
+                    changeFilterValue={setFilters}
+                    pagination={pagination}
+                    totalElements={totalElements}
+                    isLoadingNfts={isLoadingNfts}
+                    changePage={changePage}
+                    paginationPage={pagination.page}
+                  />
+                </>
+              )}
             </>
           );
         }}

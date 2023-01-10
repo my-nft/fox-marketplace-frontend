@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import { optimizeWalletAddress, sameAddress } from "../../utils/walletUtils";
 
 import { ReactComponent as SettingsIcon } from "../../assets/icons/settings.svg";
+import { ReactComponent as TelegramIcon } from "../../assets/icons/telegram.svg";
+import { ReactComponent as MediumIcon } from "../../assets/icons/medium.svg";
+import { ReactComponent as WebIcon } from "../../assets/icons/web.svg";
 
 import collectionBannerPlaceholder from "../../assets/images/Popluar.jpg";
 import collectionImagePlaceholder from "../../assets/images/nft_test.jpg";
@@ -16,6 +19,13 @@ const HeaderAccount = ({ collectionData }) => {
   const displayValue = (value) => {
     if (value) return value;
     return "-";
+  };
+
+  const secureSocialUrl = (url) => {
+    if (url.includes("https://www.")) return url;
+    if (!url.includes("www.")) return "https://www." + url;
+    if (!url.includes("https://")) return "https://" + url;
+    return url;
   };
 
   return (
@@ -108,7 +118,30 @@ const HeaderAccount = ({ collectionData }) => {
             </li>
           </ul>
         </div>
-        <div className="row align-items-start">
+        <div className="row align-items-start pr-3">
+          {collectionData.linkTelegram ||
+          collectionData.linkMedium ||
+          collectionData.linkWebsite ? (
+            <>
+              <div className="row align-items-center collectionSocials">
+                {collectionData.linkTelegram && (
+                  <a href={secureSocialUrl(collectionData.linkTelegram)}>
+                    <TelegramIcon />
+                  </a>
+                )}
+                {collectionData.linkMedium && (
+                  <a href={secureSocialUrl(collectionData.linkMedium)}>
+                    <MediumIcon />
+                  </a>
+                )}
+                {collectionData.linkWebsite && (
+                  <a href={secureSocialUrl(collectionData.linkWebsite)}>
+                    <WebIcon />
+                  </a>
+                )}
+              </div>
+            </>
+          ) : null}
           {sameAddress(collectionData.ownerAddress, currentWallet) ? (
             <>
               <Link
