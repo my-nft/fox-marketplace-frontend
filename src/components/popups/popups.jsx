@@ -157,7 +157,7 @@ export const OwnershipTransferPopup = ({
       <div className="popup-wrapper transferPopup">
         <div className="popupHeader">
           <div className="popup-header-text">
-            <h3>Transfer Ownership</h3>
+            <h3>Transfer NFT</h3>
             <p>Enter the address of the new owner</p>
           </div>
           <p className="popup-close" onClick={() => popupCloseAction(false)}>
