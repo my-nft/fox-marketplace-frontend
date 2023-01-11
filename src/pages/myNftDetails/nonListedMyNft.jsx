@@ -3,17 +3,21 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomDatePicker from "../../components/datePicker/datePicker";
 import CardBody from "../../components/nft/CardBody";
 import CardNftWrapper from "../../components/nft/CardNftWrapper";
+import { OwnershipTransferPopup } from "../../components/popups/popups";
 import { selectCurrentWallet } from "../../redux/userReducer";
+import { TRANSFERT_NFT } from "../../saga/actions";
 import {
   LISTING_AUCTION,
   LISTING_FIXED_PRICE,
 } from "../../saga/blockchain.js/blockChainActions";
 import { getBestOffer } from "../../services/listingNft";
 import { FIXED_PRICE, AUCTION } from "../../utils/foxConstantes";
+import { sameAddress } from "../../utils/walletUtils";
 
 const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
   const [type, setType] = useState(FIXED_PRICE);
   const [showPicker, setShowPicker] = useState(false);
+  const [showTransferPopup, setShowTransferPopup] = useState(false);
   const [bestOffer, setBestOffer] = useState();
   const currentWallet = useSelector(selectCurrentWallet);
   const dispatch = useDispatch();
@@ -56,7 +60,7 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
 
         from: currentWallet,
         to: undefined,
-        price: Number(fixedPrice)
+        price: Number(fixedPrice),
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -98,6 +102,8 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
     setValues({ ...values, time: dateObj.getTime() });
   };
 
+  console.log(nftDetails);
+
   return (
     <>
       <CustomDatePicker
@@ -136,7 +142,6 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
                     setShowPicker(true);
                     setType(AUCTION);
                   }}
-                  
                 >
                   Timed auction
                 </button>
@@ -250,6 +255,38 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
               </div>
             </div>
           ) : null}
+
+          {sameAddress(currentWallet, nftDetails.ownerAddress) &&
+            (
+              <p
+                className="transferOwnership nftTransfer"
+                onClick={() => setShowTransferPopup(true)}
+              >
+                Transfer Ownership
+              </p>
+            )}
+          <OwnershipTransferPopup
+            popupType={showTransferPopup}
+            popupCloseAction={() => setShowTransferPopup(false)}
+            submitAction={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.target);
+              const data = Object.fromEntries(formData.entries());
+
+              dispatch({
+                type: TRANSFERT_NFT,
+                payload: {
+                  tokenID: nftDetails.tokenID,
+                  collectionAddress: nftDetails.collectionAddress,
+                  to: data.newOwner,
+                },
+                onSuccess: (nft) => {
+                  setNftDetails(nft);
+                  setShowTransferPopup(false);
+                },
+              });
+            }}
+          />
         </CardBody>
       </CardNftWrapper>
     </>

@@ -32,7 +32,7 @@ const NonListedNft = ({ handleMakeOffer, nftDetails }) => {
 
   useEffect(() => {
     init();
-  }, []);
+  }, [nftDetails]);
 
   return (
     <CardNftWrapper>

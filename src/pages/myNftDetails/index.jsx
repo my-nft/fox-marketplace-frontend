@@ -18,6 +18,12 @@ import NonListedNft from "./nonListedNft";
 import { selectCurrentWallet } from "../../redux/userReducer";
 import Address from "../../components/Address";
 import Page404 from "../404/404";
+import { OwnershipTransferPopup } from "../../components/popups/popups";
+import { TRANSFERT_NFT } from "../../saga/actions";
+import Listings from "../../components/nft/listings";
+import Offers from "../../components/nft/offers";
+import PriceHistory from "../../components/nft/priceHistory";
+import ItemActivity from "../../components/nft/activity";
 
 const MyNftDetails = () => {
   const { collectionAddress, tokenID } = useParams();
@@ -27,7 +33,6 @@ const MyNftDetails = () => {
   const [nftDetails, setNftDetails] = useState();
   const [collectionDetails, setCollectionDetails] = useState();
   const dispatch = useDispatch();
-
   const loaderData = useLoaderData();
 
   useEffect(() => {
@@ -38,6 +43,7 @@ const MyNftDetails = () => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(setIsLoading(false));
       });
   }, []);
 
@@ -48,7 +54,6 @@ const MyNftDetails = () => {
         price: Number(offerPrice),
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
-
         from: connectedWallet,
         to: nftDetails.ownerAddress,
       },
@@ -70,7 +75,7 @@ const MyNftDetails = () => {
 
         from: connectedWallet,
         to: nftDetails.ownerAddress,
-        price: Number(bestOffer)
+        price: Number(bestOffer),
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -131,8 +136,8 @@ const MyNftDetails = () => {
 
                       {
                         /*
-              CASE OF MY NFT
-            */
+                          CASE OF MY NFT
+                        */
                         !nftDetails.isListed &&
                         sameAddress(
                           connectedWallet,
