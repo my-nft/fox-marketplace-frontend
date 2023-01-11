@@ -19,6 +19,10 @@ import { selectCurrentWallet } from "../../redux/userReducer";
 import Address from "../../components/Address";
 import Page404 from "../404/404";
 import { OwnershipTransferPopup } from "../../components/popups/popups";
+import Listings from "../../components/nft/listings";
+import Offers from "../../components/nft/offers";
+import PriceHistory from "../../components/nft/priceHistory";
+import ItemActivity from "../../components/nft/activity";
 
 const MyNftDetails = () => {
   const { collectionAddress, tokenID } = useParams();
@@ -133,8 +137,8 @@ const MyNftDetails = () => {
 
                       {
                         /*
-              CASE OF MY NFT
-            */
+                          CASE OF MY NFT
+                        */
                         !nftDetails.isListed &&
                         sameAddress(
                           connectedWallet,
@@ -216,6 +220,13 @@ const MyNftDetails = () => {
                       setShowTransferPopup(false);
                     }}
                   />
+
+                  <div className="mt-5">
+                    <Listings />
+                    <Offers />
+                    <PriceHistory />
+                    <ItemActivity />
+                  </div>
                 </div>
               )}
             </>
