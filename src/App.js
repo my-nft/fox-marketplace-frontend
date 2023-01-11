@@ -30,7 +30,6 @@ import MintLimited from "./pages/mintLimited/mintLimited";
 import { getNftCall } from "./api/nftApi";
 import {
   getCollectionByAddress,
-  getCollectionNftsCall,
 } from "./api/collectionApi";
 
 const router = createBrowserRouter(

@@ -19,6 +19,7 @@ import { selectCurrentWallet } from "../../redux/userReducer";
 import Address from "../../components/Address";
 import Page404 from "../404/404";
 import { OwnershipTransferPopup } from "../../components/popups/popups";
+import { TRANSFERT_NFT } from "../../saga/actions";
 
 const MyNftDetails = () => {
   const { collectionAddress, tokenID } = useParams();
@@ -27,9 +28,7 @@ const MyNftDetails = () => {
   const isLoading = useSelector(selectIsLoading);
   const [nftDetails, setNftDetails] = useState();
   const [collectionDetails, setCollectionDetails] = useState();
-  const [showTransferPopup, setShowTransferPopup] = useState(false);
   const dispatch = useDispatch();
-
   const loaderData = useLoaderData();
 
   useEffect(() => {
@@ -40,6 +39,7 @@ const MyNftDetails = () => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(setIsLoading(false));
       });
   }, []);
 
@@ -50,7 +50,6 @@ const MyNftDetails = () => {
         price: Number(offerPrice),
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
-
         from: connectedWallet,
         to: nftDetails.ownerAddress,
       },
@@ -197,25 +196,8 @@ const MyNftDetails = () => {
                           </div>
                         </div>
                       </div>
-                      {sameAddress(connectedWallet, nftDetails.ownerAddress) ||
-                        (true && (
-                          <p
-                            className="transferOwnership nftTransfer"
-                            onClick={() => setShowTransferPopup(true)}
-                          >
-                            Transfer Ownership
-                          </p>
-                        ))}
                     </div>
                   </div>
-                  <OwnershipTransferPopup
-                    popupType={showTransferPopup}
-                    popupCloseAction={() => setShowTransferPopup(false)}
-                    submitAction={(e) => {
-                      e.preventDefault();
-                      setShowTransferPopup(false);
-                    }}
-                  />
                 </div>
               )}
             </>

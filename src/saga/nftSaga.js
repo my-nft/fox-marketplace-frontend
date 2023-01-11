@@ -1,13 +1,17 @@
 import { setIsLoading, setListedNfts } from "../redux/nftReducer";
-import { LOAD_LISTED_NFTS, MINT_NFT } from "./actions";
+import { LOAD_LISTED_NFTS, MINT_NFT, TRANSFERT_NFT } from "./actions";
 import * as nftApi from "../api/nftApi";
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, select, takeLatest } from "redux-saga/effects";
 import { toast } from "react-toastify";
 import { signWallet } from "./userSaga";
 import { mintNft } from "../services/createNFT";
 import {
   importCollectionToken,
 } from "../api/collectionApi";
+import { transfertToken } from "../services/listingNft";
+import { EVENT_TRANSFERT_TOKEN } from "../utils/foxConstantes";
+import { selectCurrentWallet } from "../redux/userReducer";
+import { postTraceTransaction } from "../api/utilsApi";
 
 function* runMintNft(action) {
   try {
@@ -53,6 +57,53 @@ function* loadListedNftsCall(action) {
   }
 }
 
+
+function* runTransfertToken(action) {
+  try {
+    yield put(setIsLoading(true));
+
+    const token = yield call(signWallet);
+
+    const { tokenID, collectionAddress, to } = action.payload;
+
+    const connectedWallet = yield select(selectCurrentWallet);
+    
+    const tsxId = yield call(transfertToken, collectionAddress, tokenID, to);
+
+    yield call(
+      postTraceTransaction,
+      {
+        fromAddress: connectedWallet,
+        toAddress: to,
+        price : undefined,
+        collectionAddress,
+        tokenID,
+        event: EVENT_TRANSFERT_TOKEN,
+        transactionId: tsxId,
+      },
+      token
+    );
+
+    const nftDetails = yield call(
+      nftApi.getNftCall,
+      collectionAddress,
+      tokenID
+    );
+
+    console.log("Loading success")
+
+    // putting the NFT details
+    action.onSuccess(nftDetails.data);
+    yield put(setIsLoading(false));
+
+  } catch (error) {
+    console.log("error ", error.response.status);
+    toast.error("An unexpected error occurred.");
+  } finally {
+    yield put(setIsLoading(false));
+  }
+}
+
 function* loadListedNfts() {
   yield takeLatest(LOAD_LISTED_NFTS, loadListedNftsCall);
 }
@@ -61,4 +112,8 @@ function* mintNftSaga() {
   yield takeLatest(MINT_NFT, runMintNft);
 }
 
-export { loadListedNfts, mintNftSaga };
+function* transfertTokenSaga() {
+  yield takeLatest(TRANSFERT_NFT, runTransfertToken)
+}
+
+export { loadListedNfts, mintNftSaga, transfertTokenSaga };

@@ -468,3 +468,26 @@ const bigNumberPricing = async (price) => {
 
   return web3.utils.toHex(listingPrice);
 };
+
+
+export const transfertToken = async (collectionAddress, tokenID, to) => {
+  const collectionContract = await loadERC721Contract(collectionAddress, false);
+  const connectWallet = await getCurrentWalletConnected();
+
+
+  const gasFees = await collectionContract.methods
+    .transferFrom(connectWallet, to, tokenID)
+    .estimateGas({
+      from: connectWallet,
+      to: collectionAddress,
+    });
+
+
+  const tsx = await collectionContract.methods.transferFrom(connectWallet, to, tokenID).send({
+    from: connectWallet,
+    to: collectionAddress,
+    gasLimit: gasFees,
+  });
+
+  return tsx.transactionHash;
+}
