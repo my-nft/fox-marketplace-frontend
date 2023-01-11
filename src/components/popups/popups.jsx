@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { isValidAddress } from "ethereumjs-util";
+
 const EntryField = ({ type, submitAction }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -120,6 +123,63 @@ export const CreateNFTPopup = ({
             })}
         </div>
         <EntryField type={popupType} submitAction={handleAddItem} />
+      </div>
+    </PopupContainerWrapper>
+  );
+};
+
+export const OwnershipTransferPopup = ({
+  submitAction,
+  popupCloseAction,
+  popupType,
+}) => {
+  const [address, setAddress] = useState("");
+  const [addressValidity, setAddressValidity] = useState(false);
+
+  const handleAddressChange = (e) => {
+    setAddress(e.target.value);
+  };
+
+  useEffect(() => {
+    console.log(isValidAddress(address));
+    if (isValidAddress(address)) {
+      setAddressValidity(true);
+    } else {
+      setAddressValidity(false);
+    }
+  }, [address]);
+
+  return (
+    <PopupContainerWrapper
+      popupType={popupType}
+      popupCloseAction={popupCloseAction}
+    >
+      <div className="popup-wrapper transferPopup">
+        <div className="popupHeader">
+          <div className="popup-header-text">
+            <h3>Transfer Ownership</h3>
+            <p>Enter the address of the new owner</p>
+          </div>
+          <p className="popup-close" onClick={() => popupCloseAction(false)}>
+            X
+          </p>
+        </div>
+        <form onSubmit={submitAction}>
+          <input
+            type="text"
+            name="newOwner"
+            className="form-control"
+            onChange={(e) => handleAddressChange(e)}
+            value={address}
+            autoFocus={popupType}
+          />
+          <button
+            type="submit"
+            className={`transferOwnership ${addressValidity && "showTransfer"}`}
+          >
+            Transfer
+          </button>
+        </form>
       </div>
     </PopupContainerWrapper>
   );

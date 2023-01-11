@@ -31,6 +31,7 @@ const MyNftDetails = () => {
   const isLoading = useSelector(selectIsLoading);
   const [nftDetails, setNftDetails] = useState();
   const [collectionDetails, setCollectionDetails] = useState();
+  const [showTransferPopup, setShowTransferPopup] = useState(false);
   const dispatch = useDispatch();
 
   const loaderData = useLoaderData();
