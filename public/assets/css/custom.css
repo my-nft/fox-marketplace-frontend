@@ -4603,3 +4603,191 @@ ul#buttonIcon {
 .collectionSocials a:hover {
   background: #fff;
 }
+
+.transferPopup {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 72px 48px;
+}
+
+.transferPopup .popup-close {
+  top: 24px;
+  right: 32px;
+}
+
+.transferPopup h3 {
+  font-size: 28px;
+  margin-left: 16px;
+  margin-right: 16px;
+  text-align: center;
+}
+
+.nftTransfer.transferOwnership {
+  margin-bottom: 56px;
+  margin-top: 16px;
+}
+
+.transferPopup form {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.transferPopup .popup-header-text p {
+  opacity: 0.4;
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 32px;
+  line-height: 24px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.transferPopup .transferOwnership {
+  background: none;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  margin-top: 32px;
+}
+
+.transferPopup .transferOwnership:hover {
+  background: #f58103;
+  color: #ededed;
+}
+
+.transferPopup .form-control {
+  width: 100% !important;
+  margin-bottom: 16px;
+  background: none;
+  border-bottom: 1px solid rgba(247, 247, 247, 0.2);
+  transition: 300ms ease-in-out;
+  border-radius: 0;
+  outline: none;
+}
+
+.transferPopup .form-control:focus-within {
+  border-bottom: 1px solid #f58103;
+  background: none;
+}
+
+.itemInfoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 48px;
+  margin-bottom: 32px;
+  margin-top: 48px;
+}
+
+.itemInfoBox {
+  background: hsl(216, 71%, 4%);
+  max-height: 0;
+  transition: 400ms ease-in-out;
+}
+
+.itemInfoHeader {
+  background: #010306;
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.itemInfoHeader p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.itemInfoHeader div {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.itemInfoHeader svg {
+  width: 16px;
+  height: 16px;
+  transform: rotate(-90deg);
+  transition: 300ms ease-in-out;
+}
+
+.itemInfoShow .itemInfoHeader svg {
+  transform: rotate(90deg);
+}
+
+.infoBoxContainer {
+  margin-bottom: 16px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.infoBoxGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: center;
+}
+
+.infoBoxHeader {
+  border-top: 1px solid rgba(247, 247, 247, 0.2);
+  border-bottom: 1px solid rgba(247, 247, 247, 0.2);
+  padding: 8px 32px;
+  font-size: 0.95rem;
+}
+
+.infoBoxHeader p {
+  color: rgba(247, 247, 247, 0.8) !important;
+}
+
+.infoRow {
+  padding: 16px 32px;
+}
+
+.infoRow p,
+.infoBoxHeader p {
+  margin: 0;
+}
+
+.infoBoxShow {
+  max-height: 100%;
+}
+
+.noContent {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 32px;
+  width: 100%;
+  color: #ededed;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.noContent svg {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+  padding: 16px;
+  border-radius: 50%;
+  background: #f58103;
+}
+
+.buyButton {
+  background: #f58103;
+  color: #ededed;
+  border: none;
+  padding: 6px 32px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 300ms ease-in-out;
+  width: max-content;
+  justify-self: end;
+}

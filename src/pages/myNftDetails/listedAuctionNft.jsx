@@ -18,7 +18,7 @@ import {
 const ListedAuctionNft = ({ nftDetails, collectionDetails, setNftDetails }) => {
   const [itemInfos, setItemInfos] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const currentBidOwner = itemInfos?.currentBidOwner;
   const creator = itemInfos?.creator;
 
@@ -35,7 +35,7 @@ const ListedAuctionNft = ({ nftDetails, collectionDetails, setNftDetails }) => {
         auctionId: nftDetails.auctionId,
         from: currentWallet,
         to: creator,
-        price: currentBidOwner
+        price: currentBidOwner,
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -51,7 +51,7 @@ const ListedAuctionNft = ({ nftDetails, collectionDetails, setNftDetails }) => {
         price,
         from: currentWallet,
         to: creator,
-        price: price
+        price: price,
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -71,13 +71,13 @@ const ListedAuctionNft = ({ nftDetails, collectionDetails, setNftDetails }) => {
         royaltyPercent: royaltyPercent ? royaltyPercent : 0,
         from: creator,
         to: currentBidOwner,
-        price: itemInfos?.currentBidPrice / 10 ** 18
+        price: itemInfos?.currentBidPrice / 10 ** 18,
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
-  console.log(itemInfos)
+  console.log("Item Info", itemInfos);
 
   const onClaimNft = async () => {
     const { royaltyAddress, royaltyPercent } = collectionDetails;
@@ -93,7 +93,7 @@ const ListedAuctionNft = ({ nftDetails, collectionDetails, setNftDetails }) => {
         royaltyPercent: royaltyPercent ? royaltyPercent : 0,
         from: creator,
         to: currentBidOwner,
-        price: itemInfos?.currentBidPrice / 10 ** 18
+        price: itemInfos?.currentBidPrice / 10 ** 18,
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
