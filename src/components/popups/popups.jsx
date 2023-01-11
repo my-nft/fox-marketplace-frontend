@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { isValidAddress } from "ethereumjs-util";
+
 const EntryField = ({ type, submitAction }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -130,6 +133,22 @@ export const OwnershipTransferPopup = ({
   popupCloseAction,
   popupType,
 }) => {
+  const [address, setAddress] = useState("");
+  const [addressValidity, setAddressValidity] = useState(false);
+
+  const handleAddressChange = (e) => {
+    setAddress(e.target.value);
+  };
+
+  useEffect(() => {
+    console.log(isValidAddress(address));
+    if (isValidAddress(address)) {
+      setAddressValidity(true);
+    } else {
+      setAddressValidity(false);
+    }
+  }, [address]);
+
   return (
     <PopupContainerWrapper
       popupType={popupType}
@@ -146,8 +165,18 @@ export const OwnershipTransferPopup = ({
           </p>
         </div>
         <form onSubmit={submitAction}>
-          <input type="text" name="newOwner" className="form-control" />
-          <button type="submit" className="transferOwnership">
+          <input
+            type="text"
+            name="newOwner"
+            className="form-control"
+            onChange={(e) => handleAddressChange(e)}
+            value={address}
+            autoFocus={popupType}
+          />
+          <button
+            type="submit"
+            className={`transferOwnership ${addressValidity && "showTransfer"}`}
+          >
             Transfer
           </button>
         </form>
