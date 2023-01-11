@@ -4672,3 +4672,119 @@ ul#buttonIcon {
   border-bottom: 1px solid #f58103;
   background: none;
 }
+
+.itemInfoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 48px;
+  margin-bottom: 32px;
+  margin-top: 48px;
+}
+
+.itemInfoBox {
+  background: hsl(216, 71%, 4%);
+  max-height: 0;
+  transition: 400ms ease-in-out;
+}
+
+.itemInfoHeader {
+  background: #010306;
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.itemInfoHeader p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.itemInfoHeader div {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.itemInfoHeader svg {
+  width: 16px;
+  height: 16px;
+  transform: rotate(-90deg);
+  transition: 300ms ease-in-out;
+}
+
+.itemInfoShow .itemInfoHeader svg {
+  transform: rotate(90deg);
+}
+
+.infoBoxContainer {
+  margin-bottom: 16px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.infoBoxGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: center;
+}
+
+.infoBoxHeader {
+  border-top: 1px solid rgba(247, 247, 247, 0.2);
+  border-bottom: 1px solid rgba(247, 247, 247, 0.2);
+  padding: 8px 32px;
+  font-size: 0.95rem;
+}
+
+.infoBoxHeader p {
+  color: rgba(247, 247, 247, 0.8) !important;
+}
+
+.infoRow {
+  padding: 16px 32px;
+}
+
+.infoRow p,
+.infoBoxHeader p {
+  margin: 0;
+}
+
+.infoBoxShow {
+  max-height: 100%;
+}
+
+.noContent {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 32px;
+  width: 100%;
+  color: #ededed;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.noContent svg {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+  padding: 16px;
+  border-radius: 50%;
+  background: #f58103;
+}
+
+.buyButton {
+  background: #f58103;
+  color: #ededed;
+  border: none;
+  padding: 6px 32px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 300ms ease-in-out;
+  width: max-content;
+  justify-self: end;
+}

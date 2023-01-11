@@ -8,7 +8,11 @@ import {
   BUY_NFT,
   DELIST_ITEM,
 } from "../../saga/blockchain.js/blockChainActions";
-import { getBestOffer, getPriceByListing } from "../../services/listingNft";
+import {
+  getBestOffer,
+  getListingIdByToken,
+  getPriceByListing,
+} from "../../services/listingNft";
 import { sameAddress } from "../../utils/walletUtils";
 
 const ListedFixedNft = ({
@@ -43,7 +47,7 @@ const ListedFixedNft = ({
           ? royaltyAddress
           : collectionDetails.ownerAddress,
         royaltyPercent: royaltyPercent ? royaltyPercent : 0,
-        
+
         from: currentWallet,
         to: nftDetails.collectionAddress,
       },
@@ -58,18 +62,19 @@ const ListedFixedNft = ({
         listingId: nftDetails.listingId,
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
- 
 
         from: currentWallet,
         to: undefined,
-        price: Number(currentPrice)
+        price: Number(currentPrice),
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
   };
 
   const init = async () => {
+    console.log("NFT DETAILS", nftDetails);
     const cPrice = await getPriceByListing(nftDetails.listingId);
+
     const bestOfferPrice = await getBestOffer(
       nftDetails.collectionAddress,
       nftDetails.tokenID
