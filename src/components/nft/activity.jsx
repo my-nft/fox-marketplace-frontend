@@ -22,7 +22,7 @@ const ItemActivity = ({ activity }) => {
     if (months < 12) return `${months} months ago`;
     return `${years} years ago`;
   };
-
+  console.log(activity);
   return (
     <InfoBoxWrapper title="Item Activity">
       <div className="activity">
@@ -39,14 +39,18 @@ const ItemActivity = ({ activity }) => {
               <p>{EVENT_ENUM[event.event]}</p>
               <p>{event.price} FXG</p>
               <p>
-                <Address address={event.fromAddress}>
-                  {optimizeWalletAddress(event.fromAddress)}
-                </Address>
+                {event.fromAddress && (
+                  <Address address={event.fromAddress}>
+                    {optimizeWalletAddress(event.fromAddress)}
+                  </Address>
+                )}
               </p>
               <p>
-                <Address address={event.toAddress}>
-                  {optimizeWalletAddress(event.toAddress)}
-                </Address>
+                {event.toAddress && (
+                  <Address address={event.toAddress}>
+                    {optimizeWalletAddress(event.toAddress)}
+                  </Address>
+                )}
               </p>
               <p>{dateToUserFriendlyValue(event.date_event)}</p>
             </div>
