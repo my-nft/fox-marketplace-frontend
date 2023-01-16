@@ -5,7 +5,7 @@ import { optimizeWalletAddress } from "../../utils/walletUtils";
 import Address from "../Address";
 import Spinner from "../Spinner";
 
-const Listings = ({ itemExtra, isLoading }) => {
+const Listings = ({ itemExtra = [], isLoading }) => {
   return (
     <InfoBoxWrapper title="Listings">
       <div className="infoBoxGrid infoBoxHeader">

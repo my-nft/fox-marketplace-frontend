@@ -7,9 +7,8 @@ import { useEffect, useState } from "react";
 import Spinner from "../Spinner";
 ChartJS.register(...registerables);
 
-const PriceHistory = ({ itemExtra, isLoading }) => {
+const PriceHistory = ({ itemExtra = [], isLoading }) => {
   const params = useParams();
-  console.log(params);
 
   const [chartDataset, setChartDataset] = useState([]);
   const [chartLabels, setChartLabels] = useState([]);

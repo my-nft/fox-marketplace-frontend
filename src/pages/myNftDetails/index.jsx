@@ -52,7 +52,6 @@ const MyNftDetails = () => {
         setIsLoadingExtraData(false);
       });
   };
-  console.log(itemExtraData);
 
   useEffect(() => {
     getExtraInfo();
@@ -61,7 +60,6 @@ const MyNftDetails = () => {
   useEffect(() => {
     loaderData.dataPromise
       .then((data) => {
-        console.log(data);
         setNftDetails(data[0].data);
         setCollectionDetails(data[1].data.collection);
       })
@@ -211,25 +209,6 @@ const MyNftDetails = () => {
                           onAcceptOffer={onAcceptOffer}
                         />
                       ) : null}
-
-                      <div className="mt-5">
-                        <PriceHistory />
-                        <Listings />
-                        <Offers />
-                        <ItemActivity />
-                      </div>
-                      <div className="card" id="fees">
-                        <div className="card-body">
-                          <div className="card-text">
-                            <ul>
-                              <li>
-                                <span>Services fees </span>
-                                <strong>1%</strong>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
                   <OwnershipTransferPopup
@@ -240,7 +219,6 @@ const MyNftDetails = () => {
                       setShowTransferPopup(false);
                     }}
                   />
-
                   <div className="mt-5">
                     <Listings
                       itemExtra={itemExtraData}

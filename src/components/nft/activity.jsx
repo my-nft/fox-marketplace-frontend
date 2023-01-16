@@ -6,7 +6,7 @@ import { optimizeWalletAddress } from "../../utils/walletUtils";
 import { EVENT_ENUM } from "../../utils/foxConstantes";
 import Spinner from "../Spinner";
 
-const ItemActivity = ({ activity, isLoading }) => {
+const ItemActivity = ({ activity = [], isLoading }) => {
   const dateToUserFriendlyValue = (date) => {
     const difference = new Date().getTime() - new Date(date).getTime();
     const seconds = Math.floor(difference / 1000);
