@@ -3,18 +3,9 @@ import InfoBoxWrapper from "./infoBoxWrapper";
 import { ReactComponent as ContentIcon } from "./../../assets/icons/content.svg";
 import Address from "./../Address";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
+import { EVENT_ENUM } from "../../utils/foxConstantes";
 
-const ItemActivity = ({
-  activity = [
-    {
-      event: "Minted",
-      price: "15",
-      from: "0x0000000000000000000000000000000000000000",
-      to: "!0x0000000000000000000000000000000000000000",
-      date: "2021-09-01T00:00:00.000Z",
-    },
-  ],
-}) => {
+const ItemActivity = ({ activity }) => {
   const dateToUserFriendlyValue = (date) => {
     const difference = new Date().getTime() - new Date(date).getTime();
     const seconds = Math.floor(difference / 1000);
@@ -45,19 +36,19 @@ const ItemActivity = ({
         {activity.map((event, index) => {
           return (
             <div className="infoBoxGrid infoRow" key={index}>
-              <p>{event.event}</p>
+              <p>{EVENT_ENUM[event.event]}</p>
               <p>{event.price} FXG</p>
               <p>
-                <Address address={event.from}>
-                  {optimizeWalletAddress(event.from)}
+                <Address address={event.fromAddress}>
+                  {optimizeWalletAddress(event.fromAddress)}
                 </Address>
               </p>
               <p>
-                <Address address={event.to}>
-                  {optimizeWalletAddress(event.to)}
+                <Address address={event.toAddress}>
+                  {optimizeWalletAddress(event.toAddress)}
                 </Address>
               </p>
-              <p>{dateToUserFriendlyValue(event.date)}</p>
+              <p>{dateToUserFriendlyValue(event.date_event)}</p>
             </div>
           );
         })}

@@ -3,23 +3,34 @@ export const AUCTION = "AUCTION";
 
 export const FXG_PRICE = 0.0058;
 
-
 // Transactions trace
 
-export const EVENT_WIN_AUCTION="EVENT_WIN_AUCTION";
+export const EVENT_WIN_AUCTION = "EVENT_WIN_AUCTION";
 
-export const EVENT_BUY_LISTING="EVENT_BUY_LISTING";
+export const EVENT_BUY_LISTING = "EVENT_BUY_LISTING";
 
-export const EVENT_ACCEPT_OFFER="EVENT_ACCEPT_OFFER";
+export const EVENT_ACCEPT_OFFER = "EVENT_ACCEPT_OFFER";
 
-export const EVENT_MAKE_OFFER="EVENT_MAKE_OFFER";
+export const EVENT_MAKE_OFFER = "EVENT_MAKE_OFFER";
 
-export const EVENT_PLACE_BID="EVENT_PLACE_BID";
+export const EVENT_PLACE_BID = "EVENT_PLACE_BID";
 
-export const EVENT_LISTING="EVENT_LISTING";
+export const EVENT_LISTING = "EVENT_LISTING";
 
-export const EVENT_DELISTING="EVENT_DELISTING";
+export const EVENT_DELISTING = "EVENT_DELISTING";
 
 export const EVENT_REFUND = "EVENT_REFUND";
 
-export const EVENT_CREATE_AUCTION="EVENT_CREATE_AUCTION";
+export const EVENT_CREATE_AUCTION = "EVENT_CREATE_AUCTION";
+
+export const EVENT_ENUM = {
+  EVENT_WIN_AUCTION: "Auction won",
+  EVENT_BUY_LISTING: "Listing bought",
+  EVENT_ACCEPT_OFFER: "Offer accepted",
+  EVENT_MAKE_OFFER: "Offer made",
+  EVENT_PLACE_BID: "Bid placed",
+  EVENT_LISTING: "Listing created",
+  EVENT_DELISTING: "Listing deleted",
+  EVENT_REFUND: "Refund",
+  EVENT_CREATE_AUCTION: "Auction created",
+};

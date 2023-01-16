@@ -7,17 +7,19 @@ export function getStats() {
   return methods.get(utilsApiEndpoint + "stats");
 }
 
-export const postTraceTransaction = ({
-  fromAddress,
-  toAddress,
-  price,
-  collectionAddress,
-  tokenID,
-  event,
-  transactionId,
-  link,
-}, token) => {
-  return methods.post(utilsApiEndpoint + "trace-transaction", {
+export function getItemInfo(tokenID, collectionAddress) {
+  return methods.get(
+    utilsApiEndpoint +
+      "events?" +
+      "tokenID=" +
+      tokenID +
+      "&collectionAddress=" +
+      collectionAddress
+  );
+}
+
+export const postTraceTransaction = (
+  {
     fromAddress,
     toAddress,
     price,
@@ -27,9 +29,24 @@ export const postTraceTransaction = ({
     transactionId,
     link,
   },
-  {
-    headers: {
-      Authorization: "Bearer " + token,
+  token
+) => {
+  return methods.post(
+    utilsApiEndpoint + "trace-transaction",
+    {
+      fromAddress,
+      toAddress,
+      price,
+      collectionAddress,
+      tokenID,
+      event,
+      transactionId,
+      link,
     },
-  });
-}
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+};

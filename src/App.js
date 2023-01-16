@@ -32,6 +32,7 @@ import {
   getCollectionByAddress,
   getCollectionNftsCall,
 } from "./api/collectionApi";
+import { getItemInfo } from "./api/utilsApi";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -166,8 +167,16 @@ const router = createBrowserRouter(
           const getCollectionPromise = getCollectionByAddress(
             params.collectionAddress
           );
+          const getNFTInfoPromise = getItemInfo(
+            params.tokenID,
+            params.collectionAddress
+          );
           return defer({
-            dataPromise: Promise.all([getNFTPromise, getCollectionPromise]),
+            dataPromise: Promise.all([
+              getNFTPromise,
+              getCollectionPromise,
+              getNFTInfoPromise,
+            ]),
           });
         }}
         element={

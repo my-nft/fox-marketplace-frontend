@@ -1,10 +1,10 @@
 import { Suspense, useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Await, Link, useLoaderData, useParams } from "react-router-dom";
+import { Await, Link, useLoaderData } from "react-router-dom";
 import NftMoreInfos from "../../components/nft/details/NftMoreInfos";
 import Spinner from "../../components/Spinner";
-import { selectIsLoading, setIsLoading } from "../../redux/nftReducer";
+import { selectIsLoading } from "../../redux/nftReducer";
 import {
   ACCEPT_OFFER,
   MAKE_OFFER,
@@ -25,22 +25,23 @@ import PriceHistory from "../../components/nft/priceHistory";
 import ItemActivity from "../../components/nft/activity";
 
 const MyNftDetails = () => {
-  const { collectionAddress, tokenID } = useParams();
-
   const connectedWallet = useSelector(selectCurrentWallet);
   const isLoading = useSelector(selectIsLoading);
   const [nftDetails, setNftDetails] = useState();
   const [collectionDetails, setCollectionDetails] = useState();
   const [showTransferPopup, setShowTransferPopup] = useState(false);
   const dispatch = useDispatch();
+  const [itemExtraData, setItemExtraData] = useState([]);
 
   const loaderData = useLoaderData();
 
   useEffect(() => {
     loaderData.dataPromise
       .then((data) => {
+        console.log(data);
         setNftDetails(data[0].data);
         setCollectionDetails(data[1].data.collection);
+        setItemExtraData(data[2].data);
       })
       .catch((err) => {
         console.log(err);
@@ -215,8 +216,8 @@ const MyNftDetails = () => {
                   <div className="mt-5">
                     <Listings />
                     <Offers />
-                    <PriceHistory />
-                    <ItemActivity />
+                    <PriceHistory itemExtra={itemExtraData} />
+                    <ItemActivity activity={itemExtraData} />
                   </div>
                 </div>
               )}

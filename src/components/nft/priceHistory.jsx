@@ -2,59 +2,35 @@ import InfoBoxWrapper from "./infoBoxWrapper";
 import { ReactComponent as ContentIcon } from "./../../assets/icons/content.svg";
 import { Chart as ChartJS, registerables } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 ChartJS.register(...registerables);
 
-const PriceHistory = ({
-  priceHistory = [
-    {
-      date: new Date("2021-08-01T00:00:00.000Z").toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }),
-      price: 0.1,
-    },
-    {
-      date: new Date("2021-08-02T00:00:00.000Z").toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }),
-      price: 0.3,
-    },
-    {
-      date: new Date("2021-08-04T00:00:00.000Z").toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }),
-      price: 2,
-    },
-    {
-      date: new Date("2021-08-05T00:00:00.000Z").toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }),
-      price: 1,
-    },
-    {
-      date: new Date("2021-08-12T00:00:00.000Z").toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }),
-      price: 3,
-    },
-  ],
-}) => {
+const PriceHistory = ({ itemExtra }) => {
+  const params = useParams();
+  console.log(params);
+
+  const [chartDataset, setChartDataset] = useState([]);
+  const [chartLabels, setChartLabels] = useState([]);
+
+  useEffect(() => {
+    let data = [];
+    let labels = [];
+    itemExtra.map((item) => {
+      data.push(item.price);
+      labels.push(item.date_event);
+    });
+    setChartDataset(data);
+    setChartLabels(labels);
+  }, [itemExtra]);
+
   const chartData = {
-    labels: priceHistory.map((item) => item.date),
+    labels: chartLabels,
     datasets: [
       {
         id: 1,
         label: "Price History",
-        data: priceHistory.map((item) => item.price),
+        data: chartDataset,
       },
     ],
   };
@@ -122,8 +98,10 @@ const PriceHistory = ({
   return (
     <InfoBoxWrapper title="Price History">
       <div className="priceHistory">
-        {priceHistory.length && <Line data={chartData} options={options} />}
-        {priceHistory.length === 0 && (
+        {chartDataset.length !== 0 && (
+          <Line data={chartData} options={options} />
+        )}
+        {chartDataset.length === 0 && (
           <div className="noContent">
             <ContentIcon />
             <p>No Price History</p>
