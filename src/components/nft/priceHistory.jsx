@@ -18,7 +18,14 @@ const PriceHistory = ({ itemExtra }) => {
     let labels = [];
     itemExtra.map((item) => {
       data.push(item.price);
-      labels.push(item.date_event);
+      labels.push(
+        new Date(item.date_event).toLocaleString("en-US", {
+          month: "short",
+          hour: "2-digit",
+          day: "2-digit",
+          year: "numeric",
+        })
+      );
     });
     setChartDataset(data);
     setChartLabels(labels);
