@@ -69,6 +69,7 @@ const PriceHistory = ({ itemExtra = [], isLoading }) => {
     },
     scales: {
       y: {
+        beginAtZero: true,
         ticks: {
           padding: 20,
         },
