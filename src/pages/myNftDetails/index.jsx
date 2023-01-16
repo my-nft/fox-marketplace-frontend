@@ -1,7 +1,7 @@
 import { Suspense, useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Await, Link, useLoaderData } from "react-router-dom";
+import { Await, Link, useLoaderData, useParams } from "react-router-dom";
 import NftMoreInfos from "../../components/nft/details/NftMoreInfos";
 import Spinner from "../../components/Spinner";
 import { selectIsLoading } from "../../redux/nftReducer";
@@ -23,6 +23,7 @@ import Listings from "../../components/nft/listings";
 import Offers from "../../components/nft/offers";
 import PriceHistory from "../../components/nft/priceHistory";
 import ItemActivity from "../../components/nft/activity";
+import { getItemInfo } from "../../api/utilsApi";
 
 const MyNftDetails = () => {
   const connectedWallet = useSelector(selectCurrentWallet);
@@ -32,8 +33,28 @@ const MyNftDetails = () => {
   const [showTransferPopup, setShowTransferPopup] = useState(false);
   const dispatch = useDispatch();
   const [itemExtraData, setItemExtraData] = useState([]);
+  const [isLoadingExtraData, setIsLoadingExtraData] = useState(false);
 
   const loaderData = useLoaderData();
+  const params = useParams();
+
+  const getExtraInfo = async () => {
+    setIsLoadingExtraData(true);
+    await getItemInfo(params.tokenID, params.collectionAddress)
+      .then((res) => {
+        setItemExtraData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setIsLoadingExtraData(false);
+      });
+  };
+
+  useEffect(() => {
+    getExtraInfo();
+  }, []);
 
   useEffect(() => {
     loaderData.dataPromise
@@ -41,7 +62,6 @@ const MyNftDetails = () => {
         console.log(data);
         setNftDetails(data[0].data);
         setCollectionDetails(data[1].data.collection);
-        setItemExtraData(data[2].data);
       })
       .catch((err) => {
         console.log(err);
@@ -214,10 +234,22 @@ const MyNftDetails = () => {
                   />
 
                   <div className="mt-5">
-                    <Listings />
-                    <Offers />
-                    <PriceHistory itemExtra={itemExtraData} />
-                    <ItemActivity activity={itemExtraData} />
+                    <Listings
+                      itemExtra={itemExtraData}
+                      isLoading={isLoadingExtraData}
+                    />
+                    <Offers
+                      itemExtra={itemExtraData}
+                      isLoading={isLoadingExtraData}
+                    />
+                    <PriceHistory
+                      itemExtra={itemExtraData}
+                      isLoading={isLoadingExtraData}
+                    />
+                    <ItemActivity
+                      activity={itemExtraData}
+                      isLoading={isLoadingExtraData}
+                    />
                   </div>
                 </div>
               )}

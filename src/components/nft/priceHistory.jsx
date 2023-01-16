@@ -4,9 +4,10 @@ import { Chart as ChartJS, registerables } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Spinner from "../Spinner";
 ChartJS.register(...registerables);
 
-const PriceHistory = ({ itemExtra }) => {
+const PriceHistory = ({ itemExtra, isLoading }) => {
   const params = useParams();
   console.log(params);
 
@@ -107,6 +108,11 @@ const PriceHistory = ({ itemExtra }) => {
       <div className="priceHistory">
         {chartDataset.length !== 0 && (
           <Line data={chartData} options={options} />
+        )}
+        {isLoading && (
+          <Spinner>
+            <p>Fetching Data</p>
+          </Spinner>
         )}
         {chartDataset.length === 0 && (
           <div className="noContent">

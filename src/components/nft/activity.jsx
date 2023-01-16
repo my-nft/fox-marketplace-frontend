@@ -4,8 +4,9 @@ import { ReactComponent as ContentIcon } from "./../../assets/icons/content.svg"
 import Address from "./../Address";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 import { EVENT_ENUM } from "../../utils/foxConstantes";
+import Spinner from "../Spinner";
 
-const ItemActivity = ({ activity }) => {
+const ItemActivity = ({ activity, isLoading }) => {
   const dateToUserFriendlyValue = (date) => {
     const difference = new Date().getTime() - new Date(date).getTime();
     const seconds = Math.floor(difference / 1000);
@@ -56,6 +57,11 @@ const ItemActivity = ({ activity }) => {
             </div>
           );
         })}
+        {isLoading && (
+          <Spinner>
+            <p>Fetching Data</p>
+          </Spinner>
+        )}
         {activity.length === 0 && (
           <div className="noContent">
             <ContentIcon />

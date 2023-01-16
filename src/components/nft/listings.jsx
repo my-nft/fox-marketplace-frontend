@@ -1,7 +1,11 @@
 import InfoBoxWrapper from "./infoBoxWrapper";
 import { ReactComponent as ContentIcon } from "./../../assets/icons/content.svg";
+import { FXG_PRICE } from "../../utils/foxConstantes";
+import { optimizeWalletAddress } from "../../utils/walletUtils";
+import Address from "../Address";
+import Spinner from "../Spinner";
 
-const Listings = ({ listings = [] }) => {
+const Listings = ({ itemExtra, isLoading }) => {
   return (
     <InfoBoxWrapper title="Listings">
       <div className="infoBoxGrid infoBoxHeader">
@@ -11,25 +15,34 @@ const Listings = ({ listings = [] }) => {
         <p>From</p>
         <p></p>
       </div>
-      {listings.map((listing, index) => {
+      {itemExtra.map((listing, index) => {
         return (
           <div className="infoBoxGrid infoRow" key={index}>
-            <p>{listing.price} FXG</p>
-            <p>${listing.usdPrice}</p>
+            <p>{parseFloat(listing.price.toFixed(4))} FXG</p>
+            <p>${parseFloat((Number(listing.price) * FXG_PRICE).toFixed(4))}</p>
             <p>{listing.expiration}</p>
-            <p>{listing.from}</p>
+            <p>
+              {listing.fromAddress && (
+                <Address address={listing.fromAddress}>
+                  {optimizeWalletAddress(listing.fromAddress)}
+                </Address>
+              )}
+            </p>
             <p className="buyButton">Buy</p>
           </div>
         );
       })}
-      <div className="listings">
-        {listings.length === 0 && (
-          <div className="noContent">
-            <ContentIcon />
-            <p>No Listings Info</p>
-          </div>
-        )}
-      </div>
+      {isLoading && (
+        <Spinner>
+          <p>Fetching Data</p>
+        </Spinner>
+      )}
+      {itemExtra.length === 0 && (
+        <div className="noContent">
+          <ContentIcon />
+          <p>No Listings Info</p>
+        </div>
+      )}
     </InfoBoxWrapper>
   );
 };

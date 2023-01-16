@@ -167,16 +167,9 @@ const router = createBrowserRouter(
           const getCollectionPromise = getCollectionByAddress(
             params.collectionAddress
           );
-          const getNFTInfoPromise = getItemInfo(
-            params.tokenID,
-            params.collectionAddress
-          );
+
           return defer({
-            dataPromise: Promise.all([
-              getNFTPromise,
-              getCollectionPromise,
-              getNFTInfoPromise,
-            ]),
+            dataPromise: Promise.all([getNFTPromise, getCollectionPromise]),
           });
         }}
         element={
