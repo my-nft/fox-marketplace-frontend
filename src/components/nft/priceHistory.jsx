@@ -16,6 +16,17 @@ const PriceHistory = ({ itemExtra = [], isLoading }) => {
   useEffect(() => {
     let data = [];
     let labels = [];
+    if (itemExtra.length) {
+      data.push(0);
+      labels.push(
+        new Date(itemExtra[0].date_event).toLocaleString("en-US", {
+          month: "short",
+          hour: "2-digit",
+          day: "2-digit",
+          year: "numeric",
+        })
+      );
+    }
     itemExtra.map((item) => {
       data.push(item.price);
       labels.push(
