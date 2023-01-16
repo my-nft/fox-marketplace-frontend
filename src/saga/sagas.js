@@ -10,7 +10,7 @@ import {
   loadSearcheableCollectionSaga,
   updateCollectionInformationSaga,
 } from "./collectionSaga";
-import { loadListedNfts, mintNft, mintNftSaga } from "./nftSaga";
+import { loadListedNfts, mintNft, mintNftSaga, transfertTokenSaga } from "./nftSaga";
 import { loadUser, updateProfileForUser } from "./userSaga";
 
 function* watchAll() {
@@ -36,7 +36,8 @@ function* watchAll() {
     claimNFTSaga(),
     claimTokenSaga(),
     mintNftSaga(),
-    loadMintCollection()
+    loadMintCollection(),
+    transfertTokenSaga()
   ]);
 }
 

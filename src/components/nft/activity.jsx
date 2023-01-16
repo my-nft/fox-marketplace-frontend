@@ -23,7 +23,6 @@ const ItemActivity = ({ activity, isLoading }) => {
     if (months < 12) return `${months} months ago`;
     return `${years} years ago`;
   };
-  console.log(activity);
   return (
     <InfoBoxWrapper title="Item Activity">
       <div className="activity">

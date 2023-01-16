@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Await, Link, useLoaderData, useParams } from "react-router-dom";
 import NftMoreInfos from "../../components/nft/details/NftMoreInfos";
 import Spinner from "../../components/Spinner";
-import { selectIsLoading } from "../../redux/nftReducer";
+import { selectIsLoading, setIsLoading } from "../../redux/nftReducer";
 import {
   ACCEPT_OFFER,
   MAKE_OFFER,
@@ -19,6 +19,7 @@ import { selectCurrentWallet } from "../../redux/userReducer";
 import Address from "../../components/Address";
 import Page404 from "../404/404";
 import { OwnershipTransferPopup } from "../../components/popups/popups";
+import { TRANSFERT_NFT } from "../../saga/actions";
 import Listings from "../../components/nft/listings";
 import Offers from "../../components/nft/offers";
 import PriceHistory from "../../components/nft/priceHistory";
@@ -33,7 +34,7 @@ const MyNftDetails = () => {
   const [showTransferPopup, setShowTransferPopup] = useState(false);
   const dispatch = useDispatch();
   const [itemExtraData, setItemExtraData] = useState([]);
-  const [isLoadingExtraData, setIsLoadingExtraData] = useState(false);
+  const [isLoadingExtraData, setIsLoadingExtraData] = useState([]);
 
   const loaderData = useLoaderData();
   const params = useParams();
@@ -51,6 +52,7 @@ const MyNftDetails = () => {
         setIsLoadingExtraData(false);
       });
   };
+  console.log(itemExtraData);
 
   useEffect(() => {
     getExtraInfo();
@@ -65,6 +67,7 @@ const MyNftDetails = () => {
       })
       .catch((err) => {
         console.log(err);
+        dispatch(setIsLoading(false));
       });
   }, []);
 
@@ -75,7 +78,6 @@ const MyNftDetails = () => {
         price: Number(offerPrice),
         tokenID: nftDetails.tokenID,
         collectionAddress: nftDetails.collectionAddress,
-
         from: connectedWallet,
         to: nftDetails.ownerAddress,
       },
@@ -210,6 +212,12 @@ const MyNftDetails = () => {
                         />
                       ) : null}
 
+                      <div className="mt-5">
+                        <PriceHistory />
+                        <Listings />
+                        <Offers />
+                        <ItemActivity />
+                      </div>
                       <div className="card" id="fees">
                         <div className="card-body">
                           <div className="card-text">

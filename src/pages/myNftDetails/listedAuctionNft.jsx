@@ -121,7 +121,7 @@ const ListedAuctionNft = ({ nftDetails, collectionDetails, setNftDetails }) => {
 
   useEffect(() => {
     init();
-  }, []);
+  }, [nftDetails]);
 
   return (
     !isLoading && (
