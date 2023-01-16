@@ -1,6 +1,4 @@
-import { putTraceTransaction } from "../api/utilsApi";
 import {
-  authProviderInstance,
   AUTIONContractAddress,
   ERC20ContractAddress,
   FIXEDContractAddress,
@@ -10,12 +8,10 @@ import {
   loadERC20Contract,
   loadERC721Contract,
   loaderContract,
-  loadFoxMasterCollectionContract,
   loadOfferSystemContract,
   OfferSystemAddress,
   web3Infura,
 } from "../utils/blockchainInteractor";
-import { EVENT_WIN_AUCTION } from "../utils/foxConstantes";
 
 import { sameAddress } from "../utils/walletUtils";
 

@@ -187,7 +187,13 @@ const MyNftDetails = () => {
                           onAcceptOffer={onAcceptOffer}
                         />
                       ) : null}
-
+                    
+                      <div className="mt-5">
+                        <PriceHistory />
+                        <Listings />
+                        <Offers />
+                        <ItemActivity />
+                      </div>
                       <div className="card" id="fees">
                         <div className="card-body">
                           <div className="card-text">
