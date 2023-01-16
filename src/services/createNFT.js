@@ -19,8 +19,6 @@ export const mintNft = async ({
   if(!collectionAddress) {
     collectionAddress = foxMasterCollectionAddress
   }
-
-  console.log("#####################");
   
   const foxMastercontract = await loadFoxMasterCollectionContract(collectionAddress);
 
@@ -59,9 +57,6 @@ export const mintNft = async ({
     });
 
   const tokenID = tsx?.events?.Transfer?.returnValues?.tokenId;
-
-  console.log("=====> TOKENID ", tokenID);
-  console.log("=====> collectionAddress ", collectionAddress);
 
   return {
     tokenID,
