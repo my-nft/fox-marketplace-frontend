@@ -26,7 +26,7 @@ const NonListedNft = ({ handleMakeOffer, nftDetails }) => {
         nftDetails.collectionAddress,
         nftDetails.tokenID
       );
-      setBestOffer(bestOfferPrice);
+      setBestOffer(bestOfferPrice.price);
     }
   };
 
