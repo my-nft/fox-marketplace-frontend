@@ -43,7 +43,10 @@ export const getBestOffer = async (collectionAddress, tokenID) => {
   const response = await offerSystemContractReadOnly.methods
     .activeBuyOffers(collectionAddress, tokenID)
     .call();
-  return Number(response.price) / 10 ** 18;
+  return {
+    price: Number(response.price) / 10 ** 18,
+    offerOwner: response.buyer
+  };
 };
 
 export const isActiveListing = async (listingId) => {

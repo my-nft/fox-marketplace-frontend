@@ -110,6 +110,14 @@ const MyNftDetails = () => {
   };
 
   const onAcceptOffer = (bestOffer) => {
+    console.log("#########################")
+    console.log("#########################")
+    console.log("#########################")
+    console.log("#########################")
+    console.log("connectedWallet ", connectedWallet)
+    console.log("to ", bestOffer.offerOwner)
+
+
     const { royaltyAddress, royaltyPercent } = collectionDetails;
     dispatch({
       type: ACCEPT_OFFER,
@@ -121,9 +129,9 @@ const MyNftDetails = () => {
           : collectionDetails.ownerAddress,
         royaltyPercent: royaltyPercent ? royaltyPercent : 0,
 
-        from: connectedWallet,
-        to: nftDetails.ownerAddress,
-        price: Number(bestOffer),
+        from: nftDetails.ownerAddress,
+        to: bestOffer.offerOwner,
+        price: Number(bestOffer.price),
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
