@@ -36,4 +36,5 @@ export const EVENT_ENUM = {
   EVENT_DELISTING: "Listing deleted",
   EVENT_REFUND: "Refund",
   EVENT_CREATE_AUCTION: "Auction created",
+  EVENT_TRANSFERT_TOKEN: 'Transfert'
 };
