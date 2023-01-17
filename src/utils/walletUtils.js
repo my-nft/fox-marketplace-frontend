@@ -2,7 +2,12 @@ import { web3Infura } from "./blockchainInteractor";
 
 
 
-const optimizeWalletAddress = (address) => address.substring(0, 4) + "....." + address.slice(-4);
+const optimizeWalletAddress = (address) => {
+    if(!address) {
+        return '';
+    }
+    return address.substring(0, 4) + "....." + address.slice(-4)
+};
 
 const sameAddress = (address1, address2) => {
 

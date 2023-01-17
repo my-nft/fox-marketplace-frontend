@@ -4565,6 +4565,7 @@ ul#buttonIcon {
   margin: 16px 0 48px;
   text-align: center;
   color: #ededed;
+  font-weight: 600;
 }
 
 .collectionSocials {
@@ -4805,4 +4806,8 @@ ul#buttonIcon {
   transition: 300ms ease-in-out;
   width: max-content;
   justify-self: end;
+}
+
+.priceHistory {
+  padding-top: 1px;
 }

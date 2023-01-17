@@ -39,7 +39,7 @@ export const setNftToListed = (body, token) => {
     {
       headers: {
         Authorization: "Bearer " + token,
-      }
+      },
     }
   );
 };
@@ -53,7 +53,7 @@ export const setNftToUnlisted = (body, token) => {
     {
       headers: {
         Authorization: "Bearer " + token,
-      }
+      },
     }
   );
 };
@@ -67,34 +67,40 @@ export const acceptOffer = (body, token) => {
     {
       headers: {
         Authorization: "Bearer " + token,
-      }
+      },
     }
   );
 };
 
-
-export function addNftToIpfs({
-  collectionAddress, nft, image, token
-}) {
-
+export function addNftToIpfs({ collectionAddress, nft, image, token }) {
   let formData = new FormData();
   formData.append("image", image);
 
-  formData.append("nft", JSON.stringify({
-    ...nft,
-    collectionAddress
-  }));
+  formData.append(
+    "nft",
+    JSON.stringify({
+      ...nft,
+      collectionAddress,
+    })
+  );
 
   return methods.put(`${nftEndpoint}load-ipfs`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
-      Authorization: "Bearer " + token
+      Authorization: "Bearer " + token,
     },
   });
 }
 
-
-export const getListedNfts = (page, numberElements, status, collectionAddress, minPrice, maxPrice, sortBy) => {
+export const getListedNfts = (
+  page,
+  numberElements,
+  status,
+  collectionAddress,
+  minPrice,
+  maxPrice,
+  sortBy
+) => {
   return methods.get(nftEndpoint + "listed", {
     params: {
       page,
@@ -103,7 +109,7 @@ export const getListedNfts = (page, numberElements, status, collectionAddress, m
       collectionAddress,
       minPrice,
       maxPrice,
-      sortBy
+      sortBy,
     },
   });
 };

@@ -8,6 +8,7 @@ import {
   loadERC20Contract,
   loadERC721Contract,
   loaderContract,
+  loadFoxMasterCollectionContract,
   loadOfferSystemContract,
   OfferSystemAddress,
   web3Infura,

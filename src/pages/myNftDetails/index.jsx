@@ -9,7 +9,7 @@ import {
   ACCEPT_OFFER,
   MAKE_OFFER,
 } from "../../saga/blockchain.js/blockChainActions";
-import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
+import { AUCTION, EVENT_BUY_LISTING, EVENT_CREATE_AUCTION, EVENT_ENUM, EVENT_LISTING, EVENT_MAKE_OFFER, EVENT_PLACE_BID, EVENT_WIN_AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 import { optimizeWalletAddress, sameAddress } from "../../utils/walletUtils";
 import ListedAuctionNft from "./listedAuctionNft";
 import ListedFixedNft from "./listedFixedNft";
@@ -19,21 +19,69 @@ import { selectCurrentWallet } from "../../redux/userReducer";
 import Address from "../../components/Address";
 import Page404 from "../404/404";
 import { OwnershipTransferPopup } from "../../components/popups/popups";
-import { TRANSFERT_NFT } from "../../saga/actions";
 import Listings from "../../components/nft/listings";
 import Offers from "../../components/nft/offers";
 import PriceHistory from "../../components/nft/priceHistory";
 import ItemActivity from "../../components/nft/activity";
+import { getItemInfo } from "../../api/utilsApi";
 
 const MyNftDetails = () => {
-  const { collectionAddress, tokenID } = useParams();
-
   const connectedWallet = useSelector(selectCurrentWallet);
   const isLoading = useSelector(selectIsLoading);
   const [nftDetails, setNftDetails] = useState();
   const [collectionDetails, setCollectionDetails] = useState();
+  const [showTransferPopup, setShowTransferPopup] = useState(false);
   const dispatch = useDispatch();
+  const [itemExtraData, setItemExtraData] = useState([]);
+
+  //activitiesList priceHistoList offersList listingList
+
+  const [activitiesList, setActivitiesList] = useState([]);
+  const [priceHistoList, setPriceHistoList] = useState([]);
+  const [offersList, setOffersList] = useState([]);
+  const [listingList, setListingList] = useState([]);
+
+  const [isLoadingExtraData, setIsLoadingExtraData] = useState([]);
+
   const loaderData = useLoaderData();
+  const params = useParams();
+
+  const getExtraInfo = async () => {
+    try {
+      setIsLoadingExtraData(true);
+      
+      const responseAll = await getItemInfo(params.tokenID, params.collectionAddress);
+      setActivitiesList(responseAll.data);
+
+      const responsePriceHist = await getItemInfo(params.tokenID, params.collectionAddress, [
+        EVENT_BUY_LISTING,
+        EVENT_WIN_AUCTION,
+        ACCEPT_OFFER
+      ]);
+      setPriceHistoList(responsePriceHist.data);
+
+      const responseOfferList = await getItemInfo(params.tokenID, params.collectionAddress, [
+          EVENT_MAKE_OFFER,
+          EVENT_PLACE_BID
+      ]);
+      setOffersList(responseOfferList.data);
+
+      const responseListingList = await getItemInfo(params.tokenID, params.collectionAddress, [
+        EVENT_CREATE_AUCTION,
+        EVENT_LISTING
+      ]);
+      setListingList(responseListingList.data);
+
+    } catch(error) {
+      console.log(error);
+    } finally {
+      setIsLoadingExtraData(false);
+    }
+  };
+
+  useEffect(() => {
+    getExtraInfo();
+  }, []);
 
   useEffect(() => {
     loaderData.dataPromise
@@ -187,26 +235,55 @@ const MyNftDetails = () => {
                           onAcceptOffer={onAcceptOffer}
                         />
                       ) : null}
-                    
-                      <div className="mt-5">
-                        <PriceHistory />
-                        <Listings />
-                        <Offers />
-                        <ItemActivity />
-                      </div>
-                      <div className="card" id="fees">
-                        <div className="card-body">
-                          <div className="card-text">
-                            <ul>
-                              <li>
-                                <span>Services fees </span>
-                                <strong>1%</strong>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
                     </div>
+                  </div>
+                  <OwnershipTransferPopup
+                    popupType={showTransferPopup}
+                    popupCloseAction={() => setShowTransferPopup(false)}
+                    submitAction={(e) => {
+                      e.preventDefault();
+                      setShowTransferPopup(false);
+                    }}
+                  />
+                  <div className="mt-5">
+                    {
+                      /**
+                       * BUY WIN_ACUTION ACCET OFFER
+                       *  
+                       */
+                    }
+                    <Listings
+                      itemExtra={listingList}
+                      isLoading={isLoadingExtraData}
+                    />
+                    {
+                      /**
+                       * SEND OFFER, ACCEPT OFFER
+                       * 
+                       */
+                    }
+                    <Offers
+                      itemExtra={offersList}
+                      isLoading={isLoadingExtraData}
+                    />
+                    {
+                      /**
+                       * BUY WIN_ACUTION ACCET OFFER
+                       */
+                    }
+                    <PriceHistory
+                      itemExtra={priceHistoList}
+                      isLoading={isLoadingExtraData}
+                    />
+                    {
+                      /**
+                       * ALL
+                       */
+                    }
+                    <ItemActivity
+                      activity={activitiesList}
+                      isLoading={isLoadingExtraData}
+                    />
                   </div>
                 </div>
               )}

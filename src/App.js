@@ -31,6 +31,7 @@ import { getNftCall } from "./api/nftApi";
 import {
   getCollectionByAddress,
 } from "./api/collectionApi";
+import { getItemInfo } from "./api/utilsApi";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -165,6 +166,7 @@ const router = createBrowserRouter(
           const getCollectionPromise = getCollectionByAddress(
             params.collectionAddress
           );
+
           return defer({
             dataPromise: Promise.all([getNFTPromise, getCollectionPromise]),
           });
