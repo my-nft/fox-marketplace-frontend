@@ -6,6 +6,7 @@ import { optimizeWalletAddress } from "../../utils/walletUtils";
 import { EVENT_ENUM } from "../../utils/foxConstantes";
 import Spinner from "../Spinner";
 import { dateToUserFriendlyValue } from "../datePicker/utils";
+import Transaction from "../Transaction";
 
 const ItemActivity = ({ activity = [], isLoading }) => {
   
@@ -18,6 +19,7 @@ const ItemActivity = ({ activity = [], isLoading }) => {
           <p>From</p>
           <p>To</p>
           <p>Date</p>
+          <p>Transaction</p>
         </div>
         {activity.map((event, index) => {
           return (
@@ -39,6 +41,11 @@ const ItemActivity = ({ activity = [], isLoading }) => {
                 )}
               </p>
               <p>{dateToUserFriendlyValue(event.date_event)}</p>
+              <p>
+                <Transaction address={event.transactionId}>
+                  {optimizeWalletAddress(event.transactionId)}
+                </Transaction>
+              </p>
             </div>
           );
         })}
