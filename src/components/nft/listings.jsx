@@ -3,7 +3,9 @@ import { ReactComponent as ContentIcon } from "./../../assets/icons/content.svg"
 import { FXG_PRICE } from "../../utils/foxConstantes";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 import Address from "../Address";
+import Transaction from "../Transaction";
 import Spinner from "../Spinner";
+import { dateToUserFriendlyValue } from "../datePicker/utils";
 
 const Listings = ({ itemExtra = [], isLoading }) => {
   return (
@@ -11,16 +13,16 @@ const Listings = ({ itemExtra = [], isLoading }) => {
       <div className="infoBoxGrid infoBoxHeader">
         <p>Price</p>
         <p>USD Price</p>
-        <p>Expiration</p>
+        <p>Creation</p>
         <p>From</p>
-        <p></p>
+        <p>Transaction</p>
       </div>
       {itemExtra.map((listing, index) => {
         return (
           <div className="infoBoxGrid infoRow" key={index}>
             <p>{parseFloat(listing.price.toFixed(4))} FXG</p>
             <p>${parseFloat((Number(listing.price) * FXG_PRICE).toFixed(4))}</p>
-            <p>{listing.expiration}</p>
+            <p>{dateToUserFriendlyValue(listing.date_event)}</p>
             <p>
               {listing.fromAddress && (
                 <Address address={listing.fromAddress}>
@@ -28,7 +30,12 @@ const Listings = ({ itemExtra = [], isLoading }) => {
                 </Address>
               )}
             </p>
-            <p className="buyButton">Buy</p>
+            <p>
+              <Transaction address={listing.transactionId}>
+                {optimizeWalletAddress(listing.transactionId)}
+              </Transaction>
+            </p>
+
           </div>
         );
       })}

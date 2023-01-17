@@ -7,14 +7,16 @@ export function getStats() {
   return methods.get(utilsApiEndpoint + "stats");
 }
 
-export function getItemInfo(tokenID, collectionAddress) {
+export function getItemInfo(tokenID, collectionAddress, events) {
   return methods.get(
-    utilsApiEndpoint +
-      "events?" +
-      "tokenID=" +
-      tokenID +
-      "&collectionAddress=" +
-      collectionAddress
+    utilsApiEndpoint + "events",
+    {
+      params : {
+        tokenID,
+        collectionAddress,
+        events
+      }
+    }
   );
 }
 

@@ -9,7 +9,7 @@ import {
   ACCEPT_OFFER,
   MAKE_OFFER,
 } from "../../saga/blockchain.js/blockChainActions";
-import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
+import { AUCTION, EVENT_BUY_LISTING, EVENT_CREATE_AUCTION, EVENT_ENUM, EVENT_LISTING, EVENT_MAKE_OFFER, EVENT_PLACE_BID, EVENT_WIN_AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 import { optimizeWalletAddress, sameAddress } from "../../utils/walletUtils";
 import ListedAuctionNft from "./listedAuctionNft";
 import ListedFixedNft from "./listedFixedNft";
@@ -19,7 +19,6 @@ import { selectCurrentWallet } from "../../redux/userReducer";
 import Address from "../../components/Address";
 import Page404 from "../404/404";
 import { OwnershipTransferPopup } from "../../components/popups/popups";
-import { TRANSFERT_NFT } from "../../saga/actions";
 import Listings from "../../components/nft/listings";
 import Offers from "../../components/nft/offers";
 import PriceHistory from "../../components/nft/priceHistory";
@@ -34,23 +33,50 @@ const MyNftDetails = () => {
   const [showTransferPopup, setShowTransferPopup] = useState(false);
   const dispatch = useDispatch();
   const [itemExtraData, setItemExtraData] = useState([]);
+
+  //activitiesList priceHistoList offersList listingList
+
+  const [activitiesList, setActivitiesList] = useState([]);
+  const [priceHistoList, setPriceHistoList] = useState([]);
+  const [offersList, setOffersList] = useState([]);
+  const [listingList, setListingList] = useState([]);
+
   const [isLoadingExtraData, setIsLoadingExtraData] = useState([]);
 
   const loaderData = useLoaderData();
   const params = useParams();
 
   const getExtraInfo = async () => {
-    setIsLoadingExtraData(true);
-    await getItemInfo(params.tokenID, params.collectionAddress)
-      .then((res) => {
-        setItemExtraData(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setIsLoadingExtraData(false);
-      });
+    try {
+      setIsLoadingExtraData(true);
+      
+      const responseAll = await getItemInfo(params.tokenID, params.collectionAddress);
+      setActivitiesList(responseAll.data);
+
+      const responsePriceHist = await getItemInfo(params.tokenID, params.collectionAddress, [
+        EVENT_BUY_LISTING,
+        EVENT_WIN_AUCTION,
+        ACCEPT_OFFER
+      ]);
+      setPriceHistoList(responsePriceHist.data);
+
+      const responseOfferList = await getItemInfo(params.tokenID, params.collectionAddress, [
+          EVENT_MAKE_OFFER,
+          EVENT_PLACE_BID
+      ]);
+      setOffersList(responseOfferList.data);
+
+      const responseListingList = await getItemInfo(params.tokenID, params.collectionAddress, [
+        EVENT_CREATE_AUCTION,
+        EVENT_LISTING
+      ]);
+      setListingList(responseListingList.data);
+
+    } catch(error) {
+      console.log(error);
+    } finally {
+      setIsLoadingExtraData(false);
+    }
   };
 
   useEffect(() => {
@@ -220,20 +246,42 @@ const MyNftDetails = () => {
                     }}
                   />
                   <div className="mt-5">
+                    {
+                      /**
+                       * BUY WIN_ACUTION ACCET OFFER
+                       *  
+                       */
+                    }
                     <Listings
-                      itemExtra={itemExtraData}
+                      itemExtra={listingList}
                       isLoading={isLoadingExtraData}
                     />
+                    {
+                      /**
+                       * SEND OFFER, ACCEPT OFFER
+                       * 
+                       */
+                    }
                     <Offers
-                      itemExtra={itemExtraData}
+                      itemExtra={offersList}
                       isLoading={isLoadingExtraData}
                     />
+                    {
+                      /**
+                       * BUY WIN_ACUTION ACCET OFFER
+                       */
+                    }
                     <PriceHistory
-                      itemExtra={itemExtraData}
+                      itemExtra={priceHistoList}
                       isLoading={isLoadingExtraData}
                     />
+                    {
+                      /**
+                       * ALL
+                       */
+                    }
                     <ItemActivity
-                      activity={itemExtraData}
+                      activity={activitiesList}
                       isLoading={isLoadingExtraData}
                     />
                   </div>

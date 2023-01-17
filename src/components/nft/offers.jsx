@@ -4,6 +4,8 @@ import { FXG_PRICE } from "../../utils/foxConstantes";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 import Address from "./../Address";
 import Spinner from "../Spinner";
+import { dateToUserFriendlyValue } from "../datePicker/utils";
+import Transaction from "../Transaction";
 
 const Offers = ({ itemExtra = [], isLoading }) => {
   return (
@@ -12,23 +14,27 @@ const Offers = ({ itemExtra = [], isLoading }) => {
         <div className="infoBoxGrid infoBoxHeader">
           <p>Price</p>
           <p>USD Price</p>
-          <p>Floor Difference</p>
-          <p>Expiration</p>
+          <p>Creation</p>
           <p>From</p>
+          <p>Transaction</p>
         </div>
         {itemExtra.map((offer, index) => {
           return (
             <div className="infoBoxGrid infoRow" key={index}>
               <p>{parseFloat(offer.price.toFixed(4))} FXG</p>
               <p>${parseFloat((Number(offer.price) * FXG_PRICE).toFixed(4))}</p>
-              <p>{offer.floorDifference}</p>
-              <p>{offer.expiration}</p>
+              <p>{dateToUserFriendlyValue(offer.date_event)}</p>
               <p>
                 {offer.fromAddress && (
                   <Address address={offer.fromAddress}>
                     {optimizeWalletAddress(offer.fromAddress)}
                   </Address>
                 )}
+              </p>
+              <p>
+                <Transaction address={offer.transactionId}>
+                  {optimizeWalletAddress(offer.transactionId)}
+                </Transaction>
               </p>
             </div>
           );
