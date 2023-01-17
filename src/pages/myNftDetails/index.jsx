@@ -9,7 +9,7 @@ import {
   ACCEPT_OFFER,
   MAKE_OFFER,
 } from "../../saga/blockchain.js/blockChainActions";
-import { AUCTION, EVENT_BUY_LISTING, EVENT_CREATE_AUCTION, EVENT_ENUM, EVENT_LISTING, EVENT_MAKE_OFFER, EVENT_PLACE_BID, EVENT_WIN_AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
+import { AUCTION, EVENT_ACCEPT_OFFER, EVENT_BUY_LISTING, EVENT_CREATE_AUCTION, EVENT_ENUM, EVENT_LISTING, EVENT_MAKE_OFFER, EVENT_PLACE_BID, EVENT_WIN_AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 import { optimizeWalletAddress, sameAddress } from "../../utils/walletUtils";
 import ListedAuctionNft from "./listedAuctionNft";
 import ListedFixedNft from "./listedFixedNft";
@@ -56,7 +56,7 @@ const MyNftDetails = () => {
       const responsePriceHist = await getItemInfo(params.tokenID, params.collectionAddress, [
         EVENT_BUY_LISTING,
         EVENT_WIN_AUCTION,
-        ACCEPT_OFFER
+        EVENT_ACCEPT_OFFER
       ]);
       setPriceHistoList(responsePriceHist.data);
 
