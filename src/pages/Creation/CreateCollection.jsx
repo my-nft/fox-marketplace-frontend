@@ -130,9 +130,9 @@ const CreateCollection = () => {
               </label>
             </div>
             <div className="col-md-8 col-sm-12 mb-5 text-left px-5">
-              <h3>Collection Info</h3>
+              <h3 className="mb-3">Collection Info</h3>
               <div>
-                <div className="form-row">
+                <div className="form-row mb-5">
                   <div className="form-group col-md-6">
                     <label htmlFor="inputTokName">Collection Token Name</label>
                     <input
@@ -168,16 +168,16 @@ const CreateCollection = () => {
                   </div>
                 </div>
 
-                <h4 className="mt-4">Description</h4>
+                <h3 className="mt-4">Description</h3>
                 <div className="form-row">
                   <div className="form-group col-md-12">
-                    <label htmlFor="ItemDescription">Item Description</label>
                     <textarea
                       className="form-control"
                       id="ItemDescription"
                       rows="2"
                       name="description"
                       required
+                      placeholder="Item Description"
                     ></textarea>
                   </div>
                 </div>
@@ -213,7 +213,7 @@ const CreateCollection = () => {
                   </div>
                 </div>
 
-                <button type="submit" className="btn">
+                <button type="submit" className="btn py-3 px-5">
                   Create Collection
                 </button>
               </div>

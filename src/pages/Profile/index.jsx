@@ -7,7 +7,13 @@ import { selectCurrentWallet } from "../../redux/userReducer";
 import Address from "../../components/Address";
 import { toast } from "react-toastify";
 
-const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
+const Profile = ({
+  values,
+  handleChange,
+  isSubmitting,
+  handleSubmit,
+  setFieldValue,
+}) => {
   const [imageUrl, setImageUrl] = useState(null);
   const [bannerUrl, setBannerUrl] = useState(null);
 
@@ -88,13 +94,27 @@ const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
                         />
                       </div>
                       <div className="form-group col-md-12">
-                        <label htmlFor="bio">Bio</label>
+                        <label
+                          htmlFor="bio"
+                          className="d-flex justify-content-between"
+                        >
+                          Bio
+                          <span className="ml-auto d-block opaque">
+                            {values.bio.length}/250
+                          </span>
+                        </label>
                         <textarea
-                          maxLength="140"
+                          maxLength="250"
                           placeholder="Tell the world your story!"
                           id="bio"
                           name="bio"
-                          onChange={handleChange}
+                          onChange={(e) => {
+                            if (values.bio.length < 250) {
+                              handleChange(e);
+                            } else {
+                              setFieldValue("bio", e.target.value);
+                            }
+                          }}
                           className="form-control"
                           value={values.bio}
                         ></textarea>
@@ -124,7 +144,7 @@ const Profile = ({ values, handleChange, isSubmitting, handleSubmit }) => {
                           // onChange={handleChange}
                         />
                       </div>
-                      <div id="socialConnection">
+                      <div id="socialConnection" className="mt-3">
                         <h3>Social Connections</h3>
                         <h6>
                           Help collectors verify your account by connecting

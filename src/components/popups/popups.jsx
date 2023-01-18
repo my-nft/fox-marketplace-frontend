@@ -43,7 +43,9 @@ const EntryField = ({ type, submitAction }) => {
           </div>
         )}
       </div>
-      <button type="submit">Add Property</button>
+      <button className="mt-5" type="submit">
+        Add Property
+      </button>
     </form>
   );
 };
@@ -89,36 +91,45 @@ export const CreateNFTPopup = ({
           {nftData[popupTitle] &&
             nftData[popupTitle].map((item, index) => {
               return (
-                <div key={index} className="popup-existing-value">
-                  <p>{item.trait_type}</p>
-                  {
-                    <div>
-                      {popupTitle === "attributes" ? (
-                        <p>{item.value}</p>
-                      ) : popupTitle === "levels" ? (
-                        <>
-                          <progress value={item.valueMin} max={item.valueMax} />
-                          <p>
-                            {item.valueMin} of {item.valueMax}
-                          </p>
-                        </>
-                      ) : (
-                        <p>{item.value}</p>
-                      )}
-                    </div>
-                  }
-                  <p>{item.value}</p>
-                  <p
-                    className="trait-remove"
-                    onClick={() =>
-                      handleRemoveFromArray(popupTitle, {
-                        name: item.name,
-                      })
+                <>
+                  <div className="popup-values-header mt-2">
+                    <p>Name</p>
+                    <p>Value</p>
+                  </div>
+                  <div key={index} className="popup-existing-value mb-4">
+                    <p>{item.trait_type}</p>
+                    {
+                      <div>
+                        {popupTitle === "attributes" ? (
+                          <p>{item.value}</p>
+                        ) : popupTitle === "levels" ? (
+                          <>
+                            <progress
+                              value={item.valueMin}
+                              max={item.valueMax}
+                            />
+                            <p>
+                              {item.valueMin} of {item.valueMax}
+                            </p>
+                          </>
+                        ) : (
+                          <p>{item.value}</p>
+                        )}
+                      </div>
                     }
-                  >
-                    Remove
-                  </p>
-                </div>
+                    {/* <p>{item.value}</p> */}
+                    <p
+                      className="trait-remove "
+                      onClick={() =>
+                        handleRemoveFromArray(popupTitle, {
+                          name: item.name,
+                        })
+                      }
+                    >
+                      Remove
+                    </p>
+                  </div>
+                </>
               );
             })}
         </div>

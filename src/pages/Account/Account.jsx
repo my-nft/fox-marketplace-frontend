@@ -135,7 +135,7 @@ const AccountPage = () => {
   return (
     <div>
       {isLoading ? (
-        <Spinner />
+        <Spinner pageLoader />
       ) : (
         <>
           <AccountHeader user={user} />

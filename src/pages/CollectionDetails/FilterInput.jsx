@@ -1,4 +1,6 @@
 import SearchBar from "../../components/searchBar/searchBar";
+import CustomSelect from "../../components/Select";
+import { SORT_ENUM } from "../../utils/foxConstantes";
 import OpenCloseButton from "./../../components/buttons/openClose";
 
 const FilterInput = ({
@@ -19,7 +21,7 @@ const FilterInput = ({
           placeholder="Search NFTs, collections, artist and genres..."
         />
 
-        <select
+        {/* <select
           value={filters.sortBy}
           onChange={(e) =>
             changeFilterValue({
@@ -33,7 +35,92 @@ const FilterInput = ({
           <option value="RECENTLY_LISTED">Recently listed</option>
           <option value="RECENTLY_CREATED">Recently created</option>
           <option value="RECENTLY_SOLD">Recently sold</option>
-        </select>
+        </select> */}
+
+        <div className="filterSelect accountSelect">
+          <CustomSelect
+            value={{
+              value: filters.sortBy,
+              label: SORT_ENUM[filters.sortBy],
+            }}
+            onChange={(e) => {
+              console.log(e);
+              changeFilterValue({ ...filters, sortBy: e.value });
+            }}
+            options={[
+              { value: "RECENTLY_LISTED", label: "Recently Listed" },
+              { value: "PRICE_ASC", label: "Price Ascending" },
+              { value: "PRICE_DESC", label: "Price Descending" },
+              { value: "RECENTLY_CREATED", label: "Recently Created" },
+              { value: "RECENTLY_SOLD", label: "Recently Sold" },
+              { value: "RECENTLY_CREATED", label: "Recently Created" },
+            ]}
+            isSearchable={false}
+            styles={{
+              control: (provided) => ({
+                ...provided,
+                border: "none",
+                boxShadow: "none",
+                backgroundColor: "transparent",
+                cursor: "pointer",
+                position: "relative",
+                zIndex: 1000,
+                ":hover": {
+                  color: "#f58103",
+                },
+              }),
+              menu: (provided) => ({
+                ...provided,
+                backgroundColor: "#15191d",
+                border: "1px solid #f58103",
+                borderRadius: "8px",
+                boxShadow: "0px 4px 4px #f5800373",
+                boxShadow: "none",
+                width: "calc(100% + 32px)",
+                transform: "translate(-16px, 16px)",
+              }),
+              menuList: (provided) => ({
+                ...provided,
+                padding: 0,
+              }),
+              // style dropdown indicator when is opened
+              dropdownIndicator: (provided, state) => ({
+                ...provided,
+                color: state.selectProps.menuIsOpen ? "#f58103" : "#fff",
+                transform: state.selectProps.menuIsOpen && "rotate(180deg)",
+                transition: "all 0.3s ease-in-out",
+                ":hover": {
+                  color: "#f58103",
+                },
+              }),
+              //style vertical line
+              indicatorSeparator: (provided) => ({
+                ...provided,
+                backgroundColor: "transparent",
+              }),
+
+              option: (provided) => ({
+                ...provided,
+                backgroundColor: "transparent",
+                color: "#FFFFFF",
+                cursor: "pointer",
+                position: "relative",
+                zIndex: 1000,
+                padding: "8px 24px 12px",
+                ":hover": {
+                  backgroundColor: "#f58103",
+                  color: "#fff",
+                },
+              }),
+              singleValue: (provided) => ({
+                ...provided,
+                color: "#FFFFFF",
+                padding: "0px 8px",
+                margin: 0,
+              }),
+            }}
+          />
+        </div>
 
         <ul id="chooseLayout">
           <li>
@@ -77,7 +164,11 @@ const FilterInput = ({
           </li>
         </ul>
       </div>
-      <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <ul
+        className="nav pillsCategories mt-3 nav-pills mb-3"
+        id="pills-tab"
+        role="tablist"
+      >
         <li className="nav-item" role="presentation">
           <button
             className="nav-link active"

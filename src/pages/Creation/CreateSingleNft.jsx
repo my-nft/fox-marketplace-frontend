@@ -17,7 +17,6 @@ const CreateSingleNft = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const collectionAddress = searchParams.get("collectionAddress");
 
-
   useEffect(() => {
     dispatch(setIsLoading(false));
   }, []);
@@ -181,8 +180,8 @@ const CreateSingleNft = () => {
             </div>
             <div className="col-md-8 col-sm-12 mb-5 text-left px-5">
               <h3>Item Info</h3>
-              <div>
-                <div className="form-row">
+              <div className="">
+                <div className="form-row mb-5">
                   <div className="form-group col-md-6">
                     <label htmlFor="inputArtName">Artwork Name</label>
                     <input
@@ -209,9 +208,8 @@ const CreateSingleNft = () => {
                 </div>
 
                 <h3 className="mt-4">Description</h3>
-                <div className="form-row">
+                <div className="form-row mb-3">
                   <div className="form-group col-md-12">
-                    <label htmlFor="ItemDescription">Item Description</label>
                     <textarea
                       className="form-control"
                       id="ItemDescription"
@@ -219,11 +217,12 @@ const CreateSingleNft = () => {
                       name="description"
                       onChange={(e) => handleChange(e)}
                       required
+                      placeholder="Item Description"
                     ></textarea>
                   </div>
                 </div>
-                <h3 className="mt-12 mb-1">Attributes</h3>
-                <p className="text-white mb-3 ">
+                <h3 className="mt-5 mb-1">Attributes</h3>
+                <p className="text-white mb-3 opaque ">
                   Textual traits that show up as rectangles
                 </p>
                 <div className="form-row mb-4 mt-4 mb-5">
@@ -297,7 +296,7 @@ const CreateSingleNft = () => {
                   </div>
                 </div> */}
 
-                <button type="submit" className="btn">
+                <button type="submit" className="btn py-3 px-5">
                   Create NFT
                 </button>
               </div>
