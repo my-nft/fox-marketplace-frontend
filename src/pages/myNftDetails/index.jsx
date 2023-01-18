@@ -9,7 +9,18 @@ import {
   ACCEPT_OFFER,
   MAKE_OFFER,
 } from "../../saga/blockchain.js/blockChainActions";
-import { AUCTION, EVENT_ACCEPT_OFFER, EVENT_BUY_LISTING, EVENT_CREATE_AUCTION, EVENT_ENUM, EVENT_LISTING, EVENT_MAKE_OFFER, EVENT_PLACE_BID, EVENT_WIN_AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
+import {
+  AUCTION,
+  EVENT_ACCEPT_OFFER,
+  EVENT_BUY_LISTING,
+  EVENT_CREATE_AUCTION,
+  EVENT_ENUM,
+  EVENT_LISTING,
+  EVENT_MAKE_OFFER,
+  EVENT_PLACE_BID,
+  EVENT_WIN_AUCTION,
+  FIXED_PRICE,
+} from "../../utils/foxConstantes";
 import { optimizeWalletAddress, sameAddress } from "../../utils/walletUtils";
 import ListedAuctionNft from "./listedAuctionNft";
 import ListedFixedNft from "./listedFixedNft";
@@ -49,30 +60,34 @@ const MyNftDetails = () => {
   const getExtraInfo = async () => {
     try {
       setIsLoadingExtraData(true);
-      
-      const responseAll = await getItemInfo(params.tokenID, params.collectionAddress);
+
+      const responseAll = await getItemInfo(
+        params.tokenID,
+        params.collectionAddress
+      );
       setActivitiesList(responseAll.data);
 
-      const responsePriceHist = await getItemInfo(params.tokenID, params.collectionAddress, [
-        EVENT_BUY_LISTING,
-        EVENT_WIN_AUCTION,
-        EVENT_ACCEPT_OFFER
-      ]);
+      const responsePriceHist = await getItemInfo(
+        params.tokenID,
+        params.collectionAddress,
+        [EVENT_BUY_LISTING, EVENT_WIN_AUCTION, EVENT_ACCEPT_OFFER]
+      );
       setPriceHistoList(responsePriceHist.data);
 
-      const responseOfferList = await getItemInfo(params.tokenID, params.collectionAddress, [
-          EVENT_MAKE_OFFER,
-          EVENT_PLACE_BID
-      ]);
+      const responseOfferList = await getItemInfo(
+        params.tokenID,
+        params.collectionAddress,
+        [EVENT_MAKE_OFFER, EVENT_PLACE_BID]
+      );
       setOffersList(responseOfferList.data);
 
-      const responseListingList = await getItemInfo(params.tokenID, params.collectionAddress, [
-        EVENT_CREATE_AUCTION,
-        EVENT_LISTING
-      ]);
+      const responseListingList = await getItemInfo(
+        params.tokenID,
+        params.collectionAddress,
+        [EVENT_CREATE_AUCTION, EVENT_LISTING]
+      );
       setListingList(responseListingList.data);
-
-    } catch(error) {
+    } catch (error) {
       console.log(error);
     } finally {
       setIsLoadingExtraData(false);
@@ -110,13 +125,12 @@ const MyNftDetails = () => {
   };
 
   const onAcceptOffer = (bestOffer) => {
-    console.log("#########################")
-    console.log("#########################")
-    console.log("#########################")
-    console.log("#########################")
-    console.log("connectedWallet ", connectedWallet)
-    console.log("to ", bestOffer.offerOwner)
-
+    console.log("#########################");
+    console.log("#########################");
+    console.log("#########################");
+    console.log("#########################");
+    console.log("connectedWallet ", connectedWallet);
+    console.log("to ", bestOffer.offerOwner);
 
     const { royaltyAddress, royaltyPercent } = collectionDetails;
     dispatch({
@@ -157,7 +171,7 @@ const MyNftDetails = () => {
                     </Link>
                   </h3>
                   <div className="row">
-                    <div className="col-md-12  col-lg-5 order-2 order-lg-1 ">
+                    <div className="col-md-12  col-lg-5 order-1 order-lg-1 ">
                       <div id="imgNft" className="imgForSale">
                         <img
                           src={nftDetails?.image}
@@ -170,7 +184,7 @@ const MyNftDetails = () => {
                         collectionDetails={collectionDetails}
                       />
                     </div>
-                    <div className="col-md-12  col-lg-7 order-1 order-lg-2 ">
+                    <div className="mt-5 mt-lg-0 col-md-12  col-lg-7 order-2 order-lg-2 ">
                       <header id="infoNFT" className="mb-3">
                         <h3>
                           {`${nftDetails?.name}(${nftDetails?.tokenID})`}{" "}
@@ -243,6 +257,24 @@ const MyNftDetails = () => {
                           onAcceptOffer={onAcceptOffer}
                         />
                       ) : null}
+                      <div className="my-4">
+                        {/**
+                         * BUY WIN_ACUTION ACCET OFFER
+                         *
+                         */}
+                        <Listings
+                          itemExtra={listingList}
+                          isLoading={isLoadingExtraData}
+                        />
+                        {/**
+                         * SEND OFFER, ACCEPT OFFER
+                         *
+                         */}
+                        <Offers
+                          itemExtra={offersList}
+                          isLoading={isLoadingExtraData}
+                        />
+                      </div>
                     </div>
                   </div>
                   <OwnershipTransferPopup
@@ -254,40 +286,16 @@ const MyNftDetails = () => {
                     }}
                   />
                   <div className="mt-5">
-                    {
-                      /**
-                       * BUY WIN_ACUTION ACCET OFFER
-                       *  
-                       */
-                    }
-                    <Listings
-                      itemExtra={listingList}
-                      isLoading={isLoadingExtraData}
-                    />
-                    {
-                      /**
-                       * SEND OFFER, ACCEPT OFFER
-                       * 
-                       */
-                    }
-                    <Offers
-                      itemExtra={offersList}
-                      isLoading={isLoadingExtraData}
-                    />
-                    {
-                      /**
-                       * BUY WIN_ACUTION ACCET OFFER
-                       */
-                    }
+                    {/**
+                     * BUY WIN_ACUTION ACCET OFFER
+                     */}
                     <PriceHistory
                       itemExtra={priceHistoList}
                       isLoading={isLoadingExtraData}
                     />
-                    {
-                      /**
-                       * ALL
-                       */
-                    }
+                    {/**
+                     * ALL
+                     */}
                     <ItemActivity
                       activity={activitiesList}
                       isLoading={isLoadingExtraData}

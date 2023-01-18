@@ -160,6 +160,9 @@
 }
 
 @media screen and (max-width: 860px) {
+  .infoRow p {
+    font-size: 12px;
+  }
   .wrapperMostPopular {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -301,6 +304,21 @@
 }
 
 @media (max-width: 575px) {
+  .infoRow p {
+    font-size: 10px;
+  }
+  .infoBoxHeader p {
+    font-size: 14px;
+  }
+  .infoRow {
+    padding: 12px;
+  }
+  .infoBoxHeader {
+    padding: 12px;
+  }
+  .itemInfoHeader {
+    padding: 12px;
+  }
   #headerInput {
     display: flex !important;
     flex-direction: column !important;
