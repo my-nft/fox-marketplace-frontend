@@ -257,24 +257,6 @@ const MyNftDetails = () => {
                           onAcceptOffer={onAcceptOffer}
                         />
                       ) : null}
-                      <div className="my-4">
-                        {/**
-                         * BUY WIN_ACUTION ACCET OFFER
-                         *
-                         */}
-                        <Listings
-                          itemExtra={listingList}
-                          isLoading={isLoadingExtraData}
-                        />
-                        {/**
-                         * SEND OFFER, ACCEPT OFFER
-                         *
-                         */}
-                        <Offers
-                          itemExtra={offersList}
-                          isLoading={isLoadingExtraData}
-                        />
-                      </div>
                     </div>
                   </div>
                   <OwnershipTransferPopup
@@ -286,6 +268,22 @@ const MyNftDetails = () => {
                     }}
                   />
                   <div className="mt-5">
+                    {/**
+                     * BUY WIN_ACUTION ACCET OFFER
+                     *
+                     */}
+                    <Listings
+                      itemExtra={listingList}
+                      isLoading={isLoadingExtraData}
+                    />
+                    {/**
+                     * SEND OFFER, ACCEPT OFFER
+                     *
+                     */}
+                    <Offers
+                      itemExtra={offersList}
+                      isLoading={isLoadingExtraData}
+                    />
                     {/**
                      * BUY WIN_ACUTION ACCET OFFER
                      */}

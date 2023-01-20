@@ -6,8 +6,22 @@ import Address from "../Address";
 import Transaction from "../Transaction";
 import Spinner from "../Spinner";
 import { dateToUserFriendlyValue } from "../datePicker/utils";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useEffect, useState } from "react";
 
 const Listings = ({ itemExtra = [], isLoading }) => {
+  const [dataForRender, setDataForRender] = useState(itemExtra.slice(0, 8));
+  const [hasMore, setHasMore] = useState(true);
+
+  useEffect(() => {
+    if (dataForRender.length >= itemExtra.length) {
+      setHasMore(false);
+    }
+  }, [dataForRender]);
+
+  const updateAction = () => {
+    setDataForRender(itemExtra.slice(0, dataForRender.length + 8));
+  };
   return (
     <InfoBoxWrapper title="Listings">
       <div className="infoBoxGrid infoBoxHeader">
@@ -17,7 +31,40 @@ const Listings = ({ itemExtra = [], isLoading }) => {
         <p>From</p>
         <p>Transaction</p>
       </div>
-      {itemExtra.map((listing, index) => {
+      {itemExtra.length > 0 && (
+        <InfiniteScroll
+          dataLength={dataForRender.length}
+          next={updateAction}
+          loader={<Spinner />}
+          hasMore={hasMore}
+          height={400}
+        >
+          {dataForRender.map((listing, index) => {
+            return (
+              <div className="infoBoxGrid infoRow" key={index}>
+                <p>{parseFloat(listing.price.toFixed(4))} FXG</p>
+                <p>
+                  ${parseFloat((Number(listing.price) * FXG_PRICE).toFixed(4))}
+                </p>
+                <p>{dateToUserFriendlyValue(listing.date_event)}</p>
+                <p>
+                  {listing.fromAddress && (
+                    <Address address={listing.fromAddress}>
+                      {optimizeWalletAddress(listing.fromAddress)}
+                    </Address>
+                  )}
+                </p>
+                <p>
+                  <Transaction address={listing.transactionId}>
+                    {optimizeWalletAddress(listing.transactionId)}
+                  </Transaction>
+                </p>
+              </div>
+            );
+          })}
+        </InfiniteScroll>
+      )}
+      {/* {itemExtra.map((listing, index) => {
         return (
           <div className="infoBoxGrid infoRow" key={index}>
             <p>{parseFloat(listing.price.toFixed(4))} FXG</p>
@@ -35,10 +82,9 @@ const Listings = ({ itemExtra = [], isLoading }) => {
                 {optimizeWalletAddress(listing.transactionId)}
               </Transaction>
             </p>
-
           </div>
         );
-      })}
+      })} */}
       {isLoading && (
         <Spinner>
           <p>Fetching Data</p>
