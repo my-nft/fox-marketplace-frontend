@@ -1,6 +1,6 @@
 import InfoBoxWrapper from "./infoBoxWrapper";
 import { ReactComponent as ContentIcon } from "./../../assets/icons/content.svg";
-import { FXG_PRICE } from "../../utils/foxConstantes";
+import { EVENT_ENUM, FXG_PRICE } from "../../utils/foxConstantes";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 import Address from "./../Address";
 import Spinner from "../Spinner";
@@ -27,6 +27,7 @@ const Offers = ({ itemExtra = [], isLoading }) => {
     <InfoBoxWrapper title={"Offers"}>
       <div className="offers">
         <div className="infoBoxGrid infoBoxHeader">
+          <p>Event</p>
           <p>Price</p>
           <p>USD Price</p>
           <p>Creation</p>
@@ -44,6 +45,7 @@ const Offers = ({ itemExtra = [], isLoading }) => {
             {dataForRender.map((offer, index) => {
               return (
                 <div className="infoBoxGrid infoRow" key={index}>
+                   <p>{EVENT_ENUM[offer.event]}</p>
                   <p>{parseFloat(offer.price.toFixed(4))} FXG</p>
                   <p>
                     ${parseFloat((Number(offer.price) * FXG_PRICE).toFixed(4))}
