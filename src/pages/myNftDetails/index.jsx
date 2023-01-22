@@ -43,7 +43,6 @@ const MyNftDetails = () => {
   const [collectionDetails, setCollectionDetails] = useState();
   const [showTransferPopup, setShowTransferPopup] = useState(false);
   const dispatch = useDispatch();
-  const [itemExtraData, setItemExtraData] = useState([]);
 
   //activitiesList priceHistoList offersList listingList
 
@@ -87,6 +86,8 @@ const MyNftDetails = () => {
         [EVENT_CREATE_AUCTION, EVENT_LISTING]
       );
       setListingList(responseListingList.data);
+
+      
     } catch (error) {
       console.log(error);
     } finally {
@@ -103,6 +104,7 @@ const MyNftDetails = () => {
       .then((data) => {
         setNftDetails(data[0].data);
         setCollectionDetails(data[1].data.collection);
+        dispatch(setIsLoading(false));
       })
       .catch((err) => {
         console.log(err);
@@ -125,12 +127,6 @@ const MyNftDetails = () => {
   };
 
   const onAcceptOffer = (bestOffer) => {
-    console.log("#########################");
-    console.log("#########################");
-    console.log("#########################");
-    console.log("#########################");
-    console.log("connectedWallet ", connectedWallet);
-    console.log("to ", bestOffer.offerOwner);
 
     const { royaltyAddress, royaltyPercent } = collectionDetails;
     dispatch({
@@ -145,7 +141,7 @@ const MyNftDetails = () => {
 
         from: nftDetails.ownerAddress,
         to: bestOffer.offerOwner,
-        price: Number(bestOffer.price),
+        price: Number(bestOffer),
       },
       onSuccess: (nft) => setNftDetails(nft),
     });

@@ -27,7 +27,7 @@ const CardBody = ({
           </p>
         ) : null}
 
-        {bestOffer ? (
+        {bestOffer && bestOffer.price ? (
           <>
             <h5>Best offer</h5>
             <p id="price">
@@ -37,7 +37,7 @@ const CardBody = ({
               </span>
             </p>
             {sameAddress(currentWallet, ownerAddress) ? (
-              <button id="makeOffer" className="btn" onClick={() => onAcceptOffer(bestOffer)}>
+              <button id="makeOffer" className="btn" onClick={() => onAcceptOffer(bestOffer.price)}>
                 Accept Offer
               </button>
             ) : null}
