@@ -126,6 +126,7 @@ function* runMakeOffer(action) {
       collectionAddress,
       tokenID,
       price,
+      token
     });
 
     postTraceTransaction(

@@ -22,6 +22,9 @@ const Listings = ({ itemExtra = [], isLoading }) => {
   const updateAction = () => {
     setDataForRender(itemExtra.slice(0, dataForRender.length + 8));
   };
+
+  console.log("############");
+  console.log(itemExtra);
   return (
     <InfoBoxWrapper title="Listings">
       <div className="infoBoxGrid infoBoxHeader">
@@ -34,13 +37,13 @@ const Listings = ({ itemExtra = [], isLoading }) => {
       </div>
       {itemExtra.length > 0 && (
         <InfiniteScroll
-          dataLength={dataForRender.length}
+          dataLength={itemExtra.length}
           next={updateAction}
           loader={<Spinner />}
           hasMore={hasMore}
           height={400}
         >
-          {dataForRender.map((listing, index) => {
+          {itemExtra.map((listing, index) => {
             return (
               <div className="infoBoxGrid infoRow" key={index}>
                 <p>{EVENT_ENUM[listing.event]}</p>
