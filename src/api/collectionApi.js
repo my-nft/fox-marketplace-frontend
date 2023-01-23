@@ -7,7 +7,7 @@ export function importCollectionCall(collectionAddress, token, sameOrigin) {
   return methods.post(`${collectionEndpoint}${collectionAddress}/import`, {} ,{
     headers: {
       Authorization: "Bearer " + token,
-      'same-origin': sameOrigin? true : false
+      'from-site': sameOrigin? true : false
     },
   });
 }
