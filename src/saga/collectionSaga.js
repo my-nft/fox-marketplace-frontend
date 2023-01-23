@@ -108,7 +108,7 @@ function* runMintCollection(action) {
       symbol: data.symbol
     });
 
-    yield call(api.importCollectionCall, collectionAddress, token);
+    yield call(api.importCollectionCall, collectionAddress, token, true);
 
     yield call(
       api.updateCollection,

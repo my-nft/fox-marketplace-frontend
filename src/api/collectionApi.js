@@ -3,10 +3,11 @@ import methods from "../config/axiosConfig";
 
 const collectionEndpoint = apiUrl + "collections/";
 
-export function importCollectionCall(collectionAddress, token) {
+export function importCollectionCall(collectionAddress, token, sameOrigin) {
   return methods.post(`${collectionEndpoint}${collectionAddress}/import`, {} ,{
     headers: {
       Authorization: "Bearer " + token,
+      'same-origin': sameOrigin? true : false
     },
   });
 }
