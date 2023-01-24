@@ -87,23 +87,21 @@ const HeaderAccount = ({ collectionData }) => {
           </ul>
           <ul id="totalItemsPrice">
             <li>
-              <span>total Volume</span>
               <p>
-                {collectionData.totalVolume ? collectionData.totalVolume : "-"}{" "}
-                FXG
+                {collectionData.totalVolume} {collectionData.chain}
               </p>
+              <span>total Volume</span>
             </li>
             <li>
               <span>floor price</span>
               <p>
-                {collectionData.floorPrice ? collectionData.floorPrice : "-"}{" "}
-                FXG
+                {collectionData.floorPrice} {collectionData.chain}
               </p>
             </li>
             <li>
               <span>best offer</span>
               <p>
-                {collectionData.bestOffer ? collectionData.bestOffer : "-"} FXG
+                {collectionData.bestOffer} {collectionData.chain}
               </p>
             </li>
             <li>

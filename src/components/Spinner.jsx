@@ -1,9 +1,7 @@
-const Spinner = ({ children, pageLoader = false }) => {
+const Spinner = ({ children }) => {
   return (
-    <div className={`loader ${pageLoader && "pageLoader"}`}>
-      <div className="loaderShadow">
-        <img src="/assets/images/Logo_fox.png" alt="Loading..." />
-      </div>
+    <div className="loader">
+      <img src="/assets/images/Logo_fox.png" alt="Loading..." />
       <div className="loaderMessage">{children}</div>
     </div>
   );

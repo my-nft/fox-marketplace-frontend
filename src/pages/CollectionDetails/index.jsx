@@ -125,6 +125,7 @@ const CollectionDetails = () => {
         );
 
         setNfts(nftsElements.data);
+        
       }
     } catch (error) {
       console.log(error);
@@ -180,9 +181,10 @@ const CollectionDetails = () => {
       };
     }
   }, [collectionDetails]);
+  
 
   return (
-    <Suspense fallback={<Spinner pageLoader />}>
+    <Suspense fallback={<Spinner />}>
       <Await resolve={loaderData.dataPromise} errorElement={<Page404 />}>
         {() => {
           return (

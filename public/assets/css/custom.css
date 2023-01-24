@@ -19,7 +19,6 @@ ul {
 
 * {
   box-sizing: border-box;
-  transition: 300ms ease-in-out;
 }
 
 html {
@@ -291,10 +290,6 @@ ul#buttonIcon {
   border: none;
   padding: 5px 20px;
   color: white;
-}
-
-#signUpButton:hover {
-  background-color: #ca6901;
 }
 
 #formSearch {
@@ -1187,39 +1182,7 @@ footer a:hover {
 .entry-fields {
   display: flex;
 
-  gap: 32px;
-}
-
-.entry-field input {
-  width: 100%;
-  height: 40px;
-  border: none;
-  padding: 0 16px;
-  font-size: 16px;
-  color: #fff;
-  background: none;
-  outline: none;
-  border-bottom: 1px solid #fff;
-  transition: 300ms ease-in-out;
-}
-
-.popup-values-header {
-  display: flex;
-  align-items: center;
   gap: 24px;
-  color: #f58103;
-}
-
-.popup-values-header p {
-  margin: 0;
-}
-
-.form-row {
-  row-gap: 16px;
-}
-
-.entry-field input:focus {
-  border-bottom: 1px solid #ff7000;
 }
 
 .entry-field label {
@@ -1228,10 +1191,6 @@ footer a:hover {
   font-weight: 700;
   margin-bottom: 8px;
   display: block;
-}
-
-input[name="royaltyAddress"] {
-  height: 50px;
 }
 
 .onoffbtn {
@@ -1576,11 +1535,6 @@ input[type="radio"] {
   align-items: end;
 }
 
-#createItem h3,
-#createCollection h3 {
-  font-size: 24px;
-}
-
 #createItem,
 #importItem {
   width: 75%;
@@ -1601,17 +1555,11 @@ input[type="radio"] {
 
 #createItem button,
 #importItem button {
-  padding: 12px 48px;
+  padding: 5px 35px;
   border: none;
   color: white;
-  background-color: #f58103;
+  background-color: #ff9a1b;
   border-radius: 10px;
-  font-weight: 600;
-}
-
-#createItem button:hover,
-#importItem button:hover {
-  background-color: #ca6901;
 }
 
 #createItem li {
@@ -1622,9 +1570,6 @@ input[type="radio"] {
 .contIcon,
 .contIcon img {
   transition: all 1s ease;
-  cursor: pointer;
-  min-width: 150px;
-  min-height: 150px;
 }
 
 .withGlow {
@@ -1640,18 +1585,6 @@ img.withGlow.active {
   background-color: #2bf62a;
 }
 
-.createButton:hover button {
-  background-color: rgb(27, 255, 27) !important;
-}
-
-.createButton:hover img,
-.createButton:hover .contIcon {
-  -webkit-filter: drop-shadow(0px 4px 12px rgb(27, 255, 27));
-}
-.createButton:hover img {
-  border: 3px solid rgb(27, 255, 27) !important;
-}
-
 #importItem img.withGlow.active,
 #createItem img.withGlow.active {
   -webkit-filter: drop-shadow(0px 4px 12px rgb(27, 255, 27));
@@ -1659,7 +1592,6 @@ img.withGlow.active {
 #importSubmit.contIcon {
   -webkit-filter: none;
 }
-
 #importSubmit.contIcon.active {
   -webkit-filter: drop-shadow(0px 4px 12px rgb(27, 255, 27));
   background-color: #2bf62a;
@@ -1726,30 +1658,22 @@ img.withGlow.active {
   position: relative;
 }
 
-.loader .loaderShadow {
-  width: 104px;
-  height: 104px;
-  position: relative;
-}
-
 .loader img {
   position: relative;
   z-index: 5;
-  height: 104px;
-  width: 104px;
+  width: 100%;
+  height: 100%;
   vertical-align: unset;
   object-fit: contain;
-
   animation: loaderImgSpin 3s cubic-bezier(0.82, -0.01, 0.28, 1.01) forwards
     infinite;
 }
 
-.loader .loaderShadow::before {
+.loader::before {
   position: absolute;
   content: "";
-  width: 40%;
-  height: 40%;
-  display: block;
+  width: 30%;
+  height: 30%;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -1763,7 +1687,7 @@ img.withGlow.active {
     transform: rotate(0deg) scale(1);
   }
   85% {
-    transform: rotate(360deg) scale(1.2);
+    transform: rotate(360deg) scale(1.1);
   }
   100% {
     transform: rotate(360deg) scale(1);
@@ -1775,7 +1699,7 @@ img.withGlow.active {
     box-shadow: 0 0 0 0 rgba(255, 154, 27, 0);
   }
   50% {
-    box-shadow: 0 0 24px 48px rgba(255, 154, 27, 0.24);
+    box-shadow: 0 0 24px 40px rgba(255, 154, 27, 0.24);
   }
   100% {
     box-shadow: 0 0 0 10px rgba(255, 154, 27, 0);
@@ -1803,12 +1727,6 @@ img.withGlow.active {
   box-sizing: border-box;
   background-clip: padding-box;
   display: block;
-  cursor: pointer;
-}
-
-#upload:hover {
-  border: 3px solid #ff9a1b;
-  background: #ff9a1b;
 }
 
 #upload div {
@@ -1820,9 +1738,7 @@ img.withGlow.active {
 }
 
 #upload div p {
-  margin: 12px 0 0px 0;
-  font-size: 18px;
-  font-weight: 600;
+  margin: 0 0 10px 0;
 }
 
 #upload div span {
@@ -1855,11 +1771,7 @@ img.withGlow.active {
   border-bottom: 1px solid white;
   border-radius: 0;
   width: 85% !important;
-  padding: 12px 16px 16px;
-}
-
-.opaque {
-  opacity: 0.5;
+  padding: 0;
 }
 
 #createCollection select {
@@ -1868,7 +1780,6 @@ img.withGlow.active {
 
 #createCollection textarea {
   width: 92.5% !important;
-  color: #fff;
 }
 
 #createCollection input.form-control::placeholder {
@@ -1949,7 +1860,7 @@ img.withGlow.active {
   border-radius: 50%;
   position: absolute;
   bottom: -5vh;
-  background: #f58103;
+  background: #f0b13e;
   padding: 5px;
   z-index: 15;
   -webkit-box-shadow: -2px 7px 15px 0px #000000;
@@ -2070,11 +1981,6 @@ input.form-control::placeholder {
   font-family: gothamLight !important;
   padding: 10px;
   font-size: 14px;
-}
-
-#profile textarea {
-  max-height: 144px;
-  min-height: 72px;
 }
 
 #profile .form-group {
@@ -2607,7 +2513,7 @@ s #accordionListing table tr,
 
 #totalItemsPrice p,
 #totalItemsInfo p {
-  font-size: 20px;
+  font-size: 24px;
   margin: 0;
 }
 
@@ -2619,8 +2525,7 @@ s #accordionListing table tr,
   color: #989fab;
 }
 
-#totalItemsInfo p,
-#totalItemsPrice p {
+#totalItemsInfo p {
   display: inline-block;
   margin-left: 5px;
   font-size: 18px;
@@ -2787,10 +2692,6 @@ input[type="number"]:focus-within {
   display: flex;
   align-items: center;
   gap: 24px;
-}
-
-.popup-existing-value p {
-  margin: 0;
 }
 
 .popup-existing-value p:first-of-type {
@@ -4878,12 +4779,11 @@ ul#buttonIcon {
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding: 64px 0;
+  padding: 32px;
   width: 100%;
   color: #ededed;
   font-size: 1.5rem;
   font-weight: 600;
-  opacity: 0.5;
 }
 
 .noContent svg {
@@ -4911,62 +4811,4 @@ ul#buttonIcon {
 
 .priceHistory {
   padding-top: 1px;
-}
-
-.filterSelect {
-  padding: 12px 16px;
-  border-radius: 8px;
-  background: #15191d;
-  cursor: pointer;
-  position: relative;
-  z-index: 1000;
-}
-
-.exploreSelectContainer {
-  width: 100%;
-  max-width: 240px;
-}
-
-.filterSelect select {
-  width: 100%;
-  cursor: pointer;
-}
-
-.pillsCategories .nav-item button {
-  position: relative;
-  padding-bottom: 6px;
-}
-
-.pillsCategories .nav-item button::after {
-  content: "";
-  position: absolute;
-  bottom: 0px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: #f58103;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: 300ms ease-in-out;
-}
-
-.pillsCategories .nav-item:hover button:not(.active)::after {
-  transform: scaleX(1);
-}
-
-.pillsCategories .nav-item:hover button:not(.active) {
-  color: #f58103;
-}
-
-.pageLoader {
-  padding: 72px 0 256px;
-  min-height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: column;
-}
-
-.accountSelect {
-  flex-grow: 2;
 }
