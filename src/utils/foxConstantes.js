@@ -22,6 +22,8 @@ export const EVENT_LISTING = "EVENT_LISTING";
 
 export const EVENT_DELISTING = "EVENT_DELISTING";
 
+export const EVENT_WITHDRAW_OFFER = "EVENT_WITHDRAW_OFFER";
+
 export const EVENT_REFUND = "EVENT_REFUND";
 
 export const EVENT_CREATE_AUCTION = "EVENT_CREATE_AUCTION";
@@ -36,7 +38,8 @@ export const EVENT_ENUM = {
   EVENT_DELISTING: "Listing deleted",
   EVENT_REFUND: "Refund",
   EVENT_CREATE_AUCTION: "Auction created",
-  EVENT_TRANSFERT_TOKEN: "Transfert",
+  EVENT_TRANSFERT_TOKEN: 'Transfert',
+  EVENT_WITHDRAW_OFFER: 'Withdraw offer'
 };
 
 export const SORT_ENUM = {

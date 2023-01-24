@@ -45,7 +45,7 @@ export const getBestOffer = async (collectionAddress, tokenID) => {
     .call();
   return {
     price: Number(response.price) / 10 ** 18,
-    offerOwner: response.buyer
+    offerOwner: response.buyer,
   };
 };
 
@@ -405,6 +405,34 @@ export const makeOfferToOwner = async (collectionAddress, tokenID, price) => {
   return tsx.transactionHash;
 };
 
+export const withdrawOffer = async (collectionAddress, tokenID) => {
+    const connectWallet = await getCurrentWalletConnected();
+    const offerSystemContract = await loadOfferSystemContract();
+
+    const gasLimitAcceptOffer = await offerSystemContract.methods
+      .withdrawBuyOffer(
+        collectionAddress,
+        tokenID
+      )
+      .estimateGas({
+        from: connectWallet,
+        to: OfferSystemAddress,
+      });
+
+    const tsx = await offerSystemContract.methods
+      .withdrawBuyOffer(
+        collectionAddress,
+        tokenID
+      )
+      .send({
+        from: connectWallet,
+        to: OfferSystemAddress,
+        gasLimit: gasLimitAcceptOffer,
+      });
+
+      return tsx.transactionHash;
+};
+
 export const acceptOffer = async (
   collectionAddress,
   tokenID,
@@ -464,11 +492,9 @@ const bigNumberPricing = async (price) => {
   return web3.utils.toHex(listingPrice);
 };
 
-
 export const transfertToken = async (collectionAddress, tokenID, to) => {
   const collectionContract = await loadERC721Contract(collectionAddress, false);
   const connectWallet = await getCurrentWalletConnected();
-
 
   const gasFees = await collectionContract.methods
     .transferFrom(connectWallet, to, tokenID)
@@ -477,12 +503,13 @@ export const transfertToken = async (collectionAddress, tokenID, to) => {
       to: collectionAddress,
     });
 
-
-  const tsx = await collectionContract.methods.transferFrom(connectWallet, to, tokenID).send({
-    from: connectWallet,
-    to: collectionAddress,
-    gasLimit: gasFees,
-  });
+  const tsx = await collectionContract.methods
+    .transferFrom(connectWallet, to, tokenID)
+    .send({
+      from: connectWallet,
+      to: collectionAddress,
+      gasLimit: gasFees,
+    });
 
   return tsx.transactionHash;
-}
+};

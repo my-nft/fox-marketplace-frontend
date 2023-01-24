@@ -26,13 +26,14 @@ const NonListedNft = ({ handleMakeOffer, nftDetails }) => {
         nftDetails.collectionAddress,
         nftDetails.tokenID
       );
-      setBestOffer(bestOfferPrice.price);
+      setBestOffer(bestOfferPrice);
     }
   };
 
   useEffect(() => {
     init();
   }, [nftDetails]);
+
 
   return (
     <CardNftWrapper>

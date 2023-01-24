@@ -10,7 +10,6 @@ import {
 } from "../../saga/blockchain.js/blockChainActions";
 import {
   getBestOffer,
-  getListingIdByToken,
   getPriceByListing,
 } from "../../services/listingNft";
 import { sameAddress } from "../../utils/walletUtils";
@@ -21,6 +20,7 @@ const ListedFixedNft = ({
   collectionDetails,
   onMakeOffer,
   onAcceptOffer,
+  onWithdrawOffer,
 }) => {
   const currentWallet = useSelector(selectCurrentWallet);
 
@@ -95,6 +95,7 @@ const ListedFixedNft = ({
         priceDollar={currentPrice}
         bestOffer={bestOffer}
         onAcceptOffer={onAcceptOffer}
+        onWithdrawOffer={onWithdrawOffer}
         ownerAddress={nftDetails.ownerAddress}
       >
         {!sameAddress(currentWallet, nftDetails.ownerAddress) && (
