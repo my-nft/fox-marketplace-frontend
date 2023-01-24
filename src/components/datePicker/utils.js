@@ -30,8 +30,8 @@ export const getDayCountForMonth = (month, year) => {
     return getDaysForMonth(month, year).length;
 }
 
-export const dateToUserFriendlyValue = (date) => {
-    const difference = new Date().getTime() - new Date(date).getTime();
+export const dateToUserFriendlyValue01 = (date) => {
+    const difference = new Date() - new Date(date);
     const seconds = Math.floor(difference / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
@@ -46,3 +46,34 @@ export const dateToUserFriendlyValue = (date) => {
     if (months < 12) return `${months} months ago`;
     return `${years} years ago`;
   };
+
+
+  export function dateToUserFriendlyValue(date) {
+
+    console.log(new Date(date))
+
+    var seconds = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000);
+  
+    var interval = seconds / 31536000;
+  
+    if (interval > 1) {
+      return Math.floor(interval) + " years";
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+      return Math.floor(interval) + " months";
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+      return Math.floor(interval) + " days";
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+      return Math.floor(interval) + " hours";
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+      return Math.floor(interval) + " minutes";
+    }
+    return Math.floor(seconds) + " seconds";
+  }

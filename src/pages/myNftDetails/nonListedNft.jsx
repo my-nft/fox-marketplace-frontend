@@ -4,7 +4,8 @@ import CardBody from "../../components/nft/CardBody";
 import CardNftWrapper from "../../components/nft/CardNftWrapper";
 import { getBestOffer } from "../../services/listingNft";
 
-const NonListedNft = ({ handleMakeOffer, nftDetails }) => {
+
+const NonListedNft = ({ handleMakeOffer, nftDetails, onWithdrawOffer }) => {
   // values
   const [bestOffer, setBestOffer] = useState();
   const [values, setValues] = useState({
@@ -26,7 +27,7 @@ const NonListedNft = ({ handleMakeOffer, nftDetails }) => {
         nftDetails.collectionAddress,
         nftDetails.tokenID
       );
-      setBestOffer(bestOfferPrice.price);
+      setBestOffer(bestOfferPrice);
     }
   };
 
@@ -34,10 +35,12 @@ const NonListedNft = ({ handleMakeOffer, nftDetails }) => {
     init();
   }, [nftDetails]);
 
+
   return (
     <CardNftWrapper>
       <CardBody
         bestOffer={bestOffer}
+        onWithdrawOffer={onWithdrawOffer}
       >
         <div className="card mt-2" id="fixedPriceDetails">
           <div className="card-body">

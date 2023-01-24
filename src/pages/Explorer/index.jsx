@@ -131,7 +131,6 @@ const Explorer = () => {
       )}
 
       <section id="marketplace" className="container-fluid mb-5">
-        <p>Page: {pagination.page}</p>
         <div className="row flex-nowrap md-flex-row flex-col">
           <div
             id="sx"

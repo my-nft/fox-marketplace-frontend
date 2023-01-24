@@ -1,6 +1,6 @@
 import InfoBoxWrapper from "./infoBoxWrapper";
 import { ReactComponent as ContentIcon } from "./../../assets/icons/content.svg";
-import { FXG_PRICE } from "../../utils/foxConstantes";
+import { EVENT_ENUM, FXG_PRICE } from "../../utils/foxConstantes";
 import { optimizeWalletAddress } from "../../utils/walletUtils";
 import Address from "../Address";
 import Transaction from "../Transaction";
@@ -22,9 +22,13 @@ const Listings = ({ itemExtra = [], isLoading }) => {
   const updateAction = () => {
     setDataForRender(itemExtra.slice(0, dataForRender.length + 8));
   };
+
+  console.log("############");
+  console.log(itemExtra);
   return (
     <InfoBoxWrapper title="Listings">
       <div className="infoBoxGrid infoBoxHeader">
+        <p>Event</p>
         <p>Price</p>
         <p>USD Price</p>
         <p>Creation</p>
@@ -33,15 +37,16 @@ const Listings = ({ itemExtra = [], isLoading }) => {
       </div>
       {itemExtra.length > 0 && (
         <InfiniteScroll
-          dataLength={dataForRender.length}
+          dataLength={itemExtra.length}
           next={updateAction}
           loader={<Spinner />}
           hasMore={hasMore}
           height={400}
         >
-          {dataForRender.map((listing, index) => {
+          {itemExtra.map((listing, index) => {
             return (
               <div className="infoBoxGrid infoRow" key={index}>
+                <p>{EVENT_ENUM[listing.event]}</p>
                 <p>{parseFloat(listing.price.toFixed(4))} FXG</p>
                 <p>
                   ${parseFloat((Number(listing.price) * FXG_PRICE).toFixed(4))}

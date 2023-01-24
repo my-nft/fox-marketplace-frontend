@@ -102,8 +102,6 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
     setValues({ ...values, time: dateObj.getTime() });
   };
 
-  console.log(nftDetails);
-
   return (
     <>
       <CustomDatePicker
