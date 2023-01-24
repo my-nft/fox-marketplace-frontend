@@ -146,6 +146,13 @@ const MyNftDetails = () => {
   };
 
   const onWithdrawOffer = (bestOffer) => {
+    console.log("##############################")
+    console.log("##############################")
+    console.log("##############################")
+    console.log("##############################")
+    console.log("##############################")
+    console.log("##############################")
+
     dispatch({
       type: WITHDRAW_OFFER,
       payload: {
@@ -243,6 +250,7 @@ const MyNftDetails = () => {
                           <NonListedNft
                             nftDetails={nftDetails}
                             handleMakeOffer={onMakeOffer}
+                            onWithdrawOffer={onWithdrawOffer}
                           />
                         ) : null
                       }

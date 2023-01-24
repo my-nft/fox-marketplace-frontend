@@ -130,13 +130,18 @@ const Header = () => {
 
             {connectedWallet ? (
               <ul id="buttonIcon">
+                <li className="nav-item">
+                  <Link className="nav-link" to="/account">
+                    Account
+                  </Link>
+                </li>
                 <li>
-                  <Link to={"/account"}>
+                  <Link to={"/profile"}>
                     <img src="/assets/icon-white-user.png" alt="" />
                   </Link>
                 </li>
                 <li>
-                  <Link to="/profile">
+                  <Link to="#">
                     <img src="/assets/icon-white-settings.png" alt="" />
                   </Link>
                 </li>

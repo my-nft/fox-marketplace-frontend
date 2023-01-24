@@ -169,14 +169,12 @@ const Explorer = () => {
 
             {isLoadingState ? (
               <Spinner />
-            ) : content.length ? (
+            ) : (
               <MostPopular
                 nfts={content}
                 pagination={pagination}
                 changePage={changePage}
               />
-            ) : (
-              <p className="noContent">No NFTs</p>
             )}
 
             <Pagination

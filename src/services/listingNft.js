@@ -43,9 +43,11 @@ export const getBestOffer = async (collectionAddress, tokenID) => {
   const response = await offerSystemContractReadOnly.methods
     .activeBuyOffers(collectionAddress, tokenID)
     .call();
+  console.log(response);
   return {
     price: Number(response.price) / 10 ** 18,
     offerOwner: response.buyer,
+    createTime: response.createTime
   };
 };
 
@@ -369,6 +371,7 @@ export const deListItem = async (listingId) => {
 };
 
 export const makeOfferToOwner = async (collectionAddress, tokenID, price) => {
+
   const connectWallet = await getCurrentWalletConnected();
   const erc20Contract = await loadERC20Contract();
   const offerSystemContract = await loadOfferSystemContract();
