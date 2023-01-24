@@ -3,6 +3,7 @@ import { selectCurrentWallet } from "../../redux/userReducer";
 import { FXG_PRICE } from "../../utils/foxConstantes";
 import { sameAddress } from "../../utils/walletUtils";
 
+
 const CardBody = ({
   title,
   price,
@@ -42,6 +43,7 @@ const CardBody = ({
                 Accept Offer
               </button>
             ) : null}
+
             {sameAddress(currentWallet, bestOffer.offerOwner) ? (
               <button id="makeOffer" className="btn" onClick={() => onWithdrawOffer(bestOffer)}>
                 withdraw Offer
