@@ -1623,8 +1623,6 @@ input[type="radio"] {
 .contIcon img {
   transition: all 1s ease;
   cursor: pointer;
-  min-width: 150px;
-  min-height: 150px;
 }
 
 .withGlow {
@@ -1650,6 +1648,11 @@ img.withGlow.active {
 }
 .createButton:hover img {
   border: 3px solid rgb(27, 255, 27) !important;
+}
+
+.createIcon {
+  min-width: 150px;
+  min-height: 150px;
 }
 
 #importItem img.withGlow.active,
