@@ -14,7 +14,7 @@ import { getBestOffer } from "../../services/listingNft";
 import { FIXED_PRICE, AUCTION } from "../../utils/foxConstantes";
 import { sameAddress } from "../../utils/walletUtils";
 
-const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
+const NonListedMyNft = ({ handleAcceptOffer, onWithdrawOffer, nftDetails, setNftDetails }) => {
   const [type, setType] = useState(FIXED_PRICE);
   const [showPicker, setShowPicker] = useState(false);
   const [showTransferPopup, setShowTransferPopup] = useState(false);
@@ -113,6 +113,7 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
         <CardBody
           bestOffer={bestOffer}
           onAcceptOffer={handleAcceptOffer}
+          onWithdrawOffer={onWithdrawOffer}
           ownerAddress={nftDetails.ownerAddress}
         >
           <div className="card" id="cardNft">

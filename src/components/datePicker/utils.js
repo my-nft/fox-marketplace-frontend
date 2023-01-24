@@ -48,11 +48,11 @@ export const dateToUserFriendlyValue01 = (date) => {
   };
 
 
-
-
   export function dateToUserFriendlyValue(date) {
 
-    var seconds = Math.floor((new Date() - new Date(date)) / 1000);
+    console.log(new Date(date))
+
+    var seconds = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000);
   
     var interval = seconds / 31536000;
   

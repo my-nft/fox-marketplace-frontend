@@ -14,6 +14,7 @@ import {
   claimNFT,
   claimToken,
   getListingIdByToken,
+  withdrawOffer,
 } from "../../services/listingNft";
 import {
   ACCEPT_OFFER,
@@ -26,6 +27,7 @@ import {
   MAKE_OFFER,
   PLACE_BID,
   REFUND_NFT,
+  WITHDRAW_OFFER,
 } from "./blockChainActions";
 import {
   AUCTION,
@@ -38,6 +40,7 @@ import {
   EVENT_PLACE_BID,
   EVENT_REFUND,
   EVENT_WIN_AUCTION,
+  EVENT_WITHDRAW_OFFER,
   FIXED_PRICE,
 } from "../../utils/foxConstantes";
 import { signWallet } from "../userSaga";
@@ -201,6 +204,49 @@ function* runDelistItem(action) {
     // putting the NFT details
     yield put(setIsLoading(false));
     action.onSuccess(nftDetails.data);
+  } catch (error) {
+    console.log("error ", error);
+    toast.error(error.message || "An unexpected error occurred.");
+  } finally {
+    yield put(setIsLoading(false));
+  }
+}
+
+function* runWithdrawOffer(action) {
+  try {
+    
+    const { collectionAddress, tokenID, from, to, price } =
+      action.payload;
+
+    yield put(setIsLoading(true));
+
+    const token = yield call(signWallet);
+
+    const tsxId = yield call(withdrawOffer,collectionAddress, tokenID);
+
+
+    postTraceTransaction(
+      {
+        fromAddress: from,
+        toAddress: to,
+        price,
+        collectionAddress,
+        tokenID,
+        event: EVENT_WITHDRAW_OFFER,
+        transactionId: tsxId,
+      },
+      token
+    );
+
+    const nftDetails = yield call(
+      nftApi.getNftCall,
+      collectionAddress,
+      tokenID
+    );
+    // putting the NFT details
+    yield put(setIsLoading(false));
+    action.onSuccess(nftDetails.data);
+    
   } catch (error) {
     console.log("error ", error);
     toast.error(error.message || "An unexpected error occurred.");
@@ -634,6 +680,10 @@ function* acceptOfferSaga() {
   yield takeLatest(ACCEPT_OFFER, runAcceptOffer);
 }
 
+function* withdrawOfferSaga() {
+  yield takeLatest(WITHDRAW_OFFER, runWithdrawOffer)
+}
+
 function* placeBidSaga() {
   yield takeLatest(PLACE_BID, runPlaceBid);
 }
@@ -657,4 +707,5 @@ export {
   refund,
   claimNFTSaga,
   claimTokenSaga,
+  withdrawOfferSaga
 };

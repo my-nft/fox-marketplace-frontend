@@ -8,6 +8,7 @@ import { selectIsLoading, setIsLoading } from "../../redux/nftReducer";
 import {
   ACCEPT_OFFER,
   MAKE_OFFER,
+  WITHDRAW_OFFER,
 } from "../../saga/blockchain.js/blockChainActions";
 import {
   AUCTION,
@@ -86,8 +87,6 @@ const MyNftDetails = () => {
         [EVENT_CREATE_AUCTION, EVENT_LISTING]
       );
       setListingList(responseListingList.data);
-
-      
     } catch (error) {
       console.log(error);
     } finally {
@@ -127,7 +126,6 @@ const MyNftDetails = () => {
   };
 
   const onAcceptOffer = (bestOffer) => {
-
     const { royaltyAddress, royaltyPercent } = collectionDetails;
     dispatch({
       type: ACCEPT_OFFER,
@@ -141,7 +139,21 @@ const MyNftDetails = () => {
 
         from: nftDetails.ownerAddress,
         to: bestOffer.offerOwner,
-        price: Number(bestOffer),
+        price: Number(bestOffer.price),
+      },
+      onSuccess: (nft) => setNftDetails(nft),
+    });
+  };
+
+  const onWithdrawOffer = (bestOffer) => {
+    dispatch({
+      type: WITHDRAW_OFFER,
+      payload: {
+        tokenID: nftDetails.tokenID,
+        collectionAddress: nftDetails.collectionAddress,
+        from: bestOffer.offerOwner,
+        to: nftDetails.ownerAddress,
+        price: Number(bestOffer.price),
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -212,6 +224,7 @@ const MyNftDetails = () => {
                           <NonListedMyNft
                             nftDetails={nftDetails}
                             handleAcceptOffer={onAcceptOffer}
+                            onWithdrawOffer={onWithdrawOffer}
                             setNftDetails={setNftDetails}
                           />
                         ) : null
@@ -251,6 +264,7 @@ const MyNftDetails = () => {
                           collectionDetails={collectionDetails}
                           onMakeOffer={onMakeOffer}
                           onAcceptOffer={onAcceptOffer}
+                          onWithdrawOffer={onWithdrawOffer}
                         />
                       ) : null}
                     </div>

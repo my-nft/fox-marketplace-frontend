@@ -10,6 +10,7 @@ const CardBody = ({
   priceDollar,
   bestOffer,
   onAcceptOffer = () => {},
+  onWithdrawOffer = () => {},
   children,
 }) => {
   const currentWallet = useSelector(selectCurrentWallet);
@@ -37,8 +38,13 @@ const CardBody = ({
               </span>
             </p>
             {sameAddress(currentWallet, ownerAddress) ? (
-              <button id="makeOffer" className="btn" onClick={() => onAcceptOffer(bestOffer.price)}>
+              <button id="makeOffer" className="btn" onClick={() => onAcceptOffer(bestOffer)}>
                 Accept Offer
+              </button>
+            ) : null}
+            {sameAddress(currentWallet, bestOffer.offerOwner) ? (
+              <button id="makeOffer" className="btn" onClick={() => onWithdrawOffer(bestOffer)}>
+                withdraw Offer
               </button>
             ) : null}
           </>
