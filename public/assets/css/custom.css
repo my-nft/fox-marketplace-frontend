@@ -319,6 +319,10 @@ ul#buttonIcon {
   );
 }
 
+#bannerHome img {
+  transition: unset !important;
+}
+
 #bannerHome {
   /* -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 75%);
   mask-image: linear-gradient(to bottom, transparent 0%, black 75%); */
@@ -1570,6 +1574,7 @@ input[type="radio"] {
 .contIcon,
 .contIcon img {
   transition: all 1s ease;
+  cursor: pointer;
 }
 
 .withGlow {
@@ -1583,6 +1588,23 @@ input[type="radio"] {
 img.withGlow.active {
   -webkit-filter: drop-shadow(0px 4px 12px rgb(27, 255, 27));
   background-color: #2bf62a;
+}
+
+.createButton:hover button {
+  background-color: rgb(27, 255, 27) !important;
+}
+
+.createButton:hover img,
+.createButton:hover .contIcon {
+  -webkit-filter: drop-shadow(0px 4px 12px rgb(27, 255, 27));
+}
+.createButton:hover img {
+  border: 3px solid rgb(27, 255, 27) !important;
+}
+
+.createIcon {
+  min-width: 150px;
+  min-height: 150px;
 }
 
 #importItem img.withGlow.active,
