@@ -371,6 +371,7 @@ export const deListItem = async (listingId) => {
 };
 
 export const makeOfferToOwner = async (collectionAddress, tokenID, price) => {
+
   const connectWallet = await getCurrentWalletConnected();
   const erc20Contract = await loadERC20Contract();
   const offerSystemContract = await loadOfferSystemContract();
