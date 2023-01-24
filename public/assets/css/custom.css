@@ -324,6 +324,10 @@ ul#buttonIcon {
   );
 }
 
+#bannerHome img {
+  transition: unset !important;
+}
+
 #bannerHome {
   /* -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 75%);
   mask-image: linear-gradient(to bottom, transparent 0%, black 75%); */
