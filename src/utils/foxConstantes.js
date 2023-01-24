@@ -6,15 +6,15 @@ export const FXG_PRICE = 0.0058;
 // Transactions trace
 
 //PRICE HISTO
-export const EVENT_WIN_AUCTION="EVENT_WIN_AUCTION";
+export const EVENT_WIN_AUCTION = "EVENT_WIN_AUCTION";
 //PRICE HISTO
-export const EVENT_BUY_LISTING="EVENT_BUY_LISTING";
+export const EVENT_BUY_LISTING = "EVENT_BUY_LISTING";
 //PRICE HISTO
-export const EVENT_ACCEPT_OFFER="EVENT_ACCEPT_OFFER";
+export const EVENT_ACCEPT_OFFER = "EVENT_ACCEPT_OFFER";
 
-export const EVENT_TRANSFERT_TOKEN="EVENT_TRANSFERT_TOKEN";
+export const EVENT_TRANSFERT_TOKEN = "EVENT_TRANSFERT_TOKEN";
 
-export const EVENT_MAKE_OFFER="EVENT_MAKE_OFFER";
+export const EVENT_MAKE_OFFER = "EVENT_MAKE_OFFER";
 
 export const EVENT_PLACE_BID = "EVENT_PLACE_BID";
 
@@ -40,4 +40,12 @@ export const EVENT_ENUM = {
   EVENT_CREATE_AUCTION: "Auction created",
   EVENT_TRANSFERT_TOKEN: 'Transfert',
   EVENT_WITHDRAW_OFFER: 'Withdraw offer'
+};
+
+export const SORT_ENUM = {
+  PRICE_ASC: "Price Ascending",
+  PRICE_DESC: "Price Descending",
+  RECENTLY_LISTED: "Recently Listed",
+  RECENTLY_CREATED: "Recently Created",
+  RECENTLY_SOLD: "Recently Sold",
 };

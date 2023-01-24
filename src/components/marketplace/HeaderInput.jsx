@@ -1,4 +1,6 @@
 import Command from "../../pages/Explorer/Command";
+import { SORT_ENUM } from "../../utils/foxConstantes";
+import CustomSelect from "../Select";
 
 const HeaderInput = ({
   filters,
@@ -14,19 +16,79 @@ const HeaderInput = ({
         toggleFilters={() => setFiltersVisible(!filtersVisible)}
       />
 
-      <select
-        value={filters.sortBy}
-        onChange={(e) =>
-          changeFilterValue({ ...filters, sortBy: e.target.value })
-        }
-        style={{
-          margin: "0",
-        }}
-      >
-        <option value="RECENTLY_LISTED">Recently Listed</option>
-        <option value="PRICE_ASC">Price Asc</option>
-        <option value="PRICE_DESC">Price Desc</option>
-      </select>
+      <div className="filterSelect exploreSelectContainer ml-3">
+        <CustomSelect
+          value={{
+            value: filters.sortBy,
+            label: SORT_ENUM[filters.sortBy],
+          }}
+          onChange={(e) => {
+            console.log(e);
+            changeFilterValue({ ...filters, sortBy: e.value });
+          }}
+          options={[
+            { value: "RECENTLY_LISTED", label: "Recently Listed" },
+            { value: "PRICE_ASC", label: "Price Asc" },
+            { value: "PRICE_DESC", label: "Price Desc" },
+          ]}
+          isSearchable={false}
+          styles={{
+            control: (provided) => ({
+              ...provided,
+              border: "none",
+              boxShadow: "none",
+              backgroundColor: "transparent",
+            }),
+            menu: (provided) => ({
+              ...provided,
+              backgroundColor: "#15191d",
+              border: "1px solid #f58103",
+              borderRadius: "8px",
+              boxShadow: "0px 4px 4px #f5800373",
+              boxShadow: "none",
+              width: "calc(100% + 32px)",
+              transform: "translate(-16px, 16px)",
+            }),
+            menuList: (provided) => ({
+              ...provided,
+              padding: 0,
+            }),
+            // style dropdown indicator when is opened
+            dropdownIndicator: (provided, state) => ({
+              ...provided,
+              color: state.selectProps.menuIsOpen ? "#f58103" : "#fff",
+              transform: state.selectProps.menuIsOpen && "rotate(180deg)",
+              transition: "all 0.3s ease-in-out",
+              ":hover": {
+                color: "#f58103",
+              },
+            }),
+            //style vertical line
+            indicatorSeparator: (provided) => ({
+              ...provided,
+              backgroundColor: "transparent",
+            }),
+
+            option: (provided) => ({
+              ...provided,
+              backgroundColor: "transparent",
+              color: "#FFFFFF",
+              cursor: "pointer",
+              ":hover": {
+                backgroundColor: "#f58103",
+                color: "#fff",
+              },
+            }),
+            singleValue: (provided) => ({
+              ...provided,
+              color: "#FFFFFF",
+              padding: "0px 8px",
+              margin: 0,
+            }),
+          }}
+        />
+      </div>
+
       <button>
         <div>
           <svg

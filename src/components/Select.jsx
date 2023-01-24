@@ -27,14 +27,26 @@ const selectStyles = {
       color: "#fff",
     },
   }),
+  menuList: (provided) => ({
+    ...provided,
+    padding: 0,
+  }),
   singleValue: (styles) => ({
     ...styles,
     color: "#FFFFFF",
     padding: "8px 8px",
     height: "46px",
+    margin: 0,
+  }),
+  // style dropdown indicator
+  dropdownIndicator: (styles) => ({
+    ...styles,
+    color: "#FFFFFF",
   }),
 };
 
-const CustomSelect = (props) => <Select {...props} styles={selectStyles} />;
+const CustomSelect = (props) => (
+  <Select {...props} styles={props.styles || selectStyles} />
+);
 
 export default CustomSelect;

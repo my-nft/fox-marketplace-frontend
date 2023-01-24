@@ -37,7 +37,7 @@ const ListNfts = ({
                 filters={filters}
                 changeFilterValue={changeFilterValue}
               />
-              <AccordingCollection listSearcheableCollections={[]} />
+              {/* <AccordingCollection listSearcheableCollections={[]} /> */}
               <AccordionCategory
                 filters={filters}
                 changeFilterValue={changeFilterValue}
@@ -54,6 +54,12 @@ const ListNfts = ({
               role="tabpanel"
               aria-labelledby="pills-Items"
             >
+              {activeSection === "COLLECTIONS" && collections.length === 0 && (
+                <p className="noContent">No Collections</p>
+              )}
+              {activeSection !== "COLLECTIONS" && nfts.length === 0 && (
+                <p className="noContent">No NFTs</p>
+              )}
               <div className="wrapperMostPopular row gap-5">
                 {activeSection === "COLLECTIONS"
                   ? collections.map((item, index) => {
