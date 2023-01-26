@@ -28,9 +28,7 @@ import PageStatistics from "./components/Statistics";
 import Page404 from "./pages/404/404";
 import MintLimited from "./pages/mintLimited/mintLimited";
 import { getNftCall } from "./api/nftApi";
-import {
-  getCollectionByAddress,
-} from "./api/collectionApi";
+import { getCollectionByAddress } from "./api/collectionApi";
 import { getItemInfo } from "./api/utilsApi";
 
 const router = createBrowserRouter(
@@ -46,7 +44,7 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path="drops"
+        path="drops/:collectionAddress"
         element={
           <>
             <MintLimited />
