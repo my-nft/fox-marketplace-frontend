@@ -3,13 +3,22 @@ import Countdown from "../../Countdown";
 import MintCounter from "../mintCounter/mintCounter";
 import placeholder from "../../../assets/images/nft_test.jpg";
 
-const MintSideBar = ({ price = 0 }) => {
+const MintSideBar = ({
+  price = 0,
+  maxForMint,
+  minted,
+  collection,
+  mintAction,
+}) => {
   return (
     <div className="sidebar">
       <div className="mintSidebarMain">
-        <img src={placeholder} alt="fox" />
+        <img
+          src={collection.image ? collection.image : placeholder}
+          alt="fox"
+        />
         <h3>Title</h3>
-        <h5>Collection Name</h5>
+        <h5>{collection.name}</h5>
         <p className="mintStatus closed">Closed</p>
       </div>
       <div>
@@ -22,11 +31,13 @@ const MintSideBar = ({ price = 0 }) => {
           <p className="participate">How to participate</p>
         </div>
         <div className="mintPrice">
-          <p>{price} FXG</p>
+          <p>
+            {price} {collection.symbol}
+          </p>
           <p>{parseFloat((price * FXG_PRICE).toFixed(4))} USD</p>
         </div>
       </div>
-      <MintCounter minted={0} max={2500} />
+      <MintCounter minted={minted} max={maxForMint} mintAction={mintAction} />
     </div>
   );
 };

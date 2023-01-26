@@ -4446,7 +4446,7 @@ ul#buttonIcon {
   text-align: center;
 }
 
-.mintCount div {
+.mintCount button {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -4461,9 +4461,15 @@ ul#buttonIcon {
   cursor: pointer;
   position: relative;
   user-select: none;
+  background: none;
 }
 
-.mintCount div span {
+.mintCount button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mintCount button span {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -4474,7 +4480,7 @@ ul#buttonIcon {
   text-align: center;
 }
 
-.mintCount div:hover {
+.mintCount button:hover {
   background: #f58103;
   color: #ededed;
 }
@@ -4524,6 +4530,13 @@ ul#buttonIcon {
   transition: 300ms ease-in-out;
   margin: 12px 0;
   font-weight: 600;
+}
+
+.mintCounter .mintbutton:disabled {
+  background: #f58103;
+  color: #ededed;
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .mintCounter .mintbutton:hover {

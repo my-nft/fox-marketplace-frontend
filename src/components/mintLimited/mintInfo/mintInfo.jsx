@@ -2,7 +2,7 @@ import { ReactComponent as TelegramIcon } from "../../../assets/icons/telegram.s
 import { ReactComponent as WebIcon } from "../../../assets/icons/web.svg";
 import { ReactComponent as MediumIcon } from "../../../assets/icons/medium.svg";
 
-const MintInfo = () => {
+const MintInfo = ({ collection }) => {
   return (
     <div className="mintInfo">
       <h3>Ongoing Project</h3>
@@ -12,13 +12,13 @@ const MintInfo = () => {
         accusantium assumenda sunt eius fugit dolor ut pariatur sequi ab!
       </p>
       <div className="infoSocials">
-        <a href="#">
+        <a href={collection.linkTelegram ? collection.linkTelegram : "#"}>
           <TelegramIcon />
         </a>
-        <a href="#">
+        <a href={collection.linkWeb ? collection.linkWeb : "#"}>
           <WebIcon />
         </a>
-        <a href="#">
+        <a href={collection.linkMedium ? collection.linkMedium : "#"}>
           <MediumIcon />
         </a>
       </div>
@@ -28,13 +28,13 @@ const MintInfo = () => {
           Access Type: <span>Public</span>
         </p>
         <p className="highlightLine">
-          Total Supply: <span>2500</span>
+          Total Supply: <span>{collection.totalSupply}</span>
         </p>
         <p className="highlightLine">
-          Collection Name: <span>Powpad Genesis Collection</span>
+          Collection Name: <span>{collection.name}</span>
         </p>
         <p className="highlightLine">
-          Collection Symbol: <span>PGC</span>
+          Collection Symbol: <span>{collection.symbol}</span>
         </p>
       </div>
       <div className="tokenInfo">

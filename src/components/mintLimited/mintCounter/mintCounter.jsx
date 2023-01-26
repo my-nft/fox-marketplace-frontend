@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const MintCounter = ({ minted, max }) => {
+const MintCounter = ({ minted, max, mintAction }) => {
   const [mintCount, setMintCount] = useState(0);
 
   const modifyMintCount = (value) => {
@@ -9,19 +9,30 @@ const MintCounter = ({ minted, max }) => {
     }
   };
 
+  const mint = () => {
+    if (mintCount > 0) mintAction(mintCount);
+    setMintCount(0);
+  };
+
   return (
     <div className="mintCounter">
       <h4>MINTING</h4>
       <div className="mintCount">
-        <div onClick={() => modifyMintCount(-1)}>
+        <button disabled={minted >= max} onClick={() => modifyMintCount(-1)}>
           <span>-</span>
-        </div>
+        </button>
         <p>{mintCount}</p>
-        <div onClick={() => modifyMintCount(1)}>
+        <button disabled={minted >= max} onClick={() => modifyMintCount(1)}>
           <span>+</span>
-        </div>
+        </button>
       </div>
-      <button className="mintbutton">Mint</button>
+      <button
+        disabled={minted >= max}
+        className="mintbutton"
+        onClick={() => mint()}
+      >
+        Mint
+      </button>
 
       <div className="mintProgress">
         <div>
