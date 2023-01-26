@@ -31,9 +31,7 @@ const MintSideBar = ({
           <p className="participate">How to participate</p>
         </div>
         <div className="mintPrice">
-          <p>
-            {price} {collection.symbol}
-          </p>
+          <p>{price} FXG</p>
           <p>{parseFloat((price * FXG_PRICE).toFixed(4))} USD</p>
         </div>
       </div>
