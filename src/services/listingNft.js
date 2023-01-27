@@ -547,7 +547,6 @@ export const totalSupply = async () => {
 };
 
 export const mintNfts = async (total) => {
-
   const connectWallet = await getCurrentWalletConnected();
 
   const erc721ContractRead = await loadFoxGenisisContract(true);
@@ -555,18 +554,17 @@ export const mintNfts = async (total) => {
 
   const mintFee = await erc721ContractRead.methods.mintFee().call();
 
-  const value =  Number(mintFee) * Number(total)
-
+  const value = Number(mintFee) * Number(total);
 
   const gasLimit = await erc721Contract.methods.mint(total).estimateGas({
     from: connectWallet,
     to: foxGenesisCollectionAddress,
-    value
+    value,
   });
   await erc721Contract.methods.mint(total).send({
     from: connectWallet,
     to: foxGenesisCollectionAddress,
     gasLimit: gasLimit,
-    value
+    value,
   });
 };

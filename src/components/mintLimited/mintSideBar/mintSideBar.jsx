@@ -2,6 +2,8 @@ import { FXG_PRICE } from "../../../utils/foxConstantes";
 import MintCounter from "../mintCounter/mintCounter";
 import placeholder from "../../../assets/images/nft_test.jpg";
 import { mintNfts } from "../../../services/listingNft";
+import { toast } from "react-toastify";
+import { useState } from "react";
 
 const MintSideBar = ({
   price = 0,
@@ -12,10 +14,21 @@ const MintSideBar = ({
   mintingData = {},
 }) => {
   const { mintingEnabled, name } = mintingData;
-  
+  const [isMinting, setIsMinting] = useState(false);
+
   const handleMinting = async (count) => {
-    await mintNfts(count);
-  }
+    setIsMinting(true);
+    await mintNfts(count)
+      .then(() => {
+        toast.success("Minted successfully");
+      })
+      .catch(() => {
+        toast.error("Something went wrong");
+      })
+      .finally(() => {
+        setIsMinting(false);
+      });
+  };
 
   return (
     <div className="sidebar">
@@ -47,6 +60,7 @@ const MintSideBar = ({
         max={maxForMint}
         mintAction={mintAction}
         handleMinting={handleMinting}
+        isMinting={isMinting}
       />
     </div>
   );

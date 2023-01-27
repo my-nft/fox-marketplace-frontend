@@ -13,14 +13,13 @@ const MintLimited = () => {
   const [minted, setMinted] = useState(0);
   const [mintingData, setMintingData] = useState();
 
-  const loaderData = useLoaderData();
   const [loading, setLoading] = useState(true);
   const [collection, setCollection] = useState(null);
 
   const init = async () => {
     const data = await getMintingData();
     setMintingData(data);
-  }
+  };
 
   useEffect(() => {
     getCollectionByAddress("0x9E4df6f08ceEcfEF170FCbF036B97789d5320ec3")
@@ -52,7 +51,7 @@ const MintLimited = () => {
             mintAction={mintAction}
             mintingData={mintingData}
           />
-          <MintInfo collection={collection} mintingData={mintingData}/>
+          <MintInfo collection={collection} mintingData={mintingData} />
         </>
       )}
     </div>

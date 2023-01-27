@@ -4335,6 +4335,12 @@ ul#buttonIcon {
   text-align: center;
 }
 
+.mintStatus.enabled {
+  background: rgba(0, 220, 0, 0.1);
+  color: rgb(0, 220, 0);
+  text-align: center;
+}
+
 .mintCounter {
   display: flex;
   align-items: center;
