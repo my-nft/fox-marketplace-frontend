@@ -513,8 +513,6 @@ export const transfertToken = async (collectionAddress, tokenID, to) => {
 };
 
 export const getMintingData = async () => {
-  console.log("getMintingData");
-
   const connectWallet = await getCurrentWalletConnected();
 
   const erc721Contract = await loadFoxGenisisContract(true);
@@ -527,8 +525,8 @@ export const getMintingData = async () => {
   const minted = await erc721Contract.methods.minted(connectWallet).call();
   const mintingEnabled = await erc721Contract.methods.mintingEnabled().call();
   const name = await erc721Contract.methods.name().call();
-  const totalSupply = await await erc721Contract.methods.totalSupply().call();
-
+  const totalSupply = await erc721Contract.methods.totalSupply().call();
+  const symbol = await erc721Contract.methods.symbol().call();
   return {
     maxPerTransaction,
     maxPerWallet,
@@ -538,6 +536,7 @@ export const getMintingData = async () => {
     mintingEnabled,
     totalSupply,
     name,
+    symbol
   };
 };
 

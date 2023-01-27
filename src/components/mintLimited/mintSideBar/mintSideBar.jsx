@@ -1,27 +1,22 @@
-import { FXG_PRICE } from "../../../utils/foxConstantes";
+import { useState } from "react";
+import { FXG_PRICE, FX_PRICE } from "../../../utils/foxConstantes";
 import MintCounter from "../mintCounter/mintCounter";
-import placeholder from "../../../assets/images/nft_test.jpg";
-import { mintNfts } from "../../../services/listingNft";
 
 const MintSideBar = ({
-  price = 0,
-  maxForMint,
-  minted,
-  collection,
   mintAction,
   mintingData = {},
+  handleMinting = () => {}
 }) => {
-  const { mintingEnabled, name } = mintingData;
-  
-  const handleMinting = async (count) => {
-    await mintNfts(count);
-  }
+  const { mintingEnabled, name, mintFee } = mintingData;
+  const [total, setTotal] = useState(0);
+  const price = Number(total) * Number(mintFee / 10**18);
+
 
   return (
     <div className="sidebar">
       <div className="mintSidebarMain">
         <img
-          src={collection.image ? collection.image : placeholder}
+          src={"https://foxchangechachinglayer.s3.amazonaws.com/bucketFolder/1673008109763"}
           alt="fox"
         />
         <h3>Title</h3>
@@ -37,16 +32,15 @@ const MintSideBar = ({
           <p>✔ No whitelisting required</p>
         </div>
         <div className="mintPrice">
-          <p>{price} FXG</p>
-          <p>{parseFloat((price * FXG_PRICE).toFixed(4))} USD</p>
+          <p>{price} FX</p>
+          <p>{parseFloat((price * FX_PRICE).toFixed(4))} USD</p>
         </div>
       </div>
       <MintCounter
         mintingData={mintingData}
-        minted={minted}
-        max={maxForMint}
         mintAction={mintAction}
         handleMinting={handleMinting}
+        setTotal={setTotal}
       />
     </div>
   );

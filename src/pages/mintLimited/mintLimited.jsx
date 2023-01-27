@@ -1,38 +1,45 @@
 import { useEffect } from "react";
 import { Suspense, useState } from "react";
 import { Await, useLoaderData } from "react-router-dom";
+import { toast } from "react-toastify";
 import { getCollectionByAddress } from "../../api/collectionApi";
 import MintInfo from "../../components/mintLimited/mintInfo/mintInfo";
 import MintSideBar from "../../components/mintLimited/mintSideBar/mintSideBar";
 import Spinner from "../../components/Spinner";
-import { getMintingData } from "../../services/listingNft";
-import Page404 from "../404/404";
+import { getMintingData, mintNfts } from "../../services/listingNft";
 
 const MintLimited = () => {
-  const [maxForMint, setMaxForMint] = useState(2500);
   const [minted, setMinted] = useState(0);
   const [mintingData, setMintingData] = useState();
 
-  const loaderData = useLoaderData();
-  const [loading, setLoading] = useState(true);
-  const [collection, setCollection] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const init = async () => {
     const data = await getMintingData();
     setMintingData(data);
-  }
+};
+
+  const handleMinting = async (count) => {
+    try {
+      setLoading(true);
+      await mintNfts(count);
+      // relead stats
+      init();
+      setLoading(false);
+      toast.success("Minting success");
+    } catch (error) {
+      toast.error(error.message || "An unexpected error occurred.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    getCollectionByAddress("0x9E4df6f08ceEcfEF170FCbF036B97789d5320ec3")
-      .then((res) => {
-        setMaxForMint(res.data.collection.totalSupply);
-        setCollection(res.data.collection);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    init();
+    try{
+      init();
+    } catch (error) {
+      toast.error(error.message || "An unexpected error occurred.");
+    }
   }, []);
 
   const mintAction = (amount) => {
@@ -46,13 +53,12 @@ const MintLimited = () => {
       ) : (
         <>
           <MintSideBar
-            maxForMint={maxForMint}
             minted={minted}
-            collection={collection}
             mintAction={mintAction}
             mintingData={mintingData}
+            handleMinting={handleMinting}
           />
-          <MintInfo collection={collection} mintingData={mintingData}/>
+          <MintInfo mintingData={mintingData} />
         </>
       )}
     </div>

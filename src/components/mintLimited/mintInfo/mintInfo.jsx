@@ -2,7 +2,7 @@ import { ReactComponent as TelegramIcon } from "../../../assets/icons/telegram.s
 import { ReactComponent as WebIcon } from "../../../assets/icons/web.svg";
 import { ReactComponent as MediumIcon } from "../../../assets/icons/medium.svg";
 
-const MintInfo = ({ collection, mintingData={} }) => {
+const MintInfo = ({ collection = {}, mintingData={} }) => {
   return (
     <div className="mintInfo">
       <h3>Ongoing Project</h3>
@@ -12,13 +12,13 @@ const MintInfo = ({ collection, mintingData={} }) => {
         accusantium assumenda sunt eius fugit dolor ut pariatur sequi ab!
       </p>
       <div className="infoSocials">
-        <a href={collection.linkTelegram ? collection.linkTelegram : "#"}>
+        <a href={collection?.linkTelegram ? collection.linkTelegram : "#"}>
           <TelegramIcon />
         </a>
-        <a href={collection.linkWeb ? collection.linkWeb : "#"}>
+        <a href={collection?.linkWeb ? collection.linkWeb : "#"}>
           <WebIcon />
         </a>
-        <a href={collection.linkMedium ? collection.linkMedium : "#"}>
+        <a href={collection?.linkMedium ? collection.linkMedium : "#"}>
           <MediumIcon />
         </a>
       </div>
@@ -34,7 +34,7 @@ const MintInfo = ({ collection, mintingData={} }) => {
           Collection Name: <span>{mintingData.name}</span>
         </p>
         <p className="highlightLine">
-          Collection Symbol: <span>{collection.symbol}</span>
+          Collection Symbol: <span>{mintingData.symbol}</span>
         </p>
       </div>
       <div className="tokenInfo">

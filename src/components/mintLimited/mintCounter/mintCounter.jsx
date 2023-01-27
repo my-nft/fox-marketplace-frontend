@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { cps } from "redux-saga/effects";
 
-const MintCounter = ({mintAction, mintingData, handleMinting }) => {
+const MintCounter = ({mintingData = {}, handleMinting, setTotal }) => {
 
   const [mintingDataState, setMintingDataState] = useState(mintingData);
 
@@ -20,6 +20,7 @@ const MintCounter = ({mintAction, mintingData, handleMinting }) => {
   const modifyMintCount = (value) => {
     if (mintCount + value >= 0 && mintCount + value <= max) {
       setMintCount(mintCount + value);
+      setTotal(mintCount + value);
     }
   };
 
