@@ -4,13 +4,20 @@ import { Await, useLoaderData } from "react-router-dom";
 import MintInfo from "../../components/mintLimited/mintInfo/mintInfo";
 import MintSideBar from "../../components/mintLimited/mintSideBar/mintSideBar";
 import Spinner from "../../components/Spinner";
+import { getMintingData } from "../../services/listingNft";
 import Page404 from "../404/404";
 
 const MintLimited = () => {
   const [maxForMint, setMaxForMint] = useState(2500);
   const [minted, setMinted] = useState(0);
+  const [mintingData, setMintingData] = useState();
 
   const loaderData = useLoaderData();
+
+  const init = async () => {
+    const data = await getMintingData();
+    setMintingData(data);
+  }
 
   useEffect(() => {
     if (loaderData.dataPromise) {
@@ -19,6 +26,9 @@ const MintLimited = () => {
         setMaxForMint(collection.totalSupply);
       });
     }
+
+    init();
+    
   }, []);
 
   const mintAction = (amount) => {
@@ -30,7 +40,6 @@ const MintLimited = () => {
       <Await resolve={loaderData.dataPromise} errorElement={<Page404 />}>
         {(data) => {
           const { collection } = data[0].data;
-          console.log(collection);
           return (
             <div className="mintLimitedWrapper">
               <MintSideBar
@@ -38,8 +47,9 @@ const MintLimited = () => {
                 minted={minted}
                 collection={collection}
                 mintAction={mintAction}
+                mintingData={mintingData}
               />
-              <MintInfo collection={collection} />
+              <MintInfo collection={collection} mintingData={mintingData} />
             </div>
           );
         }}

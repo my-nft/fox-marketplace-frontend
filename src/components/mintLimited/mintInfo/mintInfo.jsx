@@ -2,7 +2,7 @@ import { ReactComponent as TelegramIcon } from "../../../assets/icons/telegram.s
 import { ReactComponent as WebIcon } from "../../../assets/icons/web.svg";
 import { ReactComponent as MediumIcon } from "../../../assets/icons/medium.svg";
 
-const MintInfo = ({ collection }) => {
+const MintInfo = ({ collection, mintingData={} }) => {
   return (
     <div className="mintInfo">
       <h3>Ongoing Project</h3>
@@ -28,10 +28,10 @@ const MintInfo = ({ collection }) => {
           Access Type: <span>Public</span>
         </p>
         <p className="highlightLine">
-          Total Supply: <span>{collection.totalSupply}</span>
+          Total Supply: <span>{mintingData.totalSupply}</span>
         </p>
         <p className="highlightLine">
-          Collection Name: <span>{collection.name}</span>
+          Collection Name: <span>{mintingData.name}</span>
         </p>
         <p className="highlightLine">
           Collection Symbol: <span>{collection.symbol}</span>

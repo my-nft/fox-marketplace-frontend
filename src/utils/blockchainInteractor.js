@@ -8,6 +8,7 @@ import FIXED_PRICE from "./contracts/MultiContractMarketPlaceABI.json";
 import OFFER_SYSTEM from "./contracts/OFFERSYSTEM.json";
 import FOX_MASTER from "./contracts/FOX_MASTER.json";
 import FACTORY from "./contracts/FACTORY.json";
+import FOX_GENISIS from "./contracts/FOX_GENESIS.json";
 import { authProvider } from "./web3ModalInteractor";
 
 let infura = process.env.REACT_APP_RPC_URL;
@@ -34,6 +35,8 @@ export const OfferSystemAddress = process.env.REACT_APP_OfferSystemAddress;
 export const foxMasterCollectionAddress = process.env.REACT_APP_foxMasterCollectionAddress;
 
 export const factoryCollectionAddress = process.env.REACT_APP_factoryCollectionAddress;
+
+export const foxGenesisCollectionAddress = process.env.REACT_APP_foxGenesisCollectionAddress;
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
@@ -100,6 +103,15 @@ export async function loadFoxMasterCollectionContract(collectionAddress) {
   const web3 = await authProviderInstance.getInjectedWeb3();
 
   return new web3.eth.Contract(FOX_MASTER, collectionAddress);
+}
+
+export async function loadFoxGenisisContract(readOnly = false) {
+  console.log("##########", foxGenesisCollectionAddress);
+  let web3Instance = web3Infura;
+  if (!readOnly) {
+    web3Instance = await authProviderInstance.getInjectedWeb3();
+  }
+  return new web3Instance.eth.Contract(FOX_GENISIS, foxGenesisCollectionAddress);
 }
 
 export async function loadFactoryContract() {
