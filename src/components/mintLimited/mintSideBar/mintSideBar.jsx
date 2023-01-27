@@ -27,7 +27,7 @@ const MintSideBar = ({
         </div>
         <div className="countdownWrapper">
           <p>Sale Countdown</p>
-          <Countdown date="2023-01-12T00:00:00" endMessage={"Sale Open"} />
+          <Countdown date="2023-01-28T00:00:00" endMessage={"Sale Open"} />
           <p className="participate">How to participate</p>
         </div>
         <div className="mintPrice">
