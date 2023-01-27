@@ -1,27 +1,52 @@
+import { useEffect } from "react";
 import { useState } from "react";
+import { cps } from "redux-saga/effects";
 
-const MintCounter = ({ minted, max }) => {
+const MintCounter = ({mintingData = {}, handleMinting, setTotal }) => {
+
+  const [mintingDataState, setMintingDataState] = useState(mintingData);
+
   const [mintCount, setMintCount] = useState(0);
 
+  useEffect(()=> {
+    setMintingDataState(mintingData);
+  }, [mintingData])
+
+  const max = Number(mintingDataState.maxPerTransaction);
+  const minted = Number(mintingDataState.totalSupply);
+  const maxToMint = Number(mintingDataState.maxToMint);
+
+
   const modifyMintCount = (value) => {
-    if (mintCount + value >= 0 && mintCount + value <= max - minted) {
+    if (mintCount + value >= 0 && mintCount + value <= max) {
       setMintCount(mintCount + value);
+      setTotal(mintCount + value);
     }
+  };
+
+  const mint = () => {
+    if (mintCount > 0) handleMinting(mintCount);
   };
 
   return (
     <div className="mintCounter">
       <h4>MINTING</h4>
       <div className="mintCount">
-        <div onClick={() => modifyMintCount(-1)}>
+        <button disabled={mintCount <= 0} onClick={() => modifyMintCount(-1)}>
           <span>-</span>
-        </div>
+        </button>
         <p>{mintCount}</p>
-        <div onClick={() => modifyMintCount(1)}>
+        <button disabled={mintCount >= max} onClick={() => modifyMintCount(1)}>
           <span>+</span>
-        </div>
+        </button>
       </div>
-      <button className="mintbutton">Mint</button>
+      <button
+        disabled={mintCount >= max || mintCount <= 0}
+        className="mintbutton"
+        onClick={() => mint()}
+      >
+        Mint
+      </button>
 
       <div className="mintProgress">
         <div>
@@ -29,14 +54,14 @@ const MintCounter = ({ minted, max }) => {
           <p>
             REMAINING:{" "}
             <span>
-              {max - minted} / {max}
+              {maxToMint - minted} / {maxToMint}
             </span>
           </p>
         </div>
         <div className="progress">
           <div
             className="progressValue"
-            style={{ width: `${((max - minted) / max) * 100}%` }}
+            style={{ width: `${( 100 - ((maxToMint - minted) / maxToMint) * 100 ) }%` }}
           ></div>
         </div>
       </div>

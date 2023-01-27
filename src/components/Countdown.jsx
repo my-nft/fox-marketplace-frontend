@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-const Countdown = ({ date, endMessage = "Mint your NFT" }) => {
+const Countdown = ({ date, endMessage = "Mint your NFT", link = "#" }) => {
   const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
@@ -64,7 +65,9 @@ const Countdown = ({ date, endMessage = "Mint your NFT" }) => {
           </div>
         </div>
       ) : (
-        <span className="mintUpcoming">{endMessage}</span>
+        <Link className="mintUpcoming" to={link}>
+          {endMessage}
+        </Link>
       )}
     </div>
   );

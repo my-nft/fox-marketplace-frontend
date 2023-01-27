@@ -2,6 +2,7 @@ export const FIXED_PRICE = "FIXED_PRICE";
 export const AUCTION = "AUCTION";
 
 export const FXG_PRICE = 0.0058;
+export const FX_PRICE = 0.19001;
 
 // Transactions trace
 

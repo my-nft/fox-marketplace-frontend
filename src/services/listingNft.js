@@ -1,14 +1,16 @@
+import Web3 from "web3";
 import {
   AUTIONContractAddress,
   ERC20ContractAddress,
   FIXEDContractAddress,
+  foxGenesisCollectionAddress,
   getCurrentWalletConnected,
   loadAFixedPriceContract,
   loadAuctionContract,
   loadERC20Contract,
   loadERC721Contract,
   loaderContract,
-  loadFoxMasterCollectionContract,
+  loadFoxGenisisContract,
   loadOfferSystemContract,
   OfferSystemAddress,
   web3Infura,
@@ -47,7 +49,7 @@ export const getBestOffer = async (collectionAddress, tokenID) => {
   return {
     price: Number(response.price) / 10 ** 18,
     offerOwner: response.buyer,
-    createTime: response.createTime
+    createTime: response.createTime,
   };
 };
 
@@ -371,7 +373,6 @@ export const deListItem = async (listingId) => {
 };
 
 export const makeOfferToOwner = async (collectionAddress, tokenID, price) => {
-
   const connectWallet = await getCurrentWalletConnected();
   const erc20Contract = await loadERC20Contract();
   const offerSystemContract = await loadOfferSystemContract();
@@ -409,31 +410,25 @@ export const makeOfferToOwner = async (collectionAddress, tokenID, price) => {
 };
 
 export const withdrawOffer = async (collectionAddress, tokenID) => {
-    const connectWallet = await getCurrentWalletConnected();
-    const offerSystemContract = await loadOfferSystemContract();
+  const connectWallet = await getCurrentWalletConnected();
+  const offerSystemContract = await loadOfferSystemContract();
 
-    const gasLimitAcceptOffer = await offerSystemContract.methods
-      .withdrawBuyOffer(
-        collectionAddress,
-        tokenID
-      )
-      .estimateGas({
-        from: connectWallet,
-        to: OfferSystemAddress,
-      });
+  const gasLimitAcceptOffer = await offerSystemContract.methods
+    .withdrawBuyOffer(collectionAddress, tokenID)
+    .estimateGas({
+      from: connectWallet,
+      to: OfferSystemAddress,
+    });
 
-    const tsx = await offerSystemContract.methods
-      .withdrawBuyOffer(
-        collectionAddress,
-        tokenID
-      )
-      .send({
-        from: connectWallet,
-        to: OfferSystemAddress,
-        gasLimit: gasLimitAcceptOffer,
-      });
+  const tsx = await offerSystemContract.methods
+    .withdrawBuyOffer(collectionAddress, tokenID)
+    .send({
+      from: connectWallet,
+      to: OfferSystemAddress,
+      gasLimit: gasLimitAcceptOffer,
+    });
 
-      return tsx.transactionHash;
+  return tsx.transactionHash;
 };
 
 export const acceptOffer = async (
@@ -515,4 +510,62 @@ export const transfertToken = async (collectionAddress, tokenID, to) => {
     });
 
   return tsx.transactionHash;
+};
+
+export const getMintingData = async () => {
+  const connectWallet = await getCurrentWalletConnected();
+
+  const erc721Contract = await loadFoxGenisisContract(true);
+  const maxPerTransaction = await erc721Contract.methods
+    .maxPerTransaction()
+    .call();
+  const maxPerWallet = await erc721Contract.methods.maxPerWallet().call();
+  const maxToMint = await erc721Contract.methods.maxToMint().call();
+  const mintFee = await erc721Contract.methods.mintFee().call();
+  const minted = await erc721Contract.methods.minted(connectWallet).call();
+  const mintingEnabled = await erc721Contract.methods.mintingEnabled().call();
+  const name = await erc721Contract.methods.name().call();
+  const totalSupply = await erc721Contract.methods.totalSupply().call();
+  const symbol = await erc721Contract.methods.symbol().call();
+  return {
+    maxPerTransaction,
+    maxPerWallet,
+    maxToMint,
+    mintFee,
+    minted,
+    mintingEnabled,
+    totalSupply,
+    name,
+    symbol
+  };
+};
+
+export const totalSupply = async () => {
+  const erc721Contract = await loadFoxGenisisContract(true);
+  return await erc721Contract.methods.totalSupply();
+};
+
+export const mintNfts = async (total) => {
+
+  const connectWallet = await getCurrentWalletConnected();
+
+  const erc721ContractRead = await loadFoxGenisisContract(true);
+  const erc721Contract = await loadFoxGenisisContract(false);
+
+  const mintFee = await erc721ContractRead.methods.mintFee().call();
+
+  const value =  Number(mintFee) * Number(total)
+
+
+  const gasLimit = await erc721Contract.methods.mint(total).estimateGas({
+    from: connectWallet,
+    to: foxGenesisCollectionAddress,
+    value
+  });
+  await erc721Contract.methods.mint(total).send({
+    from: connectWallet,
+    to: foxGenesisCollectionAddress,
+    gasLimit: gasLimit,
+    value
+  });
 };
