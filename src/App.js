@@ -45,33 +45,6 @@ const router = createBrowserRouter(
       />
       <Route
         path="drops"
-        loader={async () => {
-          const getCollectionPromise = getCollectionByAddress(
-            "0x2C9952D9CE9494cF63E16e398EcE65522651C41c"
-          );
-          return defer({
-            dataPromise: Promise.all([getCollectionPromise]),
-          });
-        }}
-        element={
-          <>
-            <MintLimited />
-            <Footer />
-          </>
-        }
-      />
-      <Route
-        path="drops/:collectionAddress"
-        loader={async ({ params }) => {
-          console.log("params", params);
-          const getCollectionPromise = getCollectionByAddress(
-            params.collectionAddress
-          );
-
-          return defer({
-            dataPromise: Promise.all([getCollectionPromise]),
-          });
-        }}
         element={
           <>
             <MintLimited />
