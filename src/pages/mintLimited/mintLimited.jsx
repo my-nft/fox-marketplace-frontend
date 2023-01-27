@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Suspense, useState } from "react";
 import { Await, useLoaderData } from "react-router-dom";
+import { getCollectionByAddress } from "../../api/collectionApi";
 import MintInfo from "../../components/mintLimited/mintInfo/mintInfo";
 import MintSideBar from "../../components/mintLimited/mintSideBar/mintSideBar";
 import Spinner from "../../components/Spinner";
@@ -9,16 +10,19 @@ import Page404 from "../404/404";
 const MintLimited = () => {
   const [maxForMint, setMaxForMint] = useState(2500);
   const [minted, setMinted] = useState(0);
-
-  const loaderData = useLoaderData();
+  const [loading, setLoading] = useState(true);
+  const [collection, setCollection] = useState(null);
 
   useEffect(() => {
-    if (loaderData.dataPromise) {
-      loaderData.dataPromise.then((data) => {
-        const { collection } = data[0].data;
-        setMaxForMint(collection.totalSupply);
+    getCollectionByAddress("0x9E4df6f08ceEcfEF170FCbF036B97789d5320ec3")
+      .then((res) => {
+        setMaxForMint(res.data.collection.totalSupply);
+        setCollection(res.data.collection);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    }
   }, []);
 
   const mintAction = (amount) => {
@@ -26,25 +30,21 @@ const MintLimited = () => {
   };
 
   return (
-    <Suspense fallback={<Spinner />}>
-      <Await resolve={loaderData.dataPromise} errorElement={<Page404 />}>
-        {(data) => {
-          const { collection } = data[0].data;
-          console.log(collection);
-          return (
-            <div className="mintLimitedWrapper">
-              <MintSideBar
-                maxForMint={maxForMint}
-                minted={minted}
-                collection={collection}
-                mintAction={mintAction}
-              />
-              <MintInfo collection={collection} />
-            </div>
-          );
-        }}
-      </Await>
-    </Suspense>
+    <div className="mintLimitedWrapper">
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          <MintSideBar
+            maxForMint={maxForMint}
+            minted={minted}
+            collection={collection}
+            mintAction={mintAction}
+          />
+          <MintInfo collection={collection} />
+        </>
+      )}
+    </div>
   );
 };
 

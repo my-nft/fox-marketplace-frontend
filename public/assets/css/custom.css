@@ -4148,7 +4148,8 @@ ul#buttonIcon {
 }
 
 .mintUpcoming {
-  padding: 12px 48px;
+  padding: 12px 16px;
+  width: 100%;
   background: #130f0a;
   border-radius: 10px;
   color: #f58103;
@@ -4156,6 +4157,7 @@ ul#buttonIcon {
   font-size: 16px;
   cursor: pointer;
   transition: 300ms ease-in-out;
+  text-align: center;
 }
 
 .mintUpcoming:hover {
@@ -4348,6 +4350,11 @@ ul#buttonIcon {
   color: #ededed;
   margin: 0 0 8px;
   text-align: center;
+}
+
+.mintLimitedWrapper .sidebar .countdown {
+  margin: 0;
+  width: 100%;
 }
 
 .mintLimitedWrapper .sidebar .mintPrice {
