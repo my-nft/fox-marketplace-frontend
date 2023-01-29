@@ -58,5 +58,5 @@ export const mintCollection = async ({ name, symbol }) => {
     console.log("COLLECTION ADDRESS CREATED  ", tsx)
 
 
-  return tsx.events[0].address;
+  return tsx.events[2].address;
 };
