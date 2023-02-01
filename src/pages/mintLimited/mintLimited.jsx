@@ -6,7 +6,7 @@ import { getCollectionByAddress } from "../../api/collectionApi";
 import MintInfo from "../../components/mintLimited/mintInfo/mintInfo";
 import MintSideBar from "../../components/mintLimited/mintSideBar/mintSideBar";
 import Spinner from "../../components/Spinner";
-import { getMintingData, mintNfts } from "../../services/listingNft";
+import { getMinted, getMintingData, mintNfts } from "../../services/listingNft";
 
 const MintLimited = () => {
   const [minted, setMinted] = useState(0);
@@ -16,8 +16,8 @@ const MintLimited = () => {
 
   const init = async () => {
     const data = await getMintingData();
-    setMintingData(data);
-};
+      setMintingData(data);
+    };
 
   const handleMinting = async (count) => {
     try {
