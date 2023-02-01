@@ -2,14 +2,14 @@ import { ReactComponent as TelegramIcon } from "../../../assets/icons/telegram.s
 import { ReactComponent as WebIcon } from "../../../assets/icons/web.svg";
 import { ReactComponent as MediumIcon } from "../../../assets/icons/medium.svg";
 
-const MintInfo = ({ collection = {}, mintingData={} }) => {
+const MintInfo = ({ collection = {}, mintingData = {} }) => {
   return (
     <div className="mintInfo">
       <h3>Ongoing Project</h3>
       <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod delectus,
-        incidunt quia, esse laboriosam repellat amet saepe aperiam id enim
-        accusantium assumenda sunt eius fugit dolor ut pariatur sequi ab!
+        Fox Gaming is a multichain-focused project. We developed an NFT
+        Marketplace with an integrated INO platform, codeless NFT
+        Projectbuilder, and providing high-quality utility collectibles.
       </p>
       <div className="infoSocials">
         <a href={collection?.linkTelegram ? collection.linkTelegram : "#"}>
@@ -46,23 +46,16 @@ const MintInfo = ({ collection = {}, mintingData={} }) => {
           Type: <span>Non-Fungible Token</span>
         </p>
         <p className="highlightLine">
-          Staking Rewards:{" "}
+          Benefits :{" "}
           <span>
-            10% staking rewards $POWPAD tokens in the NFTs staking pools Staking
-            rewards from every upcoming IDO tokens
-          </span>
-        </p>
-        <p className="highlightLine">
-          Random Lottery Pool 1 Times a Week: <br />
-          <span>
-            15% $POWSWAP of the Reward/Dev wallet to 5 random NFT stakers.{" "}
+            Holding an OG Genesis Fox Collection NFT in your wallet reduces the
+            fee on our FoxChange Marketplace to ZERO.
             <br />
-            15% $POWSWAP of the Reward/Dev wallet to 10 $POWSWAP stakers. <br />
-            All purchases on POWPAD Platfrom will be done with $ETHWPOWCLONES
-            INO sale 15% of the $ETHW buyback $POWPAD and sent to the burning
-            address. <br />
-            All NFT sales on the INO platform 2% $ETHW will be used for buyback
-            $POWPAD and sent to burning address.
+            Future Fox Developments will bring more value and benefits for
+            Genesis NFT holders.
+            <br />
+            The release of new FOX NFTS will be very slowly and depends on the
+            growing total users.
           </span>
         </p>
       </div>
