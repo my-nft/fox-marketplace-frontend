@@ -3,6 +3,7 @@ import { ReactComponent as WebIcon } from "../../../assets/icons/web.svg";
 import { ReactComponent as MediumIcon } from "../../../assets/icons/medium.svg";
 
 const MintInfo = ({ collection = {}, mintingData = {} }) => {
+  console.log(mintingData);
   return (
     <div className="mintInfo">
       <h3>Ongoing Project</h3>
@@ -12,26 +13,44 @@ const MintInfo = ({ collection = {}, mintingData = {} }) => {
         Projectbuilder, and providing high-quality utility collectibles.
       </p>
       <div className="infoSocials">
-        <a href={collection?.linkTelegram ? collection.linkTelegram : "#"}>
+        <a
+          target="_blank"
+          href={collection?.linkTelegram ? collection.linkTelegram : "#"}
+        >
           <TelegramIcon />
         </a>
-        <a href={collection?.linkWeb ? collection.linkWeb : "#"}>
+        <a
+          target="_blank"
+          href={collection?.linkWeb ? collection.linkWeb : "#"}
+        >
           <WebIcon />
         </a>
-        <a href={collection?.linkMedium ? collection.linkMedium : "#"}>
+        <a
+          target="_blank"
+          href={collection?.linkMedium ? collection.linkMedium : "#"}
+        >
           <MediumIcon />
         </a>
       </div>
       <div className="mintCollectionDetails">
         <h3>Collection Details</h3>
         <p className="highlightLine">
-          Access Type: <span>Public</span>
+          Access Type:{" "}
+          <span>
+            {mintingData?.whitelistingEnabled ? "Whitelist" : "Public"}
+          </span>
         </p>
         <p className="highlightLine">
           Total Supply: <span>{mintingData.totalSupply}</span>
         </p>
         <p className="highlightLine">
-          Collection Name: <span>{mintingData.name}</span>
+          Collection Name:{" "}
+          <a
+            target="_blank"
+            href="https://starscan.io/evm/address/0x9E4df6f08ceEcfEF170FCbF036B97789d5320ec3"
+          >
+            {mintingData.name}
+          </a>
         </p>
         <p className="highlightLine">
           Collection Symbol: <span>{mintingData.symbol}</span>

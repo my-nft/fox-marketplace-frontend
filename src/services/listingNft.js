@@ -532,6 +532,7 @@ export const getMintingData = async () => {
   const name = await erc721Contract.methods.name().call();
   const totalSupply = await erc721Contract.methods.totalSupply().call();
   const symbol = await erc721Contract.methods.symbol().call();
+  const whitelistingEnabled = await erc721Contract.methods.whitelistingEnabled().call();
   return {
     maxPerTransaction,
     maxPerWallet,
@@ -540,7 +541,8 @@ export const getMintingData = async () => {
     mintingEnabled,
     totalSupply,
     name,
-    symbol
+    symbol,
+    whitelistingEnabled
   };
 };
 
