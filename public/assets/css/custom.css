@@ -4316,11 +4316,13 @@ ul#buttonIcon {
   border: 2px solid #f58103;
 }
 
-.mintSidebarMain h3 {
+.mintSidebarMain > a {
   font-size: 28px;
   font-weight: 600;
-  color: #f58103;
+  color: #f58103 !important;
   margin: 0;
+  text-align: center;
+  line-height: 36px;
 }
 
 .mintSidebarMain h5 {
@@ -4332,6 +4334,12 @@ ul#buttonIcon {
 .mintStatus.closed {
   background: rgba(220, 0, 0, 0.1);
   color: rgb(220, 0, 0);
+  text-align: center;
+}
+
+.mintStatus.enabled {
+  background: rgba(0, 220, 0, 0.1);
+  color: rgb(0, 220, 0);
   text-align: center;
 }
 
@@ -4596,6 +4604,30 @@ ul#buttonIcon {
 
 .highlightLine {
   color: rgba(237, 237, 237, 0.5);
+}
+
+.highlightLine a {
+  color: #f58103;
+  font-weight: 600;
+  position: relative;
+  display: inline-block;
+}
+
+.highlightLine a::before {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #f58103;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: 300ms ease-in-out;
+}
+
+.highlightLine a:hover::before {
+  transform: scaleX(1);
 }
 
 .highlightLine span {

@@ -20,7 +20,9 @@ const MintSideBar = ({
           }
           alt="fox"
         />
-        <h3>{name}</h3>
+        <a href="https://marketplace.foxchange.io/collection/0x9E4df6f08ceEcfEF170FCbF036B97789d5320ec3">
+          {name}
+        </a>
         {mintingEnabled ? (
           <p className={"mintStatus enabled"}>Minting Open</p>
         ) : (
