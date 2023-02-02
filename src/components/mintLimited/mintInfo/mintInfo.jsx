@@ -13,13 +13,22 @@ const MintInfo = ({ collection = {}, mintingData = {} }) => {
         Projectbuilder, and providing high-quality utility collectibles.
       </p>
       <div className="infoSocials">
-        <a href={collection?.linkTelegram ? collection.linkTelegram : "#"}>
+        <a
+          target="_blank"
+          href={collection?.linkTelegram ? collection.linkTelegram : "#"}
+        >
           <TelegramIcon />
         </a>
-        <a href={collection?.linkWeb ? collection.linkWeb : "#"}>
+        <a
+          target="_blank"
+          href={collection?.linkWeb ? collection.linkWeb : "#"}
+        >
           <WebIcon />
         </a>
-        <a href={collection?.linkMedium ? collection.linkMedium : "#"}>
+        <a
+          target="_blank"
+          href={collection?.linkMedium ? collection.linkMedium : "#"}
+        >
           <MediumIcon />
         </a>
       </div>
@@ -36,7 +45,10 @@ const MintInfo = ({ collection = {}, mintingData = {} }) => {
         </p>
         <p className="highlightLine">
           Collection Name:{" "}
-          <a href="https://starscan.io/evm/address/0x9E4df6f08ceEcfEF170FCbF036B97789d5320ec3">
+          <a
+            target="_blank"
+            href="https://starscan.io/evm/address/0x9E4df6f08ceEcfEF170FCbF036B97789d5320ec3"
+          >
             {mintingData.name}
           </a>
         </p>

@@ -20,7 +20,10 @@ const MintSideBar = ({
           }
           alt="fox"
         />
-        <a href="https://marketplace.foxchange.io/collection/0x9E4df6f08ceEcfEF170FCbF036B97789d5320ec3">
+        <a
+          target="_blank"
+          href="https://marketplace.foxchange.io/collection/0x9E4df6f08ceEcfEF170FCbF036B97789d5320ec3"
+        >
           {name}
         </a>
         {mintingEnabled ? (
@@ -38,6 +41,14 @@ const MintSideBar = ({
           <div className="mintPrice">
             <p>{price} FX</p>
             <p>{parseFloat((price * FX_PRICE).toFixed(4))} USD</p>
+          </div>
+        </div>
+      )}
+      {whitelistingEnabled && (
+        <div>
+          Whitelisting required
+          <div className="whitelist whitelistClosed">
+            <p>⚠ Whitelisting required</p>
           </div>
         </div>
       )}
