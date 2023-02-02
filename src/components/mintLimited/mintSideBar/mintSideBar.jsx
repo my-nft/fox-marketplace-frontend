@@ -19,8 +19,7 @@ const MintSideBar = ({
           src={"https://foxchangechachinglayer.s3.amazonaws.com/bucketFolder/1673008109763"}
           alt="fox"
         />
-        <h3>Title</h3>
-        <h5>{name}</h5>
+        <h3>{name}</h3>
         {mintingEnabled ? (
           <p className={"mintStatus enabled"}>Enabled</p>
         ) : (

@@ -512,8 +512,14 @@ export const transfertToken = async (collectionAddress, tokenID, to) => {
   return tsx.transactionHash;
 };
 
-export const getMintingData = async () => {
+
+export const getMinted = async () => {
   const connectWallet = await getCurrentWalletConnected();
+  const erc721Contract = await loadFoxGenisisContract(true);
+  return erc721Contract.methods.minted(connectWallet).call();
+}
+
+export const getMintingData = async () => {
 
   const erc721Contract = await loadFoxGenisisContract(true);
   const maxPerTransaction = await erc721Contract.methods
@@ -522,7 +528,6 @@ export const getMintingData = async () => {
   const maxPerWallet = await erc721Contract.methods.maxPerWallet().call();
   const maxToMint = await erc721Contract.methods.maxToMint().call();
   const mintFee = await erc721Contract.methods.mintFee().call();
-  const minted = await erc721Contract.methods.minted(connectWallet).call();
   const mintingEnabled = await erc721Contract.methods.mintingEnabled().call();
   const name = await erc721Contract.methods.name().call();
   const totalSupply = await erc721Contract.methods.totalSupply().call();
@@ -532,7 +537,6 @@ export const getMintingData = async () => {
     maxPerWallet,
     maxToMint,
     mintFee,
-    minted,
     mintingEnabled,
     totalSupply,
     name,
