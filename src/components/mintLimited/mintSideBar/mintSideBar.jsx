@@ -34,7 +34,6 @@ const MintSideBar = ({
       </div>
       {!whitelistingEnabled && (
         <div>
-          No whitelisting required
           <div className="whitelist whitelistOpen">
             <p>✔ No whitelisting required</p>
           </div>
@@ -46,7 +45,6 @@ const MintSideBar = ({
       )}
       {whitelistingEnabled && (
         <div>
-          Whitelisting required
           <div className="whitelist whitelistClosed">
             <p>⚠ Whitelisting required</p>
           </div>
