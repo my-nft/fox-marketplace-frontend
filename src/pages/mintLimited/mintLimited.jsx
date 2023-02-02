@@ -1,12 +1,10 @@
 import { useEffect } from "react";
-import { Suspense, useState } from "react";
-import { Await, useLoaderData } from "react-router-dom";
+import { useState } from "react";
 import { toast } from "react-toastify";
-import { getCollectionByAddress } from "../../api/collectionApi";
 import MintInfo from "../../components/mintLimited/mintInfo/mintInfo";
 import MintSideBar from "../../components/mintLimited/mintSideBar/mintSideBar";
 import Spinner from "../../components/Spinner";
-import { getMinted, getMintingData, mintNfts } from "../../services/listingNft";
+import { getMintingData, mintNfts } from "../../services/listingNft";
 
 const MintLimited = () => {
   const [minted, setMinted] = useState(0);
@@ -15,9 +13,16 @@ const MintLimited = () => {
   const [loading, setLoading] = useState(false);
 
   const init = async () => {
-    const data = await getMintingData();
+    try {
+      setLoading(true);
+      const data = await getMintingData();
       setMintingData(data);
-    };
+    } catch (error) {
+      toast.error(error.message || "An unexpected error occurred.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleMinting = async (count) => {
     try {
@@ -25,7 +30,6 @@ const MintLimited = () => {
       await mintNfts(count);
       // relead stats
       init();
-      setLoading(false);
       toast.success("Minting success");
     } catch (error) {
       toast.error(error.message || "An unexpected error occurred.");
@@ -35,7 +39,7 @@ const MintLimited = () => {
   };
 
   useEffect(() => {
-    try{
+    try {
       init();
     } catch (error) {
       toast.error(error.message || "An unexpected error occurred.");
