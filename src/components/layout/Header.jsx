@@ -126,6 +126,13 @@ const Header = () => {
                   Create
                 </Link>
               </li>
+              <li className="nav-item">
+                <a
+                  href="https://genesis.foxchange.io/"
+                >
+                  Genesis
+                </a>
+              </li>
             </ul>
 
             {connectedWallet ? (
