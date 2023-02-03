@@ -1,24 +1,23 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { DateTime, Interval } from "luxon";
 
 const Countdown = ({ date, endMessage = "Mint your NFT", link = "#" }) => {
   const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
+  let mintDate = DateTime.fromISO(date);
 
   const calculateTimeLeft = () => {
-    const difference = +new Date(date) - +new Date();
-    let timeLeft = {};
+    let difference = Interval.fromDateTimes(DateTime.local(), mintDate);
 
-    if (difference > 0) {
-      timeLeft = {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
-      };
-    }
+    let timeLeft = {
+      days: parseInt(difference.length("days")),
+      hours: parseInt(difference.length("hours") % 24),
+      minutes: parseInt(difference.length("minutes") % 60),
+      seconds: parseInt(difference.length("seconds") % 60),
+    };
 
     return timeLeft;
   };
@@ -33,8 +32,8 @@ const Countdown = ({ date, endMessage = "Mint your NFT", link = "#" }) => {
       timeLeft = calculateTimeLeft();
       setDays(timeLeft.days);
       setHours(timeLeft.hours);
-      setMinutes(timeLeft.minutes);
-      setSeconds(timeLeft.seconds);
+      setMinutes(parseInt(timeLeft.minutes));
+      setSeconds(parseInt(timeLeft.seconds));
     }, 1000);
     return () => clearTimeout(timer);
   });
