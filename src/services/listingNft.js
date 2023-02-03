@@ -560,7 +560,7 @@ export const mintNfts = async (total) => {
 
   const mintFee = await erc721ContractRead.methods.mintFee().call();
 
-  const value =  bigNumberPricing(Number(mintFee) * Number(total));
+  const value =  await bigNumberPricing(Number(mintFee) * Number(total));
 
 
   const gasLimit = await erc721Contract.methods.mint(total).estimateGas({
