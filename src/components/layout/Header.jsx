@@ -129,7 +129,7 @@ const Header = () => {
               <li className="nav-item">
                 <a
                   className="nav-link"
-                  href="https://www.genesis.foxchange.io/"
+                  href="https://genesis.foxchange.io/"
                 >
                   Genesis
                 </a>
