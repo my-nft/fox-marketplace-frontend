@@ -37,12 +37,12 @@ const MintSideBar = ({
           <div className="whitelist whitelistOpen">
             <p>✔ No whitelisting required</p>
           </div>
-          <div className="mintPrice">
-            <p>{price} FX</p>
-            <p>{parseFloat((price * FX_PRICE).toFixed(4))} USD</p>
-          </div>
         </div>
       )}
+      <div className="mintPrice">
+        <p>{parseFloat(price.toFixed(4))} FX</p>
+        <p>{parseFloat((price * FX_PRICE).toFixed(4))} USD</p>
+      </div>
       {whitelistingEnabled && (
         <div>
           <div className="whitelist whitelistClosed">
