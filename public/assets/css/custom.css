@@ -151,6 +151,14 @@ option {
   height: 50px;
 }
 
+.navbar form {
+  max-width: 360px;
+}
+
+.navbar form > div {
+  padding-right: 24px;
+}
+
 .navbar .form-control-container input {
   width: 100% !important;
   margin: 0 !important;
@@ -277,7 +285,7 @@ header a {
 }
 
 ul#buttonIcon {
-  margin-right: 50px;
+  margin-right: 24px;
 }
 
 #buttonIcon li {
@@ -4885,4 +4893,89 @@ ul#buttonIcon {
 
 .priceHistory {
   padding-top: 1px;
+}
+
+.chainSelect {
+  width: 144px;
+  position: relative;
+}
+
+.chainSelectHead {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+  justify-content: space-between;
+  padding: 8px 20px;
+  border: 1px solid #f58103;
+  border-radius: 8px;
+  box-shadow: 0 0 8px 0 transparent;
+  transition: 300ms ease-in-out;
+}
+
+.chainSelectHead svg {
+  width: 18px;
+  height: 18px;
+  transition: 300ms ease-in-out;
+  transform: rotate(-90deg);
+}
+
+.chainSelectHead p {
+  margin: 0;
+  font-weight: 600;
+  font-size: 16px;
+  color: #fff;
+}
+
+.chainToggled .chainSelectHead {
+  box-shadow: 0 0 8px 1px rgba(245, 129, 3, 0.6);
+}
+
+.chainToggled .chainSelectHead svg {
+  transform: rotate(90deg);
+}
+
+.chainOptions {
+  position: absolute;
+  top: 100%;
+  margin-top: 12px;
+  left: 0;
+  width: 100%;
+  background: #010306;
+  border: 1px solid #f58103;
+  border-radius: 8px;
+  z-index: 100;
+  max-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0;
+  transition: 300ms ease-in-out;
+}
+
+.chainOption {
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: 300ms ease-in-out;
+  margin: 0;
+  color: #ededed;
+}
+
+.chainSelected {
+  color: #f58103;
+}
+
+.chainOption:hover {
+  background: #f58103;
+  color: #ededed;
+}
+.chainSelected:hover {
+  color: #f58103;
+  background: transparent;
+}
+
+.chainToggled .chainOptions {
+  max-height: 240px;
+  visibility: visible;
+  opacity: 1;
 }

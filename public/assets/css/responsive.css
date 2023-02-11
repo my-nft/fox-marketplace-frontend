@@ -2,6 +2,59 @@
   .wrapperMostPopular {
     grid-template-columns: repeat(5, 1fr);
   }
+  .navbar-nav .nav-item {
+    width: max-content;
+  }
+  .navbar-nav {
+    align-items: center;
+  }
+  .navbar-collapse {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .navbar-collapse #buttonIcon {
+    margin-right: 0;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+  }
+  .navbar-collapse > button {
+    margin: 16px 0 0 !important;
+  }
+  #layer {
+    top: -43vh;
+  }
+}
+
+@media (min-width: 1440px) {
+  .navbar-expand-custom {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+  .navbar-expand-custom .navbar-nav {
+    flex-direction: row;
+  }
+  .navbar-expand-custom .dropdown-menu {
+    position: absolute;
+  }
+  .navbar-expand-custom .nav-link {
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+  }
+  .navbar-expand-custom > .container {
+    flex-wrap: nowrap;
+  }
+  .navbar-expand-custom .navbar-collapse {
+    display: flex !important;
+    flex-basis: auto;
+  }
+  .navbar-expand-custom .navbar-toggler {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 1280px) {
@@ -54,6 +107,11 @@
 }
 
 @media screen and (max-width: 1200px) {
+  #layer {
+    top: -75vh;
+    height: 110vh;
+    width: 110vw;
+  }
   .navbar-collapse {
     flex-direction: column;
     align-items: center;
@@ -181,6 +239,9 @@
 }
 
 @media (max-width: 768px) {
+  #layer {
+    top: -80vh;
+  }
   header .form-control-container {
     width: 100% !important;
     margin-top: 24px;

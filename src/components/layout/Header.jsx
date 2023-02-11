@@ -17,6 +17,7 @@ import { ReactComponent as LogoutIcon } from "../../assets/icons/exit.svg";
 
 import { selectCurrentWallet } from "../../redux/userReducer";
 import { LOAD_USER } from "../../saga/actions";
+import ChainSelect from "../chainSelect";
 
 const Header = () => {
   const clickRef = useOutsideClick(() => {
@@ -90,7 +91,7 @@ const Header = () => {
     <>
       <ScrollToTop />
       <header className="container-fluid">
-        <nav className="navbar navbar-expand-xl" ref={clickRef}>
+        <nav className="navbar navbar-expand-custom" ref={clickRef}>
           <Link className="navbar-brand" to="/">
             <img src="/assets/images/Logo_foxchange.png" alt="" />
           </Link>
@@ -166,6 +167,9 @@ const Header = () => {
                     </div>
                   </div>
                   <img src="/assets/icon-white-wallet.png" alt="" />
+                </li>
+                <li>
+                  <ChainSelect />
                 </li>
               </ul>
             ) : null}
