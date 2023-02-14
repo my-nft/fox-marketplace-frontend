@@ -67,7 +67,7 @@ const TradingSection = ({collections = []}) => {
         >
 
           {
-            collections && collections.map(item => (<Slide collectionDetails={item} />))
+            collections && collections.map((item, i) => (<Slide key={i} collectionDetails={item} />))
           }
         </Slider>
         <Arrow

@@ -1,6 +1,22 @@
 import { ReactComponent as SearchIcon } from "../../assets/icons/search.svg";
+import { useEffect } from "react";
+import debounce from 'lodash.debounce';
 
 const SearchBar = ({ changeFilterValue, filters, id, placeholder }) => {
+
+  const handleSearchInput = debounce((value, filters) => {
+    changeFilterValue({
+      ...filters,
+      searchPrompt: value,
+    })
+  }, 600);
+
+  useEffect(() => {
+    return () => {
+      handleSearchInput.cancel();
+    };
+  });
+
   return (
     <div className="form-control-container">
       <SearchIcon />
@@ -10,13 +26,8 @@ const SearchBar = ({ changeFilterValue, filters, id, placeholder }) => {
         placeholder={placeholder}
         aria-label="Search"
         id={id}
-        onChange={(e) =>
-          changeFilterValue({
-            ...filters,
-            searchPrompt: e.target.value,
-          })
-        }
-        value={filters.search}
+        onChange={(e) => handleSearchInput(e.target.value, filters)}
+        value={filters.searchPrompt}
       />
     </div>
   );

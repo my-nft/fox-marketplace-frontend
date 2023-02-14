@@ -67,7 +67,7 @@ function* loadSearcheableCollection(action) {
 
     const response = yield call(api.getCollectionsCall, action.payload);
 
-    const {data} = response;
+    const { data } = response;
 
     yield put(setSearcheableCollections(data.content));
   } catch (error) {
@@ -104,7 +104,7 @@ function* runMintCollection(action) {
 
     const { data, image } = action.payload;
     let collectionAddress = yield call(mintCollection, {
-      name : data.name,
+      name: data.name,
       symbol: data.symbol
     });
 
@@ -119,13 +119,13 @@ function* runMintCollection(action) {
       },
       token
     );
-    yield delay(1500); 
+    yield delay(1500);
 
     yield put(setCollectionIsLoading(false));
 
     action.onSuccess(collectionAddress);
 
-    
+
   } catch (error) {
     console.log(error);
     toast.error("An unexpected error occurred.");
@@ -190,10 +190,17 @@ function* loadAccountNfts(action) {
   const {
     creatorAddress,
     ownerAddress,
-    isListed,
-    collectedOnly,
     page,
     numberElements,
+    categories,
+    searchPrompt,
+    status,
+    minPrice,
+    maxPrice,
+    buyToken,
+    sortBy,
+    isListed,
+    collectedOnly,
   } = action.payload;
 
   try {
@@ -202,10 +209,17 @@ function* loadAccountNfts(action) {
     const response = yield call(tokenApi.getNftsCall, {
       creatorAddress,
       ownerAddress,
-      isListed,
-      collectedOnly,
       page,
       numberElements,
+      categories,
+      searchPrompt,
+      status,
+      minPrice,
+      maxPrice,
+      buyToken,
+      sortBy,
+      isListed,
+      collectedOnly
     });
 
     yield put(setAccountNfts(response.data));

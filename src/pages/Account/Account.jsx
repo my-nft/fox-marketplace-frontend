@@ -46,7 +46,7 @@ const AccountPage = () => {
 
   const [filters, setFilters] = useState({
     searchPrompt: "",
-
+    
     minPrice: 0,
     maxPrice: 0,
     buyToken: "FXG",
@@ -75,6 +75,13 @@ const AccountPage = () => {
         ...body,
         page: pagination.page,
         numberElements: pagination.numberElements,
+        categories: filters.categories,
+        searchPrompt: filters.searchPrompt,
+        status: filters.status,
+        minPrice: filters.minPrice,
+        maxPrice: filters.maxPrice,
+        buyToken: filters.buyToken,
+        sortBy: filters.sortBy,
       },
     });
   };
@@ -88,6 +95,13 @@ const AccountPage = () => {
           ownerAddress: connectedWallet,
           page: pagination.page,
           numberElements: pagination.numberElements,
+          categories: filters.categories,
+          searchPrompt: filters.searchPrompt,
+          status: filters.status,
+          minPrice: filters.minPrice,
+          maxPrice: filters.maxPrice,
+          buyToken: filters.buyToken,
+          sortBy: filters.sortBy,
         },
       });
     } else if (activeSection === "NFTS") {
@@ -112,8 +126,9 @@ const AccountPage = () => {
   };
 
   useEffect(() => {
+    console.log("UPDATE filters",filters)
     runInit();
-  }, [pagination]);
+  }, [pagination, filters]);
 
   useEffect(() => {
     setPagination({
