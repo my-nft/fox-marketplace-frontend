@@ -1,15 +1,18 @@
 import { ReactComponent as SearchIcon } from "../../assets/icons/search.svg";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import debounce from 'lodash.debounce';
 
 const SearchBar = ({ changeFilterValue, filters, id, placeholder }) => {
 
-  const handleSearchInput = debounce((value, filters) => {
-    changeFilterValue({
-      ...filters,
-      searchPrompt: value,
-    })
-  }, 600);
+  const handleSearchInput = useMemo(() => {
+    const handleChange = (e) => {
+      return changeFilterValue({
+        ...filters,
+        searchPrompt: e.target.value
+      })
+    };
+    return debounce(handleChange, 720);
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -26,8 +29,7 @@ const SearchBar = ({ changeFilterValue, filters, id, placeholder }) => {
         placeholder={placeholder}
         aria-label="Search"
         id={id}
-        onChange={(e) => handleSearchInput(e.target.value, filters)}
-        value={filters.searchPrompt}
+        onChange={handleSearchInput}
       />
     </div>
   );

@@ -46,9 +46,9 @@ const AccountPage = () => {
 
   const [filters, setFilters] = useState({
     searchPrompt: "",
-    
-    minPrice: 0,
-    maxPrice: 0,
+
+    minPrice: undefined,
+    maxPrice: undefined,
     buyToken: "FXG",
     categories: [],
     status: [],
