@@ -1539,6 +1539,10 @@ input[type="radio"] {
   align-items: end;
 }
 
+#importItem {
+  max-width: 560px;
+}
+
 #createItem,
 #importItem {
   width: 75%;
@@ -1732,7 +1736,7 @@ img.withGlow.active {
   background-color: transparent;
   border: none;
   border-radius: 0;
-  width: 50%;
+  width: 100% !important;
   border-bottom: 1px solid #8e8e8e;
   margin: auto;
   font-family: "gothamLight";

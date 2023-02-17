@@ -7,9 +7,11 @@ import { IMPORT_COLLECTION } from "../../saga/actions";
 import { selectIsLoading } from "../../redux/collectionReducer";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import CustomSelect from "./../../components/Select";
 
 const ImportCollection = () => {
   const [loading, setLoading] = useState(true);
+  const [contractType, setContractType] = useState("ERC721");
   const loadingSelector = useSelector(selectIsLoading);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -36,7 +38,7 @@ const ImportCollection = () => {
               "Congratulations, your Collection has been imported successfully"
             );
             navigate(`/collection/${data["collectionAddress"]}`);
-          }
+          },
         });
       } else {
         toast.error("Please fill the collection address !");
@@ -65,11 +67,14 @@ const ImportCollection = () => {
           </div>
         ) : (
           <>
-            <div className="row text-center">
+            <div className="row">
               <div className="col">
                 <form onSubmit={handleFormSubmit}>
-                  <div className="form-row text-center">
-                    <div className="form-group">
+                  <div className="form-row ">
+                    <div className="form-group entry-field text-start">
+                      <label htmlFor="collectionAddress mb-2">
+                        Collection Address
+                      </label>
                       <input
                         type="text"
                         className="form-control"
@@ -80,8 +85,25 @@ const ImportCollection = () => {
                       />
                     </div>
                   </div>
+                  <div className=" mt-5 mb-5 text-start entry-field ">
+                    <label htmlFor="contractType mb-2">Contract Type</label>
+                    <CustomSelect
+                      name="contractType"
+                      value={contractType}
+                      onChange={(e) => setContractType(e)}
+                      options={[
+                        { value: "ERC721", label: "ERC721" },
+                        { value: "ERC1155", label: "ERC1155" },
+                      ]}
+                      defaultValue={{ value: "ERC721", label: "ERC721" }}
+                      required
+                    />
+                  </div>
 
-                  <button className="mt-5 contIcon withGlow" id="importSubmit">
+                  <button
+                    className="btn mx-auto py-3 d-block  "
+                    id="importSubmit"
+                  >
                     Import Collection
                   </button>
                 </form>
