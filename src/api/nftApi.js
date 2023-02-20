@@ -13,19 +13,33 @@ export const getNftCall = (collectionAddress, tokenID) => {
 export const getNftsCall = ({
   creatorAddress,
   ownerAddress,
-  isListed,
-  collectedOnly,
   page,
   numberElements,
+  categories,
+  searchPrompt,
+  status,
+  minPrice,
+  maxPrice,
+  buyToken,
+  sortBy,
+  isListed,
+  collectedOnly
 }) => {
   return methods.get(`${nftEndpoint}`, {
     params: {
       creatorAddress,
       ownerAddress,
-      isListed,
-      collectedOnly,
       page,
       numberElements,
+      categories,
+      searchPrompt,
+      status,
+      minPrice,
+      maxPrice,
+      buyToken,
+      sortBy,
+      isListed,
+      collectedOnly
     },
   });
 };
@@ -60,7 +74,7 @@ export const setNftToUnlisted = (body, token) => {
   );
 };
 
-export const makeOffer = ({collectionAddress, tokenID, offer, token}) => {
+export const makeOffer = ({ collectionAddress, tokenID, offer, token }) => {
   return methods.put(
     `${collectionEndpoint}${collectionAddress}/nfts/${tokenID}/make-offer`,
     {

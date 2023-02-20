@@ -95,13 +95,7 @@ const AccountPage = () => {
           ownerAddress: connectedWallet,
           page: pagination.page,
           numberElements: pagination.numberElements,
-          categories: filters.categories,
-          searchPrompt: filters.searchPrompt,
-          status: filters.status,
-          minPrice: filters.minPrice,
-          maxPrice: filters.maxPrice,
-          buyToken: filters.buyToken,
-          sortBy: filters.sortBy,
+          filter: filters
         },
       });
     } else if (activeSection === "NFTS") {
@@ -126,7 +120,7 @@ const AccountPage = () => {
   };
 
   useEffect(() => {
-    console.log("UPDATE filters",filters)
+    console.log("UPDATE filters", filters)
     runInit();
   }, [pagination, filters]);
 

@@ -164,8 +164,7 @@ function* loadAccountCollections(action) {
   console.log("LOAD ACCOUNT COLLECTIONS");
   try {
     yield put(setIsLoadingAccount(true));
-    const { ownerAddress, page, numberElements, filter } = action.payload;
-
+    const {ownerAddress, page, numberElements, filter} = action.payload;
     console.log("SAGA CALL", action.payload);
 
     const collectionsResponse = yield call(
