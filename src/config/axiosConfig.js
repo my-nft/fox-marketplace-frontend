@@ -3,9 +3,13 @@ import { toast } from "react-toastify";
 
 let reqInstance = axios.create({
   headers: {
-    "X-CHAIN-ID" : "90001"
+    "X-CHAIN-ID": localStorage.getItem("chainId")
+      ? JSON.parse(localStorage.getItem("chainId"))?.id
+      : "90001",
   },
 });
+
+console.log("Chain id", localStorage.getItem("chainId") || "90001");
 
 reqInstance.interceptors.request.use((config) => {
   return {

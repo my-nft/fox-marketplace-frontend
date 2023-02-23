@@ -1,14 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReactComponent as Chevron } from "../assets/icons/arrow.svg";
 import CustomSelect from "./Select";
 import useOutsideClick from "./../utils/useOutsideClick";
 
 const ChainSelect = () => {
   const [showOptions, setShowOptions] = useState(false);
-  const [chain, setChain] = useState("FX");
+  const [chain, setChain] = useState({
+    label: "FX",
+    id: 90001,
+  });
+
+  useEffect(() => {
+    if (localStorage.getItem("chainId")) {
+      setChain(JSON.parse(localStorage.getItem("chainId")));
+    }
+  }, []);
 
   const handleSelect = (value) => {
     setChain(value);
+    localStorage.setItem("chainId", JSON.stringify(value));
     setShowOptions(false);
   };
 
@@ -25,30 +35,39 @@ const ChainSelect = () => {
         className="chainSelectHead"
         onClick={() => setShowOptions(!showOptions)}
       >
-        <p>{chain}</p>
+        <p>{chain.label}</p>
         <Chevron />
       </div>
       <div className="chainOptions">
         <p
-          className={`chainOption ${chain === "FX" && "chainSelected"}`}
+          className={`chainOption ${chain.label === "FX" && "chainSelected"}`}
           onClick={() => {
-            handleSelect("FX");
+            handleSelect({
+              label: "FX",
+              id: 90001,
+            });
           }}
         >
           FX
         </p>
-        <p
-          className={`chainOption ${chain === "WANN" && "chainSelected"}`}
+        {/* <p
+          className={`chainOption ${chain.label === "WANN" && "chainSelected"}`}
           onClick={() => {
-            handleSelect("WANN");
+            handleSelect({
+              label: "WANN",
+              id: 80001,
+            });
           }}
         >
           WANN
-        </p>
+        </p> */}
         <p
-          className={`chainOption ${chain === "Poly" && "chainSelected"}`}
+          className={`chainOption ${chain.label === "Poly" && "chainSelected"}`}
           onClick={() => {
-            handleSelect("Poly");
+            handleSelect({
+              label: "Poly",
+              id: 80001,
+            });
           }}
         >
           Poly
