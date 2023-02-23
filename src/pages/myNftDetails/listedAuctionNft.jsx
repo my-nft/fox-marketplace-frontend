@@ -15,10 +15,15 @@ import {
   REFUND_NFT,
 } from "../../saga/blockchain.js/blockChainActions";
 
-const ListedAuctionNft = ({ nftDetails, collectionDetails, setNftDetails }) => {
+const ListedAuctionNft = ({
+  nftDetails,
+  collectionDetails,
+  setNftDetails,
+  quantity,
+  handleQuantityChange,
+}) => {
   const [itemInfos, setItemInfos] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [quantity, setQuantity] = useState(1);
 
   const currentBidOwner = itemInfos?.currentBidOwner;
   const creator = itemInfos?.creator;
@@ -26,17 +31,6 @@ const ListedAuctionNft = ({ nftDetails, collectionDetails, setNftDetails }) => {
   const bidCount = itemInfos?.bidCount;
   const currentWallet = useSelector(selectCurrentWallet);
   const dispatch = useDispatch();
-
-  const handleQuantityChange = (value) => {
-    if (value < 0 && quantity > 1) {
-      setQuantity(quantity + value);
-      return;
-    }
-
-    if (value > 0 && quantity < 25) {
-      setQuantity(quantity + value);
-    }
-  };
 
   const onRefund = async () => {
     dispatch({

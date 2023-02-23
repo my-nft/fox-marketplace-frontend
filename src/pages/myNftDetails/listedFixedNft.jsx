@@ -18,6 +18,8 @@ const ListedFixedNft = ({
   onMakeOffer,
   onAcceptOffer,
   onWithdrawOffer,
+  quantity,
+  handleQuantityChange,
 }) => {
   const currentWallet = useSelector(selectCurrentWallet);
 
@@ -25,7 +27,6 @@ const ListedFixedNft = ({
   const [currentOffer, setCurrentOffer] = useState(0);
   const [bestOffer, setBestOffer] = useState(undefined);
   const [showMakeOffer, setShowMakeOffer] = useState(false);
-  const [quantity, setQuantity] = useState(1);
   const dispatch = useDispatch();
 
   const handleChange = (evt) => {
@@ -86,17 +87,6 @@ const ListedFixedNft = ({
   useEffect(() => {
     init();
   }, [nftDetails]);
-
-  const handleQuantityChange = (value) => {
-    if (value < 0 && quantity > 1) {
-      setQuantity(quantity + value);
-      return;
-    }
-
-    if (value > 0 && quantity < 25) {
-      setQuantity(quantity + value);
-    }
-  };
 
   return (
     <CardNftWrapper>
