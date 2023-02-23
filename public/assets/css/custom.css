@@ -4890,3 +4890,84 @@ ul#buttonIcon {
 .priceHistory {
   padding-top: 1px;
 }
+
+:where(.importIdsRange) {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+:where(.importIdsRange) span {
+  width: 24px;
+  height: 2px !important;
+  padding: 0 !important;
+  outline: none !important;
+  border: none !important;
+  background: #f58103 !important;
+  display: block;
+  content: "";
+}
+
+:where(.importIdWrapper) {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.importIdWrapper p {
+  padding: 8px 16px !important;
+  display: block;
+  border-radius: 8px;
+  border: 1px solid #f58103;
+  color: #f58103;
+  background: none;
+  transition: 300ms ease-in-out;
+  cursor: pointer;
+}
+
+.importIdWrapper p:hover {
+  background: #f58103;
+  color: #ededed;
+}
+
+.importIdsContainer {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.importId {
+  padding: 8px 16px !important;
+  display: block;
+  border-radius: 8px;
+  background: #f58103;
+  color: #ededed;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.idToImportWrapper {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  background: #131313;
+  padding: 8px 24px;
+  border-radius: 16px;
+}
+
+.idToImportWrapper p {
+  margin: 0;
+}
+
+.idToImportWrapper span {
+  font-weight: 600 !important;
+  background: none !important;
+  color: #f58103 !important;
+  padding: 0 !important;
+  border: none !important;
+  outline: none !important;
+  cursor: pointer;
+}

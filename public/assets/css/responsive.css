@@ -406,6 +406,19 @@
   .mintLimitedWrapper .mintInfo {
     padding: 32px;
   }
+  .idToImportWrapper {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .importIdsRange {
+    flex-direction: column;
+  }
+  .importIdsRange input {
+    width: 100%;
+  }
+  .importIdsRange span {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 480px) {
@@ -418,5 +431,8 @@
     aspect-ratio: 1;
     max-width: 172px;
     max-height: 172px;
+  }
+  .importIdsContainer {
+    flex-direction: column;
   }
 }

@@ -8,10 +8,13 @@ import { selectIsLoading } from "../../redux/collectionReducer";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomSelect from "./../../components/Select";
+import { CONTRACT_TYPES } from "../../utils/foxConstantes";
 
 const ImportCollection = () => {
   const [loading, setLoading] = useState(true);
   const [contractType, setContractType] = useState("ERC721");
+  const [idsList, setIdsList] = useState([]);
+  const [idBuffer, setIdBuffer] = useState("");
   const loadingSelector = useSelector(selectIsLoading);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -50,8 +53,28 @@ const ImportCollection = () => {
     setLoading(loadingSelector);
   }, [loadingSelector]);
 
+  useEffect(() => {
+    setIdBuffer("");
+    setIdsList([]);
+  }, [contractType]);
+
+  const handleAddId = () => {
+    if (idBuffer) {
+      if (idsList.includes(idBuffer)) {
+        toast.error("This id is already in the list");
+        return;
+      }
+      setIdsList([...idsList, idBuffer]);
+      setIdBuffer("");
+    }
+  };
+
+  const handleRemoveId = (idToRemove) => {
+    setIdsList(idsList.filter((id) => id !== idToRemove));
+  };
+
   return (
-    <section id="importItem" className="my-2">
+    <section id="importItem" className="my-2 mb-5">
       <img src="/assets/images/Background.jpg" id="layer" alt="" />
       <h3 className="text-center mb-5">Import Collection</h3>
       <div className="container">
@@ -85,23 +108,90 @@ const ImportCollection = () => {
                       />
                     </div>
                   </div>
+
                   <div className=" mt-5 mb-5 text-start entry-field ">
                     <label htmlFor="contractType mb-2">Contract Type</label>
                     <CustomSelect
                       name="contractType"
-                      value={contractType}
-                      onChange={(e) => setContractType(e)}
-                      options={[
-                        { value: "ERC721", label: "ERC721" },
-                        { value: "ERC1155", label: "ERC1155" },
-                      ]}
+                      value={CONTRACT_TYPES.find(
+                        (option) => option.value === contractType
+                      )}
+                      onChange={(e) => setContractType(e.value)}
+                      options={CONTRACT_TYPES}
                       defaultValue={{ value: "ERC721", label: "ERC721" }}
                       required
                     />
                   </div>
+                  {contractType === "ERC1155" && (
+                    <>
+                      <div className="form-row mb-5 ">
+                        <div className="form-group entry-field text-start">
+                          <label htmlFor="collectionAddress mb-2">
+                            Item IDs Range
+                          </label>
+                          <div className="importIdsRange">
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="collectionIdStart"
+                              required
+                              placeholder="First ID..."
+                            />
+                            <span className="input-group-text"></span>
+                            <input
+                              type="text"
+                              name="collectionIdEnd"
+                              className="form-control"
+                              required
+                              placeholder="Last ID..."
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="form-row mb-5 ">
+                        <div className="form-group entry-field text-start">
+                          <label htmlFor="collectionAddress mb-2">
+                            Item IDs Range
+                          </label>
+                          <div className="importIdsContainer">
+                            {idsList.map((id, index) => {
+                              return (
+                                <div key={index} className="idToImportWrapper">
+                                  <p>{id}</p>
+                                  <span
+                                    className="input-group-text"
+                                    onClick={() => handleRemoveId(id)}
+                                  >
+                                    -
+                                  </span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                          <div className="importIdWrapper">
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="idToImport"
+                              required={idsList.length === 0}
+                              placeholder="First ID..."
+                              value={idBuffer}
+                              onChange={(e) => setIdBuffer(e.target.value)}
+                            />
+                            <p
+                              className="input-group-text"
+                              onClick={() => handleAddId()}
+                            >
+                              Add Id
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
 
                   <button
-                    className="btn mx-auto py-3 d-block  "
+                    className="btn mx-auto py-3 d-block mb-5   "
                     id="importSubmit"
                   >
                     Import Collection
