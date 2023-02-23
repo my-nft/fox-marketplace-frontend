@@ -11,9 +11,6 @@ import FACTORY from "./contracts/FACTORY.json";
 import FOX_GENISIS from "./contracts/FOX_GENESIS.json";
 import { authProvider } from "./web3ModalInteractor";
 
-let infura = process.env.REACT_APP_RPC_URL;
-
-export let web3Infura = new Web3(infura);
 // injectProvider
 export const authProviderInstance = authProvider();
 
@@ -32,6 +29,7 @@ const addressFactory = {
     factoryCollectionAddress: process.env.REACT_APP_factoryCollectionAddressFX,
     foxGenesisCollectionAddress:
       process.env.REACT_APP_foxGenesisCollectionAddressFX,
+    rpc_url: process.env.REACT_APP_RPC_URL_FX,
   },
   poly: {
     FIXEDContractAddress: process.env.REACT_APP_FIXEDContractAddressPOLYG,
@@ -45,6 +43,7 @@ const addressFactory = {
       process.env.REACT_APP_factoryCollectionAddressPOLYG,
     foxGenesisCollectionAddress:
       process.env.REACT_APP_foxGenesisCollectionAddressPOLYG,
+    rpc_url: process.env.REACT_APP_RPC_URL_POLYG,
   },
 };
 
@@ -54,6 +53,8 @@ export function getAddressesByChain() {
     : "fx";
   return addressFactory[chain];
 }
+
+export let web3Infura = new Web3(getAddressesByChain().rpc_url);
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
