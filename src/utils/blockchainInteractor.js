@@ -22,21 +22,29 @@ export const marketplaceContractAddress = "";
 export const ERC721ContractAddress = "";
 
 
-export const FIXEDContractAddress = process.env.REACT_APP_FIXEDContractAddress;
 
-export const ERC20ContractAddress = process.env.REACT_APP_ERC20ContractAddress;
-
-export const AUTIONContractAddress = process.env.REACT_APP_AUTIONContractAddress;
-
-export const LoaderContractAddress = process.env.REACT_APP_LoaderContractAddress;
-
-export const OfferSystemAddress = process.env.REACT_APP_OfferSystemAddress;
-
-export const foxMasterCollectionAddress = process.env.REACT_APP_foxMasterCollectionAddress;
-
-export const factoryCollectionAddress = process.env.REACT_APP_factoryCollectionAddress;
-
-export const foxGenesisCollectionAddress = process.env.REACT_APP_foxGenesisCollectionAddress;
+const addressFactory = {
+  polygon : {
+    FIXEDContractAddress : process.env.REACT_APP_FIXEDContractAddressFX,
+    ERC20ContractAddress : process.env.REACT_APP_ERC20ContractAddressFX,
+    AUTIONContractAddress : process.env.REACT_APP_AUTIONContractAddressFX,
+    LoaderContractAddress : process.env.REACT_APP_LoaderContractAddressFX,
+    OfferSystemAddress : process.env.REACT_APP_OfferSystemAddressFX,
+    foxMasterCollectionAddress : process.env.REACT_APP_foxMasterCollectionAddressFX,
+    factoryCollectionAddress : process.env.REACT_APP_factoryCollectionAddressFX,
+    foxGenesisCollectionAddress : process.env.REACT_APP_foxGenesisCollectionAddressFX,
+  },
+  fx: {
+    FIXEDContractAddress : process.env.REACT_APP_FIXEDContractAddressPOLYG,
+    ERC20ContractAddress : process.env.REACT_APP_ERC20ContractAddressPOLYG,
+    AUTIONContractAddress : process.env.REACT_APP_AUTIONContractAddressPOLYG,
+    LoaderContractAddress : process.env.REACT_APP_LoaderContractAddressPOLYG,
+    OfferSystemAddress : process.env.REACT_APP_OfferSystemAddressPOLYG,
+    foxMasterCollectionAddress : process.env.REACT_APP_foxMasterCollectionAddressPOLYG,
+    factoryCollectionAddress : process.env.REACT_APP_factoryCollectionAddressPOLYG,
+    foxGenesisCollectionAddress : process.env.REACT_APP_foxGenesisCollectionAddressPOLYG,
+  }
+}
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
