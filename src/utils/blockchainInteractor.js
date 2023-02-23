@@ -24,7 +24,7 @@ export const ERC721ContractAddress = "";
 
 
 const addressFactory = {
-  polygon : {
+   fx: {
     FIXEDContractAddress : process.env.REACT_APP_FIXEDContractAddressFX,
     ERC20ContractAddress : process.env.REACT_APP_ERC20ContractAddressFX,
     AUTIONContractAddress : process.env.REACT_APP_AUTIONContractAddressFX,
@@ -34,7 +34,7 @@ const addressFactory = {
     factoryCollectionAddress : process.env.REACT_APP_factoryCollectionAddressFX,
     foxGenesisCollectionAddress : process.env.REACT_APP_foxGenesisCollectionAddressFX,
   },
-  fx: {
+  polygon: {
     FIXEDContractAddress : process.env.REACT_APP_FIXEDContractAddressPOLYG,
     ERC20ContractAddress : process.env.REACT_APP_ERC20ContractAddressPOLYG,
     AUTIONContractAddress : process.env.REACT_APP_AUTIONContractAddressPOLYG,
