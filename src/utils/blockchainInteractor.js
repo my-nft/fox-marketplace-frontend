@@ -33,7 +33,7 @@ const addressFactory = {
     foxGenesisCollectionAddress:
       process.env.REACT_APP_foxGenesisCollectionAddressFX,
   },
-  polygon: {
+  poly: {
     FIXEDContractAddress: process.env.REACT_APP_FIXEDContractAddressPOLYG,
     ERC20ContractAddress: process.env.REACT_APP_ERC20ContractAddressPOLYG,
     AUTIONContractAddress: process.env.REACT_APP_AUTIONContractAddressPOLYG,
