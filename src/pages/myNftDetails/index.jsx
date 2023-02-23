@@ -51,7 +51,6 @@ const MyNftDetails = () => {
   const [priceHistoList, setPriceHistoList] = useState([]);
   const [offersList, setOffersList] = useState([]);
   const [listingList, setListingList] = useState([]);
-
   const [isLoadingExtraData, setIsLoadingExtraData] = useState([]);
 
   const loaderData = useLoaderData();
@@ -146,12 +145,12 @@ const MyNftDetails = () => {
   };
 
   const onWithdrawOffer = (bestOffer) => {
-    console.log("##############################")
-    console.log("##############################")
-    console.log("##############################")
-    console.log("##############################")
-    console.log("##############################")
-    console.log("##############################")
+    console.log("##############################");
+    console.log("##############################");
+    console.log("##############################");
+    console.log("##############################");
+    console.log("##############################");
+    console.log("##############################");
 
     dispatch({
       type: WITHDRAW_OFFER,

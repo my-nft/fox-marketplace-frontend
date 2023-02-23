@@ -18,6 +18,7 @@ import {
 const ListedAuctionNft = ({ nftDetails, collectionDetails, setNftDetails }) => {
   const [itemInfos, setItemInfos] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [quantity, setQuantity] = useState(1);
 
   const currentBidOwner = itemInfos?.currentBidOwner;
   const creator = itemInfos?.creator;
@@ -25,6 +26,17 @@ const ListedAuctionNft = ({ nftDetails, collectionDetails, setNftDetails }) => {
   const bidCount = itemInfos?.bidCount;
   const currentWallet = useSelector(selectCurrentWallet);
   const dispatch = useDispatch();
+
+  const handleQuantityChange = (value) => {
+    if (value < 0 && quantity > 1) {
+      setQuantity(quantity + value);
+      return;
+    }
+
+    if (value > 0 && quantity < 25) {
+      setQuantity(quantity + value);
+    }
+  };
 
   const onRefund = async () => {
     dispatch({
@@ -133,6 +145,19 @@ const ListedAuctionNft = ({ nftDetails, collectionDetails, setNftDetails }) => {
             price={itemInfos?.currentBidPrice / 10 ** 18}
             priceDollar={itemInfos?.currentBidPrice / 10 ** 18}
           >
+            {
+              // TODO: add support erc 1155 display noly
+            }
+
+            {true && (
+              <div className="quantity-entry">
+                <button onClick={() => handleQuantityChange(-1)}>-</button>
+                <span></span>
+                <p>{quantity}</p>
+                <span></span>
+                <button onClick={() => handleQuantityChange(+1)}>+</button>
+              </div>
+            )}
             {sameAddress(currentWallet, creator) &&
               Number(bidCount) === 0 &&
               isTokenExpired(Number(itemInfos?.endAuction)) && (
