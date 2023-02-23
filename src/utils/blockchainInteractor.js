@@ -13,7 +13,6 @@ import { authProvider } from "./web3ModalInteractor";
 
 let infura = process.env.REACT_APP_RPC_URL;
 
-
 export let web3Infura = new Web3(infura);
 // injectProvider
 export const authProviderInstance = authProvider();
@@ -21,30 +20,42 @@ export const authProviderInstance = authProvider();
 export const marketplaceContractAddress = "";
 export const ERC721ContractAddress = "";
 
-
-
 const addressFactory = {
-  polygon : {
-    FIXEDContractAddress : process.env.REACT_APP_FIXEDContractAddressFX,
-    ERC20ContractAddress : process.env.REACT_APP_ERC20ContractAddressFX,
-    AUTIONContractAddress : process.env.REACT_APP_AUTIONContractAddressFX,
-    LoaderContractAddress : process.env.REACT_APP_LoaderContractAddressFX,
-    OfferSystemAddress : process.env.REACT_APP_OfferSystemAddressFX,
-    foxMasterCollectionAddress : process.env.REACT_APP_foxMasterCollectionAddressFX,
-    factoryCollectionAddress : process.env.REACT_APP_factoryCollectionAddressFX,
-    foxGenesisCollectionAddress : process.env.REACT_APP_foxGenesisCollectionAddressFX,
-  },
   fx: {
-    FIXEDContractAddress : process.env.REACT_APP_FIXEDContractAddressPOLYG,
-    ERC20ContractAddress : process.env.REACT_APP_ERC20ContractAddressPOLYG,
-    AUTIONContractAddress : process.env.REACT_APP_AUTIONContractAddressPOLYG,
-    LoaderContractAddress : process.env.REACT_APP_LoaderContractAddressPOLYG,
-    OfferSystemAddress : process.env.REACT_APP_OfferSystemAddressPOLYG,
-    foxMasterCollectionAddress : process.env.REACT_APP_foxMasterCollectionAddressPOLYG,
-    factoryCollectionAddress : process.env.REACT_APP_factoryCollectionAddressPOLYG,
-    foxGenesisCollectionAddress : process.env.REACT_APP_foxGenesisCollectionAddressPOLYG,
-  }
+    FIXEDContractAddress: process.env.REACT_APP_FIXEDContractAddressFX,
+    ERC20ContractAddress: process.env.REACT_APP_ERC20ContractAddressFX,
+    AUTIONContractAddress: process.env.REACT_APP_AUTIONContractAddressFX,
+    LoaderContractAddress: process.env.REACT_APP_LoaderContractAddressFX,
+    OfferSystemAddress: process.env.REACT_APP_OfferSystemAddressFX,
+    foxMasterCollectionAddress:
+      process.env.REACT_APP_foxMasterCollectionAddressFX,
+    factoryCollectionAddress: process.env.REACT_APP_factoryCollectionAddressFX,
+    foxGenesisCollectionAddress:
+      process.env.REACT_APP_foxGenesisCollectionAddressFX,
+  },
+  polygon: {
+    FIXEDContractAddress: process.env.REACT_APP_FIXEDContractAddressPOLYG,
+    ERC20ContractAddress: process.env.REACT_APP_ERC20ContractAddressPOLYG,
+    AUTIONContractAddress: process.env.REACT_APP_AUTIONContractAddressPOLYG,
+    LoaderContractAddress: process.env.REACT_APP_LoaderContractAddressPOLYG,
+    OfferSystemAddress: process.env.REACT_APP_OfferSystemAddressPOLYG,
+    foxMasterCollectionAddress:
+      process.env.REACT_APP_foxMasterCollectionAddressPOLYG,
+    factoryCollectionAddress:
+      process.env.REACT_APP_factoryCollectionAddressPOLYG,
+    foxGenesisCollectionAddress:
+      process.env.REACT_APP_foxGenesisCollectionAddressPOLYG,
+  },
+};
+
+export function getAddressesByChain() {
+  let chain = localStorage.getItem("chainId")
+    ? JSON.parse(localStorage.getItem("chainId"))?.label.toLowerCase()
+    : "fx";
+  return addressFactory[chain];
 }
+
+console.log("getAddressesByChain", getAddressesByChain());
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
@@ -68,7 +79,10 @@ export async function loadERC20Contract(readOnly = false) {
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
   }
-  return new web3Instance.eth.Contract(ERC20, ERC20ContractAddress);
+  return new web3Instance.eth.Contract(
+    ERC20,
+    getAddressesByChain().ERC20ContractAddress
+  );
 }
 
 export async function loadCollectionContract(collectionAddress) {
@@ -82,7 +96,10 @@ export async function loadAuctionContract(readOnly = false) {
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
   }
-  return new web3Instance.eth.Contract(AUCTION, AUTIONContractAddress);
+  return new web3Instance.eth.Contract(
+    AUCTION,
+    getAddressesByChain().AUTIONContractAddress
+  );
 }
 
 export async function loadAFixedPriceContract(readOnly = false) {
@@ -90,13 +107,19 @@ export async function loadAFixedPriceContract(readOnly = false) {
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
   }
-  return new web3Instance.eth.Contract(FIXED_PRICE, FIXEDContractAddress);
+  return new web3Instance.eth.Contract(
+    FIXED_PRICE,
+    getAddressesByChain().FIXEDContractAddress
+  );
 }
 
 export async function loaderContract() {
   const web3 = await authProviderInstance.getInjectedWeb3();
 
-  return new web3.eth.Contract(LOADER, LoaderContractAddress);
+  return new web3.eth.Contract(
+    LOADER,
+    getAddressesByChain().LoaderContractAddress
+  );
 }
 
 export async function loadOfferSystemContract(readOnly = false) {
@@ -104,7 +127,10 @@ export async function loadOfferSystemContract(readOnly = false) {
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
   }
-  return new web3Instance.eth.Contract(OFFER_SYSTEM, OfferSystemAddress);
+  return new web3Instance.eth.Contract(
+    OFFER_SYSTEM,
+    getAddressesByChain().OfferSystemAddress
+  );
 }
 
 export async function loadFoxMasterCollectionContract(collectionAddress) {
@@ -114,18 +140,24 @@ export async function loadFoxMasterCollectionContract(collectionAddress) {
 }
 
 export async function loadFoxGenisisContract(readOnly = false) {
-  console.log("##########", foxGenesisCollectionAddress);
+  console.log("##########", getAddressesByChain().foxGenesisCollectionAddress);
   let web3Instance = web3Infura;
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
   }
-  return new web3Instance.eth.Contract(FOX_GENISIS, foxGenesisCollectionAddress);
+  return new web3Instance.eth.Contract(
+    FOX_GENISIS,
+    getAddressesByChain().foxGenesisCollectionAddress
+  );
 }
 
 export async function loadFactoryContract() {
   const web3 = await authProviderInstance.getInjectedWeb3();
 
-  return new web3.eth.Contract(FACTORY, factoryCollectionAddress);
+  return new web3.eth.Contract(
+    FACTORY,
+    getAddressesByChain().factoryCollectionAddress
+  );
 }
 
 export const getCurrentWalletConnected = async () => {

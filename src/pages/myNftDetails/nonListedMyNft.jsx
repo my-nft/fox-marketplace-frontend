@@ -254,15 +254,14 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
             </div>
           ) : null}
 
-          {sameAddress(currentWallet, nftDetails.ownerAddress) &&
-            (
-              <p
-                className="transferOwnership nftTransfer"
-                onClick={() => setShowTransferPopup(true)}
-              >
-                Transfer Ownership
-              </p>
-            )}
+          {sameAddress(currentWallet, nftDetails.ownerAddress) && (
+            <p
+              className="transferOwnership nftTransfer"
+              onClick={() => setShowTransferPopup(true)}
+            >
+              Transfer Ownership
+            </p>
+          )}
           <OwnershipTransferPopup
             popupType={showTransferPopup}
             popupCloseAction={() => setShowTransferPopup(false)}
