@@ -9,8 +9,6 @@ let reqInstance = axios.create({
   },
 });
 
-console.log("Chain id", localStorage.getItem("chainId") || "90001");
-
 reqInstance.interceptors.request.use((config) => {
   return {
     ...config,

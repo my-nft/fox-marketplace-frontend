@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ReactComponent as Chevron } from "../assets/icons/arrow.svg";
 import CustomSelect from "./Select";
 import useOutsideClick from "./../utils/useOutsideClick";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ChainSelect = () => {
   const [showOptions, setShowOptions] = useState(false);
@@ -9,10 +10,13 @@ const ChainSelect = () => {
     label: "FX",
     id: 90001,
   });
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (localStorage.getItem("chainId")) {
       setChain(JSON.parse(localStorage.getItem("chainId")));
+      navigate("/explore");
     }
   }, []);
 
@@ -20,6 +24,8 @@ const ChainSelect = () => {
     setChain(value);
     localStorage.setItem("chainId", JSON.stringify(value));
     setShowOptions(false);
+    navigate("/explore");
+    window.location.reload();
   };
 
   const clickRef = useOutsideClick(() => {
