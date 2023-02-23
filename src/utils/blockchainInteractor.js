@@ -55,8 +55,6 @@ export function getAddressesByChain() {
   return addressFactory[chain];
 }
 
-console.log("getAddressesByChain", getAddressesByChain());
-
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 export async function loadMarketplaceContract(readOnly = false) {
