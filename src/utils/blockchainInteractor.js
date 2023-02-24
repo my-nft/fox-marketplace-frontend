@@ -144,6 +144,7 @@ export async function loadAuctionContract(readOnly = false) {
 }
 
 export async function loadAFixedPriceContract(readOnly = false) {
+  console.log("#############################")
   let web3Instance = web3Infura;
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();

@@ -16,6 +16,13 @@ const providerOptions = {
       infuraId: process.env.REACT_APP_INFURA_ID,
     },
   },
+  walletconnect: {
+    package: WalletConnectProvider,
+    options: {
+      rpc: { [process.env.REACT_APP_RPC_CHAIN_ID_POLYG]: process.env.REACT_APP_RPC_URL_POLYG },
+      infuraId: process.env.REACT_APP_INFURA_ID_POLYG,
+    },
+  }
 };
 
 const web3Modal = new Web3Modal({
