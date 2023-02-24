@@ -57,7 +57,43 @@ export function getAddressesByChain() {
   let chain = localStorage.getItem("chainId")
     ? JSON.parse(localStorage.getItem("chainId"))?.label.toLowerCase()
     : "fx";
-  return addressFactory[chain];
+  if (chain === "fx") {
+    return {
+      FIXEDContractAddress: process.env.REACT_APP_FIXEDContractAddressFX,
+      ERC20ContractAddress: process.env.REACT_APP_ERC20ContractAddressFX,
+      AUTIONContractAddress: process.env.REACT_APP_AUTIONContractAddressFX,
+      LoaderContractAddress: process.env.REACT_APP_LoaderContractAddressFX,
+      OfferSystemAddress: process.env.REACT_APP_OfferSystemAddressFX,
+      foxMasterCollectionAddress:
+        process.env.REACT_APP_foxMasterCollectionAddressFX,
+      factoryCollectionAddress:
+        process.env.REACT_APP_factoryCollectionAddressFX,
+      foxGenesisCollectionAddress:
+        process.env.REACT_APP_foxGenesisCollectionAddressFX,
+      rpc_url: process.env.REACT_APP_RPC_URL_FX,
+      rpc_chain_id: process.env.REACT_APP_RPC_CHAIN_ID_FX,
+      blockExplorer: process.env.REACT_APP_BLOCEXPLORER_FX,
+      transactionExplorer: process.env.REACT_APP_TRANSACTION_EXPLORER_FX,
+    };
+  } else if (chain === "poly") {
+    return {
+      FIXEDContractAddress: process.env.REACT_APP_FIXEDContractAddressPOLYG,
+      ERC20ContractAddress: process.env.REACT_APP_ERC20ContractAddressPOLYG,
+      AUTIONContractAddress: process.env.REACT_APP_AUTIONContractAddressPOLYG,
+      LoaderContractAddress: process.env.REACT_APP_LoaderContractAddressPOLYG,
+      OfferSystemAddress: process.env.REACT_APP_OfferSystemAddressPOLYG,
+      foxMasterCollectionAddress:
+        process.env.REACT_APP_foxMasterCollectionAddressPOLYG,
+      factoryCollectionAddress:
+        process.env.REACT_APP_factoryCollectionAddressPOLYG,
+      foxGenesisCollectionAddress:
+        process.env.REACT_APP_foxGenesisCollectionAddressPOLYG,
+      rpc_url: process.env.REACT_APP_RPC_URL_POLYG,
+      rpc_chain_id: process.env.REACT_APP_RPC_CHAIN_ID_POLYG,
+      blockExplorer: process.env.REACT_APP_BLOCEXPLORER_POLYG,
+      transactionExplorer: process.env.REACT_APP_TRANSACTION_EXPLORER_POLYG,
+    };
+  }
 }
 
 export let web3Infura = new Web3(getAddressesByChain().rpc_url);
