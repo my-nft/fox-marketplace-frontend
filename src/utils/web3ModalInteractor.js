@@ -2,6 +2,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import { providers } from "ethers";
 import Web3 from "web3";
 import Web3Modal from "web3modal";
+import { getAddressesByChain } from "./blockchainInteractor";
 
 let provider = null;
 
@@ -9,7 +10,9 @@ const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider,
     options: {
-      rpc: { [process.env.REACT_APP_RPC_CHAIN_ID]: process.env.REACT_APP_RPC_URL },
+      rpc: {
+        [getAddressesByChain().rpc_chain_id]: getAddressesByChain().rpc_url,
+      },
       infuraId: process.env.REACT_APP_INFURA_ID,
     },
   },
@@ -27,8 +30,8 @@ export const authProvider = () => {
     login: async () => {
       web3Modal.clearCachedProvider();
       provider = await web3Modal.connect();
-      const ethersProvider = new providers.Web3Provider(provider)
-      const userAddress = await ethersProvider.getSigner().getAddress()
+      const ethersProvider = new providers.Web3Provider(provider);
+      const userAddress = await ethersProvider.getSigner().getAddress();
       return Promise.resolve(userAddress);
     },
 
@@ -38,7 +41,7 @@ export const authProvider = () => {
         await provider.close();
       }
       web3Modal.clearCachedProvider();
-      
+
       return Promise.resolve();
     },
 

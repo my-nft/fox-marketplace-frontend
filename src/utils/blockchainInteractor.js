@@ -30,6 +30,9 @@ const addressFactory = {
     foxGenesisCollectionAddress:
       process.env.REACT_APP_foxGenesisCollectionAddressFX,
     rpc_url: process.env.REACT_APP_RPC_URL_FX,
+    rpc_chain_id: process.env.REACT_APP_RPC_CHAIN_ID_FX,
+    blockExplorer: process.env.REACT_APP_BLOCEXPLORER_FX,
+    transactionExplorer: process.env.REACT_APP_TRANSACTION_EXPLORER_FX,
   },
   poly: {
     FIXEDContractAddress: process.env.REACT_APP_FIXEDContractAddressPOLYG,
@@ -44,6 +47,9 @@ const addressFactory = {
     foxGenesisCollectionAddress:
       process.env.REACT_APP_foxGenesisCollectionAddressPOLYG,
     rpc_url: process.env.REACT_APP_RPC_URL_POLYG,
+    rpc_chain_id: process.env.REACT_APP_RPC_CHAIN_ID_POLYG,
+    blockExplorer: process.env.REACT_APP_BLOCEXPLORER_POLYG,
+    transactionExplorer: process.env.REACT_APP_TRANSACTION_EXPLORER_POLYG,
   },
 };
 
