@@ -19,6 +19,10 @@ import { selectCurrentWallet } from "../../redux/userReducer";
 import { LOAD_USER } from "../../saga/actions";
 import ChainSelect from "../chainSelect";
 
+import { Web3Button } from "@web3modal/react";
+import { Web3NetworkSwitch } from "@web3modal/react";
+
+
 const Header = () => {
   const clickRef = useOutsideClick(() => {
     document.querySelector(".navbar-collapse").classList.remove("show");
@@ -194,6 +198,10 @@ const Header = () => {
                 "Connect Wallect"
               )}{" "}
             </button>
+
+            <Web3NetworkSwitch/>
+            <Web3Button/>
+
           </div>
         </nav>
       </header>
