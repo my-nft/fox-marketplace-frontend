@@ -5,7 +5,7 @@ import { rpc_chain_id_fx, rpc_chain_id_polyg } from "./variables";
 
 export const fxgChain = {
     id: Number(rpc_chain_id_fx),
-    name: 'FXG',
+    name: 'FX',
     network: 'FX',
     nativeCurrency: {
       decimals: 18,

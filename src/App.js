@@ -40,7 +40,6 @@ import { createClient, configureChains } from "wagmi";
 import { Web3Modal } from "@web3modal/react";
 
 import { WagmiConfig } from "wagmi";
-import AppWrapper from "./AppWrapper";
 import Header from "./components/layout/Header";
 
 const chains = [fxgChain, polygChain];
@@ -227,10 +226,8 @@ function App() {
     <>
       <WagmiConfig client={wagmiClient}>
         <Provider store={store}>
-          <AppWrapper>
             <PageStatistics />
             <RouterProvider router={router} />
-          </AppWrapper>
         </Provider>
       </WagmiConfig>
 

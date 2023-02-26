@@ -16,9 +16,11 @@ import ChainSelect from "../chainSelect";
 
 import { Web3Button } from "@web3modal/react";
 import { Web3NetworkSwitch } from "@web3modal/react";
-import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
+import { useAccount, useNetwork, useProvider, useSwitchNetwork } from "wagmi";
 import Web3 from "web3";
 import { useSigner } from "wagmi";
+import { useConnect } from 'wagmi'
+import { watchNetwork } from '@wagmi/core'
 
 
 
@@ -28,8 +30,13 @@ const Header = () => {
   });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { data: signer } = useSigner();
   const [web3, setWeb3] = useState();
+  
+  watchNetwork(() => {
+    navigate("/");
+  })
 
 
 
@@ -174,7 +181,7 @@ const Header = () => {
               </ul>
             ) : null}
 
-            <Web3NetworkSwitch onchange={() => console.log("#######=====>")}/>
+            <Web3NetworkSwitch/>
             <Web3Button balance="show"/>
           </div>
         </nav>
