@@ -27,6 +27,61 @@
   #layer {
     top: -43vh;
   }
+  header {
+    position: relative;
+  }
+  .navbar {
+    position: unset !important;
+  }
+  .collapse {
+    position: fixed !important;
+    top: 0;
+    left: -150%;
+    height: 100vh !important;
+    width: 100vw !important;
+    transition: 300ms ease-in-out;
+    background: #030200;
+    margin: 0 !important;
+    justify-content: flex-start;
+    padding: 104px 0 56px;
+    grid-row-start: unset !important;
+  }
+  .collapsing {
+    position: fixed !important;
+    top: 0;
+    left: -150%;
+    transition: 300ms ease-in-out;
+    height: 100vh !important;
+    width: 100vw !important;
+    background: #030200;
+    margin: 0 !important;
+    justify-content: flex-start;
+    padding: 104px 0 56px;
+    grid-row-start: unset !important;
+  }
+  .navbar #buttonIcon {
+    flex-direction: column;
+  }
+  .navbar-toggler {
+    width: 180px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  header {
+    padding: 0 !important;
+  }
+  .show {
+    left: 0;
+  }
+  .navbar-nav {
+    margin-right: 0 !important;
+  }
+  .navbar-brand,
+  .navbar form,
+  .navbar-toggler {
+    position: relative;
+    z-index: 1500;
+  }
 }
 
 @media (min-width: 1440px) {
@@ -239,6 +294,15 @@
 }
 
 @media (max-width: 768px) {
+  .navbar form {
+    width: 100%;
+    min-width: unset;
+    max-width: unset;
+  }
+  .collapse,
+  .collapsing {
+    padding: 144px 0 56px !important;
+  }
   #layer {
     top: -80vh;
   }
@@ -472,6 +536,9 @@
 @media screen and (max-width: 480px) {
   .wrapperMostPopular {
     grid-template-columns: repeat(1, 1fr);
+  }
+  .navbar-toggler {
+    width: auto;
   }
   .mintSidebarMain img {
     width: 100%;

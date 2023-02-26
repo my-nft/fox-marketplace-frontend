@@ -3,13 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  loadERC20Contract,
-} from "../../utils/blockchainInteractor";
+import { loadERC20Contract } from "../../utils/blockchainInteractor";
 import ScrollToTop from "../scrollToTop";
 import useOutsideClick from "./../../utils/useOutsideClick";
 import SearchBar from "./../searchBar/searchBar";
-
 
 import { LOAD_USER } from "../../saga/actions";
 import ChainSelect from "../chainSelect";
@@ -19,10 +16,8 @@ import { Web3NetworkSwitch } from "@web3modal/react";
 import { useAccount, useNetwork, useProvider, useSwitchNetwork } from "wagmi";
 import Web3 from "web3";
 import { useSigner } from "wagmi";
-import { useConnect } from 'wagmi'
-import { watchNetwork } from '@wagmi/core'
-
-
+import { useConnect } from "wagmi";
+import { watchNetwork } from "@wagmi/core";
 
 const Header = () => {
   const clickRef = useOutsideClick(() => {
@@ -33,29 +28,25 @@ const Header = () => {
   const navigate = useNavigate();
   const { data: signer } = useSigner();
   const [web3, setWeb3] = useState();
-  
+
   watchNetwork(() => {
     navigate("/");
-  })
+  });
 
-
-
-  const { address : connectedWallet } = useAccount(
-    {
-      onConnect({ address, connector, isReconnected }) {
-        console.log('Connected', { address, connector, isReconnected })
-        dispatch({
-          type: LOAD_USER,
-          payload: address,
-        });
-      },
-      onDisconnect() {
-        dispatch({
-          type: "DESTROY_SESSION",
-        });
-      },
-    }
-  );
+  const { address: connectedWallet } = useAccount({
+    onConnect({ address, connector, isReconnected }) {
+      console.log("Connected", { address, connector, isReconnected });
+      dispatch({
+        type: LOAD_USER,
+        payload: address,
+      });
+    },
+    onDisconnect() {
+      dispatch({
+        type: "DESTROY_SESSION",
+      });
+    },
+  });
 
   const [balance, setBalance] = useState({
     fx: 0,
@@ -66,7 +57,6 @@ const Header = () => {
   });
 
   const initWalletData = async () => {
-
     if (web3) {
       const contract = await loadERC20Contract();
       const fxg = await contract.methods.balanceOf(connectedWallet).call();
@@ -97,6 +87,24 @@ const Header = () => {
     }
   }, [signer]);
 
+  const handleClick = () => {
+    document.querySelector(".navbar-collapse").classList.remove("show");
+  };
+
+  useEffect(() => {
+    // add click event listeners to bootstrap links
+    const links = document.querySelectorAll(".nav-item");
+    links.forEach((link) => {
+      link.addEventListener("click", handleClick);
+    });
+    return () => {
+      // remove click event listeners to bootstrap links
+      links.forEach((link) => {
+        link.removeEventListener("click", handleClick);
+      });
+    };
+  }, []);
+
   return (
     <>
       <ScrollToTop />
@@ -121,6 +129,18 @@ const Header = () => {
             aria-controls="navbarSupportedContent"
             aria-expanded="false"
             aria-label="Toggle navigation"
+            onClick={() => {
+              let bodyHasOverflowHidden =
+                document &&
+                document.querySelector("body").style.overflowY === "hidden";
+              if (bodyHasOverflowHidden) {
+                document.querySelector("body").style.overflowY = "auto";
+                document.querySelector("body").style.maxHeight = "auto";
+              } else {
+                document.querySelector("body").style.overflowY = "hidden";
+                document.querySelector("body").style.maxHeight = "100vh";
+              }
+            }}
           >
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -181,8 +201,10 @@ const Header = () => {
               </ul>
             ) : null}
 
-            <Web3NetworkSwitch/>
-            <Web3Button balance="show"/>
+            <Web3NetworkSwitch />
+            <div className="ml-3">
+              <Web3Button balance="show" />
+            </div>
           </div>
         </nav>
       </header>
