@@ -16,7 +16,7 @@ import ChainSelect from "../chainSelect";
 
 import { Web3Button } from "@web3modal/react";
 import { Web3NetworkSwitch } from "@web3modal/react";
-import { useAccount, useNetwork } from "wagmi";
+import { useAccount } from "wagmi";
 import Web3 from "web3";
 import { useSigner } from "wagmi";
 
