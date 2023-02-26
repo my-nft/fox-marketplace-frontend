@@ -16,7 +16,7 @@ import ChainSelect from "../chainSelect";
 
 import { Web3Button } from "@web3modal/react";
 import { Web3NetworkSwitch } from "@web3modal/react";
-import { useAccount } from "wagmi";
+import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 import Web3 from "web3";
 import { useSigner } from "wagmi";
 
@@ -49,7 +49,6 @@ const Header = () => {
       },
     }
   );
-
 
   const [balance, setBalance] = useState({
     fx: 0,
@@ -175,7 +174,7 @@ const Header = () => {
               </ul>
             ) : null}
 
-            <Web3NetworkSwitch />
+            <Web3NetworkSwitch onchange={() => console.log("#######=====>")}/>
             <Web3Button balance="show"/>
           </div>
         </nav>

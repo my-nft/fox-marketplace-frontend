@@ -9,7 +9,6 @@ import {
 import { Provider } from "react-redux";
 
 import Home from "./pages/Home";
-import Header from "./components/layout/Header";
 import React from "react";
 import Footer from "./components/layout/Footer";
 import Creation from "./pages/Creation";
@@ -41,6 +40,8 @@ import { createClient, configureChains } from "wagmi";
 import { Web3Modal } from "@web3modal/react";
 
 import { WagmiConfig } from "wagmi";
+import AppWrapper from "./AppWrapper";
+import Header from "./components/layout/Header";
 
 const chains = [fxgChain, polygChain];
 // Wagmi client
@@ -61,9 +62,6 @@ const wagmiClient = createClient({
 
 // Web3Modal Ethereum Client
 const ethereumClient = new EthereumClient(wagmiClient, chains);
-
-
-
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -224,15 +222,15 @@ const router = createBrowserRouter(
   )
 );
 
-
-
 function App() {
   return (
     <>
       <WagmiConfig client={wagmiClient}>
         <Provider store={store}>
-          <PageStatistics />
-          <RouterProvider router={router}></RouterProvider>
+          <AppWrapper>
+            <PageStatistics />
+            <RouterProvider router={router} />
+          </AppWrapper>
         </Provider>
       </WagmiConfig>
 
