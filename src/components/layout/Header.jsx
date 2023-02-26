@@ -89,6 +89,8 @@ const Header = () => {
 
   const handleClick = () => {
     document.querySelector(".navbar-collapse").classList.remove("show");
+    document.querySelector("body").style.overflowY = "auto";
+    document.querySelector("body").style.maxHeight = "auto";
   };
 
   useEffect(() => {
@@ -97,11 +99,17 @@ const Header = () => {
     links.forEach((link) => {
       link.addEventListener("click", handleClick);
     });
+    document
+      .querySelector(".navbar-brand")
+      .addEventListener("click", handleClick);
     return () => {
       // remove click event listeners to bootstrap links
       links.forEach((link) => {
         link.removeEventListener("click", handleClick);
       });
+      document
+        .querySelector(".navbar-brand")
+        .removeEventListener("click", handleClick);
     };
   }, []);
 
@@ -174,12 +182,12 @@ const Header = () => {
                     Account
                   </Link>
                 </li>
-                <li>
+                <li className="nav-item">
                   <Link to={"/profile"}>
                     <img src="/assets/icon-white-user.png" alt="" />
                   </Link>
                 </li>
-                <li>
+                <li className="nav-item">
                   <Link to="#">
                     <img src="/assets/icon-white-settings.png" alt="" />
                   </Link>
