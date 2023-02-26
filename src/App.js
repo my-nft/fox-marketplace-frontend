@@ -42,7 +42,7 @@ import { Web3Modal } from "@web3modal/react";
 import { WagmiConfig } from "wagmi";
 import Header from "./components/layout/Header";
 
-const chains = [fxgChain];
+const chains = [fxgChain, polygChain];
 // Wagmi client
 export const { provider } = configureChains(chains, [
   walletConnectProvider({
