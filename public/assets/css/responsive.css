@@ -27,13 +27,14 @@
   #layer {
     top: -43vh;
   }
-  header {
+  #root > header {
     position: relative;
+    z-index: 1200;
   }
   .navbar {
     position: unset !important;
   }
-  .collapse {
+  .navbar .collapse {
     position: fixed !important;
     top: 0;
     left: -150%;
@@ -45,8 +46,9 @@
     justify-content: flex-start;
     padding: 104px 0 56px;
     grid-row-start: unset !important;
+    z-index: 1200;
   }
-  .collapsing {
+  .navbar .collapsing {
     position: fixed !important;
     top: 0;
     left: -150%;
@@ -70,7 +72,7 @@
   header {
     padding: 0 !important;
   }
-  .show {
+  .navbar .show {
     left: 0;
   }
   .navbar-nav {
@@ -299,8 +301,8 @@
     min-width: unset;
     max-width: unset;
   }
-  .collapse,
-  .collapsing {
+  .navbar .collapse,
+  .navbar .collapsing {
     padding: 144px 0 56px !important;
   }
   #layer {

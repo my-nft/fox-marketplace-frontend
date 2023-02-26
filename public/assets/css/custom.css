@@ -4979,7 +4979,3 @@ ul#buttonIcon {
   visibility: visible;
   opacity: 1;
 }
-
-w3m-button-big:defined button {
-  background: red !important;
-}
