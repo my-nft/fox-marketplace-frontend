@@ -226,8 +226,8 @@ function App() {
     <>
       <WagmiConfig client={wagmiClient}>
         <Provider store={store}>
-            <PageStatistics />
-            <RouterProvider router={router} />
+          <PageStatistics />
+          <RouterProvider router={router} />
         </Provider>
       </WagmiConfig>
 
@@ -235,6 +235,8 @@ function App() {
         projectId="c713aa69c46302aa2ce0353d8b67b8fa"
         ethereumClient={ethereumClient}
         themeZIndex={1000000}
+        themeColor="orange"
+        themeMode="dark"
       />
     </>
   );
