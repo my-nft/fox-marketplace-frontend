@@ -232,13 +232,6 @@ function App() {
       <WagmiConfig client={wagmiClient}>
         <Provider store={store}>
           <PageStatistics />
-          {/*
-      <ConfirmationPopup
-        title="Test"
-        message="KLMOASDASDASDAsd adwqe adwa dwqe q"
-      />
-        */}
-
           <RouterProvider router={router}></RouterProvider>
         </Provider>
       </WagmiConfig>

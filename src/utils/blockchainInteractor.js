@@ -10,6 +10,33 @@ import FOX_MASTER from "./contracts/FOX_MASTER.json";
 import FACTORY from "./contracts/FACTORY.json";
 import FOX_GENISIS from "./contracts/FOX_GENESIS.json";
 import { authProvider } from "./web3ModalInteractor";
+import { getNetwork } from "@wagmi/core";
+import {
+  AUTIONContractAddressFX,
+  AUTIONContractAddressPOLYG,
+  blockExplorerFX,
+  blockExplorerPOLYG,
+  ERC20ContractAddressFX,
+  ERC20ContractAddressPOLYG,
+  factoryCollectionAddressFX,
+  factoryCollectionAddressPOLYG,
+  FIXEDContractAddressFX,
+  FIXEDContractAddressPOLYG,
+  foxGenesisCollectionAddressFX,
+  foxGenesisCollectionAddressPOLYG,
+  foxMasterCollectionAddressFX,
+  foxMasterCollectionAddressPOLYG,
+  LoaderContractAddressFX,
+  LoaderContractAddressPOLYG,
+  OfferSystemAddressFX,
+  OfferSystemAddressPOLYG,
+  rpc_chain_id_fx,
+  rpc_chain_id_polyg,
+  rpc_url_fx,
+  rpc_url_polyg,
+  transactionExplorerFX,
+  transactionExplorerPOLYG,
+} from "./chains/variables";
 
 // injectProvider
 export const authProviderInstance = authProvider();
@@ -17,91 +44,48 @@ export const authProviderInstance = authProvider();
 export const marketplaceContractAddress = "";
 export const ERC721ContractAddress = "";
 
-const addressFactory = {
-  fx: {
-    FIXEDContractAddress: process.env.REACT_APP_FIXEDContractAddressFX,
-    ERC20ContractAddress: process.env.REACT_APP_ERC20ContractAddressFX,
-    AUTIONContractAddress: process.env.REACT_APP_AUTIONContractAddressFX,
-    LoaderContractAddress: process.env.REACT_APP_LoaderContractAddressFX,
-    OfferSystemAddress: process.env.REACT_APP_OfferSystemAddressFX,
-    foxMasterCollectionAddress:
-      process.env.REACT_APP_foxMasterCollectionAddressFX,
-    factoryCollectionAddress: process.env.REACT_APP_factoryCollectionAddressFX,
-    foxGenesisCollectionAddress:
-      process.env.REACT_APP_foxGenesisCollectionAddressFX,
-    rpc_url: process.env.REACT_APP_RPC_URL_FX,
-    rpc_chain_id: process.env.REACT_APP_RPC_CHAIN_ID_FX,
-    blockExplorer: process.env.REACT_APP_BLOCEXPLORER_FX,
-    transactionExplorer: process.env.REACT_APP_TRANSACTION_EXPLORER_FX,
-  },
-  poly: {
-    FIXEDContractAddress: process.env.REACT_APP_FIXEDContractAddressPOLYG,
-    ERC20ContractAddress: process.env.REACT_APP_ERC20ContractAddressPOLYG,
-    AUTIONContractAddress: process.env.REACT_APP_AUTIONContractAddressPOLYG,
-    LoaderContractAddress: process.env.REACT_APP_LoaderContractAddressPOLYG,
-    OfferSystemAddress: process.env.REACT_APP_OfferSystemAddressPOLYG,
-    foxMasterCollectionAddress:
-      process.env.REACT_APP_foxMasterCollectionAddressPOLYG,
-    factoryCollectionAddress:
-      process.env.REACT_APP_factoryCollectionAddressPOLYG,
-    foxGenesisCollectionAddress:
-      process.env.REACT_APP_foxGenesisCollectionAddressPOLYG,
-    rpc_url: process.env.REACT_APP_RPC_URL_POLYG,
-    rpc_chain_id: process.env.REACT_APP_RPC_CHAIN_ID_POLYG,
-    blockExplorer: process.env.REACT_APP_BLOCEXPLORER_POLYG,
-    transactionExplorer: process.env.REACT_APP_TRANSACTION_EXPLORER_POLYG,
-  },
-};
-
 export function getAddressesByChain() {
-  let chain = localStorage.getItem("chainId")
-    ? JSON.parse(localStorage.getItem("chainId"))?.label.toLowerCase()
-    : "fx";
-  if (chain === "fx") {
+  const { chain } = getNetwork();
+
+  if (chain?.id === Number(rpc_chain_id_polyg)) {
     return {
-      FIXEDContractAddress: process.env.REACT_APP_FIXEDContractAddressFX,
-      ERC20ContractAddress: process.env.REACT_APP_ERC20ContractAddressFX,
-      AUTIONContractAddress: process.env.REACT_APP_AUTIONContractAddressFX,
-      LoaderContractAddress: process.env.REACT_APP_LoaderContractAddressFX,
-      OfferSystemAddress: process.env.REACT_APP_OfferSystemAddressFX,
-      foxMasterCollectionAddress:
-        process.env.REACT_APP_foxMasterCollectionAddressFX,
-      factoryCollectionAddress:
-        process.env.REACT_APP_factoryCollectionAddressFX,
-      foxGenesisCollectionAddress:
-        process.env.REACT_APP_foxGenesisCollectionAddressFX,
-      rpc_url: process.env.REACT_APP_RPC_URL_FX,
-      rpc_chain_id: process.env.REACT_APP_RPC_CHAIN_ID_FX,
-      blockExplorer: process.env.REACT_APP_BLOCEXPLORER_FX,
-      transactionExplorer: process.env.REACT_APP_TRANSACTION_EXPLORER_FX,
+      FIXEDContractAddress: FIXEDContractAddressPOLYG,
+      ERC20ContractAddress: ERC20ContractAddressPOLYG,
+      AUTIONContractAddress: AUTIONContractAddressPOLYG,
+      LoaderContractAddress: LoaderContractAddressPOLYG,
+      OfferSystemAddress: OfferSystemAddressPOLYG,
+      foxMasterCollectionAddress: foxMasterCollectionAddressPOLYG,
+      factoryCollectionAddress: factoryCollectionAddressPOLYG,
+      foxGenesisCollectionAddress: foxGenesisCollectionAddressPOLYG,
+      rpc_url: rpc_url_polyg,
+      rpc_chain_id: rpc_chain_id_polyg,
+      blockExplorer: blockExplorerPOLYG,
+      transactionExplorer: transactionExplorerPOLYG,
     };
-  } else if (chain === "poly") {
+  } else {
     return {
-      FIXEDContractAddress: process.env.REACT_APP_FIXEDContractAddressPOLYG,
-      ERC20ContractAddress: process.env.REACT_APP_ERC20ContractAddressPOLYG,
-      AUTIONContractAddress: process.env.REACT_APP_AUTIONContractAddressPOLYG,
-      LoaderContractAddress: process.env.REACT_APP_LoaderContractAddressPOLYG,
-      OfferSystemAddress: process.env.REACT_APP_OfferSystemAddressPOLYG,
-      foxMasterCollectionAddress:
-        process.env.REACT_APP_foxMasterCollectionAddressPOLYG,
-      factoryCollectionAddress:
-        process.env.REACT_APP_factoryCollectionAddressPOLYG,
-      foxGenesisCollectionAddress:
-        process.env.REACT_APP_foxGenesisCollectionAddressPOLYG,
-      rpc_url: process.env.REACT_APP_RPC_URL_POLYG,
-      rpc_chain_id: process.env.REACT_APP_RPC_CHAIN_ID_POLYG,
-      blockExplorer: process.env.REACT_APP_BLOCEXPLORER_POLYG,
-      transactionExplorer: process.env.REACT_APP_TRANSACTION_EXPLORER_POLYG,
+      FIXEDContractAddress: FIXEDContractAddressFX,
+      ERC20ContractAddress: ERC20ContractAddressFX,
+      AUTIONContractAddress: AUTIONContractAddressFX,
+      LoaderContractAddress: LoaderContractAddressFX,
+      OfferSystemAddress: OfferSystemAddressFX,
+      foxMasterCollectionAddress: foxMasterCollectionAddressFX,
+      factoryCollectionAddress: factoryCollectionAddressFX,
+      foxGenesisCollectionAddress: foxGenesisCollectionAddressFX,
+      rpc_url: rpc_url_fx,
+      rpc_chain_id: rpc_chain_id_fx,
+      blockExplorer: blockExplorerFX,
+      transactionExplorer: transactionExplorerFX,
     };
   }
 }
 
-export let web3Infura = new Web3(getAddressesByChain().rpc_url);
+export let web3Infura = () => new Web3(getAddressesByChain().rpc_url);
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 export async function loadMarketplaceContract(readOnly = false) {
-  let web3Instance = web3Infura;
+  let web3Instance = web3Infura();
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
   }
@@ -109,14 +93,14 @@ export async function loadMarketplaceContract(readOnly = false) {
 }
 
 export async function loadERC721Contract(collectionAddress, readOnly = false) {
-  let web3Instance = web3Infura;
+  let web3Instance = web3Infura();
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
   }
   return new web3Instance.eth.Contract(ERC721, collectionAddress);
 }
 export async function loadERC20Contract(readOnly = false) {
-  let web3Instance = web3Infura;
+  let web3Instance = web3Infura();
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
   }
@@ -133,7 +117,7 @@ export async function loadCollectionContract(collectionAddress) {
 }
 
 export async function loadAuctionContract(readOnly = false) {
-  let web3Instance = web3Infura;
+  let web3Instance = web3Infura();
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
   }
@@ -144,8 +128,8 @@ export async function loadAuctionContract(readOnly = false) {
 }
 
 export async function loadAFixedPriceContract(readOnly = false) {
-  console.log("#############################")
-  let web3Instance = web3Infura;
+  console.log("#############################");
+  let web3Instance = web3Infura();
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
   }
@@ -165,7 +149,7 @@ export async function loaderContract() {
 }
 
 export async function loadOfferSystemContract(readOnly = false) {
-  let web3Instance = web3Infura;
+  let web3Instance = web3Infura();
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
   }
@@ -183,7 +167,7 @@ export async function loadFoxMasterCollectionContract(collectionAddress) {
 
 export async function loadFoxGenisisContract(readOnly = false) {
   console.log("##########", getAddressesByChain().foxGenesisCollectionAddress);
-  let web3Instance = web3Infura;
+  let web3Instance = web3Infura();
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
   }

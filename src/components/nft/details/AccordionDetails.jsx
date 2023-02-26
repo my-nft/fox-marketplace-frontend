@@ -12,7 +12,7 @@ const AccordionDetails = ({ nftDetails, collectionDetails }) => {
   const navigate = useNavigate();
 
   const initWeb3 = async () => {
-    setWeb3(web3Infura);
+    setWeb3(web3Infura());
   }
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const AccordionDetails = ({ nftDetails, collectionDetails }) => {
   }, []);
 
   useEffect(() => {
-      web3Infura.eth.getChainId().then((res) => {
+      web3Infura().eth.getChainId().then((res) => {
         setChainId(res);
       });
   }, []);

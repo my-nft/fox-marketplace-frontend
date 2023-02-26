@@ -1,9 +1,10 @@
 //IMPORTANT import { Chain } from 'wagmi'
 
-const fxChainId = Number(process.env.REACT_APP_RPC_CHAIN_ID_FX);
+import { rpc_chain_id_fx, rpc_chain_id_polyg } from "./variables";
+
 
 export const fxgChain = {
-    id: fxChainId,
+    id: Number(rpc_chain_id_fx),
     name: 'FXG',
     network: 'FX',
     nativeCurrency: {
@@ -21,10 +22,9 @@ export const fxgChain = {
 
 //IMPORTANT import { Chain } from 'wagmi'
 
-const polygId = Number(process.env.REACT_APP_RPC_CHAIN_ID_POLYG);
 
 export const polygChain = {
-    id: polygId,
+    id: Number(rpc_chain_id_polyg),
     name: 'mumbai',
     network: 'mumbai',
     nativeCurrency: {

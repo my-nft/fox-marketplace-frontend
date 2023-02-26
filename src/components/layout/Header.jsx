@@ -4,23 +4,22 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
-  authProviderInstance,
   loadERC20Contract,
-  web3Infura,
 } from "../../utils/blockchainInteractor";
-import { optimizeWalletAddress } from "../../utils/walletUtils";
 import ScrollToTop from "../scrollToTop";
 import useOutsideClick from "./../../utils/useOutsideClick";
 import SearchBar from "./../searchBar/searchBar";
 
-import { ReactComponent as LogoutIcon } from "../../assets/icons/exit.svg";
 
-import { selectCurrentWallet } from "../../redux/userReducer";
 import { LOAD_USER } from "../../saga/actions";
 import ChainSelect from "../chainSelect";
 
 import { Web3Button } from "@web3modal/react";
 import { Web3NetworkSwitch } from "@web3modal/react";
+import { useAccount, useNetwork } from "wagmi";
+import Web3 from "web3";
+import { useSigner } from "wagmi";
+
 
 
 const Header = () => {
@@ -28,34 +27,29 @@ const Header = () => {
     document.querySelector(".navbar-collapse").classList.remove("show");
   });
 
-  const [connectedWallet, setConnectedWallet] = useState();
-  const userAddress = useSelector(selectCurrentWallet);
   const dispatch = useDispatch();
+  const { data: signer } = useSigner();
+  const [web3, setWeb3] = useState();
 
-  useEffect(() => {
-    setConnectedWallet(userAddress);
-  }, [userAddress]);
 
-  const connect = async () => {
-    const connectedWallet = await authProviderInstance.login();
-    authProviderInstance.addListners({
-      clearSession: () =>
+
+  const { address : connectedWallet } = useAccount(
+    {
+      onConnect({ address, connector, isReconnected }) {
+        console.log('Connected', { address, connector, isReconnected })
+        dispatch({
+          type: LOAD_USER,
+          payload: address,
+        });
+      },
+      onDisconnect() {
         dispatch({
           type: "DESTROY_SESSION",
-        }),
-    });
-    dispatch({
-      type: LOAD_USER,
-      payload: connectedWallet,
-    });
-  };
+        });
+      },
+    }
+  );
 
-  const disconnect = async () => {
-    await authProviderInstance.logout();
-    dispatch({
-      type: "DESTROY_SESSION",
-    });
-  };
 
   const [balance, setBalance] = useState({
     fx: 0,
@@ -66,9 +60,9 @@ const Header = () => {
   });
 
   const initWalletData = async () => {
-    const web3 = web3Infura;
-    if (connectedWallet && web3) {
-      const contract = await loadERC20Contract(true);
+
+    if (web3) {
+      const contract = await loadERC20Contract();
       const fxg = await contract.methods.balanceOf(connectedWallet).call();
       web3.eth.getBalance(connectedWallet, (err, wei) => {
         if (!err) {
@@ -86,10 +80,16 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (connectedWallet) {
+    if (web3) {
       initWalletData();
     }
-  }, [connectedWallet]);
+  }, [web3]);
+
+  useEffect(() => {
+    if (signer) {
+      setWeb3(new Web3(signer?.provider?.provider));
+    }
+  }, [signer]);
 
   return (
     <>
@@ -172,36 +172,11 @@ const Header = () => {
                   </div>
                   <img src="/assets/icon-white-wallet.png" alt="" />
                 </li>
-                <li>
-                  <ChainSelect />
-                </li>
               </ul>
             ) : null}
 
-            <button
-              id="signUpButton"
-              onClick={async () => {
-                if (connectedWallet) {
-                  await disconnect();
-                } else {
-                  await connect();
-                }
-              }}
-            >
-              {connectedWallet ? (
-                <>
-                  {optimizeWalletAddress(connectedWallet)}
-                  <span></span>
-                  <LogoutIcon />
-                </>
-              ) : (
-                "Connect Wallect"
-              )}{" "}
-            </button>
-
-            <Web3NetworkSwitch/>
-            <Web3Button/>
-
+            <Web3NetworkSwitch />
+            <Web3Button balance="show"/>
           </div>
         </nav>
       </header>

@@ -1,13 +1,8 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-let reqInstance = axios.create({
-  headers: {
-    "X-CHAIN-ID": localStorage.getItem("chainId")
-      ? JSON.parse(localStorage.getItem("chainId"))?.id
-      : "90001",
-  },
-});
+
+let reqInstance = axios.create({});
 
 reqInstance.interceptors.request.use((config) => {
   return {

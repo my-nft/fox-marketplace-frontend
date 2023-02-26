@@ -483,7 +483,7 @@ export const acceptOffer = async (
 };
 
 const bigNumberPricing = async (price) => {
-  const web3 = web3Infura;
+  const web3 = web3Infura();
 
   let listingPrice = web3.utils.toWei(price.toString(), "ether");
 
@@ -561,7 +561,7 @@ export const mintNfts = async (total) => {
 
   const mintFee = await erc721ContractRead.methods.mintFee().call();
 
-  const value = web3Infura.utils.toHex(Number(mintFee) * Number(total));
+  const value = web3Infura().utils.toHex(Number(mintFee) * Number(total));
 
   const gasLimit = await erc721Contract.methods.mint(total).estimateGas({
     from: connectWallet,
