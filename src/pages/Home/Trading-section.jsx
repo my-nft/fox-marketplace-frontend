@@ -40,11 +40,6 @@ const TradingSection = ({collections = []}) => {
     return () => window.removeEventListener("resize", handleResize);
   });
 
-  console.table({
-    slidesToShow,
-    activeSlide,
-  });
-
   return (
     <section id="tradingNow" className="container-fluid">
       <h3 className="mb-2">Trending Now</h3>

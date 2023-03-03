@@ -9,7 +9,6 @@ import {
 import { Provider } from "react-redux";
 
 import Home from "./pages/Home";
-import Header from "./components/layout/Header";
 import React from "react";
 import Footer from "./components/layout/Footer";
 import Creation from "./pages/Creation";
@@ -30,6 +29,38 @@ import MintLimited from "./pages/mintLimited/mintLimited";
 import { getNftCall } from "./api/nftApi";
 import { getCollectionByAddress } from "./api/collectionApi";
 import { getItemInfo } from "./api/utilsApi";
+import { fxgChain, polygChain } from "./utils/chains/chains";
+import {
+  EthereumClient,
+  modalConnectors,
+  walletConnectProvider,
+} from "@web3modal/ethereum";
+import { createClient, configureChains } from "wagmi";
+
+import { Web3Modal } from "@web3modal/react";
+
+import { WagmiConfig } from "wagmi";
+import Header from "./components/layout/Header";
+
+const chains = [fxgChain, polygChain];
+// Wagmi client
+export const { provider } = configureChains(chains, [
+  walletConnectProvider({
+    projectId: "c713aa69c46302aa2ce0353d8b67b8fa",
+  }),
+]);
+
+const wagmiClient = createClient({
+  logger: {
+    warn: (message) => console.log(message),
+  },
+  autoConnect: true,
+  connectors: [...modalConnectors({ appName: "web3Modal", chains })],
+  provider,
+});
+
+// Web3Modal Ethereum Client
+const ethereumClient = new EthereumClient(wagmiClient, chains);
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -192,17 +223,22 @@ const router = createBrowserRouter(
 
 function App() {
   return (
-    <Provider store={store}>
-      <PageStatistics />
-      {/*
-      <ConfirmationPopup
-        title="Test"
-        message="KLMOASDASDASDAsd adwqe adwa dwqe q"
-      />
-        */}
+    <>
+      <WagmiConfig client={wagmiClient}>
+        <Provider store={store}>
+          <PageStatistics />
+          <RouterProvider router={router} />
+        </Provider>
+      </WagmiConfig>
 
-      <RouterProvider router={router}></RouterProvider>
-    </Provider>
+      <Web3Modal
+        projectId="c713aa69c46302aa2ce0353d8b67b8fa"
+        ethereumClient={ethereumClient}
+        themeZIndex={1000000}
+        themeColor="orange"
+        themeMode="dark"
+      />
+    </>
   );
 }
 

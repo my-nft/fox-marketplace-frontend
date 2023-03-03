@@ -1,30 +1,36 @@
 import { addNftToIpfs } from "../api/nftApi";
 import {
-  foxMasterCollectionAddress,
   getCurrentWalletConnected,
   loadERC20Contract,
   loadFoxMasterCollectionContract,
+  getAddressesByChain,
 } from "../utils/blockchainInteractor";
 import { sameAddress } from "../utils/walletUtils";
 
-
 export const mintNft = async ({
-  collectionAddress = foxMasterCollectionAddress,
+  collectionAddress = getAddressesByChain().foxMasterCollectionAddress,
   nft,
   image,
   token,
 }) => {
   const erc20Contract = await loadERC20Contract();
 
-  if(!collectionAddress) {
-    collectionAddress = foxMasterCollectionAddress
+  if (!collectionAddress) {
+    collectionAddress = getAddressesByChain().foxMasterCollectionAddress;
   }
-  
-  const foxMastercontract = await loadFoxMasterCollectionContract(collectionAddress);
+
+  const foxMastercontract = await loadFoxMasterCollectionContract(
+    collectionAddress
+  );
 
   const connectedWallet = await getCurrentWalletConnected();
 
-  if (sameAddress(collectionAddress, foxMasterCollectionAddress)) {
+  if (
+    sameAddress(
+      collectionAddress,
+      getAddressesByChain().foxMasterCollectionAddress
+    )
+  ) {
     const mintFee = await foxMastercontract.methods.mintFee().call();
 
     const gasLimit = await erc20Contract.methods

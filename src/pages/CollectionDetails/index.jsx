@@ -63,7 +63,6 @@ const CollectionDetails = () => {
   const [nfts, setNfts] = useState({});
   const loaderData = useLoaderData();
   const [searchParams, setSearchParams] = useSearchParams();
-  console.log("PAGE: ", searchParams.get("page"));
 
   useEffect(() => {
     setPagination({

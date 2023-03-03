@@ -1,6 +1,5 @@
-import { Web3Provider } from "@ethersproject/providers";
 import { signinUser, signupUser } from "../api/AuthUserApi";
-import { authProviderInstance, web3Infura } from "../utils/blockchainInteractor";
+import { authProviderInstance } from "../utils/blockchainInteractor";
 
 
 

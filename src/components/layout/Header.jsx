@@ -3,54 +3,50 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  authProviderInstance,
-  loadERC20Contract,
-  web3Infura,
-} from "../../utils/blockchainInteractor";
-import { optimizeWalletAddress } from "../../utils/walletUtils";
+import { loadERC20Contract } from "../../utils/blockchainInteractor";
 import ScrollToTop from "../scrollToTop";
 import useOutsideClick from "./../../utils/useOutsideClick";
 import SearchBar from "./../searchBar/searchBar";
 
-import { ReactComponent as LogoutIcon } from "../../assets/icons/exit.svg";
-
-import { selectCurrentWallet } from "../../redux/userReducer";
 import { LOAD_USER } from "../../saga/actions";
+import ChainSelect from "../chainSelect";
+
+import { Web3Button } from "@web3modal/react";
+import { Web3NetworkSwitch } from "@web3modal/react";
+import { useAccount, useNetwork, useProvider, useSwitchNetwork } from "wagmi";
+import Web3 from "web3";
+import { useSigner } from "wagmi";
+import { useConnect } from "wagmi";
+import { watchNetwork } from "@wagmi/core";
 
 const Header = () => {
   const clickRef = useOutsideClick(() => {
     document.querySelector(".navbar-collapse").classList.remove("show");
   });
 
-  const [connectedWallet, setConnectedWallet] = useState();
-  const userAddress = useSelector(selectCurrentWallet);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { data: signer } = useSigner();
+  const [web3, setWeb3] = useState();
 
-  useEffect(() => {
-    setConnectedWallet(userAddress);
-  }, [userAddress]);
+  watchNetwork(() => {
+    navigate("/");
+  });
 
-  const connect = async () => {
-    const connectedWallet = await authProviderInstance.login();
-    authProviderInstance.addListners({
-      clearSession: () =>
-        dispatch({
-          type: "DESTROY_SESSION",
-        }),
-    });
-    dispatch({
-      type: LOAD_USER,
-      payload: connectedWallet,
-    });
-  };
-
-  const disconnect = async () => {
-    await authProviderInstance.logout();
-    dispatch({
-      type: "DESTROY_SESSION",
-    });
-  };
+  const { address: connectedWallet } = useAccount({
+    onConnect({ address, connector, isReconnected }) {
+      console.log("Connected", { address, connector, isReconnected });
+      dispatch({
+        type: LOAD_USER,
+        payload: address,
+      });
+    },
+    onDisconnect() {
+      dispatch({
+        type: "DESTROY_SESSION",
+      });
+    },
+  });
 
   const [balance, setBalance] = useState({
     fx: 0,
@@ -61,9 +57,8 @@ const Header = () => {
   });
 
   const initWalletData = async () => {
-    const web3 = web3Infura;
-    if (connectedWallet && web3) {
-      const contract = await loadERC20Contract(true);
+    if (web3) {
+      const contract = await loadERC20Contract();
       const fxg = await contract.methods.balanceOf(connectedWallet).call();
       web3.eth.getBalance(connectedWallet, (err, wei) => {
         if (!err) {
@@ -81,16 +76,48 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (connectedWallet) {
+    if (web3) {
       initWalletData();
     }
-  }, [connectedWallet]);
+  }, [web3]);
+
+  useEffect(() => {
+    if (signer) {
+      setWeb3(new Web3(signer?.provider?.provider));
+    }
+  }, [signer]);
+
+  const handleClick = () => {
+    document.querySelector(".navbar-collapse").classList.remove("show");
+    document.querySelector("body").style.overflowY = "auto";
+    document.querySelector("body").style.maxHeight = "auto";
+  };
+
+  useEffect(() => {
+    // add click event listeners to bootstrap links
+    const links = document.querySelectorAll(".nav-item");
+    links.forEach((link) => {
+      link.addEventListener("click", handleClick);
+    });
+    document
+      .querySelector(".navbar-brand")
+      .addEventListener("click", handleClick);
+    return () => {
+      // remove click event listeners to bootstrap links
+      links.forEach((link) => {
+        link.removeEventListener("click", handleClick);
+      });
+      document
+        .querySelector(".navbar-brand")
+        .removeEventListener("click", handleClick);
+    };
+  }, []);
 
   return (
     <>
       <ScrollToTop />
       <header className="container-fluid">
-        <nav className="navbar navbar-expand-xl" ref={clickRef}>
+        <nav className="navbar navbar-expand-custom" ref={clickRef}>
           <Link className="navbar-brand" to="/">
             <img src="/assets/images/Logo_foxchange.png" alt="" />
           </Link>
@@ -110,6 +137,18 @@ const Header = () => {
             aria-controls="navbarSupportedContent"
             aria-expanded="false"
             aria-label="Toggle navigation"
+            onClick={() => {
+              let bodyHasOverflowHidden =
+                document &&
+                document.querySelector("body").style.overflowY === "hidden";
+              if (bodyHasOverflowHidden) {
+                document.querySelector("body").style.overflowY = "auto";
+                document.querySelector("body").style.maxHeight = "auto";
+              } else {
+                document.querySelector("body").style.overflowY = "hidden";
+                document.querySelector("body").style.maxHeight = "100vh";
+              }
+            }}
           >
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -143,12 +182,12 @@ const Header = () => {
                     Account
                   </Link>
                 </li>
-                <li>
+                <li className="nav-item">
                   <Link to={"/profile"}>
                     <img src="/assets/icon-white-user.png" alt="" />
                   </Link>
                 </li>
-                <li>
+                <li className="nav-item">
                   <Link to="#">
                     <img src="/assets/icon-white-settings.png" alt="" />
                   </Link>
@@ -170,26 +209,10 @@ const Header = () => {
               </ul>
             ) : null}
 
-            <button
-              id="signUpButton"
-              onClick={async () => {
-                if (connectedWallet) {
-                  await disconnect();
-                } else {
-                  await connect();
-                }
-              }}
-            >
-              {connectedWallet ? (
-                <>
-                  {optimizeWalletAddress(connectedWallet)}
-                  <span></span>
-                  <LogoutIcon />
-                </>
-              ) : (
-                "Connect Wallect"
-              )}{" "}
-            </button>
+            <Web3NetworkSwitch />
+            <div className="ml-3">
+              <Web3Button balance="show" />
+            </div>
           </div>
         </nav>
       </header>

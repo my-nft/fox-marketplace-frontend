@@ -10,38 +10,82 @@ import FOX_MASTER from "./contracts/FOX_MASTER.json";
 import FACTORY from "./contracts/FACTORY.json";
 import FOX_GENISIS from "./contracts/FOX_GENESIS.json";
 import { authProvider } from "./web3ModalInteractor";
+import { getNetwork } from "@wagmi/core";
+import {
+  AUTIONContractAddressFX,
+  AUTIONContractAddressPOLYG,
+  blockExplorerFX,
+  blockExplorerPOLYG,
+  ERC20ContractAddressFX,
+  ERC20ContractAddressPOLYG,
+  factoryCollectionAddressFX,
+  factoryCollectionAddressPOLYG,
+  FIXEDContractAddressFX,
+  FIXEDContractAddressPOLYG,
+  foxGenesisCollectionAddressFX,
+  foxGenesisCollectionAddressPOLYG,
+  foxMasterCollectionAddressFX,
+  foxMasterCollectionAddressPOLYG,
+  LoaderContractAddressFX,
+  LoaderContractAddressPOLYG,
+  OfferSystemAddressFX,
+  OfferSystemAddressPOLYG,
+  rpc_chain_id_fx,
+  rpc_chain_id_polyg,
+  rpc_url_fx,
+  rpc_url_polyg,
+  transactionExplorerFX,
+  transactionExplorerPOLYG,
+} from "./chains/variables";
 
-let infura = process.env.REACT_APP_RPC_URL;
-
-
-export let web3Infura = new Web3(infura);
 // injectProvider
 export const authProviderInstance = authProvider();
 
 export const marketplaceContractAddress = "";
 export const ERC721ContractAddress = "";
 
+export function getAddressesByChain() {
+  const { chain } = getNetwork();
 
-export const FIXEDContractAddress = process.env.REACT_APP_FIXEDContractAddress;
+  if (chain?.id === Number(rpc_chain_id_polyg)) {
+    return {
+      FIXEDContractAddress: FIXEDContractAddressPOLYG,
+      ERC20ContractAddress: ERC20ContractAddressPOLYG,
+      AUTIONContractAddress: AUTIONContractAddressPOLYG,
+      LoaderContractAddress: LoaderContractAddressPOLYG,
+      OfferSystemAddress: OfferSystemAddressPOLYG,
+      foxMasterCollectionAddress: foxMasterCollectionAddressPOLYG,
+      factoryCollectionAddress: factoryCollectionAddressPOLYG,
+      foxGenesisCollectionAddress: foxGenesisCollectionAddressPOLYG,
+      rpc_url: rpc_url_polyg,
+      rpc_chain_id: rpc_chain_id_polyg,
+      blockExplorer: blockExplorerPOLYG,
+      transactionExplorer: transactionExplorerPOLYG,
+    };
+  } else {
+    return {
+      FIXEDContractAddress: FIXEDContractAddressFX,
+      ERC20ContractAddress: ERC20ContractAddressFX,
+      AUTIONContractAddress: AUTIONContractAddressFX,
+      LoaderContractAddress: LoaderContractAddressFX,
+      OfferSystemAddress: OfferSystemAddressFX,
+      foxMasterCollectionAddress: foxMasterCollectionAddressFX,
+      factoryCollectionAddress: factoryCollectionAddressFX,
+      foxGenesisCollectionAddress: foxGenesisCollectionAddressFX,
+      rpc_url: rpc_url_fx,
+      rpc_chain_id: rpc_chain_id_fx,
+      blockExplorer: blockExplorerFX,
+      transactionExplorer: transactionExplorerFX,
+    };
+  }
+}
 
-export const ERC20ContractAddress = process.env.REACT_APP_ERC20ContractAddress;
-
-export const AUTIONContractAddress = process.env.REACT_APP_AUTIONContractAddress;
-
-export const LoaderContractAddress = process.env.REACT_APP_LoaderContractAddress;
-
-export const OfferSystemAddress = process.env.REACT_APP_OfferSystemAddress;
-
-export const foxMasterCollectionAddress = process.env.REACT_APP_foxMasterCollectionAddress;
-
-export const factoryCollectionAddress = process.env.REACT_APP_factoryCollectionAddress;
-
-export const foxGenesisCollectionAddress = process.env.REACT_APP_foxGenesisCollectionAddress;
+export let web3Infura = () => new Web3(getAddressesByChain().rpc_url);
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 export async function loadMarketplaceContract(readOnly = false) {
-  let web3Instance = web3Infura;
+  let web3Instance = web3Infura();
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
   }
@@ -49,18 +93,21 @@ export async function loadMarketplaceContract(readOnly = false) {
 }
 
 export async function loadERC721Contract(collectionAddress, readOnly = false) {
-  let web3Instance = web3Infura;
+  let web3Instance = web3Infura();
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
   }
   return new web3Instance.eth.Contract(ERC721, collectionAddress);
 }
 export async function loadERC20Contract(readOnly = false) {
-  let web3Instance = web3Infura;
+  let web3Instance = web3Infura();
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
   }
-  return new web3Instance.eth.Contract(ERC20, ERC20ContractAddress);
+  return new web3Instance.eth.Contract(
+    ERC20,
+    getAddressesByChain().ERC20ContractAddress
+  );
 }
 
 export async function loadCollectionContract(collectionAddress) {
@@ -70,33 +117,46 @@ export async function loadCollectionContract(collectionAddress) {
 }
 
 export async function loadAuctionContract(readOnly = false) {
-  let web3Instance = web3Infura;
+  let web3Instance = web3Infura();
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
   }
-  return new web3Instance.eth.Contract(AUCTION, AUTIONContractAddress);
+  return new web3Instance.eth.Contract(
+    AUCTION,
+    getAddressesByChain().AUTIONContractAddress
+  );
 }
 
 export async function loadAFixedPriceContract(readOnly = false) {
-  let web3Instance = web3Infura;
+  console.log("#############################");
+  let web3Instance = web3Infura();
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
   }
-  return new web3Instance.eth.Contract(FIXED_PRICE, FIXEDContractAddress);
+  return new web3Instance.eth.Contract(
+    FIXED_PRICE,
+    getAddressesByChain().FIXEDContractAddress
+  );
 }
 
 export async function loaderContract() {
   const web3 = await authProviderInstance.getInjectedWeb3();
 
-  return new web3.eth.Contract(LOADER, LoaderContractAddress);
+  return new web3.eth.Contract(
+    LOADER,
+    getAddressesByChain().LoaderContractAddress
+  );
 }
 
 export async function loadOfferSystemContract(readOnly = false) {
-  let web3Instance = web3Infura;
+  let web3Instance = web3Infura();
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
   }
-  return new web3Instance.eth.Contract(OFFER_SYSTEM, OfferSystemAddress);
+  return new web3Instance.eth.Contract(
+    OFFER_SYSTEM,
+    getAddressesByChain().OfferSystemAddress
+  );
 }
 
 export async function loadFoxMasterCollectionContract(collectionAddress) {
@@ -106,18 +166,24 @@ export async function loadFoxMasterCollectionContract(collectionAddress) {
 }
 
 export async function loadFoxGenisisContract(readOnly = false) {
-  console.log("##########", foxGenesisCollectionAddress);
-  let web3Instance = web3Infura;
+  console.log("##########", getAddressesByChain().foxGenesisCollectionAddress);
+  let web3Instance = web3Infura();
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
   }
-  return new web3Instance.eth.Contract(FOX_GENISIS, foxGenesisCollectionAddress);
+  return new web3Instance.eth.Contract(
+    FOX_GENISIS,
+    getAddressesByChain().foxGenesisCollectionAddress
+  );
 }
 
 export async function loadFactoryContract() {
   const web3 = await authProviderInstance.getInjectedWeb3();
 
-  return new web3.eth.Contract(FACTORY, factoryCollectionAddress);
+  return new web3.eth.Contract(
+    FACTORY,
+    getAddressesByChain().factoryCollectionAddress
+  );
 }
 
 export const getCurrentWalletConnected = async () => {

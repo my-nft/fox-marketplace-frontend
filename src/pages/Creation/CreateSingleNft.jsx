@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectIsLoading, setIsLoading } from "../../redux/nftReducer";
 import { MINT_NFT } from "../../saga/actions";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useAccount } from "wagmi";
 
 const CreateSingleNft = () => {
   const [imageUpload, setImageUpload] = useState(null);
@@ -16,6 +17,7 @@ const CreateSingleNft = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const collectionAddress = searchParams.get("collectionAddress");
+  const { address : connectedWallet, isConnected } = useAccount();
 
 
   useEffect(() => {
@@ -297,7 +299,7 @@ const CreateSingleNft = () => {
                   </div>
                 </div> */}
 
-                <button type="submit" className="btn">
+                <button type="submit" className="btn" disabled={!isConnected}>
                   Create NFT
                 </button>
               </div>
