@@ -53,6 +53,7 @@ const AccountPage = () => {
     categories: [],
     status: [],
     sortBy: "RECENTLY_LISTED",
+    contract: "ERC-720",
   });
 
   const dispatch = useDispatch();

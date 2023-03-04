@@ -38,6 +38,19 @@ const FilterInput = ({
           <option value="RECENTLY_CREATED">Recently created</option>
           <option value="RECENTLY_SOLD">Recently sold</option>
         </select>
+        <select
+          value={filters.contract}
+          onChange={(e) =>
+            changeFilterValue({
+              ...filters,
+              contract: e.target.value,
+            })
+          }
+          className="ml-3"
+        >
+          <option value="ERC-720">ERC 720</option>
+          <option value="ERC-1155">ERC 1155</option>
+        </select>
 
         <ul id="chooseLayout">
           <li>

@@ -54,6 +54,7 @@ const Explorer = () => {
     minPrice: undefined,
     maxPrice: undefined,
     buyToken: "FXG",
+    contract: "ERC-720",
   });
 
   const loadMostPopular = async () => {

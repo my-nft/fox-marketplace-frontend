@@ -27,6 +27,18 @@ const HeaderInput = ({
         <option value="PRICE_ASC">Price Asc</option>
         <option value="PRICE_DESC">Price Desc</option>
       </select>
+
+      <select
+        value={filters.contract}
+        onChange={(e) =>
+          changeFilterValue({ ...filters, contract: e.target.value })
+        }
+        className="ml-5"
+      >
+        <option value="ERC-720">ERC 720</option>
+        <option value="ERC-1155">ERC 1155</option>
+      </select>
+
       <button>
         <div>
           <svg
