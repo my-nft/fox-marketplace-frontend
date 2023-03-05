@@ -16,6 +16,10 @@ const ImportCollection = () => {
   const [idsList, setIdsList] = useState([]);
   const [idBuffer, setIdBuffer] = useState("");
   const loadingSelector = useSelector(selectIsLoading);
+  const [idRange, setIdRange] = useState({
+    start: 0,
+    end: 0,
+  });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleFormSubmit = async (e) => {
@@ -27,7 +31,6 @@ const ImportCollection = () => {
       let dataValid = true;
       Object.keys(data).forEach((key) => {
         if (data[key] === "") {
-          console.log(data[key]);
           dataValid = false;
         }
       });
@@ -37,6 +40,15 @@ const ImportCollection = () => {
           payload: {
             collectionAddress: data["collectionAddress"],
             contractType,
+            tokens:
+              idsList.length > 0
+                ? [...idsList]
+                : [
+                    ...Array.from(
+                      { length: Number(idRange.end) - Number(idRange.start) },
+                      (_, i) => i + Number(idRange.start)
+                    ),
+                  ],
           },
           onSuccess: async () => {
             toast.success(
@@ -61,6 +73,9 @@ const ImportCollection = () => {
   }, [contractType]);
 
   const handleAddId = () => {
+    if (idRange.start > 0 || idRange.end > 0) {
+      return;
+    }
     if (idBuffer) {
       if (idsList.includes(idBuffer)) {
         toast.error("This id is already in the list");
@@ -133,19 +148,32 @@ const ImportCollection = () => {
                           </label>
                           <div className="importIdsRange">
                             <input
-                              type="text"
+                              type="number"
                               className="form-control"
                               name="collectionIdStart"
                               required
                               placeholder="First ID..."
+                              value={idRange.start}
+                              onChange={(e) =>
+                                setIdRange({
+                                  ...idRange,
+                                  start: e.target.value,
+                                })
+                              }
+                              disabled={idsList.length > 0}
                             />
                             <span className="input-group-text"></span>
                             <input
-                              type="text"
+                              type="number"
                               name="collectionIdEnd"
                               className="form-control"
                               required
                               placeholder="Last ID..."
+                              value={idRange.end}
+                              onChange={(e) =>
+                                setIdRange({ ...idRange, end: e.target.value })
+                              }
+                              disabled={idsList.length > 0}
                             />
                           </div>
                         </div>
@@ -172,13 +200,14 @@ const ImportCollection = () => {
                           </div>
                           <div className="importIdWrapper">
                             <input
-                              type="text"
+                              type="number"
                               className="form-control"
                               name="idToImport"
                               required={idsList.length === 0}
                               placeholder="First ID..."
                               value={idBuffer}
                               onChange={(e) => setIdBuffer(e.target.value)}
+                              disabled={idRange.start > 0 || idRange.end > 0}
                             />
                             <p
                               className="input-group-text"

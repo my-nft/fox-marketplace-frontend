@@ -32,7 +32,8 @@ import { signWallet } from "./userSaga";
 function* importCollection(action) {
   try {
     yield put(setCollectionIsLoading(true));
-    const { collectionAddress, contractType } = action.payload;
+    const { collectionAddress, contractType, tokens = [] } = action.payload;
+    console.log(tokens);
     const token = yield call(signWallet);
     console.log("the token is", token);
     yield call(
