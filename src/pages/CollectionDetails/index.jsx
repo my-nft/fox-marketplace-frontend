@@ -218,6 +218,7 @@ const CollectionDetails = () => {
                     isLoadingNfts={isLoadingNfts}
                     changePage={changePage}
                     paginationPage={pagination.page}
+                    collectionDetails={collectionDetails}
                   />
                 </>
               )}
