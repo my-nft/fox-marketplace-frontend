@@ -87,7 +87,7 @@ const EndCountdown = ({ endAuction }) => {
   );
 };
 
-const MostPopularItem = ({ viewType, item, contract }) => {
+const MostPopularItem = ({ viewType, item, contract, collectionIn }) => {
   const walletAddress = useSelector(selectCurrentWallet);
 
   let styleList = {};
@@ -121,7 +121,7 @@ const MostPopularItem = ({ viewType, item, contract }) => {
 
   const [itemInfos, setItemInfos] = useState({});
   const [price, setPrice] = useState(0);
-  const [collectionName, setCollectionName] = useState("");
+  const [collectionName, setCollectionName] = useState(collectionIn?.name);
 
   const init = async () => {
     const infos = await getAuctionInfos(item.auctionId);
@@ -148,9 +148,11 @@ const MostPopularItem = ({ viewType, item, contract }) => {
   }, []);
 
   useEffect(() => {
-    getCollectionByAddress(item.collectionAddress, contract).then((res) => {
-      setCollectionName(res.data.collection.name);
-    });
+    if(!collectionIn) {
+      getCollectionByAddress(item.collectionAddress, contract).then((res) => {
+        setCollectionName(res.data.collection.name);
+      });
+    }
   }, []);
 
   return (
