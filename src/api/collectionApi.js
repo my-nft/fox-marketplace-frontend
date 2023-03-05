@@ -4,9 +4,15 @@ import { getAddressesByChain } from "../utils/blockchainInteractor";
 
 const collectionEndpoint = apiUrl + "collections/";
 
-export function importCollectionCall(collectionAddress, token, sameOrigin) {
+export function importCollectionCall(
+  collectionAddress,
+  token,
+  sameOrigin,
+  contract
+) {
   return methods.post(
-    `${collectionEndpoint}${collectionAddress}/import`,
+    `${collectionEndpoint}${collectionAddress}/import` + contract ===
+      "ERC1155" && "-erc1155",
     {
       sameOrigin: sameOrigin ? true : false,
     },
@@ -32,16 +38,21 @@ export function importCollectionToken(collectionAddress, tokenID, token) {
   );
 }
 
-export function getCollectionByAddress(collectionAddress) {
-  return methods.get(`${collectionEndpoint}${collectionAddress}`, {
-    headers: {
-      "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
-    },
-  });
+export function getCollectionByAddress(collectionAddress, contract) {
+  return methods.get(
+    `${collectionEndpoint}${collectionAddress}?isErc1155=${
+      contract === "ERC-1155" ? true : false
+    }`,
+    {
+      headers: {
+        "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
+      },
+    }
+  );
 }
 
 export function getCollectionsCall(body) {
-  return methods.get(collectionEndpoint, {
+  return methods.get(`${collectionEndpoint}`, {
     params: body,
     headers: {
       "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
@@ -54,7 +65,7 @@ export function getCollectionNftsCall(collectionAddress, body) {
     params: body,
     headers: {
       "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
-    }
+    },
   });
 }
 
@@ -70,7 +81,7 @@ export function updateCollection(collectionAddress, body, token) {
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: "Bearer " + token,
-      "X-CHAIN-ID": getAddressesByChain().rpc_chain_id
+      "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
     },
   });
 }
@@ -90,6 +101,6 @@ export const getAccountCollections = (
     },
     headers: {
       "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
-    }
+    },
   });
 };

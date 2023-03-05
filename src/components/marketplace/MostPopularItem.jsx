@@ -87,7 +87,7 @@ const EndCountdown = ({ endAuction }) => {
   );
 };
 
-const MostPopularItem = ({ viewType, item }) => {
+const MostPopularItem = ({ viewType, item, contract }) => {
   const walletAddress = useSelector(selectCurrentWallet);
 
   let styleList = {};
@@ -148,7 +148,7 @@ const MostPopularItem = ({ viewType, item }) => {
   }, []);
 
   useEffect(() => {
-    getCollectionByAddress(item.collectionAddress).then((res) => {
+    getCollectionByAddress(item.collectionAddress, contract).then((res) => {
       setCollectionName(res.data.collection.name);
     });
   }, []);

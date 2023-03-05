@@ -115,7 +115,6 @@ const Explorer = () => {
   };
 
   useEffect(() => {
-    console.log(filters);
     if (pagination === INIT_PAGINATION) {
       loadListedNfts();
     } else {
@@ -175,6 +174,7 @@ const Explorer = () => {
                 nfts={content}
                 pagination={pagination}
                 changePage={changePage}
+                contract={filters.contract}
               />
             )}
 

@@ -27,6 +27,7 @@ const ImportCollection = () => {
       let dataValid = true;
       Object.keys(data).forEach((key) => {
         if (data[key] === "") {
+          console.log(data[key]);
           dataValid = false;
         }
       });
@@ -35,6 +36,7 @@ const ImportCollection = () => {
           type: IMPORT_COLLECTION,
           payload: {
             collectionAddress: data["collectionAddress"],
+            contractType,
           },
           onSuccess: async () => {
             toast.success(
