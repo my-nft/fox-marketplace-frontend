@@ -36,6 +36,8 @@ import Offers from "../../components/nft/offers";
 import PriceHistory from "../../components/nft/priceHistory";
 import ItemActivity from "../../components/nft/activity";
 import { getItemInfo } from "../../api/utilsApi";
+import { ReactComponent as ItemsIcon } from "../../assets/icons/items.svg";
+import { ReactComponent as OwnersIcon } from "../../assets/icons/owners.svg";
 
 const MyNftDetails = () => {
   const connectedWallet = useSelector(selectCurrentWallet);
@@ -146,12 +148,12 @@ const MyNftDetails = () => {
   };
 
   const onWithdrawOffer = (bestOffer) => {
-    console.log("##############################")
-    console.log("##############################")
-    console.log("##############################")
-    console.log("##############################")
-    console.log("##############################")
-    console.log("##############################")
+    console.log("##############################");
+    console.log("##############################");
+    console.log("##############################");
+    console.log("##############################");
+    console.log("##############################");
+    console.log("##############################");
 
     dispatch({
       type: WITHDRAW_OFFER,
@@ -201,22 +203,34 @@ const MyNftDetails = () => {
                     </div>
                     <div className="mt-5 mt-lg-0 col-md-12  col-lg-7 order-2 order-lg-2 ">
                       <header id="infoNFT" className="mb-3">
-                        <h3>
-                          {`${nftDetails?.name}(${nftDetails?.tokenID})`}{" "}
-                        </h3>
-                        <h4>
-                          Owned by{" "}
-                          {sameAddress(
-                            connectedWallet,
-                            nftDetails.ownerAddress
-                          ) ? (
-                            "You"
-                          ) : (
-                            <Address address={nftDetails.ownerAddress}>
-                              {optimizeWalletAddress(nftDetails.ownerAddress)}
-                            </Address>
-                          )}
-                        </h4>
+                        <div>
+                          <h3>
+                            {`${nftDetails?.name}(${nftDetails?.tokenID})`}{" "}
+                          </h3>
+                          <h4>
+                            Owned by{" "}
+                            {sameAddress(
+                              connectedWallet,
+                              nftDetails.ownerAddress
+                            ) ? (
+                              "You"
+                            ) : (
+                              <Address address={nftDetails.ownerAddress}>
+                                {optimizeWalletAddress(nftDetails.ownerAddress)}
+                              </Address>
+                            )}
+                          </h4>
+                        </div>
+                        <div class="itemCounts">
+                          <div className="owners countHighlight">
+                            <OwnersIcon />
+                            <p>52 Owners</p>
+                          </div>
+                          <div className="ietms countHighlight">
+                            <ItemsIcon />
+                            <p>52 Items</p>
+                          </div>
+                        </div>
                       </header>
 
                       {

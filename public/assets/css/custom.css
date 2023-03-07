@@ -1853,6 +1853,48 @@ img.withGlow.active {
   font-family: gothamBlack;
 }
 
+#infoNFT {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.itemCounts {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.countHighlight {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 10px;
+}
+
+.countHighlight p {
+  margin: 0;
+  font-weight: 500 !important;
+  transition: 500ms ease-in-out;
+}
+
+.countHighlight:hover p {
+  color: #f58103 !important;
+}
+
+.countHighlight svg {
+  width: 32px;
+  height: 32px;
+}
+
+.count {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
 #infoNFT h4 {
   color: #f58103;
 }
