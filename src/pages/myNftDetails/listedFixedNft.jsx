@@ -8,10 +8,7 @@ import {
   BUY_NFT,
   DELIST_ITEM,
 } from "../../saga/blockchain.js/blockChainActions";
-import {
-  getBestOffer,
-  getPriceByListing,
-} from "../../services/listingNft";
+import { getBestOffer, getPriceByListing } from "../../services/listingNft";
 import { sameAddress } from "../../utils/walletUtils";
 
 const ListedFixedNft = ({
@@ -21,6 +18,8 @@ const ListedFixedNft = ({
   onMakeOffer,
   onAcceptOffer,
   onWithdrawOffer,
+  quantity,
+  handleQuantityChange,
 }) => {
   const currentWallet = useSelector(selectCurrentWallet);
 
@@ -33,6 +32,8 @@ const ListedFixedNft = ({
   const handleChange = (evt) => {
     setCurrentOffer(evt.target.value);
   };
+
+  // TODO: add support for quantity
 
   const onBuyItem = async (price) => {
     const { royaltyAddress, royaltyPercent } = collectionDetails;
@@ -98,11 +99,24 @@ const ListedFixedNft = ({
         onWithdrawOffer={onWithdrawOffer}
         ownerAddress={nftDetails.ownerAddress}
       >
+        {
+          // TODO: add support erc 1155 display noly
+        }
+
+        {true && (
+          <div className="quantity-entry">
+            <button onClick={() => handleQuantityChange(-1)}>-</button>
+            <span></span>
+            <p>{quantity}</p>
+            <span></span>
+            <button onClick={() => handleQuantityChange(+1)}>+</button>
+          </div>
+        )}
         {!sameAddress(currentWallet, nftDetails.ownerAddress) && (
           <>
             <button
               id="buyItem"
-              className="btn"
+              className="btn buyActionButtton"
               disabled={!currentPrice}
               onClick={() => onBuyItem(currentPrice)}
             >
@@ -110,7 +124,7 @@ const ListedFixedNft = ({
             </button>
             <button
               id="makeOffer"
-              className="btn"
+              className="btn buyActionButtton"
               onClick={() => setShowMakeOffer(!showMakeOffer)}
             >
               Make offer

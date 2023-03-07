@@ -53,9 +53,8 @@ const MyNftDetails = () => {
   const [priceHistoList, setPriceHistoList] = useState([]);
   const [offersList, setOffersList] = useState([]);
   const [listingList, setListingList] = useState([]);
-
   const [isLoadingExtraData, setIsLoadingExtraData] = useState([]);
-
+  const [quantity, setQuantity] = useState(1);
   const loaderData = useLoaderData();
   const params = useParams();
 
@@ -168,6 +167,17 @@ const MyNftDetails = () => {
     });
   };
 
+  const handleQuantityChange = (value) => {
+    if (value < 0 && quantity > 1) {
+      setQuantity(quantity + value);
+      return;
+    }
+
+    if (value > 0 && quantity < 25) {
+      setQuantity(quantity + value);
+    }
+  };
+
   return (
     <Suspense fallback={<Spinner />}>
       <Await resolve={loaderData.dataPromise} errorElement={<Page404 />}>
@@ -247,6 +257,8 @@ const MyNftDetails = () => {
                             handleAcceptOffer={onAcceptOffer}
                             onWithdrawOffer={onWithdrawOffer}
                             setNftDetails={setNftDetails}
+                            quantity={quantity}
+                            handleQuantityChange={handleQuantityChange}
                           />
                         ) : null
                       }
@@ -265,6 +277,8 @@ const MyNftDetails = () => {
                             nftDetails={nftDetails}
                             handleMakeOffer={onMakeOffer}
                             onWithdrawOffer={onWithdrawOffer}
+                            quantity={quantity}
+                            handleQuantityChange={handleQuantityChange}
                           />
                         ) : null
                       }
@@ -275,6 +289,8 @@ const MyNftDetails = () => {
                           nftDetails={nftDetails}
                           setNftDetails={setNftDetails}
                           collectionDetails={collectionDetails}
+                          quantity={quantity}
+                          handleQuantityChange={handleQuantityChange}
                         />
                       ) : null}
 
@@ -287,6 +303,8 @@ const MyNftDetails = () => {
                           onMakeOffer={onMakeOffer}
                           onAcceptOffer={onAcceptOffer}
                           onWithdrawOffer={onWithdrawOffer}
+                          quantity={quantity}
+                          handleQuantityChange={handleQuantityChange}
                         />
                       ) : null}
                     </div>

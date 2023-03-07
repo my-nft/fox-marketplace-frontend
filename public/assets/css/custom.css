@@ -5106,3 +5106,43 @@ ul#buttonIcon {
   outline: none !important;
   cursor: pointer;
 }
+
+.quantity-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #fefefe;
+  border-radius: 8px;
+  padding: 8px 16px;
+  max-width: 240px;
+  margin: 32px auto 24px;
+}
+
+.quantity-entry p {
+  flex-grow: 2;
+  text-align: center;
+  margin: 0;
+}
+
+.quantity-entry span {
+  height: 16px;
+  width: 1px;
+  background: #fefefe;
+  display: block;
+  content: "";
+}
+
+.quantity-entry button {
+  margin: 0 !important;
+  padding: 12px !important;
+  background: none !important;
+  width: 48px !important;
+}
+
+.quantity-entry button:hover {
+  background: #fefefe !important;
+  color: #010306 !important;
+  vertical-align: middle;
+}
