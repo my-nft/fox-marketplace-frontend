@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import {
   getCollectionByAddress,
   getCollectionNftsCall,
-  getERC1155CollectionByAddress
+  getERC1155NftsByCollectionAddress
 } from "../../api/collectionApi";
 import Spinner from "../../components/Spinner";
 import FilterInput from "./FilterInput";
@@ -109,8 +109,8 @@ const CollectionDetails = () => {
         let nftsElements = {
           data : {}
         }
-        if (searchParams.get('isERC1155') === "true") {
-          nftsElements = await getERC1155CollectionByAddress(collectionDetails.collectionAddress);
+        if (collectionDetails.isErc1155) {
+          nftsElements = await getERC1155NftsByCollectionAddress(collectionDetails.collectionAddress);
         } else {
           nftsElements = await getCollectionNftsCall(
             collectionDetails.collectionAddress,

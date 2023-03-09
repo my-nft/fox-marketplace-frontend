@@ -66,11 +66,7 @@ const ImportCollection = () => {
         toast.success(
           "Congratulations, your Collection has been imported successfully"
         );
-        let targetPage = `/collection/${values["collectionAddress"]}`;
-        if (values.contractType.value === 'ERC1155') {
-          targetPage += `?isERC1155=true`;
-        }
-        navigate(targetPage);
+        navigate(`/collection/${values["collectionAddress"]}`);
       },
     });
   };

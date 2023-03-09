@@ -1,8 +1,8 @@
-import { isValidAddress } from "ethereumjs-util";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { getCollectionsCall, getERC1155CollectionByAddress } from "../../api/collectionApi";
+import { getCollectionsCall } from "../../api/collectionApi";
 import { getListedNfts } from "../../api/nftApi";
+import { getListedNfts1155 } from '../../api/nftERC1155Api';
 import HeaderInput from "../../components/marketplace/HeaderInput";
 import Pagination from "../../components/pagination/pagination";
 import { scrollTop } from "../../components/scrollToTop";
@@ -81,9 +81,8 @@ const Explorer = () => {
         filters.maxPrice,
         filters.sortBy,
       );
-    } else if (filters.contract === 'ERC-1155' && isValidAddress(filters.collectionAddress)
-    ) {
-      listedNfts = await getERC1155CollectionByAddress(filters.collectionAddress);
+    } else if (filters.contract === 'ERC-1155') {
+      listedNfts = await getListedNfts1155(filters.collectionAddress);
     }
     setNfts(listedNfts.data);
     setIsLoadingState(false);

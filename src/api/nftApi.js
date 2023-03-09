@@ -147,28 +147,3 @@ export const getListedNfts = (
     },
   });
 };
-
-export const getListedNfts1155 = (
-  page,
-  numberElements,
-  status,
-  collectionAddress,
-  minPrice,
-  maxPrice,
-  sortBy
-) => {
-  return methods.get(`${nft1155Endpoint}listed`, {
-    params: {
-      page,
-      numberElements,
-      status,
-      collectionAddress,
-      minPrice,
-      maxPrice,
-      sortBy,
-    },
-    headers: {
-      "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
-    },
-  });
-};

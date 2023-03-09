@@ -60,7 +60,7 @@ export function getCollectionByAddress(collectionAddress, contract) {
   );
 }
 
-export function getERC1155CollectionByAddress(collectionAddress) {
+export function getERC1155NftsByCollectionAddress(collectionAddress) {
   return methods.get(
     `${collectionEndpoint}erc1155/${collectionAddress}/tokens`,
     {
