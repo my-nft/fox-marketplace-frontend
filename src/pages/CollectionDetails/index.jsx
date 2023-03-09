@@ -1,23 +1,22 @@
-import FilterInput from "./FilterInput";
-import HeaderAccount from "./HeaderAccount";
-import ListNfts from "./ListNfts";
 import { Suspense, useEffect, useState } from "react";
-import Spinner from "../../components/Spinner";
 import {
   Await,
   useLoaderData,
-  useNavigate,
-  useParams,
-  useSearchParams,
+  useNavigate, useSearchParams
 } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   getCollectionByAddress,
   getCollectionNftsCall,
+  getERC1155CollectionByAddress
 } from "../../api/collectionApi";
+import Spinner from "../../components/Spinner";
+import FilterInput from "./FilterInput";
+import HeaderAccount from "./HeaderAccount";
+import ListNfts from "./ListNfts";
 
-import ConfirmationPopup from "./../../components/confirmationPopup/confirmationPopup";
 import Page404 from "../404/404";
+import ConfirmationPopup from "./../../components/confirmationPopup/confirmationPopup";
 
 const prepareProperties = (attributes) => {
   return (
@@ -107,21 +106,28 @@ const CollectionDetails = () => {
         });
 
         setIsLoadingNfts(true);
-        const nftsElements = await getCollectionNftsCall(
-          collectionDetails.collectionAddress,
-          {
-            page: pagination.page,
-            numberElements: 20,
-            categories: filters.categories,
-            searchPrompt: filters.searchPrompt,
-            status: filters.status,
-            minPrice: filters.minPrice,
-            maxPrice: filters.maxPrice,
-            buyToken: filters.buyToken,
-            sortBy: filters.sortBy,
-            properties: propertiesForExport,
-          }
-        );
+        let nftsElements = {
+          data : {}
+        }
+        if (searchParams.get('isERC1155') === "true") {
+          nftsElements = await getERC1155CollectionByAddress(collectionDetails.collectionAddress);
+        } else {
+          nftsElements = await getCollectionNftsCall(
+            collectionDetails.collectionAddress,
+            {
+              page: pagination.page,
+              numberElements: 20,
+              categories: filters.categories,
+              searchPrompt: filters.searchPrompt,
+              status: filters.status,
+              minPrice: filters.minPrice,
+              maxPrice: filters.maxPrice,
+              buyToken: filters.buyToken,
+              sortBy: filters.sortBy,
+              properties: propertiesForExport,
+            }
+          );
+        }
 
         setNfts(nftsElements.data);
         
