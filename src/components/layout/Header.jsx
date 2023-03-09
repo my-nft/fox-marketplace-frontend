@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,15 +9,10 @@ import useOutsideClick from "./../../utils/useOutsideClick";
 import SearchBar from "./../searchBar/searchBar";
 
 import { LOAD_USER } from "../../saga/actions";
-import ChainSelect from "../chainSelect";
 
-import { Web3Button } from "@web3modal/react";
-import { Web3NetworkSwitch } from "@web3modal/react";
-import { useAccount, useNetwork, useProvider, useSwitchNetwork } from "wagmi";
+import { Web3Button, Web3NetworkSwitch } from "@web3modal/react";
+import { useAccount, useSigner } from "wagmi";
 import Web3 from "web3";
-import { useSigner } from "wagmi";
-import { useConnect } from "wagmi";
-import { watchNetwork } from "@wagmi/core";
 
 const Header = () => {
   const clickRef = useOutsideClick(() => {
@@ -28,10 +23,6 @@ const Header = () => {
   const navigate = useNavigate();
   const { data: signer } = useSigner();
   const [web3, setWeb3] = useState();
-
-  watchNetwork(() => {
-    navigate("/");
-  });
 
   const { address: connectedWallet } = useAccount({
     onConnect({ address, connector, isReconnected }) {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getCollectionByAddress } from "../../api/collectionApi";
 import { selectCurrentWallet } from "../../redux/userReducer";
 import { getAuctionInfos, getPriceByListing } from "../../services/listingNft";

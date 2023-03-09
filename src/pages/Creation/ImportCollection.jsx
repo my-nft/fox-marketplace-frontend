@@ -1,93 +1,133 @@
-import CreationIcon from "../../components/CreationIcon";
-import { useState } from "react";
-import Spinner from "./../../components/Spinner";
-import { toast } from "react-toastify";
+import { isValidAddress } from "ethereumjs-util";
+import { useFormik } from "formik";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { IMPORT_COLLECTION } from "../../saga/actions";
-import { selectIsLoading } from "../../redux/collectionReducer";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import CustomSelect from "./../../components/Select";
+import { toast } from "react-toastify";
+import { useAccount } from "wagmi";
+import CreationIcon from "../../components/CreationIcon";
+import { selectIsLoading } from "../../redux/collectionReducer";
+import { IMPORT_COLLECTION } from "../../saga/actions";
 import { CONTRACT_TYPES } from "../../utils/foxConstantes";
+import CustomSelect from "./../../components/Select";
+import Spinner from "./../../components/Spinner";
+
+const validateForm = (values) => {
+  const errors = {};
+
+  if (!values.collectionAddress) {
+    errors.collectionAddress = "Required";
+  }
+
+  if (values.collectionAddress && !isValidAddress(values.collectionAddress)) {
+    errors.collectionAddress = "Pattern";
+  }
+
+  if (values.contractType.value === "ERC1155") {
+    if (
+      (values.idsList.length === 0 &&
+        values.idRange.start === 0 &&
+        values.idRange.end === 0) ||
+      +values.idRange.start > +values.idRange.end
+    ) {
+      errors.tokens = "Invalid";
+    }
+  }
+
+  return errors;
+};
 
 const ImportCollection = () => {
   const [loading, setLoading] = useState(true);
-  const [contractType, setContractType] = useState("ERC721");
-  const [idsList, setIdsList] = useState([]);
-  const [idBuffer, setIdBuffer] = useState("");
   const loadingSelector = useSelector(selectIsLoading);
-  const [idRange, setIdRange] = useState({
-    start: 0,
-    end: 0,
-  });
+  const { isConnected } = useAccount();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
 
-    if (data) {
-      let dataValid = true;
-      Object.keys(data).forEach((key) => {
-        if (data[key] === "") {
-          dataValid = false;
-        }
-      });
-      if (dataValid) {
-        dispatch({
-          type: IMPORT_COLLECTION,
-          payload: {
-            collectionAddress: data["collectionAddress"],
-            contractType,
-            tokens:
-              idsList.length > 0
-                ? [...idsList]
-                : [
-                    ...Array.from(
-                      { length: Number(idRange.end) - Number(idRange.start) },
-                      (_, i) => i + Number(idRange.start)
-                    ),
-                  ],
-          },
-          onSuccess: async () => {
-            toast.success(
-              "Congratulations, your Collection has been imported successfully"
-            );
-            navigate(`/collection/${data["collectionAddress"]}`);
-          },
-        });
-      } else {
-        toast.error("Please fill the collection address !");
-      }
-    }
+  const handleFormSubmit = async (values) => {
+    dispatch({
+      type: IMPORT_COLLECTION,
+      payload: {
+        collectionAddress: values.collectionAddress,
+        contractType: values.contractType,
+        tokens:
+          values.idsList.length > 0
+            ? values.idsList
+            : Array.from(
+                {
+                  length:
+                    parseInt(values.idRange.end) -
+                    parseInt(values.idRange.start),
+                },
+                (_, i) => i + parseInt(values.idRange.start)
+              ),
+      },
+      onSuccess: async () => {
+        toast.success(
+          "Congratulations, your Collection has been imported successfully"
+        );
+        navigate(`/collection/${values["collectionAddress"]}`);
+      },
+    });
   };
+
+  const formik = useFormik({
+    initialValues: {
+      collectionAddress: "",
+      contractType: { value: "ERC721", label: "ERC721" },
+      idRange: {
+        start: 0,
+        end: 0,
+      },
+      idsList: [],
+      idBuffer: "",
+    },
+    validate: validateForm,
+    onSubmit: handleFormSubmit,
+  });
 
   useEffect(() => {
     setLoading(loadingSelector);
   }, [loadingSelector]);
 
-  useEffect(() => {
-    setIdBuffer("");
-    setIdsList([]);
-  }, [contractType]);
-
-  const handleAddId = () => {
-    if (idRange.start > 0 || idRange.end > 0) {
+  const handleAddId = async () => {
+    if (formik.values.idRange.start > 0 || formik.values.idRange.end > 0) {
       return;
     }
-    if (idBuffer) {
-      if (idsList.includes(idBuffer)) {
+    if (formik.values.idBuffer) {
+      if (formik.values.idsList.includes(formik.values.idBuffer)) {
         toast.error("This id is already in the list");
         return;
       }
-      setIdsList([...idsList, idBuffer]);
-      setIdBuffer("");
+      formik.setFieldValue("idsList", [
+        ...formik.values.idsList,
+        formik.values.idBuffer,
+      ]);
+      formik.setFieldValue("idBuffer", "");
     }
   };
 
   const handleRemoveId = (idToRemove) => {
-    setIdsList(idsList.filter((id) => id !== idToRemove));
+    formik.setFieldValue(
+      "idsList",
+      formik.values.idsList.filter((id) => id !== idToRemove)
+    );
+  };
+
+  const notifyErrors = async () => {
+    const formikErrors = await formik.validateForm();
+    
+    if (formikErrors.collectionAddress === "Required") {
+      toast.error("Collection address is required");
+    }
+
+    if (formikErrors.collectionAddress === "Pattern") {
+      toast.error("Invalid collection address");
+    }
+
+    if (formikErrors.tokens === "Invalid") {
+      toast.error("Invalid Item IDs Range");
+    }
   };
 
   return (
@@ -109,7 +149,7 @@ const ImportCollection = () => {
           <>
             <div className="row">
               <div className="col">
-                <form onSubmit={handleFormSubmit}>
+                <form onSubmit={formik.handleSubmit}>
                   <div className="form-row ">
                     <div className="form-group entry-field text-start">
                       <label htmlFor="collectionAddress mb-2">
@@ -120,7 +160,13 @@ const ImportCollection = () => {
                         className="form-control"
                         id="inputArtName"
                         name="collectionAddress"
-                        required
+                        onChange={(e) => {
+                          formik.setFieldValue(
+                            "collectionAddress",
+                            e.target.value
+                          );
+                        }}
+                        value={formik.values.collectionAddress}
                         placeholder="Enter the Smart Contract Address of the Collection..."
                       />
                     </div>
@@ -130,16 +176,20 @@ const ImportCollection = () => {
                     <label htmlFor="contractType mb-2">Contract Type</label>
                     <CustomSelect
                       name="contractType"
+                      onChange={(newValue) => {
+                        formik.setFieldValue("contractType", newValue);
+                        formik.setFieldValue("idBuffer", "");
+                        formik.setFieldValue("idsList", []);
+                      }}
                       value={CONTRACT_TYPES.find(
-                        (option) => option.value === contractType
+                        (option) => option.value === formik.values.contractType
                       )}
-                      onChange={(e) => setContractType(e.value)}
                       options={CONTRACT_TYPES}
                       defaultValue={{ value: "ERC721", label: "ERC721" }}
-                      required
+                      isSearchable={false}
                     />
                   </div>
-                  {contractType === "ERC1155" && (
+                  {formik.values.contractType.value === "ERC1155" && (
                     <>
                       <div className="form-row mb-5 ">
                         <div className="form-group entry-field text-start">
@@ -151,29 +201,30 @@ const ImportCollection = () => {
                               type="number"
                               className="form-control"
                               name="collectionIdStart"
-                              required
                               placeholder="First ID..."
-                              value={idRange.start}
-                              onChange={(e) =>
-                                setIdRange({
-                                  ...idRange,
-                                  start: e.target.value,
-                                })
-                              }
-                              disabled={idsList.length > 0}
+                              value={formik.values.idRange.start}
+                              onChange={(e) => {
+                                formik.setFieldValue(
+                                  "idRange.start",
+                                  e.target.value
+                                );
+                              }}
+                              disabled={formik.values.idsList.length > 0}
                             />
                             <span className="input-group-text"></span>
                             <input
                               type="number"
                               name="collectionIdEnd"
                               className="form-control"
-                              required
                               placeholder="Last ID..."
-                              value={idRange.end}
-                              onChange={(e) =>
-                                setIdRange({ ...idRange, end: e.target.value })
-                              }
-                              disabled={idsList.length > 0}
+                              value={formik.values.idRange.end}
+                              onChange={(e) => {
+                                formik.setFieldValue(
+                                  "idRange.end",
+                                  e.target.value
+                                );
+                              }}
+                              disabled={formik.values.idsList.length > 0}
                             />
                           </div>
                         </div>
@@ -184,7 +235,7 @@ const ImportCollection = () => {
                             Item IDs Range
                           </label>
                           <div className="importIdsContainer">
-                            {idsList.map((id, index) => {
+                            {formik.values.idsList.map((id, index) => {
                               return (
                                 <div key={index} className="idToImportWrapper">
                                   <p>{id}</p>
@@ -203,15 +254,22 @@ const ImportCollection = () => {
                               type="number"
                               className="form-control"
                               name="idToImport"
-                              required={idsList.length === 0}
                               placeholder="First ID..."
-                              value={idBuffer}
-                              onChange={(e) => setIdBuffer(e.target.value)}
-                              disabled={idRange.start > 0 || idRange.end > 0}
+                              value={formik.values.idBuffer}
+                              onChange={(e) => {
+                                formik.setFieldValue(
+                                  "idBuffer",
+                                  e.target.value
+                                );
+                              }}
+                              disabled={
+                                formik.values.idRange.start > 0 ||
+                                formik.values.idRange.end > 0
+                              }
                             />
                             <p
                               className="input-group-text"
-                              onClick={() => handleAddId()}
+                              onClick={handleAddId}
                             >
                               Add Id
                             </p>
@@ -224,6 +282,12 @@ const ImportCollection = () => {
                   <button
                     className="btn mx-auto py-3 d-block mb-5   "
                     id="importSubmit"
+                    type="button"
+                    onClick={() => {
+                      notifyErrors();
+                      formik.handleSubmit();
+                    }}
+                    disabled={!isConnected}
                   >
                     Import Collection
                   </button>

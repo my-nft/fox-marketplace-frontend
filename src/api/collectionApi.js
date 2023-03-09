@@ -4,17 +4,26 @@ import { getAddressesByChain } from "../utils/blockchainInteractor";
 
 const collectionEndpoint = apiUrl + "collections/";
 
-export function importCollectionCall(
-  collectionAddress,
-  token,
-  sameOrigin,
-  contract
-) {
+export function importCollectionCall(collectionAddress, token, sameOrigin) {
   return methods.post(
-    `${collectionEndpoint}${collectionAddress}/import` + contract ===
-      "ERC1155" && "-erc1155",
+    `${collectionEndpoint}${collectionAddress}/import`,
     {
       sameOrigin: sameOrigin ? true : false,
+    },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+        "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
+      },
+    }
+  );
+}
+
+export function importCollectionCall1155(collectionAddress, token, tokens) {
+  return methods.post(
+    `${collectionEndpoint}${collectionAddress}/import-erc1155`,
+    {
+      tokens,
     },
     {
       headers: {
@@ -43,6 +52,17 @@ export function getCollectionByAddress(collectionAddress, contract) {
     `${collectionEndpoint}${collectionAddress}?isErc1155=${
       contract === "ERC-1155" ? true : false
     }`,
+    {
+      headers: {
+        "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
+      },
+    }
+  );
+}
+
+export function getERC1155CollectionByAddress(collectionAddress) {
+  return methods.get(
+    `${collectionEndpoint}erc1155/${collectionAddress}/tokens`,
     {
       headers: {
         "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,

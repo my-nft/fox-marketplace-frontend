@@ -9,23 +9,23 @@ import {
 } from "../redux/accountReducer";
 
 import {
-  setMostPopularCollections,
-  setIsLoadingMspl,
-  setSearcheableCollections,
-  setIsLoadingSearcheableCollection,
-  setIsLoading as setCollectionIsLoading,
   setCollectionDetails,
+  setIsLoading as setCollectionIsLoading,
+  setIsLoadingMspl,
+  setIsLoadingSearcheableCollection,
+  setMostPopularCollections,
+  setSearcheableCollections,
 } from "../redux/collectionReducer";
 import { mintCollection } from "../services/createCollection";
 import {
   IMPORT_COLLECTION,
+  LOAD_ACCOUNT_COLLECTIONS,
+  LOAD_ACCOUNT_NFTS,
+  LOAD_COLLECTION,
   LOAD_MOST_POPULAR_COLLECTION,
   LOAD_SEARCHABLE_COLLECTION,
-  LOAD_ACCOUNT_NFTS,
-  LOAD_ACCOUNT_COLLECTIONS,
-  LOAD_COLLECTION,
-  UPDATE_COLLECTION,
   MINT_COLLECTION,
+  UPDATE_COLLECTION,
 } from "./actions";
 import { signWallet } from "./userSaga";
 
@@ -36,18 +36,23 @@ function* importCollection(action) {
     console.log(tokens);
     const token = yield call(signWallet);
     console.log("the token is", token);
-    yield call(
-      api.importCollectionCall,
-      collectionAddress,
-      token,
-      contractType
-    );
+    if (contractType === "ERC721") {
+      yield call(api.importCollectionCall, collectionAddress, token);
+    } else if (contractType === "ERC1155") {
+      yield call(
+        api.importCollectionCall1155,
+        collectionAddress,
+        token,
+        tokens
+      );
+    }
+
     yield delay(3000);
 
     yield put(setCollectionIsLoading(false));
     action.onSuccess();
   } catch (error) {
-    console.log("error ", error.response.status);
+    console.error(error);
     toast.error("An unexpected error occurred.");
   } finally {
     yield put(setCollectionIsLoading(false));
