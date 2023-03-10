@@ -118,6 +118,14 @@
   .collectionSettingsWrapper {
     gap: 48px;
   }
+  nav .form-inline {
+    width: auto;
+    flex-grow: 2;
+  }
+  .ordinals {
+    margin: 0 auto !important;
+  }
+
   .settingsForm {
     grid-column: span 6;
   }

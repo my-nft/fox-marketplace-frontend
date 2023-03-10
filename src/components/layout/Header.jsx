@@ -18,6 +18,7 @@ import Web3 from "web3";
 import { useSigner } from "wagmi";
 import { useConnect } from "wagmi";
 import { watchNetwork } from "@wagmi/core";
+import Ordinals from "./ordinals";
 
 const Header = () => {
   const clickRef = useOutsideClick(() => {
@@ -173,6 +174,14 @@ const Header = () => {
                   Genesis
                 </a>
               </li>
+              <Ordinals>
+                <a className="nav-link" href="https://www.foxchange.io/">
+                  Explorer
+                </a>
+                <a className="nav-link" href="https://www.foxchange.io/">
+                  Inscriptions
+                </a>
+              </Ordinals>
             </ul>
 
             {connectedWallet ? (
@@ -216,7 +225,7 @@ const Header = () => {
           </div>
         </nav>
       </header>
-      <ToastContainer limit={1} />
+      {/* <ToastContainer limit={0} /> */}
 
       <Outlet />
     </>
