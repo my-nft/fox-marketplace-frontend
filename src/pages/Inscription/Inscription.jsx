@@ -1,6 +1,42 @@
+import { useRef, useState } from 'react';
 import styles from "./Inscription.module.css";
 
+const FILE_PREVIEW_PLACEHOLDER_IMAGE_SOURCE = "/assets/images/upload-preview@2x.png";
+
 const Inscription = () => {
+  const [imageSrc, setImageSrc] = useState(FILE_PREVIEW_PLACEHOLDER_IMAGE_SOURCE);
+  const [isWrapperActive, setIsWrapperActive] = useState(false);
+  const [fileName, setFileName] = useState("")
+  const defaultBtnRef = useRef(null)
+
+  const handleFileSelect = () => {
+    defaultBtnRef.current.click()
+  }
+
+  const handleFilePreview = () => {
+    // TODO: give more explicit name to regex and move to more generic file
+    const regExp = /[0-9a-zA-Z\^\&\'\@\{\}\[\]\,\$\=\!\-\#\(\)\.\%\+\~\_ ]+$/;
+    const file = defaultBtnRef.current.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        const result = reader.result;
+        setImageSrc(result)
+        setIsWrapperActive(true);
+      };
+      reader.readAsDataURL(file);
+    }
+    if (defaultBtnRef.current.value) {
+      let valueStore = defaultBtnRef.current.value.match(regExp);
+      setFileName(valueStore);
+    }
+  }
+
+  const handleImageUploadCancel = () => {
+    setImageSrc('');
+    setIsWrapperActive(false)
+  }
+
   return (
     <>
       <section className={styles.content} id="ContentSection">
@@ -40,14 +76,14 @@ const Inscription = () => {
                     className={styles["upload-preview-icon"]}
                     alt=""
                     id="fileImg"
-                    src="/assets/images/upload-preview@2x.png"
+                    src={imageSrc}
                   />
                   <label className={styles.preview} htmlFor="PreviewContainer">
                     *Preview
                   </label>
                 </div>
                 <div className={styles.container}>
-                  <div className={styles.wrapper}>
+                  <div className={`${styles.wrapper} ${isWrapperActive ? 'active' : ''}`}>
                     <div className={styles.image}>
                       <img id="fileImg" src="" alt="" />
                     </div>
@@ -57,15 +93,15 @@ const Inscription = () => {
                       </div>
                       <div className={styles.text}>No file chosen, yet!</div>
                     </div>
-                    <div id={styles['cancel-btn']}>
+                    <div id={styles['cancel-btn']} onClick={handleImageUploadCancel}>
                       <i className="fas fa-times"></i>
                     </div>
-                    <div className={styles["file-name"]}>File name here</div>
+                    <div className={styles["file-name"]}>{fileName}</div>
                   </div>
-                  <button onClick={() => {}} id={styles['custom-btn']}>
+                  <button onClick={handleFileSelect} id={styles['custom-btn']}>
                     Choose a file
                   </button>
-                  <input id="default-btn" type="file" hidden />
+                  <input id="default-btn" type="file" hidden ref={defaultBtnRef} onChange={handleFilePreview} />
                 </div>
                 <div
                   className={styles["upload-btn-group"]}
@@ -75,6 +111,7 @@ const Inscription = () => {
                     className={styles["btn-upload"]}
                     type="file"
                     required
+                    name="btn-upload"
                   />
                   <label className={styles.preview}>*Upload file</label>
                 </div>
