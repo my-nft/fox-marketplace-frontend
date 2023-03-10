@@ -98,11 +98,15 @@ form input[type="file"] {
   display: none;
 }
 
+nav .form-inline {
+  width: 100%;
+}
+
 .form-control-container {
   background-color: #130f0a;
   border: none;
   border-radius: 25px;
-  width: 30vw !important;
+  width: 100%;
   transition: 300ms ease-in-out;
   display: flex;
   align-items: center;
@@ -5243,4 +5247,60 @@ ul#buttonIcon {
 
 .toggler-wrapper input[type="checkbox"] {
   display: none;
+}
+.ordinals {
+  position: relative;
+  max-width: 128px;
+}
+
+.ordinals__header {
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-radius: 8px;
+  border: 1px solid #f58103;
+  color: #fff;
+  cursor: pointer;
+}
+
+.ordinals__header p {
+  margin: 0;
+}
+
+.ordinals__header svg {
+  width: 16px;
+  height: 16px;
+  transition: 300ms ease-in-out;
+  transform: rotate(-90deg);
+}
+
+.ordinals__show svg {
+  transform: rotate(90deg);
+}
+
+.ordinals__body {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 8px;
+  background: #010306;
+  border-radius: 8px;
+  border: 1px solid #f58103;
+  max-height: 0;
+  overflow: hidden;
+  transition: 300ms ease-in-out;
+  opacity: 0;
+  z-index: 25;
+}
+
+.ordinals__show .ordinals__body {
+  max-height: 320px;
+  opacity: 1;
+}
+
+.ordinals__body a {
+  margin: 0;
+  padding: 12px 16px !important;
 }

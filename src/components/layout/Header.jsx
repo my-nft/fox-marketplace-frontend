@@ -14,6 +14,8 @@ import { Web3Button, Web3NetworkSwitch } from "@web3modal/react";
 import { useAccount, useSigner } from "wagmi";
 import Web3 from "web3";
 
+import Ordinals from "./ordinals";
+
 const Header = () => {
   const clickRef = useOutsideClick(() => {
     document.querySelector(".navbar-collapse").classList.remove("show");
@@ -164,6 +166,14 @@ const Header = () => {
                   Genesis
                 </a>
               </li>
+              <Ordinals>
+                <a className="nav-link" href="https://www.foxchange.io/">
+                  Explorer
+                </a>
+                <a className="nav-link" href="https://www.foxchange.io/">
+                  Inscriptions
+                </a>
+              </Ordinals>
             </ul>
 
             {connectedWallet ? (
@@ -207,7 +217,7 @@ const Header = () => {
           </div>
         </nav>
       </header>
-      <ToastContainer limit={1} />
+      {/* <ToastContainer limit={0} /> */}
 
       <Outlet />
     </>
