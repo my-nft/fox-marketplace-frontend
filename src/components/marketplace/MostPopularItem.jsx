@@ -6,6 +6,7 @@ import { selectCurrentWallet } from "../../redux/userReducer";
 import { getAuctionInfos, getPriceByListing } from "../../services/listingNft";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 import { sameAddress } from "../../utils/walletUtils";
+import { ReactComponent as CopiesIcon } from "../../assets/icons/items.svg";
 
 const EndCountdown = ({ endAuction }) => {
   const [dateTime, setDateTime] = useState(new Date());
@@ -166,6 +167,10 @@ const MostPopularItem = ({ viewType, item }) => {
       <div className="wrapContent">
         <div className="wrapImg">
           <img src={item.image} className="bigImage" alt="" />
+          <div className="copiesCount">
+            <CopiesIcon />
+            <p>15</p>
+          </div>
           {sameAddress(item.ownerAddress, walletAddress) && (
             <p className="ownedItem">Owned by you</p>
           )}

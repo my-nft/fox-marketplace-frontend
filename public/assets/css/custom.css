@@ -5064,3 +5064,30 @@ ul#buttonIcon {
   outline: none !important;
   cursor: pointer;
 }
+
+.wrapContent .copiesCount {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 16px 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #f58103;
+  background: rgba(245, 129, 3, 0.8);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.wrapContent .copiesCount svg {
+  height: 24px;
+  width: 24px;
+}
+
+.wrapContent .copiesCount svg path {
+  fill: #fff;
+}
+.wrapContent .copiesCount p {
+  margin: 0;
+  font-weight: 600;
+  color: #fff;
+}
