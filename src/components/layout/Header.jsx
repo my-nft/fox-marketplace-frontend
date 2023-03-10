@@ -17,6 +17,7 @@ import { ReactComponent as LogoutIcon } from "../../assets/icons/exit.svg";
 
 import { selectCurrentWallet } from "../../redux/userReducer";
 import { LOAD_USER } from "../../saga/actions";
+import Ordinals from "./ordinals";
 
 const Header = () => {
   const clickRef = useOutsideClick(() => {
@@ -134,6 +135,14 @@ const Header = () => {
                   Genesis
                 </a>
               </li>
+              <Ordinals>
+                <a className="nav-link" href="https://www.foxchange.io/">
+                  Explorer
+                </a>
+                <a className="nav-link" href="https://www.foxchange.io/">
+                  Inscriptions
+                </a>
+              </Ordinals>
             </ul>
 
             {connectedWallet ? (
@@ -193,7 +202,7 @@ const Header = () => {
           </div>
         </nav>
       </header>
-      <ToastContainer limit={1} />
+      {/* <ToastContainer limit={0} /> */}
 
       <Outlet />
     </>
