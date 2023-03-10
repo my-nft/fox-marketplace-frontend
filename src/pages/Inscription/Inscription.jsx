@@ -15,7 +15,7 @@ const Inscription = () => {
 
   const handleFilePreview = () => {
     // TODO: give more explicit name to regex and move to more generic file
-    const regExp = /[0-9a-zA-Z\^\&\'\@\{\}\[\]\,\$\=\!\-\#\(\)\.\%\+\~\_ ]+$/;
+    const regExp = /[0-9a-zA-Z^&'@{}[\],$=!-#().%+~_ ]+$/;
     const file = defaultBtnRef.current.files[0];
     if (file) {
       const reader = new FileReader();
@@ -45,6 +45,7 @@ const Inscription = () => {
             <div className={styles["fee-field"]} id="PriceField">
               <h1 className={styles["total-fee"]}>Total Cost:</h1>
               <div className={styles.displayfee} id="TotalPriceDisplay">
+                {/*eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a className={styles.a} id="totalPrice">
                   2,52,354
                 </a>
