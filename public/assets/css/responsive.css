@@ -301,6 +301,13 @@
     min-width: unset;
     max-width: unset;
   }
+  .importTypeChoice {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .importTypeChoice > * {
+    justify-self: center !important;
+  }
   .navbar .collapse,
   .navbar .collapsing {
     padding: 144px 0 56px !important;

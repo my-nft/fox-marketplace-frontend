@@ -13,6 +13,7 @@ import { CONTRACT_TYPES } from "../../utils/foxConstantes";
 const ImportCollection = () => {
   const [loading, setLoading] = useState(true);
   const [contractType, setContractType] = useState("ERC721");
+  const [importType, setImportType] = useState("range");
   const [idsList, setIdsList] = useState([]);
   const [idBuffer, setIdBuffer] = useState("");
   const loadingSelector = useSelector(selectIsLoading);
@@ -124,69 +125,115 @@ const ImportCollection = () => {
                   </div>
                   {contractType === "ERC1155" && (
                     <>
-                      <div className="form-row mb-5 ">
-                        <div className="form-group entry-field text-start">
-                          <label htmlFor="collectionAddress mb-2">
-                            Item IDs Range
-                          </label>
-                          <div className="importIdsRange">
-                            <input
-                              type="text"
-                              className="form-control"
-                              name="collectionIdStart"
-                              required
-                              placeholder="First ID..."
-                            />
-                            <span className="input-group-text"></span>
-                            <input
-                              type="text"
-                              name="collectionIdEnd"
-                              className="form-control"
-                              required
-                              placeholder="Last ID..."
-                            />
+                      <div className="importTypeChoice mb-4">
+                        <p
+                          className={
+                            importType === "range" ? "importChoice" : ""
+                          }
+                        >
+                          IDs Range
+                        </p>
+                        <label
+                          htmlFor="importChoice"
+                          className="toggler-wrapper"
+                          onClick={() => {
+                            console.log("AA");
+                            if (importType === "range") {
+                              setImportType("individual");
+                            } else {
+                              setImportType("range");
+                            }
+                          }}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={importType === "individual"}
+                          />
+                          <div class="toggler-slider">
+                            <div class="toggler-knob"></div>
+                          </div>
+                        </label>
+                        <p
+                          className={
+                            importType === "individual" ? "importChoice" : ""
+                          }
+                        >
+                          Individual IDs
+                        </p>
+                      </div>
+                      {importType === "range" && (
+                        <div className="form-row mb-5 ">
+                          <div className="form-group entry-field text-start">
+                            <label htmlFor="collectionAddress mb-2">
+                              Item IDs Range
+                            </label>
+                            <div className="importIdsRange">
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="collectionIdStart"
+                                required
+                                placeholder="First ID..."
+                              />
+                              <span className="input-group-text"></span>
+                              <input
+                                type="text"
+                                name="collectionIdEnd"
+                                className="form-control"
+                                required
+                                placeholder="Last ID..."
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="form-row mb-5 ">
-                        <div className="form-group entry-field text-start">
-                          <label htmlFor="collectionAddress mb-2">
-                            Item IDs Range
-                          </label>
-                          <div className="importIdsContainer">
-                            {idsList.map((id, index) => {
-                              return (
-                                <div key={index} className="idToImportWrapper">
-                                  <p>{id}</p>
-                                  <span
-                                    className="input-group-text"
-                                    onClick={() => handleRemoveId(id)}
+                      )}
+                      {importType === "individual" && (
+                        <div className="form-row mb-5 ">
+                          <div className="form-group entry-field text-start">
+                            <label htmlFor="collectionAddress mb-2">
+                              Item IDs
+                            </label>
+                            <div className="importIdsContainer mb-3">
+                              {idsList.map((id, index) => {
+                                return (
+                                  <div
+                                    key={index}
+                                    className="idToImportWrapper"
                                   >
-                                    -
-                                  </span>
-                                </div>
-                              );
-                            })}
-                          </div>
-                          <div className="importIdWrapper">
-                            <input
-                              type="text"
-                              className="form-control"
-                              name="idToImport"
-                              required={idsList.length === 0}
-                              placeholder="First ID..."
-                              value={idBuffer}
-                              onChange={(e) => setIdBuffer(e.target.value)}
-                            />
-                            <p
-                              className="input-group-text"
-                              onClick={() => handleAddId()}
-                            >
-                              Add Id
-                            </p>
+                                    <p>{id}</p>
+                                    <span
+                                      className="input-group-text"
+                                      onClick={() => handleRemoveId(id)}
+                                    >
+                                      -
+                                    </span>
+                                  </div>
+                                );
+                              })}
+                              {idsList.length === 0 && (
+                                <p className="mb-0">No Ids</p>
+                              )}
+                            </div>
+                            <div className="importIdWrapper">
+                              <input
+                                type="text"
+                                className="form-control"
+                                name="idToImport"
+                                required={idsList.length === 0}
+                                placeholder="First ID..."
+                                value={idBuffer}
+                                onChange={(e) => setIdBuffer(e.target.value)}
+                              />
+                              <p
+                                className="input-group-text"
+                                onClick={() => handleAddId()}
+                              >
+                                Add Id
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      )}
                     </>
                   )}
 
