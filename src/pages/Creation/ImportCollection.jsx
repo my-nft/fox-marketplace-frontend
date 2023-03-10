@@ -39,6 +39,8 @@ const validateForm = (values) => {
 
 const ImportCollection = () => {
   const [loading, setLoading] = useState(true);
+  const [importType, setImportType] = useState("range");
+
   const loadingSelector = useSelector(selectIsLoading);
   const { isConnected } = useAccount();
   const dispatch = useDispatch();
@@ -116,7 +118,7 @@ const ImportCollection = () => {
 
   const notifyErrors = async () => {
     const formikErrors = await formik.validateForm();
-    
+
     if (formikErrors.collectionAddress === "Required") {
       toast.error("Collection address is required");
     }
@@ -191,91 +193,134 @@ const ImportCollection = () => {
                   </div>
                   {formik.values.contractType.value === "ERC1155" && (
                     <>
-                      <div className="form-row mb-5 ">
-                        <div className="form-group entry-field text-start">
-                          <label htmlFor="collectionAddress mb-2">
-                            Item IDs Range
-                          </label>
-                          <div className="importIdsRange">
-                            <input
-                              type="number"
-                              className="form-control"
-                              name="collectionIdStart"
-                              placeholder="First ID..."
-                              value={formik.values.idRange.start}
-                              onChange={(e) => {
-                                formik.setFieldValue(
-                                  "idRange.start",
-                                  e.target.value
-                                );
-                              }}
-                              disabled={formik.values.idsList.length > 0}
-                            />
-                            <span className="input-group-text"></span>
-                            <input
-                              type="number"
-                              name="collectionIdEnd"
-                              className="form-control"
-                              placeholder="Last ID..."
-                              value={formik.values.idRange.end}
-                              onChange={(e) => {
-                                formik.setFieldValue(
-                                  "idRange.end",
-                                  e.target.value
-                                );
-                              }}
-                              disabled={formik.values.idsList.length > 0}
-                            />
+                      <div className="importTypeChoice mb-4">
+                        <p
+                          className={
+                            importType === "range" ? "importChoice" : ""
+                          }
+                        >
+                          IDs Range
+                        </p>
+                        <label
+                          htmlFor="importChoice"
+                          className="toggler-wrapper"
+                          onClick={() => {
+                            if (importType === "range") {
+                              setImportType("individual");
+                            } else {
+                              setImportType("range");
+                            }
+                          }}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={importType === "individual"}
+                          />
+                          <div class="toggler-slider">
+                            <div class="toggler-knob"></div>
+                          </div>
+                        </label>
+                        <p
+                          className={
+                            importType === "individual" ? "importChoice" : ""
+                          }
+                        >
+                          Individual IDs
+                        </p>
+                      </div>
+
+                      {importType === "range" && (
+                        <div className="form-row mb-5 ">
+                          <div className="form-group entry-field text-start">
+                            <label htmlFor="collectionAddress mb-2">
+                              Item IDs Range
+                            </label>
+                            <div className="importIdsRange">
+                              <input
+                                type="number"
+                                className="form-control"
+                                name="collectionIdStart"
+                                placeholder="First ID..."
+                                value={formik.values.idRange.start}
+                                onChange={(e) => {
+                                  formik.setFieldValue(
+                                    "idRange.start",
+                                    e.target.value
+                                  );
+                                }}
+                                disabled={formik.values.idsList.length > 0}
+                              />
+                              <span className="input-group-text"></span>
+                              <input
+                                type="number"
+                                name="collectionIdEnd"
+                                className="form-control"
+                                placeholder="Last ID..."
+                                value={formik.values.idRange.end}
+                                onChange={(e) => {
+                                  formik.setFieldValue(
+                                    "idRange.end",
+                                    e.target.value
+                                  );
+                                }}
+                                disabled={formik.values.idsList.length > 0}
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="form-row mb-5 ">
-                        <div className="form-group entry-field text-start">
-                          <label htmlFor="collectionAddress mb-2">
-                            Item IDs Range
-                          </label>
-                          <div className="importIdsContainer">
-                            {formik.values.idsList.map((id, index) => {
-                              return (
-                                <div key={index} className="idToImportWrapper">
-                                  <p>{id}</p>
-                                  <span
-                                    className="input-group-text"
-                                    onClick={() => handleRemoveId(id)}
+                      )}
+                      {importType === "individual" && (
+                        <div className="form-row mb-5 ">
+                          <div className="form-group entry-field text-start">
+                            <label htmlFor="collectionAddress mb-2">
+                              Item IDs
+                            </label>
+                            <div className="importIdsContainer">
+                              {formik.values.idsList.map((id, index) => {
+                                return (
+                                  <div
+                                    key={index}
+                                    className="idToImportWrapper"
                                   >
-                                    -
-                                  </span>
-                                </div>
-                              );
-                            })}
-                          </div>
-                          <div className="importIdWrapper">
-                            <input
-                              type="number"
-                              className="form-control"
-                              name="idToImport"
-                              placeholder="First ID..."
-                              value={formik.values.idBuffer}
-                              onChange={(e) => {
-                                formik.setFieldValue(
-                                  "idBuffer",
-                                  e.target.value
+                                    <p>{id}</p>
+                                    <span
+                                      className="input-group-text"
+                                      onClick={() => handleRemoveId(id)}
+                                    >
+                                      -
+                                    </span>
+                                  </div>
                                 );
-                              }}
-                              disabled={
-                                formik.values.idRange.start > 0 ||
-                                formik.values.idRange.end > 0
-                              }
-                            />
-                            <p
-                              className="input-group-text"
-                              onClick={handleAddId}
-                            >
-                              Add Id
-                            </p>
+                              })}
+                            </div>
+                            <div className="importIdWrapper">
+                              <input
+                                type="number"
+                                className="form-control"
+                                name="idToImport"
+                                placeholder="First ID..."
+                                value={formik.values.idBuffer}
+                                onChange={(e) => {
+                                  formik.setFieldValue(
+                                    "idBuffer",
+                                    e.target.value
+                                  );
+                                }}
+                                disabled={
+                                  formik.values.idRange.start > 0 ||
+                                  formik.values.idRange.end > 0
+                                }
+                              />
+                              <p
+                                className="input-group-text"
+                                onClick={handleAddId}
+                              >
+                                Add Id
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      )}
                     </>
                   )}
 
