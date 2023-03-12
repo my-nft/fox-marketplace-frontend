@@ -10,6 +10,7 @@ const NonListedNft = ({
   onWithdrawOffer,
   quantity,
   handleQuantityChange,
+  collectionDetails,
 }) => {
   // values
   const [bestOffer, setBestOffer] = useState();
@@ -45,50 +46,52 @@ const NonListedNft = ({
       <CardBody bestOffer={bestOffer} onWithdrawOffer={onWithdrawOffer}>
         <div className="card mt-2" id="fixedPriceDetails">
           <div className="card-body">
-            <form id="setPrice">
-              <div className="input-group">
-                <div
-                  style={{
-                    width: "80%",
-                  }}
-                >
-                  <label htmlFor="inputAmount">Offer price</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    aria-label="Text input with dropdown button"
-                    placeholder="Amount"
-                    id="offerPrice"
-                    name="offerPrice"
-                    onChange={handleChange}
-                    value={values.offerPrice}
-                  />
+            {collectionDetails.isErc1155 ? (
+              ""
+            ) : (
+              <form id="setPrice">
+                <div className="input-group">
+                  <div
+                    style={{
+                      width: "80%",
+                    }}
+                  >
+                    <label htmlFor="inputAmount">Offer price</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      aria-label="Text input with dropdown button"
+                      placeholder="Amount"
+                      id="offerPrice"
+                      name="offerPrice"
+                      onChange={handleChange}
+                      value={values.offerPrice}
+                    />
+                  </div>
+                  <select id="nameofCoin">
+                    <option>FXG</option>
+                  </select>
                 </div>
-                <select id="nameofCoin">
-                  <option>FXG</option>
-                </select>
-              </div>
-              {
-                // TODO: add support erc 1155 display noly
-              }
 
-              {false && (
-                <div className="quantity-entry">
-                  <button onClick={() => handleQuantityChange(-1)}>-</button>
-                  <span></span>
-                  <p>{quantity}</p>
-                  <span></span>
-                  <button onClick={() => handleQuantityChange(+1)}>+</button>
-                </div>
-              )}
-              <button
-                id="makeOfferSubmit"
-                className="btn contIcon"
-                onClick={onSubmitForm}
-              >
-                Make offer
-              </button>
-            </form>
+                {false && (
+                  <div className="quantity-entry">
+                    <button onClick={() => handleQuantityChange(-1)}>-</button>
+                    <span></span>
+                    <p>{quantity}</p>
+                    <span></span>
+                    <button onClick={() => handleQuantityChange(+1)}>+</button>
+                  </div>
+                )}
+
+                <button
+                  id="makeOfferSubmit"
+                  className="btn contIcon"
+                  onClick={onSubmitForm}
+                >
+                  Make offer
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </CardBody>

@@ -52,7 +52,7 @@ const HeaderAccount = ({ collectionData }) => {
           </span>
           <span className="dataLastVisit">
             {" "}
-            - Created at{" "}
+            - Added at{" "}
             {new Date(collectionData.createdAt).toLocaleDateString("en-US", {
               year: "numeric",
               month: "short",
@@ -65,7 +65,7 @@ const HeaderAccount = ({ collectionData }) => {
               <p>{displayValue(collectionData.totalSupply)}</p>
             </li>
             <li>
-              <span>Created</span>
+              <span>Added</span>
               <p>
                 {new Date(collectionData.createdAt).toLocaleDateString(
                   "en-US",
@@ -142,7 +142,7 @@ const HeaderAccount = ({ collectionData }) => {
               </div>
             </>
           ) : null}
-          {sameAddress(collectionData.ownerAddress, currentWallet) ? (
+          {!collectionData.isErc1155 && sameAddress(collectionData.ownerAddress, currentWallet) ? (
             <>
               <Link
                 to={`/single-nft?collectionAddress=${collectionData.collectionAddress}`}
