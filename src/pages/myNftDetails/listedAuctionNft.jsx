@@ -143,7 +143,7 @@ const ListedAuctionNft = ({
               // TODO: add support erc 1155 display noly
             }
 
-            {true && (
+            {false && (
               <div className="quantity-entry">
                 <button onClick={() => handleQuantityChange(-1)}>-</button>
                 <span></span>

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAccount } from "wagmi";
 import CreationIcon from "../../components/CreationIcon";
-import { selectIsLoading } from "../../redux/collectionReducer";
+import { selectIsLoading, setIsLoading } from "../../redux/collectionReducer";
 import { IMPORT_COLLECTION } from "../../saga/actions";
 import { CONTRACT_TYPES } from "../../utils/foxConstantes";
 import CustomSelect from "./../../components/Select";
@@ -46,12 +46,17 @@ const ImportCollection = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    dispatch(setIsLoading(false));
+  }, [])
+
   const handleFormSubmit = async (values) => {
+    const {label : contratType} = values.contractType;
     dispatch({
       type: IMPORT_COLLECTION,
       payload: {
         collectionAddress: values.collectionAddress,
-        contractType: values.contractType,
+        contractType: contratType,
         tokens:
           values.idsList.length > 0
             ? values.idsList
@@ -68,7 +73,7 @@ const ImportCollection = () => {
         toast.success(
           "Congratulations, your Collection has been imported successfully"
         );
-        navigate(`/collection/${values["collectionAddress"]}`);
+        navigate(`/collection/${values["collectionAddress"]} ? isErc1155=${contratType === 'ERC1155'}`);
       },
     });
   };

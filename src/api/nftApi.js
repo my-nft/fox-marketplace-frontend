@@ -4,11 +4,22 @@ import { getAddressesByChain } from "../utils/blockchainInteractor";
 
 const collectionEndpoint = apiUrl + "collections/";
 const nftEndpoint = apiUrl + "tokens/";
-const nft1155Endpoint = `${apiUrl}tokens-erc1155/`;
+const nft1155Endpoint = `${apiUrl}collections/erc1155/`;
 
 export const getNftCall = (collectionAddress, tokenID) => {
   return methods.get(
     `${collectionEndpoint}${collectionAddress}/nfts/${tokenID}`,
+    {
+      headers: {
+        "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
+      },
+    }
+  );
+};
+
+export const getNftErc1155Call = (collectionAddress, tokenID) => {
+  return methods.get(
+    `${nft1155Endpoint}${collectionAddress}/nfts/${tokenID}`,
     {
       headers: {
         "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,

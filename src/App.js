@@ -16,7 +16,7 @@ import {
 import React from "react";
 import { configureChains, createClient } from "wagmi";
 import { getCollectionByAddress } from "./api/collectionApi";
-import { getNftCall } from "./api/nftApi";
+import { getNftCall, getNftErc1155Call } from "./api/nftApi";
 import AuthWrapper from "./components/authWrapper";
 import Footer from "./components/layout/Footer";
 import PageStatistics from "./components/Statistics";
@@ -196,13 +196,24 @@ const router = createBrowserRouter(
       <Route
         path="collection/:collectionAddress/:tokenID"
         exact
-        loader={async ({ params }) => {
-          const getNFTPromise = getNftCall(
-            params.collectionAddress,
-            params.tokenID
-          );
+        loader={async ({ params, request }) => {
+          const isErc1155 = new URL(request.url).searchParams.get('isErc1155');
+          const {collectionAddress, tokenID} = params;
+
+          let getNFTPromise;
+          
+          if(isErc1155 && isErc1155 === 'true') {
+            getNFTPromise = getNftErc1155Call(collectionAddress, tokenID);
+          } else {
+            getNFTPromise = getNftCall(
+              collectionAddress,
+              tokenID
+            );
+          }
+          
+          
           const getCollectionPromise = getCollectionByAddress(
-            params.collectionAddress
+            collectionAddress
           );
 
           return defer({

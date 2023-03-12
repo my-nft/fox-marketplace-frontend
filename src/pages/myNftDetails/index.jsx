@@ -80,7 +80,7 @@ const MyNftDetails = () => {
         params.collectionAddress,
         [EVENT_MAKE_OFFER, EVENT_PLACE_BID]
       );
-      setOffersList(responseOfferList.data);
+      setOffersList(responseOfferList?.data);
 
       const responseListingList = await getItemInfo(
         params.tokenID,
@@ -147,13 +147,6 @@ const MyNftDetails = () => {
   };
 
   const onWithdrawOffer = (bestOffer) => {
-    console.log("##############################");
-    console.log("##############################");
-    console.log("##############################");
-    console.log("##############################");
-    console.log("##############################");
-    console.log("##############################");
-
     dispatch({
       type: WITHDRAW_OFFER,
       payload: {
@@ -172,7 +165,6 @@ const MyNftDetails = () => {
       setQuantity(quantity + value);
       return;
     }
-
     if (value > 0 && quantity < 25) {
       setQuantity(quantity + value);
     }
@@ -231,16 +223,19 @@ const MyNftDetails = () => {
                             )}
                           </h4>
                         </div>
-                        <div class="itemCounts">
-                          <div className="owners countHighlight">
-                            <OwnersIcon />
-                            <p>52 Owners</p>
+
+                        {collectionDetails?.isErc1155 && (
+                          <div class="itemCounts">
+                            <div className="owners countHighlight">
+                              <OwnersIcon />
+                              <p>X Owners</p>
+                            </div>
+                            <div className="ietms countHighlight">
+                              <ItemsIcon />
+                              <p>{nftDetails.recurences} Items</p>
+                            </div>
                           </div>
-                          <div className="ietms countHighlight">
-                            <ItemsIcon />
-                            <p>52 Items</p>
-                          </div>
-                        </div>
+                        )}
                       </header>
 
                       {

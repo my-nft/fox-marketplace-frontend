@@ -87,24 +87,25 @@ const Header = () => {
   };
 
   useEffect(() => {
-    // add click event listeners to bootstrap links
-    const links = document.querySelectorAll(".nav-item");
-    links.forEach((link) => {
-      link.addEventListener("click", handleClick);
-    });
-    document
-      .querySelector(".navbar-brand")
-      .addEventListener("click", handleClick);
-    return () => {
-      // remove click event listeners to bootstrap links
+    if(document) {
+      // add click event listeners to bootstrap links
+      const links = document.querySelectorAll(".nav-item");
       links.forEach((link) => {
-        link.removeEventListener("click", handleClick);
+        link.addEventListener("click", handleClick);
       });
       document
-        .querySelector(".navbar-brand")
-        .removeEventListener("click", handleClick);
-    };
-  }, []);
+        .querySelector(".navbar-brand")?.addEventListener("click", handleClick);
+      return () => {
+        // remove click event listeners to bootstrap links
+        links.forEach((link) => {
+          link.removeEventListener("click", handleClick);
+        });
+        document
+          .querySelector(".navbar-brand")?.removeEventListener("click", handleClick);
+      };
+    }
+    
+  }, [document]);
 
   return (
     <>
@@ -166,14 +167,19 @@ const Header = () => {
                   Genesis
                 </a>
               </li>
-              <Ordinals>
-                <a className="nav-link" href="https://www.foxchange.io/">
-                  Explorer
-                </a>
-                <a className="nav-link" href="https://www.foxchange.io/">
-                  Inscriptions
-                </a>
-              </Ordinals>
+              {
+                /*
+
+                  <Ordinals>
+                    <a className="nav-link" href="https://www.foxchange.io/">
+                      Explorer
+                    </a>
+                    <a className="nav-link" href="https://www.foxchange.io/">
+                      Inscriptions
+                    </a>
+                  </Ordinals>
+                */
+              }
             </ul>
 
             {connectedWallet ? (

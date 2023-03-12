@@ -2,7 +2,7 @@ import { isValidAddress } from "ethereumjs-util";
 import { web3Infura } from "./blockchainInteractor";
 
 const optimizeWalletAddress = (address) => {
-  if (!address) {
+  if (!address || address.length === 0) {
     return "";
   }
   return address.substring(0, 4) + "....." + address.slice(-4);

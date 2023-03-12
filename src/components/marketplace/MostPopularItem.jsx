@@ -122,7 +122,7 @@ const MostPopularItem = ({ viewType, item, contract, collectionIn }) => {
 
   const [itemInfos, setItemInfos] = useState({});
   const [price, setPrice] = useState(0);
-  const [collectionName, setCollectionName] = useState(collectionIn?.name);
+  const [collection, setCollection] = useState(collectionIn);
 
   const init = async () => {
     const infos = await getAuctionInfos(item.auctionId);
@@ -151,14 +151,14 @@ const MostPopularItem = ({ viewType, item, contract, collectionIn }) => {
   useEffect(() => {
     if(!collectionIn) {
       getCollectionByAddress(item.collectionAddress, contract).then((res) => {
-        setCollectionName(res.data.collection.name);
+        setCollection(res.data.collection);
       });
     }
   }, []);
 
   return (
     <Link
-      to={`/collection/${item.collectionAddress}/${item.tokenID}`}
+      to={`/collection/${item.collectionAddress}/${item.tokenID}?isErc1155=${collection?.isErc1155}`}
       className={
         !viewType
           ? "listMostPopular col-3 col-md-4 col-lg-3 nft"
@@ -169,17 +169,22 @@ const MostPopularItem = ({ viewType, item, contract, collectionIn }) => {
       <div className="wrapContent">
         <div className="wrapImg">
           <img src={item.image} className="bigImage" alt="" />
-          <div className="copiesCount">
-            <CopiesIcon />
-            <p>15</p>
-          </div>
+          {
+            collection?.isErc1155 ? (
+              <div className="copiesCount">
+                <CopiesIcon />
+                <p>{item.recurences}</p>
+              </div>
+            ) : null
+          }
+          
           {sameAddress(item.ownerAddress, walletAddress) && (
             <p className="ownedItem">Owned by you</p>
           )}
         </div>
         <div className="wrappedAllText" style={styleWrappedText}>
           <div className="wrapText nftCollectionName">
-            <p>{collectionName ? collectionName : "-"}</p>
+            <p>{collection ? collection.name : "-"}</p>
           </div>
           <div className="wrapText bg">
             <div className="nameItem">

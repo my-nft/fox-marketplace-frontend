@@ -47,11 +47,9 @@ export function importCollectionToken(collectionAddress, tokenID, token) {
   );
 }
 
-export function getCollectionByAddress(collectionAddress, contract) {
+export function getCollectionByAddress(collectionAddress) {
   return methods.get(
-    `${collectionEndpoint}${collectionAddress}?isErc1155=${
-      contract === "ERC-1155" ? true : false
-    }`,
+    `${collectionEndpoint}${collectionAddress}`,
     {
       headers: {
         "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
