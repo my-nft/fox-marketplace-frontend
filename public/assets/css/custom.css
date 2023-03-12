@@ -98,11 +98,15 @@ form input[type="file"] {
   display: none;
 }
 
+nav .form-inline {
+  width: 100%;
+}
+
 .form-control-container {
   background-color: #130f0a;
   border: none;
   border-radius: 25px;
-  width: 30vw !important;
+  width: 100%;
   transition: 300ms ease-in-out;
   display: flex;
   align-items: center;
@@ -1853,6 +1857,48 @@ img.withGlow.active {
   font-family: gothamBlack;
 }
 
+#infoNFT {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.itemCounts {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.countHighlight {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 10px;
+}
+
+.countHighlight p {
+  margin: 0;
+  font-weight: 500 !important;
+  transition: 500ms ease-in-out;
+}
+
+.countHighlight:hover p {
+  color: #f58103 !important;
+}
+
+.countHighlight svg {
+  width: 32px;
+  height: 32px;
+}
+
+.count {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
 #infoNFT h4 {
   color: #f58103;
 }
@@ -2640,6 +2686,7 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield; /* Firefox */
   border: 1px solid transparent !important;
+  border-bottom: 1px solid rgba(245, 129, 3, 0.7) !important;
 }
 
 input[type="number"]:focus-within {
@@ -5063,4 +5110,197 @@ ul#buttonIcon {
   border: none !important;
   outline: none !important;
   cursor: pointer;
+}
+
+.quantity-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #fefefe;
+  border-radius: 8px;
+  padding: 8px 16px;
+  max-width: 240px;
+  margin: 32px auto 24px;
+}
+
+.quantity-entry p {
+  flex-grow: 2;
+  text-align: center;
+  margin: 0;
+}
+
+.quantity-entry span {
+  height: 16px;
+  width: 1px;
+  background: #fefefe;
+  display: block;
+  content: "";
+}
+
+.quantity-entry button {
+  margin: 0 !important;
+  padding: 12px !important;
+  background: none !important;
+  width: 48px !important;
+}
+
+.quantity-entry button:hover {
+  background: #fefefe !important;
+  color: #010306 !important;
+  vertical-align: middle;
+}
+.wrapContent .copiesCount {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 16px 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #f58103;
+  background: rgba(245, 129, 3, 0.8);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.wrapContent .copiesCount svg {
+  height: 24px;
+  width: 24px;
+}
+
+.wrapContent .copiesCount svg path {
+  fill: #fff;
+}
+.wrapContent .copiesCount p {
+  margin: 0;
+  font-weight: 600;
+  color: #fff;
+}
+.importTypeChoice {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  gap: 8px;
+}
+.importTypeChoice p {
+  margin: 0;
+}
+
+.importChoice {
+  color: #f58103;
+}
+
+.importTypeChoice > p:first-of-type {
+  justify-self: flex-end;
+}
+
+.importTypeChoice label {
+  justify-self: center;
+}
+
+.importTypeChoice > p:last-of-type {
+  justify-self: flex-start;
+}
+
+.toggler-wrapper
+  input[type="checkbox"]:checked
+  + .toggler-slider
+  .toggler-knob {
+  left: calc(100% - 19px - 8px);
+  background-color: #f58103;
+}
+
+.toggler-wrapper .toggler-slider {
+  border: 1px solid #f58103;
+
+  position: absolute;
+  border-radius: 5px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-transition: all 300ms ease;
+  transition: all 300ms ease;
+}
+
+.toggler-wrapper .toggler-knob {
+  width: calc(32px - 8px);
+  height: calc(32px - 8px);
+  border-radius: 5px;
+  left: 3px;
+  top: 3px;
+  background-color: #f58103;
+  position: absolute;
+  -webkit-transition: all 300ms ease;
+  transition: all 300ms ease;
+}
+
+.toggler-wrapper {
+  display: block;
+  width: 128px;
+  height: 32px;
+  cursor: pointer;
+  position: relative;
+  margin: 0;
+}
+
+.toggler-wrapper input[type="checkbox"] {
+  display: none;
+}
+.ordinals {
+  position: relative;
+  max-width: 128px;
+}
+
+.ordinals__header {
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-radius: 8px;
+  border: 1px solid #f58103;
+  color: #fff;
+  cursor: pointer;
+}
+
+.ordinals__header p {
+  margin: 0;
+}
+
+.ordinals__header svg {
+  width: 16px;
+  height: 16px;
+  transition: 300ms ease-in-out;
+  transform: rotate(-90deg);
+}
+
+.ordinals__show svg {
+  transform: rotate(90deg);
+}
+
+.ordinals__body {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 8px;
+  background: #010306;
+  border-radius: 8px;
+  border: 1px solid #f58103;
+  max-height: 0;
+  overflow: hidden;
+  transition: 300ms ease-in-out;
+  opacity: 0;
+  z-index: 25;
+}
+
+.ordinals__show .ordinals__body {
+  max-height: 320px;
+  opacity: 1;
+}
+
+.ordinals__body a {
+  margin: 0;
+  padding: 12px 16px !important;
 }

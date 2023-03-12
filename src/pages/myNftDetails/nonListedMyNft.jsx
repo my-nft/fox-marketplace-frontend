@@ -14,7 +14,13 @@ import { getBestOffer } from "../../services/listingNft";
 import { FIXED_PRICE, AUCTION } from "../../utils/foxConstantes";
 import { sameAddress } from "../../utils/walletUtils";
 
-const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
+const NonListedMyNft = ({
+  handleAcceptOffer,
+  nftDetails,
+  setNftDetails,
+  quantity,
+  handleQuantityChange,
+}) => {
   const [type, setType] = useState(FIXED_PRICE);
   const [showPicker, setShowPicker] = useState(false);
   const [showTransferPopup, setShowTransferPopup] = useState(false);
@@ -146,7 +152,19 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
               </div>
             </div>
           </div>
+          {
+            // TODO: add support erc 1155 display noly
+          }
 
+          {false && (
+            <div className="quantity-entry">
+              <button onClick={() => handleQuantityChange(-1)}>-</button>
+              <span></span>
+              <p>{quantity}</p>
+              <span></span>
+              <button onClick={() => handleQuantityChange(+1)}>+</button>
+            </div>
+          )}
           {type === FIXED_PRICE ? (
             <div className="card mt-2" id="fixedPriceDetails">
               <div className="card-body">

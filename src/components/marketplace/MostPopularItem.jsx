@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getCollectionByAddress } from "../../api/collectionApi";
 import { selectCurrentWallet } from "../../redux/userReducer";
 import { getAuctionInfos, getPriceByListing } from "../../services/listingNft";
 import { AUCTION, FIXED_PRICE } from "../../utils/foxConstantes";
 import { sameAddress } from "../../utils/walletUtils";
+import { ReactComponent as CopiesIcon } from "../../assets/icons/items.svg";
 
 const EndCountdown = ({ endAuction }) => {
   const [dateTime, setDateTime] = useState(new Date());
@@ -87,7 +88,7 @@ const EndCountdown = ({ endAuction }) => {
   );
 };
 
-const MostPopularItem = ({ viewType, item }) => {
+const MostPopularItem = ({ viewType, item, contract, collectionIn }) => {
   const walletAddress = useSelector(selectCurrentWallet);
 
   let styleList = {};
@@ -121,7 +122,7 @@ const MostPopularItem = ({ viewType, item }) => {
 
   const [itemInfos, setItemInfos] = useState({});
   const [price, setPrice] = useState(0);
-  const [collectionName, setCollectionName] = useState("");
+  const [collection, setCollection] = useState(collectionIn);
 
   const init = async () => {
     const infos = await getAuctionInfos(item.auctionId);
@@ -148,14 +149,16 @@ const MostPopularItem = ({ viewType, item }) => {
   }, []);
 
   useEffect(() => {
-    getCollectionByAddress(item.collectionAddress).then((res) => {
-      setCollectionName(res.data.collection.name);
-    });
+    if(!collectionIn) {
+      getCollectionByAddress(item.collectionAddress, contract).then((res) => {
+        setCollection(res.data.collection);
+      });
+    }
   }, []);
 
   return (
     <Link
-      to={`/collection/${item.collectionAddress}/${item.tokenID}`}
+      to={`/collection/${item.collectionAddress}/${item.tokenID}?isErc1155=${collection?.isErc1155}`}
       className={
         !viewType
           ? "listMostPopular col-3 col-md-4 col-lg-3 nft"
@@ -166,13 +169,22 @@ const MostPopularItem = ({ viewType, item }) => {
       <div className="wrapContent">
         <div className="wrapImg">
           <img src={item.image} className="bigImage" alt="" />
+          {
+            collection?.isErc1155 ? (
+              <div className="copiesCount">
+                <CopiesIcon />
+                <p>{item.recurences}</p>
+              </div>
+            ) : null
+          }
+          
           {sameAddress(item.ownerAddress, walletAddress) && (
             <p className="ownedItem">Owned by you</p>
           )}
         </div>
         <div className="wrappedAllText" style={styleWrappedText}>
           <div className="wrapText nftCollectionName">
-            <p>{collectionName ? collectionName : "-"}</p>
+            <p>{collection ? collection.name : "-"}</p>
           </div>
           <div className="wrapText bg">
             <div className="nameItem">

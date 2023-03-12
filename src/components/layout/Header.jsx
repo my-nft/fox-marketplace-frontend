@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,15 +9,12 @@ import useOutsideClick from "./../../utils/useOutsideClick";
 import SearchBar from "./../searchBar/searchBar";
 
 import { LOAD_USER } from "../../saga/actions";
-import ChainSelect from "../chainSelect";
 
-import { Web3Button } from "@web3modal/react";
-import { Web3NetworkSwitch } from "@web3modal/react";
-import { useAccount, useNetwork, useProvider, useSwitchNetwork } from "wagmi";
+import { Web3Button, Web3NetworkSwitch } from "@web3modal/react";
+import { useAccount, useSigner } from "wagmi";
 import Web3 from "web3";
-import { useSigner } from "wagmi";
-import { useConnect } from "wagmi";
-import { watchNetwork } from "@wagmi/core";
+
+import Ordinals from "./ordinals";
 
 const Header = () => {
   const clickRef = useOutsideClick(() => {
@@ -28,10 +25,6 @@ const Header = () => {
   const navigate = useNavigate();
   const { data: signer } = useSigner();
   const [web3, setWeb3] = useState();
-
-  watchNetwork(() => {
-    navigate("/");
-  });
 
   const { address: connectedWallet } = useAccount({
     onConnect({ address, connector, isReconnected }) {
@@ -94,24 +87,25 @@ const Header = () => {
   };
 
   useEffect(() => {
-    // add click event listeners to bootstrap links
-    const links = document.querySelectorAll(".nav-item");
-    links.forEach((link) => {
-      link.addEventListener("click", handleClick);
-    });
-    document
-      .querySelector(".navbar-brand")
-      .addEventListener("click", handleClick);
-    return () => {
-      // remove click event listeners to bootstrap links
+    if(document) {
+      // add click event listeners to bootstrap links
+      const links = document.querySelectorAll(".nav-item");
       links.forEach((link) => {
-        link.removeEventListener("click", handleClick);
+        link.addEventListener("click", handleClick);
       });
       document
-        .querySelector(".navbar-brand")
-        .removeEventListener("click", handleClick);
-    };
-  }, []);
+        .querySelector(".navbar-brand")?.addEventListener("click", handleClick);
+      return () => {
+        // remove click event listeners to bootstrap links
+        links.forEach((link) => {
+          link.removeEventListener("click", handleClick);
+        });
+        document
+          .querySelector(".navbar-brand")?.removeEventListener("click", handleClick);
+      };
+    }
+    
+  }, [document]);
 
   return (
     <>
@@ -173,6 +167,19 @@ const Header = () => {
                   Genesis
                 </a>
               </li>
+              {
+                /*
+
+                  <Ordinals>
+                    <a className="nav-link" href="https://www.foxchange.io/">
+                      Explorer
+                    </a>
+                    <a className="nav-link" href="https://www.foxchange.io/">
+                      Inscriptions
+                    </a>
+                  </Ordinals>
+                */
+              }
             </ul>
 
             {connectedWallet ? (
@@ -216,7 +223,7 @@ const Header = () => {
           </div>
         </nav>
       </header>
-      <ToastContainer limit={1} />
+      {/* <ToastContainer limit={0} /> */}
 
       <Outlet />
     </>

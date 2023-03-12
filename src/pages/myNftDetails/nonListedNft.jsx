@@ -4,8 +4,13 @@ import CardBody from "../../components/nft/CardBody";
 import CardNftWrapper from "../../components/nft/CardNftWrapper";
 import { getBestOffer } from "../../services/listingNft";
 
-
-const NonListedNft = ({ handleMakeOffer, nftDetails, onWithdrawOffer }) => {
+const NonListedNft = ({
+  handleMakeOffer,
+  nftDetails,
+  onWithdrawOffer,
+  quantity,
+  handleQuantityChange,
+}) => {
   // values
   const [bestOffer, setBestOffer] = useState();
   const [values, setValues] = useState({
@@ -22,7 +27,7 @@ const NonListedNft = ({ handleMakeOffer, nftDetails, onWithdrawOffer }) => {
   };
 
   const init = async () => {
-    if(nftDetails) {
+    if (nftDetails) {
       const bestOfferPrice = await getBestOffer(
         nftDetails.collectionAddress,
         nftDetails.tokenID
@@ -35,13 +40,9 @@ const NonListedNft = ({ handleMakeOffer, nftDetails, onWithdrawOffer }) => {
     init();
   }, [nftDetails]);
 
-
   return (
     <CardNftWrapper>
-      <CardBody
-        bestOffer={bestOffer}
-        onWithdrawOffer={onWithdrawOffer}
-      >
+      <CardBody bestOffer={bestOffer} onWithdrawOffer={onWithdrawOffer}>
         <div className="card mt-2" id="fixedPriceDetails">
           <div className="card-body">
             <form id="setPrice">
@@ -67,6 +68,19 @@ const NonListedNft = ({ handleMakeOffer, nftDetails, onWithdrawOffer }) => {
                   <option>FXG</option>
                 </select>
               </div>
+              {
+                // TODO: add support erc 1155 display noly
+              }
+
+              {true && (
+                <div className="quantity-entry">
+                  <button onClick={() => handleQuantityChange(-1)}>-</button>
+                  <span></span>
+                  <p>{quantity}</p>
+                  <span></span>
+                  <button onClick={() => handleQuantityChange(+1)}>+</button>
+                </div>
+              )}
               <button
                 id="makeOfferSubmit"
                 className="btn contIcon"
