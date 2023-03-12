@@ -5,8 +5,6 @@ const FILE_PREVIEW_PLACEHOLDER_IMAGE_SOURCE = "/assets/images/upload-preview@2x.
 
 const Inscription = () => {
   const [imageSrc, setImageSrc] = useState(FILE_PREVIEW_PLACEHOLDER_IMAGE_SOURCE);
-  const [isWrapperActive, setIsWrapperActive] = useState(false);
-  const [fileName, setFileName] = useState("")
   const defaultBtnRef = useRef(null)
 
   const handleFileSelect = () => {
@@ -14,27 +12,15 @@ const Inscription = () => {
   }
 
   const handleFilePreview = () => {
-    // TODO: give more explicit name to regex and move to more generic file
-    const regExp = /[0-9a-zA-Z^&'@{}[\],$=!-#().%+~_ ]+$/;
     const file = defaultBtnRef.current.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = function () {
         const result = reader.result;
         setImageSrc(result)
-        setIsWrapperActive(true);
       };
       reader.readAsDataURL(file);
     }
-    if (defaultBtnRef.current.value) {
-      let valueStore = defaultBtnRef.current.value.match(regExp);
-      setFileName(valueStore);
-    }
-  }
-
-  const handleImageUploadCancel = () => {
-    setImageSrc('');
-    setIsWrapperActive(false)
   }
 
   return (
@@ -84,7 +70,7 @@ const Inscription = () => {
                   </label>
                 </div>
                 <div className={styles.container}>
-                  <div className={`${styles.wrapper} ${isWrapperActive ? 'active' : ''}`}>
+                  <div className={`${styles.wrapper}`}>
                     <div className={styles.image}>
                       <img id="fileImg" src="" alt="" />
                     </div>
@@ -94,10 +80,6 @@ const Inscription = () => {
                       </div>
                       <div className={styles.text}>No file chosen, yet!</div>
                     </div>
-                    <div id={styles['cancel-btn']} onClick={handleImageUploadCancel}>
-                      <i className="fas fa-times"></i>
-                    </div>
-                    <div className={styles["file-name"]}>{fileName}</div>
                   </div>
                   <button onClick={handleFileSelect} id={styles['custom-btn']}>
                     Choose a file
