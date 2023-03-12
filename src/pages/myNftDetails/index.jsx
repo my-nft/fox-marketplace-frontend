@@ -210,16 +210,22 @@ const MyNftDetails = () => {
                             {`${nftDetails?.name}(${nftDetails?.tokenID})`}{" "}
                           </h3>
                           <h4>
-                            Owned by{" "}
-                            {sameAddress(
-                              connectedWallet,
-                              nftDetails.ownerAddress
-                            ) ? (
-                              "You"
-                            ) : (
-                              <Address address={nftDetails.ownerAddress}>
-                                {optimizeWalletAddress(nftDetails.ownerAddress)}
-                              </Address>
+                            {!collectionDetails.isErc1155 && (
+                              <>
+                                Owned by{" "}
+                                {sameAddress(
+                                  connectedWallet,
+                                  nftDetails.ownerAddress
+                                ) ? (
+                                  "You"
+                                ) : (
+                                  <Address address={nftDetails.ownerAddress}>
+                                    {optimizeWalletAddress(
+                                      nftDetails.ownerAddress
+                                    )}
+                                  </Address>
+                                )}
+                              </>
                             )}
                           </h4>
                         </div>
@@ -228,7 +234,7 @@ const MyNftDetails = () => {
                           <div class="itemCounts">
                             <div className="owners countHighlight">
                               <OwnersIcon />
-                              <p>X Owners</p>
+                              <p>1 Owner</p>
                             </div>
                             <div className="ietms countHighlight">
                               <ItemsIcon />
@@ -274,6 +280,7 @@ const MyNftDetails = () => {
                             onWithdrawOffer={onWithdrawOffer}
                             quantity={quantity}
                             handleQuantityChange={handleQuantityChange}
+                            collectionDetails={collectionDetails}
                           />
                         ) : null
                       }
