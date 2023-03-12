@@ -88,8 +88,6 @@ export function getCollectionNftsCall(collectionAddress, body) {
 }
 
 export function updateCollection(collectionAddress, body, token) {
-  console.log("COLLECTION ADDRESS", collectionAddress);
-  console.log("BODY", body);
   let formData = new FormData();
   formData.append("image", body.image);
   formData.append("banner", body.banner);
