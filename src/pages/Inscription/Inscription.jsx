@@ -1,27 +1,77 @@
-import { useRef, useState } from 'react';
+import { validate } from "bitcoin-address-validation";
+import { useFormik } from "formik";
+import { useRef, useState } from "react";
 import styles from "./Inscription.module.css";
 
-const FILE_PREVIEW_PLACEHOLDER_IMAGE_SOURCE = "/assets/images/upload-preview@2x.png";
+const FILE_PREVIEW_PLACEHOLDER_IMAGE_SOURCE =
+  "/assets/images/upload-preview@2x.png";
 
-const Inscription = () => {
-  const [imageSrc, setImageSrc] = useState(FILE_PREVIEW_PLACEHOLDER_IMAGE_SOURCE);
-  const defaultBtnRef = useRef(null)
+const THREE_KILOBYTES = 3072;
 
-  const handleFileSelect = () => {
-    defaultBtnRef.current.click()
+const validateForm = (values) => {
+  const errors = {};
+
+  if (!values.receiverBitcoinAddress) {
+    errors.receiverBitcoinAddress = "Required";
   }
 
-  const handleFilePreview = () => {
+  if (values.receiverBitcoinAddress && !validate(values.receiverBitcoinAddress)) {
+    errors.receiverBitcoinAddress = "Pattern";
+  }
+
+  if (!values.image) {
+    errors.image = "Required";
+  }
+
+  if (values.image && values.image.size > THREE_KILOBYTES) {
+    errors.image = "FileSize";
+  }
+
+  return errors;
+};
+
+const Inscription = () => {
+  const [totalCost, setTotalCost] = useState("");
+  const [imageSrc, setImageSrc] = useState(
+    FILE_PREVIEW_PLACEHOLDER_IMAGE_SOURCE
+  );
+  const defaultBtnRef = useRef(null);
+
+  const handleFileSelect = () => {
+    defaultBtnRef.current.click();
+  };
+
+  const handleImage = (event) => {
     const file = defaultBtnRef.current.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = function () {
         const result = reader.result;
-        setImageSrc(result)
+        setImageSrc(result);
       };
       reader.readAsDataURL(file);
+      formik.setFieldValue(
+        "image",
+        event.target.files && event.target.files.length !== 0
+          ? event.target.files[0]
+          : null
+      );
     }
-  }
+  };
+
+  const handleFormSubmit = (values) => {
+    // TODO: Implement
+    console.log("Submitting form");
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      receiverBitcoinAddress: "",
+      image: undefined,
+    },
+    validate: validateForm,
+    onSubmit: handleFormSubmit,
+  });
 
   return (
     <>
@@ -33,31 +83,45 @@ const Inscription = () => {
               <div className={styles.displayfee} id="TotalPriceDisplay">
                 {/*eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a className={styles.a} id="totalPrice">
-                  2,52,354
+                  {totalCost}
                 </a>
               </div>
-            </div>
-            <div className={styles["fee-field"]} id="AddressField">
-              <h1 className={styles["total-fee"]}>Receiver BTC address:</h1>
-              <div className={styles["displayfee-parent"]}>
-                <input
-                  className={styles.displayfee2}
-                  type="text"
-                  placeholder="bc1plj2 ... cmkwd26740"
-                  required
-                  id="ReceiverAddressInputField"
-                />
-                <label
-                  className={styles["save-and-submit"]}
-                  htmlFor="ReceiverAddressInputField"
-                >
-                  * Only valid bitcoin addresses !
-                </label>
+            </div>         
+            <form
+              id="UploadForm"
+              onSubmit={formik.handleSubmit}
+              className={styles.sectioncontent} 
+            >   
+              <div className={styles["fee-field"]} id="AddressField">
+                {/* one h1 by page rule? */}
+                <h1 className={styles["total-fee"]}>Receiver BTC address:</h1>
+                <div className={styles["displayfee-parent"]}>
+                  <input
+                    className={styles.displayfee2}
+                    type="text"
+                    placeholder="bc1plj2 ... cmkwd26740"
+                    id="ReceiverAddressInputField"
+                    value={formik.values.receiverBitcoinAddress}
+                    onChange={(e) => {
+                      formik.setFieldValue(
+                        "receiverBitcoinAddress",
+                        e.target.value
+                      );
+                    }}
+                  />
+                  {formik.errors.receiverBitcoinAddress === "Pattern" && (
+                    <label
+                      className={styles["save-and-submit"]}
+                      htmlFor="ReceiverAddressInputField"
+                    >
+                      * Only valid bitcoin addresses!
+                    </label>
+                  )}
+                </div>
               </div>
-            </div>
-            <div className={styles["upload-field"]} id="UploadField">
-              <h1 className={styles["total-fee"]}>Upload file:</h1>
-              <form className={styles["uploadbtn-preview"]} id="UploadForm">
+              <div className={styles["upload-field"]} id="UploadField">
+                <h1 className={styles["total-fee"]}>Upload file:</h1>
+                <div className={styles["uploadbtn-preview"]}>
                 <div className={styles["upload-preview-group"]}>
                   <img
                     className={styles["upload-preview-icon"]}
@@ -81,10 +145,17 @@ const Inscription = () => {
                       <div className={styles.text}>No file chosen, yet!</div>
                     </div>
                   </div>
-                  <button onClick={handleFileSelect} id={styles['custom-btn']}>
+                  <button onClick={handleFileSelect} id={styles["custom-btn"]}>
                     Choose a file
                   </button>
-                  <input id="default-btn" type="file" hidden ref={defaultBtnRef} onChange={handleFilePreview} />
+                  <input
+                    id="default-btn"
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    hidden
+                    ref={defaultBtnRef}
+                    onChange={(e) => handleImage(e)}
+                  />
                 </div>
                 <div
                   className={styles["upload-btn-group"]}
@@ -93,38 +164,44 @@ const Inscription = () => {
                   <input
                     className={styles["btn-upload"]}
                     type="file"
-                    required
                     name="btn-upload"
                   />
                   <label className={styles.preview}>*Upload file</label>
                 </div>
-              </form>
-            </div>
-            <div
-              className={styles["displayfee-parent"]}
-              id="SubmitBtnContainer"
-            >
-              <button
-                className={styles["btn-submit"]}
-                id="SubmitBtn"
-                type="button"
+                </div>
+              </div>
+              <div
+                className={styles["displayfee-parent"]}
+                id="SubmitBtnContainer"
               >
-                <h2 className={styles.submit}>Request inscription</h2>
-              </button>
-              <label className={styles["save-and-submit"]} htmlFor="SubmitBtn">
-                *Save and Submit
-              </label>
-              <button
-                className={styles["btn-submit"]}
-                id="SubmitBtn"
-                type="button"
-              >
-                <h2 className={styles.submit}>Request refund</h2>
-              </button>
-              <label className={styles["save-and-submit"]} htmlFor="SubmitBtn">
-                *In case of inscription error only !
-              </label>
-            </div>
+                <button
+                  className={styles["btn-submit"]}
+                  id="SubmitBtn"
+                  type="submit"
+                >
+                  <h2 className={styles.submit}>Request inscription</h2>
+                </button>
+                <label
+                  className={styles["save-and-submit"]}
+                  htmlFor="SubmitBtn"
+                >
+                  *Save and Submit
+                </label>
+                <button
+                  className={styles["btn-submit"]}
+                  id="SubmitBtn"
+                  type="button"
+                >
+                  <h2 className={styles.submit}>Request refund</h2>
+                </button>
+                <label
+                  className={styles["save-and-submit"]}
+                  htmlFor="SubmitBtn"
+                >
+                  *In case of inscription error only!
+                </label>
+              </div>
+            </form>
           </div>
         </div>
       </section>

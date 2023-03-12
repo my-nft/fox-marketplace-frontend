@@ -11,6 +11,7 @@
     "@web3modal/ethereum": "^2.1.1",
     "@web3modal/react": "^2.1.1",
     "axios": "^1.2.0",
+    "bitcoin-address-validation": "^2.2.1",
     "chart.js": "^4.1.2",
     "dotenv": "^16.0.3",
     "ethereumjs-util": "^7.1.5",
