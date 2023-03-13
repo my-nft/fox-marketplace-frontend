@@ -51,7 +51,6 @@ const CreateCollection = () => {
     if (data) {
       let dataValid = true;
       Object.keys(data).forEach((key) => {
-        console.log(data);
         if (data[key] === "" && key !== "royaltyAddress") {
           dataValid = false;
         }

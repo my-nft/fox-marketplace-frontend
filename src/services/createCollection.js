@@ -11,9 +11,6 @@ export const mintCollection = async ({ name, symbol }) => {
   const connectedWallet = await getCurrentWalletConnected();
   const factoryContract = await loadFactoryContract();
   const erc20Contract = await loadERC20Contract();
-
-  console.log("######################", connectedWallet);
-
   const deploymentFee = await factoryContract.methods.deploymentFee().call();
 
   const allowance = await erc20Contract.methods
@@ -51,8 +48,5 @@ export const mintCollection = async ({ name, symbol }) => {
       to: getAddressesByChain().factoryCollectionAddress,
       gasLimit,
     });
-
-  console.log("COLLECTION ADDRESS CREATED  ", tsx);
-
   return tsx.events[2].address;
 };

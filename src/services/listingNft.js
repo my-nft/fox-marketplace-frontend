@@ -41,7 +41,6 @@ export const getBestOffer = async (collectionAddress, tokenID) => {
   const response = await offerSystemContractReadOnly.methods
     .activeBuyOffers(collectionAddress, tokenID)
     .call();
-  console.log(response);
   return {
     price: Number(response.price) / 10 ** 18,
     offerOwner: response.buyer,
@@ -444,9 +443,6 @@ export const acceptOffer = async (
   const isApproved = await collectionContract.methods
     .getApproved(tokenID)
     .call();
-
-  console.log("###############", isApproved);
-
   if (!sameAddress(isApproved, getAddressesByChain().OfferSystemAddress)) {
     const gasLimitApprouve = await collectionContract.methods
       .approve(getAddressesByChain().OfferSystemAddress, tokenID)

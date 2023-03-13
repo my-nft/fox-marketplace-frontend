@@ -128,7 +128,6 @@ export async function loadAuctionContract(readOnly = false) {
 }
 
 export async function loadAFixedPriceContract(readOnly = false) {
-  console.log("#############################");
   let web3Instance = web3Infura();
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
@@ -166,7 +165,6 @@ export async function loadFoxMasterCollectionContract(collectionAddress) {
 }
 
 export async function loadFoxGenisisContract(readOnly = false) {
-  console.log("##########", getAddressesByChain().foxGenesisCollectionAddress);
   let web3Instance = web3Infura();
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();

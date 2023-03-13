@@ -7,9 +7,6 @@ const EntryField = ({ type, submitAction }) => {
 
     const formData = new FormData(e.target);
     const dataFromEntries = Object.fromEntries(formData.entries());
-
-    console.log(dataFromEntries);
-
     submitAction(dataFromEntries);
     //clear input field values
 
@@ -62,7 +59,6 @@ export const CreateNFTPopup = ({
       value: newObject.value,
       name: newObject.name,
     };
-    console.log(objectToAdd);
     handleAddToArray(popupTitle, objectToAdd);
   };
 
