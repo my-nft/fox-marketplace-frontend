@@ -1,5 +1,6 @@
 import apiUrl from "../config/api";
 import methods from "../config/axiosConfig";
+import { getAddressesByChain } from "../utils/blockchainInteractor";
 
 const utilsApiEndpoint = apiUrl + "utils/";
 
@@ -8,16 +9,16 @@ export function getStats() {
 }
 
 export function getItemInfo(tokenID, collectionAddress, events) {
-  return methods.get(
-    utilsApiEndpoint + "events",
-    {
-      params : {
-        tokenID,
-        collectionAddress,
-        events
-      }
-    }
-  );
+  return methods.get(utilsApiEndpoint + "events", {
+    params: {
+      tokenID,
+      collectionAddress,
+      events,
+    },
+    headers: {
+      "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
+    },
+  });
 }
 
 export const postTraceTransaction = (
@@ -48,6 +49,7 @@ export const postTraceTransaction = (
     {
       headers: {
         Authorization: "Bearer " + token,
+        "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
       },
     }
   );

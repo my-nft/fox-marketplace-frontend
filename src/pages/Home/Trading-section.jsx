@@ -1,7 +1,7 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 import Slide from "../../components/Slide";
-import { putSliderIcons, settings } from "./Utils";
+import { settings } from "./Utils";
 
 import { ReactComponent as Arrow } from "../../assets/icons/arrow.svg";
 
@@ -40,11 +40,6 @@ const TradingSection = ({collections = []}) => {
     return () => window.removeEventListener("resize", handleResize);
   });
 
-  console.table({
-    slidesToShow,
-    activeSlide,
-  });
-
   return (
     <section id="tradingNow" className="container-fluid">
       <h3 className="mb-2">Trending Now</h3>
@@ -67,7 +62,7 @@ const TradingSection = ({collections = []}) => {
         >
 
           {
-            collections && collections.map(item => (<Slide collectionDetails={item} />))
+            collections && collections.map((item, index) => (<Slide key={index} collectionDetails={item} />))
           }
         </Slider>
         <Arrow

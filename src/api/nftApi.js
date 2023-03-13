@@ -1,12 +1,30 @@
 import apiUrl from "../config/api";
 import methods from "../config/axiosConfig";
+import { getAddressesByChain } from "../utils/blockchainInteractor";
 
 const collectionEndpoint = apiUrl + "collections/";
 const nftEndpoint = apiUrl + "tokens/";
+const nft1155Endpoint = `${apiUrl}collections/erc1155/`;
 
 export const getNftCall = (collectionAddress, tokenID) => {
   return methods.get(
-    `${collectionEndpoint}${collectionAddress}/nfts/${tokenID}`
+    `${collectionEndpoint}${collectionAddress}/nfts/${tokenID}`,
+    {
+      headers: {
+        "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
+      },
+    }
+  );
+};
+
+export const getNftErc1155Call = (collectionAddress, tokenID) => {
+  return methods.get(
+    `${nft1155Endpoint}${collectionAddress}/nfts/${tokenID}`,
+    {
+      headers: {
+        "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
+      },
+    }
   );
 };
 
@@ -27,6 +45,9 @@ export const getNftsCall = ({
       page,
       numberElements,
     },
+    headers: {
+      "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
+    },
   });
 };
 
@@ -39,6 +60,7 @@ export const setNftToListed = (body, token) => {
     {
       headers: {
         Authorization: "Bearer " + token,
+        "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
       },
     }
   );
@@ -50,29 +72,31 @@ export const setNftToUnlisted = (body, token) => {
   return methods.put(
     `${collectionEndpoint}${collectionAddress}/nfts/${tokenID}/remove-listed`,
     {
-      action
+      action,
     },
     {
       headers: {
         Authorization: "Bearer " + token,
+        "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
       },
     }
   );
 };
 
-export const makeOffer = ({collectionAddress, tokenID, offer, token}) => {
+export const makeOffer = ({ collectionAddress, tokenID, offer, token }) => {
   return methods.put(
     `${collectionEndpoint}${collectionAddress}/nfts/${tokenID}/make-offer`,
     {
-      offer
+      offer,
     },
     {
       headers: {
         Authorization: "Bearer " + token,
+        "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
       },
     }
   );
-}
+};
 
 export const acceptOffer = (body, token) => {
   const { collectionAddress, tokenID } = body;
@@ -83,6 +107,7 @@ export const acceptOffer = (body, token) => {
     {
       headers: {
         Authorization: "Bearer " + token,
+        "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
       },
     }
   );
@@ -104,6 +129,7 @@ export function addNftToIpfs({ collectionAddress, nft, image, token }) {
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: "Bearer " + token,
+      "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
     },
   });
 }
@@ -126,6 +152,9 @@ export const getListedNfts = (
       minPrice,
       maxPrice,
       sortBy,
+    },
+    headers: {
+      "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
     },
   });
 };

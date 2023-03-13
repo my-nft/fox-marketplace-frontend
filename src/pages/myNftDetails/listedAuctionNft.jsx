@@ -15,7 +15,13 @@ import {
   REFUND_NFT,
 } from "../../saga/blockchain.js/blockChainActions";
 
-const ListedAuctionNft = ({ nftDetails, collectionDetails, setNftDetails }) => {
+const ListedAuctionNft = ({
+  nftDetails,
+  collectionDetails,
+  setNftDetails,
+  quantity,
+  handleQuantityChange,
+}) => {
   const [itemInfos, setItemInfos] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -133,6 +139,19 @@ const ListedAuctionNft = ({ nftDetails, collectionDetails, setNftDetails }) => {
             price={itemInfos?.currentBidPrice / 10 ** 18}
             priceDollar={itemInfos?.currentBidPrice / 10 ** 18}
           >
+            {
+              // TODO: add support erc 1155 display noly
+            }
+
+            {false && (
+              <div className="quantity-entry">
+                <button onClick={() => handleQuantityChange(-1)}>-</button>
+                <span></span>
+                <p>{quantity}</p>
+                <span></span>
+                <button onClick={() => handleQuantityChange(+1)}>+</button>
+              </div>
+            )}
             {sameAddress(currentWallet, creator) &&
               Number(bidCount) === 0 &&
               isTokenExpired(Number(itemInfos?.endAuction)) && (

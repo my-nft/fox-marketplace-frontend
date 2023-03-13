@@ -2,12 +2,135 @@
   .wrapperMostPopular {
     grid-template-columns: repeat(5, 1fr);
   }
+  .navbar-nav .nav-item {
+    width: max-content;
+  }
+  .navbar-nav {
+    align-items: center;
+  }
+  .navbar-collapse {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .navbar-collapse #buttonIcon {
+    margin-right: 0;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+  }
+  .navbar-collapse > button {
+    margin: 16px 0 0 !important;
+  }
+  #layer {
+    top: -43vh;
+  }
+  #root > header {
+    position: relative;
+    z-index: 1200;
+  }
+  .navbar {
+    position: unset !important;
+  }
+  .navbar .collapse {
+    position: fixed !important;
+    top: 0;
+    left: -150%;
+    height: 100vh !important;
+    width: 100vw !important;
+    transition: 300ms ease-in-out;
+    background: #030200;
+    margin: 0 !important;
+    justify-content: flex-start;
+    padding: 104px 0 56px;
+    grid-row-start: unset !important;
+    z-index: 1200;
+  }
+  .navbar .collapsing {
+    position: fixed !important;
+    top: 0;
+    left: -150%;
+    transition: 300ms ease-in-out;
+    height: 100vh !important;
+    width: 100vw !important;
+    background: #030200;
+    margin: 0 !important;
+    justify-content: flex-start;
+    padding: 104px 0 56px;
+    grid-row-start: unset !important;
+  }
+  .navbar #buttonIcon {
+    flex-direction: column;
+  }
+  .navbar-toggler {
+    width: 180px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  header {
+    padding: 0 !important;
+  }
+  .navbar .show {
+    left: 0;
+  }
+  .navbar-nav {
+    margin-right: 0 !important;
+  }
+  .navbar-brand,
+  .navbar form,
+  .navbar-toggler {
+    position: relative;
+    z-index: 1500;
+  }
+}
+
+@media (min-width: 1440px) {
+  .navbar-expand-custom {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+  .navbar-expand-custom .navbar-nav {
+    flex-direction: row;
+  }
+  .navbar-expand-custom .dropdown-menu {
+    position: absolute;
+  }
+  .navbar-expand-custom .nav-link {
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+  }
+  .navbar-expand-custom > .container {
+    flex-wrap: nowrap;
+  }
+  .navbar-expand-custom .navbar-collapse {
+    display: flex !important;
+    flex-basis: auto;
+  }
+  .navbar-expand-custom .navbar-toggler {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 1280px) {
+  .itemCounts {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
   .collectionSettingsWrapper {
     gap: 48px;
   }
+  nav .form-inline {
+    width: auto;
+    flex-grow: 2;
+  }
+  .ordinals {
+    margin: 0 auto !important;
+  }
+
   .settingsForm {
     grid-column: span 6;
   }
@@ -54,6 +177,14 @@
 }
 
 @media screen and (max-width: 1200px) {
+  #layer {
+    top: -75vh;
+    height: 110vh;
+    width: 110vw;
+  }
+  .buyActionButtton {
+    width: 100% !important;
+  }
   .navbar-collapse {
     flex-direction: column;
     align-items: center;
@@ -181,6 +312,39 @@
 }
 
 @media (max-width: 768px) {
+  #infoNFT {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .itemCounts {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .countdown {
+    row-gap: 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .navbar form {
+    width: 100%;
+    min-width: unset;
+    max-width: unset;
+  }
+  .importTypeChoice {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .importTypeChoice > * {
+    justify-self: center !important;
+  }
+  .navbar .collapse,
+  .navbar .collapsing {
+    padding: 144px 0 56px !important;
+  }
+  #layer {
+    top: -80vh;
+  }
   header .form-control-container {
     width: 100% !important;
     margin-top: 24px;
@@ -406,11 +570,27 @@
   .mintLimitedWrapper .mintInfo {
     padding: 32px;
   }
+  .idToImportWrapper {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .importIdsRange {
+    flex-direction: column;
+  }
+  .importIdsRange input {
+    width: 100%;
+  }
+  .importIdsRange span {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 480px) {
   .wrapperMostPopular {
     grid-template-columns: repeat(1, 1fr);
+  }
+  .navbar-toggler {
+    width: auto;
   }
   .mintSidebarMain img {
     width: 100%;
@@ -418,5 +598,8 @@
     aspect-ratio: 1;
     max-width: 172px;
     max-height: 172px;
+  }
+  .importIdsContainer {
+    flex-direction: column;
   }
 }

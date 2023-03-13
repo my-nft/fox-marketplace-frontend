@@ -1,26 +1,20 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authProviderInstance, web3Infura } from "../../../utils/blockchainInteractor";
+import {
+  web3Infura,
+} from "../../../utils/blockchainInteractor";
 import { optimizeWalletAddress } from "../../../utils/walletUtils";
 
 const AccordionDetails = ({ nftDetails, collectionDetails }) => {
-
-  const [web3, setWeb3] = useState();
   const [chainId, setChainId] = useState(false);
 
   // get chain id and get name of the chain
   const navigate = useNavigate();
 
-  const initWeb3 = async () => {
-    setWeb3(web3Infura);
-  }
-
   useEffect(() => {
-    initWeb3();
-  }, []);
-
-  useEffect(() => {
-      web3Infura.eth.getChainId().then((res) => {
+    web3Infura()
+      .eth.getChainId()
+      .then((res) => {
         setChainId(res);
       });
   }, []);
@@ -96,7 +90,9 @@ const AccordionDetails = ({ nftDetails, collectionDetails }) => {
               </li>
               <li>
                 <span className="label">Token Standard</span>
-                <span className="value">ERC 271</span>
+                <span className="value">
+                  {collectionDetails.isErc1155 ? "ERC 1155" : "ERC 720"}{" "}
+                </span>
               </li>
               <li>
                 <span className="label">Chain ID</span>

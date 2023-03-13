@@ -1,5 +1,5 @@
 import MostPopularItem from "../../components/marketplace/MostPopularItem";
-const MostPopular = ({ nfts }) => {
+const MostPopular = ({ nfts, contract }) => {
   return (
     <div className="wrapperMostPopular row gap-2">
       {nfts &&
@@ -8,6 +8,7 @@ const MostPopular = ({ nfts }) => {
             key={index}
             item={item}
             viewType={"CHANGE_FOR_MIN"}
+            contract={contract}
           />
         ))}
     </div>

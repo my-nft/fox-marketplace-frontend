@@ -1,35 +1,66 @@
-import "./App.css";
+import { Provider } from "react-redux";
 import {
   createBrowserRouter,
   createRoutesFromElements,
   defer,
   Route,
-  RouterProvider,
+  RouterProvider
 } from "react-router-dom";
-import { Provider } from "react-redux";
+import "./App.css";
 
-import Home from "./pages/Home";
-import Header from "./components/layout/Header";
+import {
+  EthereumClient,
+  modalConnectors,
+  walletConnectProvider
+} from "@web3modal/ethereum";
 import React from "react";
-import Footer from "./components/layout/Footer";
-import Creation from "./pages/Creation";
-import CreateSingleNft from "./pages/Creation/CreateSingleNft";
-import CreateCollection from "./pages/Creation/CreateCollection";
-import ImportCollection from "./pages/Creation/ImportCollection";
-import Explorer from "./pages/Explorer";
-import CollectionDetails from "./pages/CollectionDetails";
-import { store } from "./redux/store";
+import { configureChains, createClient } from "wagmi";
+import { getCollectionByAddress } from "./api/collectionApi";
+import { getNftCall, getNftErc1155Call } from "./api/nftApi";
 import AuthWrapper from "./components/authWrapper";
-import ProfileWrapper from "./pages/Profile/ProfileWrapper";
-import MyNftDetails from "./pages/myNftDetails";
-import AccountPage from "./pages/Account/Account";
-import CollectionSettings from "./pages/collectionSettings/collectionSettings";
+import Footer from "./components/layout/Footer";
 import PageStatistics from "./components/Statistics";
 import Page404 from "./pages/404/404";
+import AccountPage from "./pages/Account/Account";
+import CollectionDetails from "./pages/CollectionDetails";
+import CollectionSettings from "./pages/collectionSettings/collectionSettings";
+import Creation from "./pages/Creation";
+import CreateCollection from "./pages/Creation/CreateCollection";
+import CreateSingleNft from "./pages/Creation/CreateSingleNft";
+import ImportCollection from "./pages/Creation/ImportCollection";
+import Explorer from "./pages/Explorer";
+import Home from "./pages/Home";
+import Inscription from './pages/Inscription/Inscription';
 import MintLimited from "./pages/mintLimited/mintLimited";
-import { getNftCall } from "./api/nftApi";
-import { getCollectionByAddress } from "./api/collectionApi";
-import { getItemInfo } from "./api/utilsApi";
+import MyNftDetails from "./pages/myNftDetails";
+import ProfileWrapper from "./pages/Profile/ProfileWrapper";
+import { store } from "./redux/store";
+import { fxgChain, polygChain } from "./utils/chains/chains";
+
+import { Web3Modal } from "@web3modal/react";
+
+import { WagmiConfig } from "wagmi";
+import Header from "./components/layout/Header";
+
+const chains = [fxgChain];
+// Wagmi client
+export const { provider } = configureChains(chains, [
+  walletConnectProvider({
+    projectId: "c713aa69c46302aa2ce0353d8b67b8fa",
+  }),
+]);
+
+const wagmiClient = createClient({
+  logger: {
+    warn: (message) => console.log(message),
+  },
+  autoConnect: true,
+  connectors: [...modalConnectors({ appName: "web3Modal", chains })],
+  provider,
+});
+
+// Web3Modal Ethereum Client
+const ethereumClient = new EthereumClient(wagmiClient, chains);
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -70,6 +101,15 @@ const router = createBrowserRouter(
           </AuthWrapper>
         }
       />
+      <Route
+        path="inscription"
+        element={
+          <>
+            <Inscription />
+            <Footer />
+          </>
+        }
+      />      
       <Route
         path="single-nft"
         element={
@@ -156,13 +196,24 @@ const router = createBrowserRouter(
       <Route
         path="collection/:collectionAddress/:tokenID"
         exact
-        loader={async ({ params }) => {
-          const getNFTPromise = getNftCall(
-            params.collectionAddress,
-            params.tokenID
-          );
+        loader={async ({ params, request }) => {
+          const isErc1155 = new URL(request.url).searchParams.get('isErc1155');
+          const {collectionAddress, tokenID} = params;
+
+          let getNFTPromise;
+          
+          if(isErc1155 && isErc1155 === 'true') {
+            getNFTPromise = getNftErc1155Call(collectionAddress, tokenID);
+          } else {
+            getNFTPromise = getNftCall(
+              collectionAddress,
+              tokenID
+            );
+          }
+          
+          
           const getCollectionPromise = getCollectionByAddress(
-            params.collectionAddress
+            collectionAddress
           );
 
           return defer({
@@ -192,17 +243,22 @@ const router = createBrowserRouter(
 
 function App() {
   return (
-    <Provider store={store}>
-      <PageStatistics />
-      {/*
-      <ConfirmationPopup
-        title="Test"
-        message="KLMOASDASDASDAsd adwqe adwa dwqe q"
-      />
-        */}
+    <>
+      <WagmiConfig client={wagmiClient}>
+        <Provider store={store}>
+          <PageStatistics />
+          <RouterProvider router={router} />
+        </Provider>
+      </WagmiConfig>
 
-      <RouterProvider router={router}></RouterProvider>
-    </Provider>
+      <Web3Modal
+        projectId="c713aa69c46302aa2ce0353d8b67b8fa"
+        ethereumClient={ethereumClient}
+        themeZIndex={1000000}
+        themeColor="orange"
+        themeMode="dark"
+      />
+    </>
   );
 }
 

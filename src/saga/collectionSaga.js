@@ -9,39 +9,50 @@ import {
 } from "../redux/accountReducer";
 
 import {
-  setMostPopularCollections,
-  setIsLoadingMspl,
-  setSearcheableCollections,
-  setIsLoadingSearcheableCollection,
-  setIsLoading as setCollectionIsLoading,
   setCollectionDetails,
+  setIsLoading as setCollectionIsLoading,
+  setIsLoadingMspl,
+  setIsLoadingSearcheableCollection,
+  setMostPopularCollections,
+  setSearcheableCollections,
 } from "../redux/collectionReducer";
 import { mintCollection } from "../services/createCollection";
 import {
   IMPORT_COLLECTION,
+  LOAD_ACCOUNT_COLLECTIONS,
+  LOAD_ACCOUNT_NFTS,
+  LOAD_COLLECTION,
   LOAD_MOST_POPULAR_COLLECTION,
   LOAD_SEARCHABLE_COLLECTION,
-  LOAD_ACCOUNT_NFTS,
-  LOAD_ACCOUNT_COLLECTIONS,
-  LOAD_COLLECTION,
-  UPDATE_COLLECTION,
   MINT_COLLECTION,
+  UPDATE_COLLECTION,
 } from "./actions";
 import { signWallet } from "./userSaga";
 
 function* importCollection(action) {
   try {
     yield put(setCollectionIsLoading(true));
-    const { collectionAddress } = action.payload;
+    const { collectionAddress, contractType, tokens = [] } = action.payload;
+    console.log(tokens);
     const token = yield call(signWallet);
     console.log("the token is", token);
-    yield call(api.importCollectionCall, collectionAddress, token);
+    if (contractType === "ERC721") {
+      yield call(api.importCollectionCall, collectionAddress, token);
+    } else if (contractType === "ERC1155") {
+      yield call(
+        api.importCollectionCall1155,
+        collectionAddress,
+        token,
+        tokens
+      );
+    }
+
     yield delay(3000);
 
     yield put(setCollectionIsLoading(false));
     action.onSuccess();
   } catch (error) {
-    console.log("error ", error.response.status);
+    console.error(error);
     toast.error("An unexpected error occurred.");
   } finally {
     yield put(setCollectionIsLoading(false));
@@ -67,7 +78,7 @@ function* loadSearcheableCollection(action) {
 
     const response = yield call(api.getCollectionsCall, action.payload);
 
-    const {data} = response;
+    const { data } = response;
 
     yield put(setSearcheableCollections(data.content));
   } catch (error) {
@@ -104,8 +115,8 @@ function* runMintCollection(action) {
 
     const { data, image } = action.payload;
     let collectionAddress = yield call(mintCollection, {
-      name : data.name,
-      symbol: data.symbol
+      name: data.name,
+      symbol: data.symbol,
     });
 
     yield call(api.importCollectionCall, collectionAddress, token, true);
@@ -119,13 +130,11 @@ function* runMintCollection(action) {
       },
       token
     );
-    yield delay(1500); 
+    yield delay(1500);
 
     yield put(setCollectionIsLoading(false));
 
     action.onSuccess(collectionAddress);
-
-    
   } catch (error) {
     console.log(error);
     toast.error("An unexpected error occurred.");
@@ -259,5 +268,5 @@ export {
   updateCollectionInformationSaga,
   importCollectionSaga,
   loadCollection,
-  loadMintCollection
+  loadMintCollection,
 };

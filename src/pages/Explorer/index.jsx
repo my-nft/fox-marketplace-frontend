@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { getCollectionsCall } from "../../api/collectionApi";
 import { getListedNfts } from "../../api/nftApi";
+import { getListedNfts1155 } from '../../api/nftERC1155Api';
 import HeaderInput from "../../components/marketplace/HeaderInput";
 import Pagination from "../../components/pagination/pagination";
+import { scrollTop } from "../../components/scrollToTop";
 import Spinner from "../../components/Spinner";
-
 import AccordingCollection from "./AccordingCollection";
 import AccordingStatus from "./AccordingStatus";
 import AccordionPrice from "./AccordionPrice";
 import MostPopular from "./MostPopular";
 import MostPopularCollection from "./MostPopularCollection";
 import { availableProperties } from "./properties";
-import { scrollTop } from "../../components/scrollToTop";
-import { useSearchParams } from "react-router-dom";
 
 const INIT_PAGINATION = {
   numberElements: 20,
@@ -54,6 +54,7 @@ const Explorer = () => {
     minPrice: undefined,
     maxPrice: undefined,
     buyToken: "FXG",
+    contract: "ERC-721",
   });
 
   const loadMostPopular = async () => {
@@ -69,15 +70,20 @@ const Explorer = () => {
 
   const loadListedNfts = async () => {
     setIsLoadingState(true);
-    const listedNfts = await getListedNfts(
-      pagination.page,
-      pagination.numberElements,
-      filters.status,
-      filters.collectionAddress,
-      filters.minPrice,
-      filters.maxPrice,
-      filters.sortBy
-    );
+    let listedNfts = {data: {}};
+    if (filters.contract === 'ERC-721') {
+      listedNfts = await getListedNfts(
+        pagination.page,
+        pagination.numberElements,
+        filters.status,
+        filters.collectionAddress,
+        filters.minPrice,
+        filters.maxPrice,
+        filters.sortBy,
+      );
+    } else if (filters.contract === 'ERC-1155') {
+      listedNfts = await getListedNfts1155(filters.collectionAddress);
+    }
     setNfts(listedNfts.data);
     setIsLoadingState(false);
   };
@@ -114,7 +120,6 @@ const Explorer = () => {
   };
 
   useEffect(() => {
-    console.log(filters);
     if (pagination === INIT_PAGINATION) {
       loadListedNfts();
     } else {
@@ -174,6 +179,7 @@ const Explorer = () => {
                 nfts={content}
                 pagination={pagination}
                 changePage={changePage}
+                contract={filters.contract}
               />
             )}
 
