@@ -619,8 +619,8 @@
       justify-content: flex-start !important;
     }
     .content {
-      padding-left: var(--padding-xl) !important;
-      padding-right: var(--padding-xl) !important;
+      padding-left: var(--padding-lg) !important;
+      padding-right: var(--padding-lg) !important;
       box-sizing: border-box !important;
     }
   }
