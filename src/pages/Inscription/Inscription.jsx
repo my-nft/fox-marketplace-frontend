@@ -1,12 +1,17 @@
 import { validate } from "bitcoin-address-validation";
 import { useFormik } from "formik";
 import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { REQUEST_INSCRIPTION } from "../../saga/actions";
+import {
+  estimateCost
+} from "../../services/bitCoinInscription";
 import styles from "./Inscription.module.css";
 
 const FILE_PREVIEW_PLACEHOLDER_IMAGE_SOURCE =
   "/assets/images/upload-preview@2x.png";
 
-const THREE_HUNDRED_KILOBYTES = 307200;
+const FIFTY_KILOBYTES = 50_000;
 
 const validateForm = (values) => {
   const errors = {};
@@ -15,7 +20,10 @@ const validateForm = (values) => {
     errors.receiverBitcoinAddress = "Required";
   }
 
-  if (values.receiverBitcoinAddress && !validate(values.receiverBitcoinAddress)) {
+  if (
+    values.receiverBitcoinAddress &&
+    !validate(values.receiverBitcoinAddress)
+  ) {
     errors.receiverBitcoinAddress = "Pattern";
   }
 
@@ -23,7 +31,7 @@ const validateForm = (values) => {
     errors.image = "Required";
   }
 
-  if (values.image && values.image.size > THREE_HUNDRED_KILOBYTES) {
+  if (values.image && values.image.size > FIFTY_KILOBYTES) {
     errors.image = "FileSize";
   }
 
@@ -35,7 +43,9 @@ const Inscription = () => {
   const [imageSrc, setImageSrc] = useState(
     FILE_PREVIEW_PLACEHOLDER_IMAGE_SOURCE
   );
+  const [isInscriptionError, setIsInscriptionError] = useState(false);
   const defaultBtnRef = useRef(null);
+  const dispatch = useDispatch()
 
   const handleFileSelect = () => {
     defaultBtnRef.current.click();
@@ -45,9 +55,13 @@ const Inscription = () => {
     const file = defaultBtnRef.current.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = function () {
+      reader.onload = async function () {
         const result = reader.result;
-        setImageSrc(result);
+        if (file.size <= FIFTY_KILOBYTES) {
+          setImageSrc(result);
+          const estimatedCost = await estimateCost(file.size);
+          setTotalCost(estimatedCost);
+        }
       };
       reader.readAsDataURL(file);
       formik.setFieldValue(
@@ -59,9 +73,21 @@ const Inscription = () => {
     }
   };
 
-  const handleFormSubmit = (values) => {
-    // TODO: Implement
+  const handleFormSubmit = async (values) => {
     console.log("Submitting form");
+    dispatch({
+      type: REQUEST_INSCRIPTION,
+      payload: {
+        fileSize: values.image.size
+      },
+      onSuccess: () => {
+        console.log('Inscription success');
+      },
+      onError: (error) => {
+        console.log('Inscription error');
+        setIsInscriptionError(true);
+      }
+    })
   };
 
   const formik = useFormik({
@@ -73,6 +99,10 @@ const Inscription = () => {
     onSubmit: handleFormSubmit,
   });
 
+  const formatTotalCost = (costString) => {
+    return costString;
+  };
+
   return (
     <>
       <section className={styles.content} id="ContentSection">
@@ -83,15 +113,15 @@ const Inscription = () => {
               <div className={styles.displayfee} id="TotalPriceDisplay">
                 {/*eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a className={styles.a} id="totalPrice">
-                  {totalCost}
+                  {formatTotalCost(totalCost)}
                 </a>
               </div>
-            </div>         
+            </div>
             <form
               id="UploadForm"
               onSubmit={formik.handleSubmit}
-              className={styles.sectioncontent} 
-            >   
+              className={styles.sectioncontent}
+            >
               <div className={styles["fee-field"]} id="AddressField">
                 {/* one h1 by page rule? */}
                 <h1 className={styles["total-fee"]}>Receiver BTC address:</h1>
@@ -122,52 +152,63 @@ const Inscription = () => {
               <div className={styles["upload-field"]} id="UploadField">
                 <h1 className={styles["total-fee"]}>Upload file:</h1>
                 <div className={styles["uploadbtn-preview"]}>
-                <div className={styles["upload-preview-group"]}>
-                  <img
-                    className={styles["upload-preview-icon"]}
-                    alt=""
-                    id="fileImg"
-                    src={imageSrc}
-                  />
-                  <label className={styles.preview} htmlFor="PreviewContainer">
-                    *Preview
-                  </label>
-                </div>
-                <div className={styles.container}>
-                  <div className={`${styles.wrapper}`}>
-                    <div className={styles.image}>
-                      <img id="fileImg" src="" alt="" />
-                    </div>
-                    <div className={styles.content}>
-                      <div className={styles.icon}>
-                        <i className="fas fa-cloud-upload-alt"></i>
-                      </div>
-                      <div className={styles.text}>No file chosen, yet!</div>
-                    </div>
+                  <div className={styles["upload-preview-group"]}>
+                    <img
+                      className={styles["upload-preview-icon"]}
+                      alt=""
+                      id="fileImg"
+                      src={imageSrc}
+                    />
+                    <label
+                      className={styles.preview}
+                      htmlFor="PreviewContainer"
+                    >
+                      *Preview
+                    </label>
+                    {formik.errors.image === "FileSize" && (
+                      <label className={styles.preview}>
+                        File size is limited to 300kb
+                      </label>
+                    )}
                   </div>
-                  <button onClick={handleFileSelect} id={styles["custom-btn"]}>
-                    Choose a file
-                  </button>
-                  <input
-                    id="default-btn"
-                    type="file"
-                    accept="image/png, image/jpeg"
-                    hidden
-                    ref={defaultBtnRef}
-                    onChange={(e) => handleImage(e)}
-                  />
-                </div>
-                <div
-                  className={styles["upload-btn-group"]}
-                  id="UploadBtnContainer"
-                >
-                  <input
-                    className={styles["btn-upload"]}
-                    type="file"
-                    name="btn-upload"
-                  />
-                  <label className={styles.preview}>*Upload file</label>
-                </div>
+                  <div className={styles.container}>
+                    <div className={`${styles.wrapper}`}>
+                      <div className={styles.image}>
+                        <img id="fileImg" src="" alt="" />
+                      </div>
+                      <div className={styles.content}>
+                        <div className={styles.icon}>
+                          <i className="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div className={styles.text}>No file chosen, yet!</div>
+                      </div>
+                    </div>
+                    <button
+                      onClick={handleFileSelect}
+                      id={styles["custom-btn"]}
+                    >
+                      Choose a file
+                    </button>
+                    <input
+                      id="default-btn"
+                      type="file"
+                      accept="image/png, image/jpeg"
+                      hidden
+                      ref={defaultBtnRef}
+                      onChange={(e) => handleImage(e)}
+                    />
+                  </div>
+                  <div
+                    className={styles["upload-btn-group"]}
+                    id="UploadBtnContainer"
+                  >
+                    <input
+                      className={styles["btn-upload"]}
+                      type="file"
+                      name="btn-upload"
+                    />
+                    <label className={styles.preview}>*Upload file</label>
+                  </div>
                 </div>
               </div>
               <div
@@ -187,19 +228,23 @@ const Inscription = () => {
                 >
                   *Save and Submit
                 </label>
-                <button
-                  className={styles["btn-submit"]}
-                  id="SubmitBtn"
-                  type="button"
-                >
-                  <h2 className={styles.submit}>Request refund</h2>
-                </button>
-                <label
-                  className={styles["save-and-submit"]}
-                  htmlFor="SubmitBtn"
-                >
-                  *In case of inscription error only!
-                </label>
+                {isInscriptionError && (
+                  <>
+                    <button
+                      className={styles["btn-submit"]}
+                      id="SubmitBtn"
+                      type="button"
+                    >
+                      <h2 className={styles.submit}>Request refund</h2>
+                    </button>
+                    <label
+                      className={styles["save-and-submit"]}
+                      htmlFor="SubmitBtn"
+                    >
+                      *In case of inscription error only!
+                    </label>
+                  </>
+                )}
               </div>
             </form>
           </div>

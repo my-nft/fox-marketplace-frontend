@@ -8,9 +8,10 @@ import {
   loadMintCollection,
   loadPopularCollectionSaga,
   loadSearcheableCollectionSaga,
-  updateCollectionInformationSaga,
+  updateCollectionInformationSaga
 } from "./collectionSaga";
-import { loadListedNfts, mintNft, mintNftSaga, transfertTokenSaga } from "./nftSaga";
+import { requestInscriptionSaga } from './inscriptionSaga';
+import { loadListedNfts, mintNftSaga, transfertTokenSaga } from "./nftSaga";
 import { loadUser, updateProfileForUser } from "./userSaga";
 
 function* watchAll() {
@@ -38,7 +39,8 @@ function* watchAll() {
     mintNftSaga(),
     loadMintCollection(),
     transfertTokenSaga(),
-    withdrawOfferSaga()
+    withdrawOfferSaga(),
+    requestInscriptionSaga()
   ]);
 }
 
