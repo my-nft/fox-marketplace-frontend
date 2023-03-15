@@ -6,7 +6,7 @@ import styles from "./Inscription.module.css";
 const FILE_PREVIEW_PLACEHOLDER_IMAGE_SOURCE =
   "/assets/images/upload-preview@2x.png";
 
-const THREE_KILOBYTES = 3072;
+const THREE_HUNDRED_KILOBYTES = 307200;
 
 const validateForm = (values) => {
   const errors = {};
@@ -23,7 +23,7 @@ const validateForm = (values) => {
     errors.image = "Required";
   }
 
-  if (values.image && values.image.size > THREE_KILOBYTES) {
+  if (values.image && values.image.size > THREE_HUNDRED_KILOBYTES) {
     errors.image = "FileSize";
   }
 
