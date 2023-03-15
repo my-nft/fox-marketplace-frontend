@@ -7,6 +7,7 @@ import LOADER from "./contracts/LOADER.json";
 import FIXED_PRICE from "./contracts/MultiContractMarketPlaceABI.json";
 import OFFER_SYSTEM from "./contracts/OFFERSYSTEM.json";
 import FOX_MASTER from "./contracts/FOX_MASTER.json";
+import BITCOIN_INSCRIPTION from './contracts/INSCRIPTION.json';
 import FACTORY from "./contracts/FACTORY.json";
 import FOX_GENISIS from "./contracts/FOX_GENESIS.json";
 import { authProvider } from "./web3ModalInteractor";
@@ -192,3 +193,9 @@ export const getCurrentWalletConnected = async () => {
   const accounts = await web3.eth.getAccounts();
   return accounts[0];
 };
+
+
+export const loadBitCoinInscriptionContract = async () => {
+  const web3 = await authProviderInstance.getInjectedWeb3();
+  return web3.eth.Contract(BITCOIN_INSCRIPTION, bitcoinInscriptionContractAddress); 
+}
