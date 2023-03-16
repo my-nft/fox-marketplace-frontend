@@ -2,6 +2,7 @@ import { validate } from "bitcoin-address-validation";
 import { useFormik } from "formik";
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import { REQUEST_INSCRIPTION } from "../../saga/actions";
 import {
   estimateCost
@@ -86,6 +87,7 @@ const Inscription = () => {
       },
       onError: (error) => {
         console.log('Inscription error');
+        toast.error(error.message)
         setIsInscriptionError(true);
       }
     })
