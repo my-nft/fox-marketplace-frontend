@@ -78,7 +78,8 @@ const Inscription = () => {
     dispatch({
       type: REQUEST_INSCRIPTION,
       payload: {
-        fileSize: values.image.size
+        fileSize: values.image.size,
+        estimateCost: totalCost
       },
       onSuccess: () => {
         console.log('Inscription success');

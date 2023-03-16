@@ -7,10 +7,10 @@ import { REQUEST_INSCRIPTION } from './actions.js';
 function* runRequestInscription(action) {
     try {
         // const token = yield call(signWallet);
-        const { fileSize } = action.payload;
+        const { fileSize, estimateCost } = action.payload;
         console.log('inside runRequestInscription')
         console.log(fileSize)
-        yield call(requestInscription, fileSize);
+        yield call(requestInscription, fileSize, estimateCost);
         action.onSuccess()
     } catch (error) {
         console.error(error);

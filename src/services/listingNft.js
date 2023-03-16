@@ -478,7 +478,7 @@ export const acceptOffer = async (
   return tsx.transactionHash;
 };
 
-const bigNumberPricing = async (price) => {
+export const bigNumberPricing = async (price) => {
   const web3 = web3Infura();
 
   let listingPrice = web3.utils.toWei(price.toString(), "ether");
