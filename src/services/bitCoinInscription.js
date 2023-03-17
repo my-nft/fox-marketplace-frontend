@@ -32,7 +32,6 @@ export const requestInscription = async (fileSize, estimatedCost) => {
   const cost = web3.utils.toHex(stringifiedPoweredValue);
   const erc20Address = getAddressesByChain().ERC20ContractAddress;
 
-  // approve
   const gasLimitApprouve = await erc20Contract.methods
     .approve(bitcoinInscriptionContractAddress, cost)
     .estimateGas({
@@ -48,16 +47,20 @@ export const requestInscription = async (fileSize, estimatedCost) => {
       gasLimit: gasLimitApprouve,
     });
 
+  const fxPrice = await bitcoinInscription.methods.fxPrice().call();
+
   const gasLimit = await bitcoinInscription.methods
     .requestInscription(fileSize)
     .estimateGas({
       from: connectedWallet,
       to: bitcoinInscriptionContractAddress,
+      value: fxPrice,
     });
 
   await bitcoinInscription.methods.requestInscription(fileSize).send({
     from: connectedWallet,
     to: bitcoinInscriptionContractAddress,
     gasLimit,
+    value: fxPrice,
   });
 };
