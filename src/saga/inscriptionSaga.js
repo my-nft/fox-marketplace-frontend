@@ -2,15 +2,13 @@ import { toast } from 'react-toastify';
 import { call, takeLatest } from 'redux-saga/effects';
 import { requestInscription } from "../services/bitCoinInscription.js";
 import { REQUEST_INSCRIPTION } from './actions.js';
-// import { signWallet } from "./userSaga";
+import { signWallet } from "./userSaga";
 
 function* runRequestInscription(action) {
     try {
-        // const token = yield call(signWallet);
-        const { fileSize, estimateCost } = action.payload;
-        console.log('inside runRequestInscription')
-        console.log(fileSize)
-        yield call(requestInscription, fileSize, estimateCost);
+        const token = yield call(signWallet);
+        const { imageFile, fileSize, estimateCost, receiverAddress } = action.payload;
+        yield call(requestInscription, imageFile, fileSize, estimateCost, receiverAddress, token);
         action.onSuccess()
     } catch (error) {
         console.error(error);

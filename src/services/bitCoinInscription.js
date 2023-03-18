@@ -1,3 +1,5 @@
+import apiUrl from "../config/api";
+import methods from "../config/axiosConfig";
 import {
   bitcoinInscriptionContractAddress,
   getAddressesByChain,
@@ -17,7 +19,16 @@ export const estimateCost = async (fileSizeInBytes) => {
   return Math.ceil(+rawCost / 10 ** decimals);
 };
 
-export const requestInscription = async (fileSize, estimatedCost) => {
+export const requestInscription = async (
+  imageFile,
+  fileSize,
+  estimatedCost,
+  receiverAddress,
+  token
+) => {
+  console.log('token is: ');
+  console.log(token);
+
   const web3 = web3Infura();
   const erc20Contract = await loadERC20Contract();
   const bitcoinInscription = await loadBitCoinInscriptionContract();
@@ -63,4 +74,25 @@ export const requestInscription = async (fileSize, estimatedCost) => {
     gasLimit,
     value: fxPrice,
   });
+
+  const formData = new FormData();
+  formData.append("image", imageFile);
+  formData.append("dto", JSON.stringify(
+    {
+      mintfileSize: fileSize,
+      receiverAddress: receiverAddress
+    }
+  ))
+
+  const inscriptionRes = await methods.post(`${apiUrl}utils/send-inscription`, 
+    formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "Authorization": `Bearer ${token}`,
+      "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
+    },
+  });
+
+  console.log('requestInscription post result');
+  console.log(inscriptionRes);
 };

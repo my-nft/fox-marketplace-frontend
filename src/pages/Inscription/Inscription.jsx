@@ -79,8 +79,10 @@ const Inscription = () => {
     dispatch({
       type: REQUEST_INSCRIPTION,
       payload: {
+        imageFile: values.image,
         fileSize: values.image.size,
-        estimateCost: totalCost
+        estimateCost: totalCost,
+        receiverAddress: values.receiverBitcoinAddress
       },
       onSuccess: () => {
         console.log('Inscription success');
