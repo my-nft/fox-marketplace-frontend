@@ -25,7 +25,7 @@ export const getTotalCostData = async (fileSizeInBytes) => {
 export const requestInscription = async (
   fileSize,
   estimatedCost,
-) => {  
+) => {
   const web3 = web3Infura();
   const erc20Contract = await loadERC20Contract();
   const bitcoinInscription = await loadBitCoinInscriptionContract();

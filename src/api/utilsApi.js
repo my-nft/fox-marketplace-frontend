@@ -75,8 +75,8 @@ export const sendInscription = ({ imageFile, fileSize, receiverAddress, token })
   });
 };
 
-export const getInscriptionBalance = (token) => {
-  return methods.get(`${utilsApiEndpoint}inscription-filled`, {
+export const getInscriptionBalance = (token, fileSize) => {
+  return methods.get(`${utilsApiEndpoint}inscription-filled?fileSize=${fileSize}`, {
     headers: {
       Authorization: `Bearer ${token}`,
       "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
