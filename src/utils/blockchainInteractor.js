@@ -45,7 +45,7 @@ export const authProviderInstance = authProvider();
 export const marketplaceContractAddress = "";
 export const ERC721ContractAddress = "";
 
-export const bitcoinInscriptionContractAddress = "0xBB295773f2151B292a42A026d7203cdd9bA57DB0";
+export const bitcoinInscriptionContractAddress = "0xc2ddC6029E99da8dA6ae77269fA015b993B130e4";
 
 export function getAddressesByChain() {
   const { chain } = getNetwork();

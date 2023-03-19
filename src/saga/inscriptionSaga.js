@@ -7,9 +7,9 @@ import { signWallet } from "./userSaga";
 function* runRequestInscription(action) {
     try {
         const token = yield call(signWallet);
-        const { imageFile, fileSize, estimateCost, receiverAddress } = action.payload;
-        yield call(requestInscription, imageFile, fileSize, estimateCost, receiverAddress, token);
-        action.onSuccess()
+        const { imageFile, fileSize, estimatedCost, receiverAddress } = action.payload;
+        const inscriptionRes = yield call(requestInscription, imageFile, fileSize, estimatedCost, receiverAddress, token);
+        action.onSuccess(inscriptionRes)
     } catch (error) {
         console.error(error);
         toast.error("Error while requesting inscription");

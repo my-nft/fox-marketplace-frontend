@@ -9,14 +9,20 @@ import {
   web3Infura
 } from "../utils/blockchainInteractor";
 
-export const estimateCost = async (fileSizeInBytes) => {
+export const getTotalCostData = async (fileSizeInBytes) => {
   const bitcoinInscription = await loadBitCoinInscriptionContract();
   const ERC20Contract = await loadERC20Contract();
-  const rawCost = await bitcoinInscription.methods
+  const fxgCost = await bitcoinInscription.methods
     .estimateCost(fileSizeInBytes)
     .call();
+  const fxCost = await bitcoinInscription.methods
+    .estimateCostFx(fileSizeInBytes)
+    .call();
   const decimals = await ERC20Contract.methods.decimals().call();
-  return Math.ceil(+rawCost / 10 ** decimals);
+  return {    
+      fxgCost: Math.ceil(+fxgCost / 10 ** decimals),
+      fxCost: Math.ceil(+fxCost / 10 ** decimals)  
+  };
 };
 
 export const requestInscription = async (
@@ -25,10 +31,7 @@ export const requestInscription = async (
   estimatedCost,
   receiverAddress,
   token
-) => {
-  console.log('token is: ');
-  console.log(token);
-
+) => {  
   const web3 = web3Infura();
   const erc20Contract = await loadERC20Contract();
   const bitcoinInscription = await loadBitCoinInscriptionContract();
@@ -58,7 +61,7 @@ export const requestInscription = async (
       gasLimit: gasLimitApprouve,
     });
 
-  const fxPrice = await bitcoinInscription.methods.fxPrice().call();
+  const fxPrice = await bitcoinInscription.methods.estimateCostFx(fileSize).call();
 
   const gasLimit = await bitcoinInscription.methods
     .requestInscription(fileSize)
@@ -77,22 +80,25 @@ export const requestInscription = async (
 
   const formData = new FormData();
   formData.append("image", imageFile);
-  formData.append("dto", JSON.stringify(
-    {
+  formData.append(
+    "dto",
+    JSON.stringify({
       mintfileSize: fileSize,
-      receiverAddress: receiverAddress
+      receiverAddress: receiverAddress,
+    })
+  );
+
+  const inscriptionRes = await methods.post(
+    `${apiUrl}utils/send-inscription`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+        "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
+      },
     }
-  ))
+  );
 
-  const inscriptionRes = await methods.post(`${apiUrl}utils/send-inscription`, 
-    formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-      "Authorization": `Bearer ${token}`,
-      "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
-    },
-  });
-
-  console.log('requestInscription post result');
-  console.log(inscriptionRes);
+  return inscriptionRes;
 };
