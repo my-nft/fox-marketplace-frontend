@@ -54,3 +54,32 @@ export const postTraceTransaction = (
     }
   );
 };
+
+export const sendInscription = ({ imageFile, fileSize, receiverAddress, token }) => {
+  const formData = new FormData();
+  formData.append("image", imageFile);
+  formData.append(
+    "dto",
+    JSON.stringify({
+      mintfileSize: fileSize,
+      receiverAddress: receiverAddress,
+    })
+  );
+
+  return methods.post(`${utilsApiEndpoint}send-inscription`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`,
+      "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
+    },
+  });
+};
+
+export const getInscriptionBalance = (token, fileSize) => {
+  return methods.get(`${utilsApiEndpoint}inscription-filled?fileSize=${fileSize}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
+    },
+  });
+}

@@ -36,9 +36,6 @@ export const updateUser = (userform) => {
 
 export const updateUserToDatabase = (data) => {
   const { address } = data;
-
-  console.log(data);
-
   return methods.put(
     userEndpoint + address,
     {

@@ -14,7 +14,6 @@ const Property = ({ property, handleFilterChange = () => {} }) => {
         <SliderToggle
           active={checked}
           action={(boolean) => {
-            console.log("Changing");
             setChecked(boolean);
             handleFilterChange(property, boolean);
           }}

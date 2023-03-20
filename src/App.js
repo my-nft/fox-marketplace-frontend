@@ -14,6 +14,8 @@ import {
   walletConnectProvider
 } from "@web3modal/ethereum";
 import React from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { configureChains, createClient } from "wagmi";
 import { getCollectionByAddress } from "./api/collectionApi";
 import { getNftCall, getNftErc1155Call } from "./api/nftApi";
@@ -35,7 +37,7 @@ import MintLimited from "./pages/mintLimited/mintLimited";
 import MyNftDetails from "./pages/myNftDetails";
 import ProfileWrapper from "./pages/Profile/ProfileWrapper";
 import { store } from "./redux/store";
-import { fxgChain, polygChain } from "./utils/chains/chains";
+import { fxgChain } from "./utils/chains/chains";
 
 import { Web3Modal } from "@web3modal/react";
 
@@ -258,6 +260,8 @@ function App() {
         themeColor="orange"
         themeMode="dark"
       />
+
+    <ToastContainer />
     </>
   );
 }

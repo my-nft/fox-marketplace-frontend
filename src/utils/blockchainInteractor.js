@@ -1,16 +1,5 @@
-import Web3 from "web3";
-import MarketPlace from "./contracts/marketPlace.json";
-import ERC721 from "./contracts/ERC721.json";
-import ERC20 from "./contracts/ERC20.json";
-import AUCTION from "./contracts/AUCTION.json";
-import LOADER from "./contracts/LOADER.json";
-import FIXED_PRICE from "./contracts/MultiContractMarketPlaceABI.json";
-import OFFER_SYSTEM from "./contracts/OFFERSYSTEM.json";
-import FOX_MASTER from "./contracts/FOX_MASTER.json";
-import FACTORY from "./contracts/FACTORY.json";
-import FOX_GENISIS from "./contracts/FOX_GENESIS.json";
-import { authProvider } from "./web3ModalInteractor";
 import { getNetwork } from "@wagmi/core";
+import Web3 from "web3";
 import {
   AUTIONContractAddressFX,
   AUTIONContractAddressPOLYG,
@@ -35,8 +24,20 @@ import {
   rpc_url_fx,
   rpc_url_polyg,
   transactionExplorerFX,
-  transactionExplorerPOLYG,
+  transactionExplorerPOLYG
 } from "./chains/variables";
+import AUCTION from "./contracts/AUCTION.json";
+import ERC20 from "./contracts/ERC20.json";
+import ERC721 from "./contracts/ERC721.json";
+import FACTORY from "./contracts/FACTORY.json";
+import FOX_GENISIS from "./contracts/FOX_GENESIS.json";
+import FOX_MASTER from "./contracts/FOX_MASTER.json";
+import BITCOIN_INSCRIPTION from './contracts/INSCRIPTION.json';
+import LOADER from "./contracts/LOADER.json";
+import MarketPlace from "./contracts/marketPlace.json";
+import FIXED_PRICE from "./contracts/MultiContractMarketPlaceABI.json";
+import OFFER_SYSTEM from "./contracts/OFFERSYSTEM.json";
+import { authProvider } from "./web3ModalInteractor";
 
 // injectProvider
 export const authProviderInstance = authProvider();
@@ -44,11 +45,14 @@ export const authProviderInstance = authProvider();
 export const marketplaceContractAddress = "";
 export const ERC721ContractAddress = "";
 
+export const bitcoinInscriptionContractAddress = "0xc2ddC6029E99da8dA6ae77269fA015b993B130e4";
+
 export function getAddressesByChain() {
   const { chain } = getNetwork();
 
   if (chain?.id === Number(rpc_chain_id_polyg)) {
     return {
+      // INSCRIPTIONContractAddress: INSCRIPTIONContractAddressPOLYG,
       FIXEDContractAddress: FIXEDContractAddressPOLYG,
       ERC20ContractAddress: ERC20ContractAddressPOLYG,
       AUTIONContractAddress: AUTIONContractAddressPOLYG,
@@ -64,6 +68,7 @@ export function getAddressesByChain() {
     };
   } else {
     return {
+      // INSCRIPTIONContractAddress: INSCRIPTIONContractAddressFX,
       FIXEDContractAddress: FIXEDContractAddressFX,
       ERC20ContractAddress: ERC20ContractAddressFX,
       AUTIONContractAddress: AUTIONContractAddressFX,
@@ -128,7 +133,6 @@ export async function loadAuctionContract(readOnly = false) {
 }
 
 export async function loadAFixedPriceContract(readOnly = false) {
-  console.log("#############################");
   let web3Instance = web3Infura();
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
@@ -166,7 +170,6 @@ export async function loadFoxMasterCollectionContract(collectionAddress) {
 }
 
 export async function loadFoxGenisisContract(readOnly = false) {
-  console.log("##########", getAddressesByChain().foxGenesisCollectionAddress);
   let web3Instance = web3Infura();
   if (!readOnly) {
     web3Instance = await authProviderInstance.getInjectedWeb3();
@@ -192,3 +195,9 @@ export const getCurrentWalletConnected = async () => {
   const accounts = await web3.eth.getAccounts();
   return accounts[0];
 };
+
+
+export const loadBitCoinInscriptionContract = async () => {
+  const web3 = await authProviderInstance.getInjectedWeb3();
+  return new web3.eth.Contract(BITCOIN_INSCRIPTION, bitcoinInscriptionContractAddress); 
+}

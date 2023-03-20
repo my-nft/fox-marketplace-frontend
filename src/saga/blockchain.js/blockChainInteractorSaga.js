@@ -367,10 +367,7 @@ function* runPlaceBid(action) {
 function* runListFixedPrice(action) {
   try {
     const { collectionAddress, tokenID, fixedPrice, from, to } = action.payload;
-
-    console.log("##################################################");
     const token = yield call(signWallet);
-
     yield put(setIsLoading(true));
 
     // unlist from Blockchain

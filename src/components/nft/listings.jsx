@@ -22,9 +22,7 @@ const Listings = ({ itemExtra = [], isLoading }) => {
   const updateAction = () => {
     setDataForRender(itemExtra.slice(0, dataForRender.length + 8));
   };
-
-  console.log("############");
-  console.log(itemExtra);
+  
   return (
     <InfoBoxWrapper title="Listings">
       <div className="infoBoxGrid infoBoxHeader">

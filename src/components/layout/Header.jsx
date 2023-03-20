@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { loadERC20Contract } from "../../utils/blockchainInteractor";
 import ScrollToTop from "../scrollToTop";
@@ -87,24 +86,25 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if(document) {
+    if (document) {
       // add click event listeners to bootstrap links
       const links = document.querySelectorAll(".nav-item");
       links.forEach((link) => {
         link.addEventListener("click", handleClick);
       });
       document
-        .querySelector(".navbar-brand")?.addEventListener("click", handleClick);
+        .querySelector(".navbar-brand")
+        ?.addEventListener("click", handleClick);
       return () => {
         // remove click event listeners to bootstrap links
         links.forEach((link) => {
           link.removeEventListener("click", handleClick);
         });
         document
-          .querySelector(".navbar-brand")?.removeEventListener("click", handleClick);
+          .querySelector(".navbar-brand")
+          ?.removeEventListener("click", handleClick);
       };
     }
-    
   }, [document]);
 
   return (
@@ -162,24 +162,20 @@ const Header = () => {
               <li className="nav-item">
                 <a
                   className="nav-link"
-                  href="https://www.genesis.foxchange.io/"
+                  href="https://genesis.foxchange.io/"
                 >
                   Genesis
                 </a>
               </li>
-              {
-                /*
 
-                  <Ordinals>
-                    <a className="nav-link" href="https://www.foxchange.io/">
-                      Explorer
-                    </a>
-                    <a className="nav-link" href="https://www.foxchange.io/">
-                      Inscriptions
-                    </a>
-                  </Ordinals>
-                */
-              }
+              <Ordinals>
+                <a className="nav-link" href="https://www.foxchange.io/">
+                  Explorer
+                </a>
+                <Link className="nav-link" to="/inscription">
+                  Inscriptions
+                </Link>
+              </Ordinals>
             </ul>
 
             {connectedWallet ? (
