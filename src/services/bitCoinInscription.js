@@ -4,7 +4,7 @@ import {
   getCurrentWalletConnected,
   loadBitCoinInscriptionContract,
   loadERC20Contract,
-  web3Infura
+  web3Infura,
 } from "../utils/blockchainInteractor";
 
 export const getTotalCostData = async (fileSizeInBytes) => {
@@ -17,15 +17,12 @@ export const getTotalCostData = async (fileSizeInBytes) => {
     .estimateCostFx(fileSizeInBytes)
     .call();
   const decimals = await ERC20Contract.methods.decimals().call();
-  return {    
-      fxgCost: Math.ceil(+fxgCost / 10 ** decimals),
-      fxCost: Math.ceil(+fxCost / 10 ** decimals)  
+  return {
+    fxgCost: Math.ceil(+fxgCost / 10 ** decimals),
+    fxCost: Math.ceil(+fxCost / 10 ** decimals),
   };
 };
-export const requestInscription = async (
-  fileSize,
-  estimatedCost,
-) => {
+export const requestInscription = async (fileSize, estimatedCost) => {
   const web3 = web3Infura();
   const erc20Contract = await loadERC20Contract();
   const bitcoinInscription = await loadBitCoinInscriptionContract();
@@ -55,7 +52,9 @@ export const requestInscription = async (
       gasLimit: gasLimitApprouve,
     });
 
-  const fxPrice = await bitcoinInscription.methods.estimateCostFx(fileSize).call();
+  const fxPrice = await bitcoinInscription.methods
+    .estimateCostFx(fileSize)
+    .call();
 
   const gasLimit = await bitcoinInscription.methods
     .requestInscription(fileSize)
@@ -71,5 +70,4 @@ export const requestInscription = async (
     gasLimit,
     value: fxPrice,
   });
-
 };
