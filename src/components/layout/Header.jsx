@@ -169,9 +169,6 @@ const Header = () => {
               </li>
 
               <Ordinals>
-                <a className="nav-link" href="https://www.foxchange.io/">
-                  Explorer
-                </a>
                 <Link className="nav-link" to="/inscription">
                   Inscriptions
                 </Link>

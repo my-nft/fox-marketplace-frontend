@@ -13,8 +13,12 @@ function* runRequestInscription(action) {
     const token = yield call(signWallet);
 
     //verify if the balance is alimented correctly for the requested file
-    const balanceInscription = yield call(getInscriptionBalance, token, fileSize);
-    
+    const balanceInscription = yield call(
+      getInscriptionBalance,
+      token,
+      fileSize
+    );
+
     if (!balanceInscription?.data?.isConditionFilled) {
       toast.error("Please try the minting process later");
       action.onError("Balance - Error while requesting inscription");

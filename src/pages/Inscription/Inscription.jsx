@@ -47,6 +47,8 @@ const Inscription = () => {
   const [isInscriptionError, setIsInscriptionError] = useState(false);
   const defaultBtnRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showViewTransaction, setShowViewTransaction] = useState(false);
+  const [transactionViewUrl, setTransationViewUrl] = useState("");
   const dispatch = useDispatch();
   const { isConnected } = useAccount();
 
@@ -77,6 +79,7 @@ const Inscription = () => {
   };
 
   const handleFormSubmit = async (values) => {
+    setShowViewTransaction(false);
     setIsLoading(true);
     dispatch({
       type: REQUEST_INSCRIPTION,
@@ -88,16 +91,16 @@ const Inscription = () => {
       },
       onSuccess: (inscriptionRes) => {
         toast.success("Inscription success");
-        console.log("Inscription success");
         toast.success(inscriptionRes, {
           autoClose: false,
         });
         setIsLoading(false);
+        setTransationViewUrl(`https://www.blockchain.com/explorer/transactions/btc/${inscriptionRes.reveal}`);
+        setShowViewTransaction(true);
       },
       onError: (error) => {
-        console.log("Inscription error");
         toast.error(error.message);
-        setIsInscriptionError(true);
+        // setIsInscriptionError(true); Feature not ready
         setIsLoading(false);
       },
     });
@@ -114,10 +117,14 @@ const Inscription = () => {
 
   const formatTotalCost = (costData) => {
     if (!costData.fxCost || !costData.fxgCost) {
-      return '';
+      return "";
     }
     return `${costData.fxCost}FX + ${costData.fxgCost}FXG`;
   };
+
+  const goToViewTransaction = () => {
+    window.open(transactionViewUrl, '_newtab')
+  }
 
   return (
     <>
@@ -131,15 +138,7 @@ const Inscription = () => {
           <div className={styles.section} id="DataContent">
             <div className={styles.sectioncontent} id="ContentContainer">
               <div className={styles["fee-field"]} id="PriceField">
-                <h1
-                  className={styles["total-fee"]}
-                  onClick={() => {
-                    console.log("test");
-                    toast.success("Inscription success");
-                  }}
-                >
-                  Total Cost:
-                </h1>
+                <h1 className={styles["total-fee"]}>Total Cost:</h1>
                 <div className={styles.displayfee} id="TotalPriceDisplay">
                   {/*eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                   <a className={styles.a} id="totalPrice">
@@ -247,6 +246,16 @@ const Inscription = () => {
                   className={styles["displayfee-parent"]}
                   id="SubmitBtnContainer"
                 >
+                  {showViewTransaction && (
+                    <button
+                      className={styles["btn-submit"]}
+                      type="button"
+                      disabled={!isConnected}
+                      onClick={goToViewTransaction}
+                    >
+                      <h2 className={styles.submit}>View transaction</h2>
+                    </button>
+                  )}
                   <button
                     className={styles["btn-submit"]}
                     id="SubmitBtn"
