@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import {
   bitcoinInscriptionContractAddress,
   getAddressesByChain,
@@ -31,8 +32,9 @@ export const requestInscription = async (fileSize, estimatedCost) => {
 
   const poweredValue = estimatedCost * 10 ** +decimals;
   const stringifiedPoweredValue = poweredValue
-    .toLocaleString("fullwide", { maximumFractionDigits: 0 })
+    .toLocaleString("fullwide", { maximumFractionDigits: 0, useGrouping: false })
     .replace(/,/g, "");
+
 
   const cost = web3.utils.toHex(stringifiedPoweredValue);
   const erc20Address = getAddressesByChain().ERC20ContractAddress;
