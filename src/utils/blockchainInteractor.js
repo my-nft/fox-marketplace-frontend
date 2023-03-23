@@ -3,6 +3,7 @@ import Web3 from "web3";
 import {
   AUTIONContractAddressFX,
   AUTIONContractAddressPOLYG,
+  bitcoinInscriptionContractAddress,
   blockExplorerFX,
   blockExplorerPOLYG,
   ERC20ContractAddressFX,
@@ -45,7 +46,6 @@ export const authProviderInstance = authProvider();
 export const marketplaceContractAddress = "";
 export const ERC721ContractAddress = "";
 
-export const bitcoinInscriptionContractAddress = "0xc2ddC6029E99da8dA6ae77269fA015b993B130e4";
 
 export function getAddressesByChain() {
   const { chain } = getNetwork();

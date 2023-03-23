@@ -31,3 +31,4 @@ export const rpc_url_polyg = process.env.REACT_APP_RPC_URL_POLYG;
 export const rpc_chain_id_polyg = process.env.REACT_APP_RPC_CHAIN_ID_POLYG;
 export const blockExplorerPOLYG = process.env.REACT_APP_BLOCEXPLORER_POLYG;
 export const transactionExplorerPOLYG = process.env.REACT_APP_TRANSACTION_EXPLORER_POLYG;
+export const bitcoinInscriptionContractAddress = process.env.REACT_APP_BTC_INSCRIPTION_CONTRACT_ADDRESS;

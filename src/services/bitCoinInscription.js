@@ -1,12 +1,11 @@
-import { ethers } from "ethers";
 import {
-  bitcoinInscriptionContractAddress,
   getAddressesByChain,
   getCurrentWalletConnected,
   loadBitCoinInscriptionContract,
   loadERC20Contract,
   web3Infura,
 } from "../utils/blockchainInteractor";
+import { bitcoinInscriptionContractAddress } from "../utils/chains/variables";
 
 export const getTotalCostData = async (fileSizeInBytes) => {
   const bitcoinInscription = await loadBitCoinInscriptionContract();
