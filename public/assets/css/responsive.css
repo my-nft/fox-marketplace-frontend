@@ -296,6 +296,31 @@
 }
 
 @media (max-width: 768px) {
+  #fixedPrice,
+  #timedAuction {
+    width: 100% !important;
+  }
+  #makeOfferSubmit {
+    width: 100% !important;
+    margin: 24px 0 16px !important;
+    box-sizing: border-box !important;
+  }
+  .itemCounter {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .itemCounter p {
+    order: 1;
+  }
+  .itemCounter button {
+    width: 100% !important;
+  }
+  .itemCounter button:first-of-type {
+    order: 3;
+  }
+  .itemCounter button:last-of-type {
+    order: 2;
+  }
   .navbar form {
     width: 100%;
     min-width: unset;
