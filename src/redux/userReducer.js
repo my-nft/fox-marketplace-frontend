@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   currentWallet: undefined,
   token: undefined,
   loading: false,
+  preferedContract: "ERC-720",
 };
 
 const UserReducer = createSlice({
@@ -20,9 +21,12 @@ const UserReducer = createSlice({
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
-    setToken : (state, action) => {
+    setToken: (state, action) => {
       state.token = action.payload;
-    }
+    },
+    setPreferedContract: (state, action) => {
+      state.preferedContract = action.payload;
+    },
   },
 });
 
@@ -45,11 +49,19 @@ export const selectIsLoading = createSelector(
   (user) => user.loading
 );
 
-export const selectToken = createSelector(
-  [selectSelf],
-  (user) => user.token
-)
+export const selectToken = createSelector([selectSelf], (user) => user.token);
 
-export const { setCurrentUser, setLoading, setToken, setCurrentWallet } = UserReducer.actions;
+export const selectPreferedContract = createSelector(
+  [selectSelf],
+  (user) => user.preferedContract
+);
+
+export const {
+  setCurrentUser,
+  setLoading,
+  setToken,
+  setCurrentWallet,
+  setPreferedContract,
+} = UserReducer.actions;
 
 export default UserReducer;

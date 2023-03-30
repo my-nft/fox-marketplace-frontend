@@ -13,6 +13,11 @@ import MostPopularCollection from "./MostPopularCollection";
 import { availableProperties } from "./properties";
 import { scrollTop } from "../../components/scrollToTop";
 import { useSearchParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectPreferedContract,
+  setPreferedContract,
+} from "../../redux/userReducer";
 
 const INIT_PAGINATION = {
   numberElements: 20,
@@ -35,6 +40,8 @@ const Explorer = () => {
 
   const [pagination, setPagination] = useState(INIT_PAGINATION);
   const [searchParams, setSearchParams] = useSearchParams();
+  const preferedContract = useSelector(selectPreferedContract);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setPagination({
@@ -54,8 +61,19 @@ const Explorer = () => {
     minPrice: undefined,
     maxPrice: undefined,
     buyToken: "FXG",
-    contract: "ERC-720",
+    contract: preferedContract || "ERC-720",
   });
+
+  useEffect(() => {
+    setFilters({
+      ...filters,
+      contract: preferedContract,
+    });
+  }, [preferedContract]);
+
+  useEffect(() => {
+    dispatch(setPreferedContract(filters.contract));
+  }, [filters.contract]);
 
   const loadMostPopular = async () => {
     setIsLoadingMspl(true);

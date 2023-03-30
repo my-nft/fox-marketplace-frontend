@@ -129,7 +129,7 @@ function* runMakeOffer(action) {
       collectionAddress,
       tokenID,
       price,
-      token
+      token,
     });
 
     postTraceTransaction(
@@ -214,16 +214,13 @@ function* runDelistItem(action) {
 
 function* runWithdrawOffer(action) {
   try {
-    
-    const { collectionAddress, tokenID, from, to, price } =
-      action.payload;
+    const { collectionAddress, tokenID, from, to, price } = action.payload;
 
     yield put(setIsLoading(true));
 
     const token = yield call(signWallet);
 
-    const tsxId = yield call(withdrawOffer,collectionAddress, tokenID);
-
+    const tsxId = yield call(withdrawOffer, collectionAddress, tokenID);
 
     postTraceTransaction(
       {
@@ -246,7 +243,6 @@ function* runWithdrawOffer(action) {
     // putting the NFT details
     yield put(setIsLoading(false));
     action.onSuccess(nftDetails.data);
-    
   } catch (error) {
     console.log("error ", error);
     toast.error(error.message || "An unexpected error occurred.");
@@ -366,7 +362,8 @@ function* runPlaceBid(action) {
 
 function* runListFixedPrice(action) {
   try {
-    const { collectionAddress, tokenID, fixedPrice, from, to } = action.payload;
+    const { collectionAddress, tokenID, fixedPrice, from, to, count } =
+      action.payload;
 
     console.log("##################################################");
     const token = yield call(signWallet);
@@ -422,8 +419,15 @@ function* runListFixedPrice(action) {
 
 function* runListingAuction(action) {
   try {
-    const { collectionAddress, tokenID, auctionPrice, endAuction, from, to } =
-      action.payload;
+    const {
+      collectionAddress,
+      tokenID,
+      auctionPrice,
+      endAuction,
+      from,
+      to,
+      count,
+    } = action.payload;
 
     const token = yield call(signWallet);
 
@@ -681,7 +685,7 @@ function* acceptOfferSaga() {
 }
 
 function* withdrawOfferSaga() {
-  yield takeLatest(WITHDRAW_OFFER, runWithdrawOffer)
+  yield takeLatest(WITHDRAW_OFFER, runWithdrawOffer);
 }
 
 function* placeBidSaga() {
@@ -707,5 +711,5 @@ export {
   refund,
   claimNFTSaga,
   claimTokenSaga,
-  withdrawOfferSaga
+  withdrawOfferSaga,
 };

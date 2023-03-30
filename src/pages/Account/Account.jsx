@@ -19,6 +19,8 @@ import Pagination from "../../components/pagination/pagination";
 import {
   selectConnectedUser,
   selectCurrentWallet,
+  selectPreferedContract,
+  setPreferedContract,
 } from "../../redux/userReducer";
 
 const AccountPage = () => {
@@ -27,6 +29,7 @@ const AccountPage = () => {
   const [activeSection, setActiveSection] = useState("COLLECTIONS");
   const collections = useSelector(selectCollections);
   const nfts = useSelector(selectNfts);
+  const preferedContract = useSelector(selectPreferedContract);
 
   let content = [];
   let totalElements = 0;
@@ -53,7 +56,7 @@ const AccountPage = () => {
     categories: [],
     status: [],
     sortBy: "RECENTLY_LISTED",
-    contract: "ERC-720",
+    contract: preferedContract || "ERC-720",
   });
 
   const dispatch = useDispatch();
@@ -111,6 +114,17 @@ const AccountPage = () => {
       });
     }
   };
+
+  useEffect(() => {
+    setFilters({
+      ...filters,
+      contract: preferedContract,
+    });
+  }, [preferedContract]);
+
+  useEffect(() => {
+    dispatch(setPreferedContract(filters.contract));
+  }, [filters.contract]);
 
   useEffect(() => {
     runInit();

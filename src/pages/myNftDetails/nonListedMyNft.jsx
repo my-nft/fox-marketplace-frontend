@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomDatePicker from "../../components/datePicker/datePicker";
 import CardBody from "../../components/nft/CardBody";
 import CardNftWrapper from "../../components/nft/CardNftWrapper";
+import ItemCounter from "../../components/nft/counter/itemCounter";
 import { OwnershipTransferPopup } from "../../components/popups/popups";
 import { selectCurrentWallet } from "../../redux/userReducer";
 import { TRANSFERT_NFT } from "../../saga/actions";
@@ -18,6 +19,7 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
   const [type, setType] = useState(FIXED_PRICE);
   const [showPicker, setShowPicker] = useState(false);
   const [showTransferPopup, setShowTransferPopup] = useState(false);
+  const [itemCount, setItemCount] = useState(1);
   const [bestOffer, setBestOffer] = useState();
   const currentWallet = useSelector(selectCurrentWallet);
   const dispatch = useDispatch();
@@ -57,10 +59,10 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
         collectionAddress: nftDetails.collectionAddress,
         tokenID: nftDetails.tokenID,
         fixedPrice: fixedPrice,
-
         from: currentWallet,
         to: undefined,
         price: Number(fixedPrice),
+        count: itemCount,
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -77,9 +79,9 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
         tokenID: nftDetails.tokenID,
         auctionPrice: auctionPrice,
         endAuction: Math.floor(endAuction),
-
         from: currentWallet,
         to: undefined,
+        count: itemCount,
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
@@ -101,6 +103,8 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
     setShowPicker(false);
     setValues({ ...values, time: dateObj.getTime() });
   };
+
+  console.log(nftDetails);
 
   return (
     <>
@@ -146,6 +150,7 @@ const NonListedMyNft = ({ handleAcceptOffer, nftDetails, setNftDetails }) => {
               </div>
             </div>
           </div>
+          <ItemCounter count={itemCount} setCount={setItemCount} />
 
           {type === FIXED_PRICE ? (
             <div className="card mt-2" id="fixedPriceDetails">
