@@ -260,6 +260,7 @@ const MyNftDetails = () => {
                             setNftDetails={setNftDetails}
                             quantity={quantity}
                             handleQuantityChange={handleQuantityChange}
+                            collectionDetails={collectionDetails}
                           />
                         ) : null
                       }

@@ -21,6 +21,7 @@ const NonListedMyNft = ({
   setNftDetails,
   quantity,
   handleQuantityChange,
+  collectionDetails,
 }) => {
   const [type, setType] = useState(FIXED_PRICE);
   const [showPicker, setShowPicker] = useState(false);
@@ -156,10 +157,10 @@ const NonListedMyNft = ({
               </div>
             </div>
           </div>
-          <ItemCounter count={itemCount} setCount={setItemCount} />
-          {
-            // TODO: add support erc 1155 display noly
-          }
+
+          {collectionDetails?.isErc1155 && (
+            <ItemCounter count={itemCount} setCount={setItemCount} />
+          )}
 
           {false && (
             <div className="quantity-entry">
