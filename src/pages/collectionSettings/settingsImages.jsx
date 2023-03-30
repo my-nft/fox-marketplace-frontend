@@ -9,8 +9,6 @@ const SettingsImages = ({
   setCollectionImage,
   setCollectionBanner,
 }) => {
-  console.log(image);
-
   /*
   useEffect(() => {
 

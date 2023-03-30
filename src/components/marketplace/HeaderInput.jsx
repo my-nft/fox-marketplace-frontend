@@ -35,7 +35,7 @@ const HeaderInput = ({
         }
         className="ml-5"
       >
-        <option value="ERC-720">ERC 720</option>
+        <option value="ERC-721">ERC 721</option>
         <option value="ERC-1155">ERC 1155</option>
       </select>
 

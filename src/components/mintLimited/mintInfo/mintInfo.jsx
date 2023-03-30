@@ -3,7 +3,6 @@ import { ReactComponent as WebIcon } from "../../../assets/icons/web.svg";
 import { ReactComponent as MediumIcon } from "../../../assets/icons/medium.svg";
 
 const MintInfo = ({ collection = {}, mintingData = {} }) => {
-  console.log(mintingData);
   return (
     <div className="mintInfo">
       <h3>Ongoing Project</h3>

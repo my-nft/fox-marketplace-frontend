@@ -19,6 +19,21 @@ export function importCollectionCall(collectionAddress, token, sameOrigin) {
   );
 }
 
+export function importCollectionCall1155(collectionAddress, token, tokens) {
+  return methods.post(
+    `${collectionEndpoint}${collectionAddress}/import-erc1155`,
+    {
+      tokens,
+    },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+        "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
+      },
+    }
+  );
+}
+
 export function importCollectionToken(collectionAddress, tokenID, token) {
   return methods.post(
     `${collectionEndpoint}${collectionAddress}/${tokenID}/import`,
@@ -33,15 +48,29 @@ export function importCollectionToken(collectionAddress, tokenID, token) {
 }
 
 export function getCollectionByAddress(collectionAddress) {
-  return methods.get(`${collectionEndpoint}${collectionAddress}`, {
-    headers: {
-      "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
-    },
-  });
+  return methods.get(
+    `${collectionEndpoint}${collectionAddress}`,
+    {
+      headers: {
+        "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
+      },
+    }
+  );
+}
+
+export function getERC1155NftsByCollectionAddress(collectionAddress) {
+  return methods.get(
+    `${collectionEndpoint}erc1155/${collectionAddress}/tokens`,
+    {
+      headers: {
+        "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
+      },
+    }
+  );
 }
 
 export function getCollectionsCall(body) {
-  return methods.get(collectionEndpoint, {
+  return methods.get(`${collectionEndpoint}`, {
     params: body,
     headers: {
       "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
@@ -54,13 +83,11 @@ export function getCollectionNftsCall(collectionAddress, body) {
     params: body,
     headers: {
       "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
-    }
+    },
   });
 }
 
 export function updateCollection(collectionAddress, body, token) {
-  console.log("COLLECTION ADDRESS", collectionAddress);
-  console.log("BODY", body);
   let formData = new FormData();
   formData.append("image", body.image);
   formData.append("banner", body.banner);
@@ -70,7 +97,7 @@ export function updateCollection(collectionAddress, body, token) {
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: "Bearer " + token,
-      "X-CHAIN-ID": getAddressesByChain().rpc_chain_id
+      "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
     },
   });
 }
@@ -90,6 +117,6 @@ export const getAccountCollections = (
     },
     headers: {
       "X-CHAIN-ID": getAddressesByChain().rpc_chain_id,
-    }
+    },
   });
 };

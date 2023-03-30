@@ -115,9 +115,22 @@
 }
 
 @media screen and (max-width: 1280px) {
+  .itemCounts {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
   .collectionSettingsWrapper {
     gap: 48px;
   }
+  nav .form-inline {
+    width: auto;
+    flex-grow: 2;
+  }
+  .ordinals {
+    margin: 0 auto !important;
+  }
+
   .settingsForm {
     grid-column: span 6;
   }
@@ -168,6 +181,9 @@
     top: -75vh;
     height: 110vh;
     width: 110vw;
+  }
+  .buyActionButtton {
+    width: 100% !important;
   }
   .navbar-collapse {
     flex-direction: column;
@@ -321,10 +337,31 @@
   .itemCounter button:last-of-type {
     order: 2;
   }
+  #infoNFT {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .itemCounts {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .countdown {
+    row-gap: 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
   .navbar form {
     width: 100%;
     min-width: unset;
     max-width: unset;
+  }
+  .importTypeChoice {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .importTypeChoice > * {
+    justify-self: center !important;
   }
   .navbar .collapse,
   .navbar .collapsing {

@@ -36,6 +36,8 @@ import Offers from "../../components/nft/offers";
 import PriceHistory from "../../components/nft/priceHistory";
 import ItemActivity from "../../components/nft/activity";
 import { getItemInfo } from "../../api/utilsApi";
+import { ReactComponent as ItemsIcon } from "../../assets/icons/items.svg";
+import { ReactComponent as OwnersIcon } from "../../assets/icons/owners.svg";
 
 const MyNftDetails = () => {
   const connectedWallet = useSelector(selectCurrentWallet);
@@ -51,9 +53,8 @@ const MyNftDetails = () => {
   const [priceHistoList, setPriceHistoList] = useState([]);
   const [offersList, setOffersList] = useState([]);
   const [listingList, setListingList] = useState([]);
-
   const [isLoadingExtraData, setIsLoadingExtraData] = useState([]);
-
+  const [quantity, setQuantity] = useState(1);
   const loaderData = useLoaderData();
   const params = useParams();
 
@@ -79,7 +80,7 @@ const MyNftDetails = () => {
         params.collectionAddress,
         [EVENT_MAKE_OFFER, EVENT_PLACE_BID]
       );
-      setOffersList(responseOfferList.data);
+      setOffersList(responseOfferList?.data);
 
       const responseListingList = await getItemInfo(
         params.tokenID,
@@ -101,8 +102,8 @@ const MyNftDetails = () => {
   useEffect(() => {
     loaderData.dataPromise
       .then((data) => {
-        setNftDetails(data[0].data);
-        setCollectionDetails(data[1].data.collection);
+        setNftDetails(data[0].data.nft);
+        setCollectionDetails(data[0].data.collection);
         dispatch(setIsLoading(false));
       })
       .catch((err) => {
@@ -146,13 +147,6 @@ const MyNftDetails = () => {
   };
 
   const onWithdrawOffer = (bestOffer) => {
-    console.log("##############################")
-    console.log("##############################")
-    console.log("##############################")
-    console.log("##############################")
-    console.log("##############################")
-    console.log("##############################")
-
     dispatch({
       type: WITHDRAW_OFFER,
       payload: {
@@ -164,6 +158,16 @@ const MyNftDetails = () => {
       },
       onSuccess: (nft) => setNftDetails(nft),
     });
+  };
+
+  const handleQuantityChange = (value) => {
+    if (value < 0 && quantity > 1) {
+      setQuantity(quantity + value);
+      return;
+    }
+    if (value > 0 && quantity < 25) {
+      setQuantity(quantity + value);
+    }
   };
 
   return (
@@ -201,22 +205,43 @@ const MyNftDetails = () => {
                     </div>
                     <div className="mt-5 mt-lg-0 col-md-12  col-lg-7 order-2 order-lg-2 ">
                       <header id="infoNFT" className="mb-3">
-                        <h3>
-                          {`${nftDetails?.name}(${nftDetails?.tokenID})`}{" "}
-                        </h3>
-                        <h4>
-                          Owned by{" "}
-                          {sameAddress(
-                            connectedWallet,
-                            nftDetails.ownerAddress
-                          ) ? (
-                            "You"
-                          ) : (
-                            <Address address={nftDetails.ownerAddress}>
-                              {optimizeWalletAddress(nftDetails.ownerAddress)}
-                            </Address>
-                          )}
-                        </h4>
+                        <div>
+                          <h3>
+                            {`${nftDetails?.name}(${nftDetails?.tokenID})`}{" "}
+                          </h3>
+                          <h4>
+                            {!collectionDetails.isErc1155 && (
+                              <>
+                                Owned by{" "}
+                                {sameAddress(
+                                  connectedWallet,
+                                  nftDetails.ownerAddress
+                                ) ? (
+                                  "You"
+                                ) : (
+                                  <Address address={nftDetails.ownerAddress}>
+                                    {optimizeWalletAddress(
+                                      nftDetails.ownerAddress
+                                    )}
+                                  </Address>
+                                )}
+                              </>
+                            )}
+                          </h4>
+                        </div>
+
+                        {collectionDetails?.isErc1155 && (
+                          <div class="itemCounts">
+                            <div className="owners countHighlight">
+                              <OwnersIcon />
+                              <p>1 Owner</p>
+                            </div>
+                            <div className="ietms countHighlight">
+                              <ItemsIcon />
+                              <p>{nftDetails.recurences} Items</p>
+                            </div>
+                          </div>
+                        )}
                       </header>
 
                       {
@@ -233,6 +258,8 @@ const MyNftDetails = () => {
                             handleAcceptOffer={onAcceptOffer}
                             onWithdrawOffer={onWithdrawOffer}
                             setNftDetails={setNftDetails}
+                            quantity={quantity}
+                            handleQuantityChange={handleQuantityChange}
                           />
                         ) : null
                       }
@@ -251,6 +278,9 @@ const MyNftDetails = () => {
                             nftDetails={nftDetails}
                             handleMakeOffer={onMakeOffer}
                             onWithdrawOffer={onWithdrawOffer}
+                            quantity={quantity}
+                            handleQuantityChange={handleQuantityChange}
+                            collectionDetails={collectionDetails}
                           />
                         ) : null
                       }
@@ -261,6 +291,8 @@ const MyNftDetails = () => {
                           nftDetails={nftDetails}
                           setNftDetails={setNftDetails}
                           collectionDetails={collectionDetails}
+                          quantity={quantity}
+                          handleQuantityChange={handleQuantityChange}
                         />
                       ) : null}
 
@@ -273,6 +305,8 @@ const MyNftDetails = () => {
                           onMakeOffer={onMakeOffer}
                           onAcceptOffer={onAcceptOffer}
                           onWithdrawOffer={onWithdrawOffer}
+                          quantity={quantity}
+                          handleQuantityChange={handleQuantityChange}
                         />
                       ) : null}
                     </div>

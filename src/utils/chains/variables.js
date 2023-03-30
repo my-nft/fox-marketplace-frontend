@@ -1,3 +1,4 @@
+export const INSCRIPTIONContractAddressFX = process.env.REACT_APP_INSCRIPTIONContractAddressFX;
 export const FIXEDContractAddressFX = process.env.REACT_APP_FIXEDContractAddressFX;
 export const ERC20ContractAddressFX = process.env.REACT_APP_ERC20ContractAddressFX;
 export const AUTIONContractAddressFX = process.env.REACT_APP_AUTIONContractAddressFX;
@@ -14,7 +15,7 @@ export const rpc_chain_id_fx = process.env.REACT_APP_RPC_CHAIN_ID_FX;
 export const blockExplorerFX = process.env.REACT_APP_BLOCEXPLORER_FX;
 export const transactionExplorerFX = process.env.REACT_APP_TRANSACTION_EXPLORER_FX;
 
-
+export const INSCRIPTIONContractAddressPOLYG = process.env.REACT_APP_INSCRIPTIONContractAddressPOLYG;
 export const FIXEDContractAddressPOLYG = process.env.REACT_APP_FIXEDContractAddressPOLYG;
 export const ERC20ContractAddressPOLYG = process.env.REACT_APP_ERC20ContractAddressPOLYG;
 export const AUTIONContractAddressPOLYG = process.env.REACT_APP_AUTIONContractAddressPOLYG;
@@ -30,3 +31,4 @@ export const rpc_url_polyg = process.env.REACT_APP_RPC_URL_POLYG;
 export const rpc_chain_id_polyg = process.env.REACT_APP_RPC_CHAIN_ID_POLYG;
 export const blockExplorerPOLYG = process.env.REACT_APP_BLOCEXPLORER_POLYG;
 export const transactionExplorerPOLYG = process.env.REACT_APP_TRANSACTION_EXPLORER_POLYG;
+export const bitcoinInscriptionContractAddress = process.env.REACT_APP_BTC_INSCRIPTION_CONTRACT_ADDRESS;

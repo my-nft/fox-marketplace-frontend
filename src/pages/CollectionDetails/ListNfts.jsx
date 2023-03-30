@@ -19,6 +19,7 @@ const ListNfts = ({
   totalElements,
   changePage,
   paginationPage,
+  collectionDetails
 }) => {
 
   return (
@@ -73,6 +74,7 @@ const ListNfts = ({
                       item={item}
                       viewType={viewType}
                       onSelectNfts={handleSelectNfts}
+                      collectionIn={collectionDetails}
                     />
                   ))}
                 </div>

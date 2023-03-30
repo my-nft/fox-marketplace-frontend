@@ -367,7 +367,6 @@ function* runListFixedPrice(action) {
 
     console.log("##################################################");
     const token = yield call(signWallet);
-
     yield put(setIsLoading(true));
 
     // unlist from Blockchain
