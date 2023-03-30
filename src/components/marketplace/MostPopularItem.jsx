@@ -158,7 +158,7 @@ const MostPopularItem = ({ viewType, item, contract, collectionIn }) => {
 
   return (
     <Link
-      to={`/collection/${item.collectionAddress}/${item.tokenID}?isErc1155=${collection?.isErc1155}`}
+      to={`/collection/${item.collectionAddress}/${item.tokenID}`}
       className={
         !viewType
           ? "listMostPopular col-3 col-md-4 col-lg-3 nft"

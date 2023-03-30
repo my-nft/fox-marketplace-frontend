@@ -102,8 +102,8 @@ const MyNftDetails = () => {
   useEffect(() => {
     loaderData.dataPromise
       .then((data) => {
-        setNftDetails(data[0].data);
-        setCollectionDetails(data[1].data.collection);
+        setNftDetails(data[0].data.nft);
+        setCollectionDetails(data[0].data.collection);
         dispatch(setIsLoading(false));
       })
       .catch((err) => {

@@ -73,7 +73,7 @@ const ImportCollection = () => {
         toast.success(
           "Congratulations, your Collection has been imported successfully"
         );
-        navigate(`/collection/${values["collectionAddress"]} ? isErc1155=${contratType === 'ERC1155'}`);
+        navigate(`/collection/${values["collectionAddress"]}`);
       },
     });
   };
