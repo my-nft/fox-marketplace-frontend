@@ -61,7 +61,7 @@ const Explorer = () => {
     minPrice: undefined,
     maxPrice: undefined,
     buyToken: "FXG",
-    contract: preferedContract || "ERC-720",
+    contract: preferedContract || "ERC-721",
   });
 
   useEffect(() => {
