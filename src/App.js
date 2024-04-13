@@ -199,13 +199,14 @@ const router = createBrowserRouter(
         path="collection/:collectionAddress/:tokenID"
         exact
         loader={async ({ params, request }) => {
+          console.log("***********************")
           const isErc1155 = new URL(request.url).searchParams.get('isErc1155');
           const {collectionAddress, tokenID} = params;
 
           let getNFTPromise;
           
           if(isErc1155 && isErc1155 === 'true') {
-            getNFTPromise = getNftErc1155Call(collectionAddress, tokenID);
+            getNFTPromise = getNftCall(collectionAddress, tokenID);
           } else {
             getNFTPromise = getNftCall(
               collectionAddress,
